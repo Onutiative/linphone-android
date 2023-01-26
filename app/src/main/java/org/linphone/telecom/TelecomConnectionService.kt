@@ -22,14 +22,27 @@ package org.linphone.telecom
 import android.content.ComponentName
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
+import android.provider.Settings
 import android.telecom.*
+import androidx.annotation.RequiresApi
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import okhttp3.OkHttpClient
+import org.linphone.BasicAuthInterceptor.BasicAuthInterceptor
 import org.linphone.LinphoneApplication
 import org.linphone.LinphoneApplication.Companion.coreContext
 import org.linphone.LinphoneApplication.Companion.ensureCoreExists
+import org.linphone.`interface`.callpopupinterface
 import org.linphone.core.Call
 import org.linphone.core.Core
 import org.linphone.core.CoreListenerStub
 import org.linphone.core.tools.Log
+import org.linphone.model.callpopupjson
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class TelecomConnectionService : ConnectionService() {
     private val listener: CoreListenerStub = object : CoreListenerStub() {
@@ -86,10 +99,29 @@ class TelecomConnectionService : ConnectionService() {
         return super.onUnbind(intent)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateOutgoingConnection(
         connectionManagerPhoneAccount: PhoneAccountHandle,
         request: ConnectionRequest
     ): Connection {
+        val client = OkHttpClient.Builder()
+            .addInterceptor(BasicAuthInterceptor("demo@vendy.xyz", "d3m0@v3n6y"))
+            .build()
+
+        val retrofitBuilder = Retrofit.Builder()
+            .addConverterFactory(GsonConverterFactory.create())
+            .baseUrl("https://api.onukit.com/6v1/")
+            .client(client)
+            .build()
+
+        val current = LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+        val formattedtime = current.format(formatter)
+        val trans = DateTimeFormatter.ofPattern("yyyyMMddHHmmss")
+        val transid = current.format(trans) + "01"
+        val callloginterface = retrofitBuilder.create(callpopupinterface::class.java)
+        val diviceid: String = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
+
         if (coreContext.core.callsNb == 0) {
             Log.w("[Telecom Connection Service] No call in Core, aborting outgoing connection!")
             return Connection.createCanceledConnection()
@@ -134,7 +166,20 @@ class TelecomConnectionService : ConnectionService() {
             connection.setAddress(providedHandle, TelecomManager.PRESENTATION_ALLOWED)
             connection.setCallerDisplayName(displayName, TelecomManager.PRESENTATION_ALLOWED)
             Log.i("[Telecom Connection Service] Address is $providedHandle")
+            var jsonexample = callpopupjson("+8801938399757", formattedtime.toString(), diviceid, transid, "outgoing")
+            var callgetback = callloginterface.calllogpost(jsonexample)
+            callgetback.enqueue(object : Callback<callpopupjson> {
+                override fun onResponse(
+                    call: retrofit2.Call<callpopupjson>,
+                    response: Response<callpopupjson>
+                ) {
+                    Log.i("outgoing call popup done ${response.code()}")
+                }
 
+                override fun onFailure(call: retrofit2.Call<callpopupjson>, t: Throwable) {
+                    Log.i("outgoing call popup falied $t")
+                }
+            })
             TelecomHelper.get().connections.add(connection)
             connection
         } else {
@@ -148,10 +193,30 @@ class TelecomConnectionService : ConnectionService() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateIncomingConnection(
         connectionManagerPhoneAccount: PhoneAccountHandle,
         request: ConnectionRequest
     ): Connection {
+
+        val client = OkHttpClient.Builder()
+            .addInterceptor(BasicAuthInterceptor("demo@vendy.xyz", "d3m0@v3n6y"))
+            .build()
+
+        val retrofitBuilder = Retrofit.Builder()
+            .addConverterFactory(GsonConverterFactory.create())
+            .baseUrl("https://api.onukit.com/6v1/")
+            .client(client)
+            .build()
+
+        val current = LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+        val formattedtime = current.format(formatter)
+        val trans = DateTimeFormatter.ofPattern("yyyyMMddHHmmss")
+        val transid = current.format(trans) + "01"
+        val callloginterface = retrofitBuilder.create(callpopupinterface::class.java)
+        val diviceid: String = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
+
         if (coreContext.core.callsNb == 0) {
             Log.w("[Telecom Connection Service] No call in Core, aborting incoming connection!")
             return Connection.createCanceledConnection()
@@ -176,6 +241,22 @@ class TelecomConnectionService : ConnectionService() {
             if (call != null) {
                 val callState = call.state
                 Log.i("[Telecom Connection Service] Found incoming call from ID [$callId] with state [$callState]")
+
+                var jsonexample = callpopupjson("+8801938399757", formattedtime.toString(), diviceid, transid, "incoming")
+                var callgetback = callloginterface.calllogpost(jsonexample)
+                callgetback.enqueue(object : Callback<callpopupjson> {
+                    override fun onResponse(
+                        call: retrofit2.Call<callpopupjson>,
+                        response: Response<callpopupjson>
+                    ) {
+                        Log.i("incoming call popup done ${response.code()}")
+                    }
+
+                    override fun onFailure(call: retrofit2.Call<callpopupjson>, t: Throwable) {
+                        Log.i("incoming call popup falied $t")
+                    }
+                })
+
                 when (callState) {
                     Call.State.IncomingEarlyMedia, Call.State.IncomingReceived -> connection.setRinging()
                     Call.State.Paused, Call.State.PausedByRemote, Call.State.Pausing -> connection.setOnHold()

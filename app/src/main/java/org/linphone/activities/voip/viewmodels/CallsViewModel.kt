@@ -77,7 +77,11 @@ class CallsViewModel : ViewModel() {
             updateUnreadChatCount()
         }
 
-        override fun onMessageReceived(core: Core, chatRoom: ChatRoom, message: ChatMessage) {
+        override fun onMessagesReceived(
+            core: Core,
+            chatRoom: ChatRoom,
+            messages: Array<out ChatMessage>
+        ) {
             updateUnreadChatCount()
         }
 
@@ -310,6 +314,7 @@ class CallsViewModel : ViewModel() {
 
     private fun updateInactiveCallsCount() {
         // TODO: handle local conference
-        inactiveCallsCount.value = coreContext.core.callsNb - 1
+        val callsNb = coreContext.core.callsNb
+        inactiveCallsCount.value = if (callsNb > 0) callsNb - 1 else 0
     }
 }

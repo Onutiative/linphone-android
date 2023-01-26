@@ -33,7 +33,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.core.view.doOnPreDraw
 import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -678,18 +677,6 @@ class DetailChatRoomFragment : MasterFragment<ChatRoomDetailFragmentBinding, Cha
                 sharedViewModel.isPendingMessageForward.value = false
             }
         }
-
-        binding.stubbedMessageToReplyTo.setOnInflateListener { _, inflated ->
-            Log.i("[Chat Room] Replying to message layout inflated")
-            val binding = DataBindingUtil.bind<ViewDataBinding>(inflated)
-            binding?.lifecycleOwner = viewLifecycleOwner
-        }
-
-        binding.stubbedVoiceRecording.setOnInflateListener { _, inflated ->
-            Log.i("[Chat Room] Voice recording layout inflated")
-            val binding = DataBindingUtil.bind<ViewDataBinding>(inflated)
-            binding?.lifecycleOwner = viewLifecycleOwner
-        }
     }
 
     override fun deleteItems(indexesOfItemToDelete: ArrayList<Int>) {
@@ -702,6 +689,7 @@ class DetailChatRoomFragment : MasterFragment<ChatRoomDetailFragmentBinding, Cha
         sharedViewModel.refreshChatRoomInListEvent.value = Event(true)
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -761,6 +749,8 @@ class DetailChatRoomFragment : MasterFragment<ChatRoomDetailFragmentBinding, Cha
                                     if (notAllMessagesDisplayed) {
                                         Log.w("[Chat Room] More unread messages than the screen can display, do not mark chat room as read now, wait for user to scroll to bottom")
                                     } else {
+                                        // Consider user as scrolled to the end when marking chat room as read
+                                        viewModel.isUserScrollingUp.value = false
                                         Log.i("[Chat Room] Marking chat room as read")
                                         viewModel.chatRoom.markAsRead()
                                     }
@@ -793,6 +783,7 @@ class DetailChatRoomFragment : MasterFragment<ChatRoomDetailFragmentBinding, Cha
         super.onPause()
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK) {
             lifecycleScope.launch {
@@ -867,6 +858,15 @@ class DetailChatRoomFragment : MasterFragment<ChatRoomDetailFragmentBinding, Cha
         navigateToEphemeralInfo()
     }
 
+    private fun scheduleMeeting(chatRoom: ChatRoom) {
+        val participants = arrayListOf<Address>()
+        for (participant in chatRoom.participants) {
+            participants.add(participant.address)
+        }
+        sharedViewModel.participantsListForNextScheduledMeeting.value = Event(participants)
+        navigateToConferenceScheduling()
+    }
+
     private fun showForwardConfirmationDialog(chatMessage: ChatMessage) {
         val viewModel = DialogViewModel(getString(R.string.chat_message_forward_confirmation_dialog))
         viewModel.iconResource = R.drawable.forward_message_default
@@ -897,7 +897,7 @@ class DetailChatRoomFragment : MasterFragment<ChatRoomDetailFragmentBinding, Cha
         )
 
         val itemSize = AppUtils.getDimension(R.dimen.chat_room_popup_item_height).toInt()
-        var totalSize = itemSize * 7
+        var totalSize = itemSize * 8
 
         val notificationsTurnedOff = viewModel.areNotificationsMuted()
         if (notificationsTurnedOff) {
@@ -914,6 +914,9 @@ class DetailChatRoomFragment : MasterFragment<ChatRoomDetailFragmentBinding, Cha
             } else {
                 popupView.goToContactHidden = true
             }
+
+            popupView.meetingHidden = true
+            totalSize -= itemSize
         } else {
             popupView.addToContactsHidden = true
             popupView.goToContactHidden = true
@@ -979,6 +982,10 @@ class DetailChatRoomFragment : MasterFragment<ChatRoomDetailFragmentBinding, Cha
         }
         popupView.setEphemeralListener {
             showEphemeralMessages()
+            popupWindow.dismiss()
+        }
+        popupView.setMeetingListener {
+            scheduleMeeting(chatRoom)
             popupWindow.dismiss()
         }
         popupView.setEditionModeListener {

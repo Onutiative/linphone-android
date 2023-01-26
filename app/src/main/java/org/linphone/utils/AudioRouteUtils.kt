@@ -46,9 +46,9 @@ class AudioRouteUtils {
             else
                 AudioDevice.Capabilities.CapabilityRecord
             val preferredDriver = if (output) {
-                coreContext.core.defaultOutputAudioDevice.driverName
+                coreContext.core.defaultOutputAudioDevice?.driverName
             } else {
-                coreContext.core.defaultInputAudioDevice.driverName
+                coreContext.core.defaultInputAudioDevice?.driverName
             }
 
             val extendedAudioDevices = coreContext.core.extendedAudioDevices
@@ -218,12 +218,13 @@ class AudioRouteUtils {
         private fun isBluetoothAudioRecorderAvailable(): Boolean {
             for (audioDevice in coreContext.core.audioDevices) {
                 if (audioDevice.type == AudioDevice.Type.Bluetooth &&
-                    audioDevice.hasCapability(AudioDevice.Capabilities.CapabilityRecord)
+                    (audioDevice?.hasCapability(AudioDevice.Capabilities.CapabilityRecord) ?: false)
                 ) {
                     Log.i("[Audio Route Helper] Found bluetooth audio recorder [${audioDevice.deviceName} (${audioDevice.driverName})]")
                     return true
                 }
             }
+
             return false
         }
 
@@ -242,7 +243,7 @@ class AudioRouteUtils {
         private fun isHeadsetAudioRecorderAvailable(): Boolean {
             for (audioDevice in coreContext.core.audioDevices) {
                 if ((audioDevice.type == AudioDevice.Type.Headset || audioDevice.type == AudioDevice.Type.Headphones) &&
-                    audioDevice.hasCapability(AudioDevice.Capabilities.CapabilityRecord)
+                    (audioDevice?.hasCapability(AudioDevice.Capabilities.CapabilityRecord) ?: false)
                 ) {
                     Log.i("[Audio Route Helper] Found headset/headphones audio recorder [${audioDevice.deviceName} (${audioDevice.driverName})]")
                     return true

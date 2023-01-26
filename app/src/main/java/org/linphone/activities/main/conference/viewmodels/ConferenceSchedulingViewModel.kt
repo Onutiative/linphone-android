@@ -38,6 +38,7 @@ class ConferenceSchedulingViewModel : ContactsSelectionViewModel() {
     val description = MutableLiveData<String>()
 
     val scheduleForLater = MutableLiveData<Boolean>()
+    val isUpdate = MutableLiveData<Boolean>()
 
     val formattedDate = MutableLiveData<String>()
     val formattedTime = MutableLiveData<String>()
@@ -73,35 +74,11 @@ class ConferenceSchedulingViewModel : ContactsSelectionViewModel() {
     private val conferenceScheduler = coreContext.core.createConferenceScheduler()
 
     private val listener = object : ConferenceSchedulerListenerStub() {
-        override fun onStateChanged(
+        fun onStateChanged(
             conferenceScheduler: ConferenceScheduler,
-            state: ConferenceSchedulerState
+            // state: ConferenceSchedulerState
         ) {
-            Log.i("[Conference Creation] Conference scheduler state is $state")
-            if (state == ConferenceSchedulerState.Ready) {
-                val conferenceAddress = conferenceScheduler.info?.uri
-                Log.i("[Conference Creation] Conference info created, address will be ${conferenceAddress?.asStringUriOnly()}")
-                conferenceAddress ?: return
-
-                address.value = conferenceAddress!!
-
-                if (scheduleForLater.value == true && sendInviteViaChat.value == true) {
-                    // Send conference info even when conf is not scheduled for later
-                    // as the conference server doesn't invite participants automatically
-                    val chatRoomParams = coreContext.core.createDefaultChatRoomParams()
-                    chatRoomParams.backend = ChatRoomBackend.FlexisipChat
-                    chatRoomParams.isGroupEnabled = false
-                    chatRoomParams.isEncryptionEnabled = true
-                    chatRoomParams.subject = subject.value
-                    conferenceScheduler.sendInvitations(chatRoomParams)
-                } else {
-                    // Will be done in coreListener
-                }
-            } else if (state == ConferenceSchedulerState.Error) {
-                Log.e("[Conference Creation] Failed to create conference!")
-                conferenceCreationInProgress.value = false
-                onMessageToNotifyEvent.value = Event(R.string.conference_creation_failed)
-            }
+            //  Log.i("[Conference Creation] Conference scheduler state is $state")
         }
 
         override fun onInvitationsSent(
@@ -156,6 +133,8 @@ class ConferenceSchedulingViewModel : ContactsSelectionViewModel() {
 
         subject.value = ""
         scheduleForLater.value = false
+        isUpdate.value = false
+
         isEncrypted.value = false
         sendInviteViaChat.value = true
         sendInviteViaEmail.value = false
@@ -193,11 +172,18 @@ class ConferenceSchedulingViewModel : ContactsSelectionViewModel() {
         super.onCleared()
     }
 
+    fun prePopulateParticipantsList(participants: ArrayList<Address>, isSchedule: Boolean) {
+        selectedAddresses.value = participants
+        scheduleForLater.value = isSchedule
+    }
+
     fun populateFromConferenceInfo(conferenceInfo: ConferenceInfo) {
         confInfo = conferenceInfo
+
         address.value = conferenceInfo.uri
         subject.value = conferenceInfo.subject
         description.value = conferenceInfo.description
+        isUpdate.value = true
 
         val dateTime = conferenceInfo.dateTime
         val calendar = Calendar.getInstance()
@@ -262,7 +248,11 @@ class ConferenceSchedulingViewModel : ContactsSelectionViewModel() {
         val localAccount = core.defaultAccount
         val localAddress = localAccount?.params?.identityAddress
 
-        val conferenceInfo = confInfo ?: Factory.instance().createConferenceInfo()
+        val conferenceInfo = if (isUpdate.value == true) {
+            confInfo?.clone() ?: Factory.instance().createConferenceInfo()
+        } else {
+            Factory.instance().createConferenceInfo()
+        }
         conferenceInfo.organizer = localAddress
         conferenceInfo.subject = subject.value
         conferenceInfo.description = description.value
@@ -273,6 +263,7 @@ class ConferenceSchedulingViewModel : ContactsSelectionViewModel() {
             val duration = duration.value?.value ?: 0
             conferenceInfo.duration = duration
         }
+
         confInfo = conferenceInfo
         conferenceScheduler.account = localAccount
         // Will trigger the conference creation/update automatically
