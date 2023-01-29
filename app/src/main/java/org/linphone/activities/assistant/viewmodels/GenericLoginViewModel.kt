@@ -19,13 +19,19 @@
  */
 package org.linphone.activities.assistant.viewmodels
 
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import android.widget.Toast
+import androidx.lifecycle.*
+import javax.security.auth.callback.Callback
+import okhttp3.*
+import okhttp3.Call
+import okhttp3.OkHttpClient
+import okhttp3.Response
+import okio.IOException
+import org.json.JSONObject
 import org.linphone.LinphoneApplication.Companion.coreContext
 import org.linphone.core.*
 import org.linphone.core.tools.Log
+import org.linphone.onuspecific.OnuFunctions.UserActivation
 import org.linphone.utils.Event
 
 class GenericLoginViewModelFactory(private val accountCreator: AccountCreator) :
@@ -38,6 +44,13 @@ class GenericLoginViewModelFactory(private val accountCreator: AccountCreator) :
 }
 
 class GenericLoginViewModel(private val accountCreator: AccountCreator) : ViewModel() {
+
+    val onukit_username = MutableLiveData<String>()
+
+    val onukit_password = MutableLiveData<String>()
+
+    val onukit_logged_in = false
+
     val username = MutableLiveData<String>()
 
     val password = MutableLiveData<String>()
@@ -49,6 +62,8 @@ class GenericLoginViewModel(private val accountCreator: AccountCreator) : ViewMo
     val transport = MutableLiveData<TransportType>()
 
     val loginEnabled: MediatorLiveData<Boolean> = MediatorLiveData()
+
+    val onuLoginEnabled: MediatorLiveData<Boolean> = MediatorLiveData()
 
     val waitForServerAnswer = MutableLiveData<Boolean>()
 
@@ -100,6 +115,14 @@ class GenericLoginViewModel(private val accountCreator: AccountCreator) : ViewMo
         loginEnabled.addSource(domain) {
             loginEnabled.value = isLoginButtonEnabled()
         }
+
+        onuLoginEnabled.value = false
+        onuLoginEnabled.addSource(onukit_username) {
+            onuLoginEnabled.value = isOnuLoginButtonEnabled()
+        }
+        onuLoginEnabled.addSource(onukit_password) {
+            onuLoginEnabled.value = isOnuLoginButtonEnabled()
+        }
     }
 
     fun setTransport(transportType: TransportType) {
@@ -117,6 +140,68 @@ class GenericLoginViewModel(private val accountCreator: AccountCreator) : ViewMo
 
     fun continueEvenIfInvalidCredentials() {
         leaveAssistantEvent.value = Event(true)
+    }
+
+    fun checkOnukitCredentials() {
+        waitForServerAnswer.value = true
+        val userActivation = UserActivation(
+            onukit_username?.value, onukit_password?.value,
+            coreContext.context
+        )
+
+        val request = userActivation.performActivation()
+        val client = OkHttpClient()
+        client.newCall(request).enqueue(object : okhttp3.Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                // Handle failure
+                Log.d("OnuFunctions", "onFailure - Failed to activate user: $e")
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                // log status code
+                Log.d("OnuFunctions", "Response code: ${response.code}")
+                // print the output
+                Log.d("OnuFunctions", "Response body: ${response.body?.string()}")
+
+                // check status code
+                if (response.code != 200) {
+                    // Show a toast message
+                    Log.d("OnuFunctions", "response.code != 200 | Failed to activate user")
+                    Toast.makeText(coreContext.context, "Server error! ${response.code}", Toast.LENGTH_SHORT).show()
+                }
+
+                // Handle response
+                if (response.isSuccessful) {
+                    Log.d("OnuFunctions", "Response code: ${response.code}")
+                    // Log.d("OnuFunctions", "Response body: ${response.body?.string()}")
+                    // The request was successful
+                    Log.d("OnuFunctions", "User activated successfully")
+
+                    // load the json data
+                    val json = JSONObject(response.body?.string())
+
+                    // get the status and reason from json data
+                    val status = json.getString("status")
+                    val reason = json.getString("reason")
+
+                    // show in a toast message
+                    if (status.toInt() > 4000) {
+                        Toast.makeText(coreContext.context, reason, Toast.LENGTH_LONG).show()
+                        return
+                    } else {
+                        Toast.makeText(coreContext.context, reason, Toast.LENGTH_SHORT).show()
+                        createProxyConfig()
+                    }
+                } else {
+                    // The request failed
+                    Log.d("OnuFunctions", "response.isSuccessful == false | Failed to activate user")
+                    Toast.makeText(coreContext.context, "Request Error! Try Again!", Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
+
+        // check when client is done, then set waitForServerAnswer's value to false
+        waitForServerAnswer.value = false
     }
 
     fun createProxyConfig() {
@@ -144,6 +229,10 @@ class GenericLoginViewModel(private val accountCreator: AccountCreator) : ViewMo
     }
 
     private fun isLoginButtonEnabled(): Boolean {
-        return username.value.orEmpty().isNotEmpty() && domain.value.orEmpty().isNotEmpty() && password.value.orEmpty().isNotEmpty()
+        return isOnuLoginButtonEnabled() && username.value.orEmpty().isNotEmpty() && domain.value.orEmpty().isNotEmpty() && password.value.orEmpty().isNotEmpty()
+    }
+
+    private fun isOnuLoginButtonEnabled(): Boolean {
+        return onukit_username.value.orEmpty().isNotEmpty() && onukit_password.value.orEmpty().isNotEmpty()
     }
 }
