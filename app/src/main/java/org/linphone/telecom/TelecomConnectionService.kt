@@ -166,7 +166,12 @@ class TelecomConnectionService : ConnectionService() {
             connection.setAddress(providedHandle, TelecomManager.PRESENTATION_ALLOWED)
             connection.setCallerDisplayName(displayName, TelecomManager.PRESENTATION_ALLOWED)
             Log.i("[Telecom Connection Service] Address is $providedHandle")
-            var jsonexample = callpopupjson("+8801938399757", formattedtime.toString(), diviceid, transid, "outgoing")
+
+            // get caller id
+            val callerid = providedHandle.schemeSpecificPart.split("@")[0]
+            Log.i("[Telecom Connection Service] Phone Number is $callerid")
+
+            var jsonexample = callpopupjson(callerid, formattedtime.toString(), diviceid, transid, "outgoing")
             var callgetback = callloginterface.calllogpost(jsonexample)
             callgetback.enqueue(object : Callback<callpopupjson> {
                 override fun onResponse(
@@ -242,7 +247,10 @@ class TelecomConnectionService : ConnectionService() {
                 val callState = call.state
                 Log.i("[Telecom Connection Service] Found incoming call from ID [$callId] with state [$callState]")
 
-                var jsonexample = callpopupjson("+8801938399757", formattedtime.toString(), diviceid, transid, "incoming")
+                val callerId = call.remoteAddress.asStringUriOnly()
+                Log.i("[Telecom Connection Service] Phone Number is $callerId")
+
+                var jsonexample = callpopupjson("$callerId", formattedtime.toString(), diviceid, transid, "incoming")
                 var callgetback = callloginterface.calllogpost(jsonexample)
                 callgetback.enqueue(object : Callback<callpopupjson> {
                     override fun onResponse(

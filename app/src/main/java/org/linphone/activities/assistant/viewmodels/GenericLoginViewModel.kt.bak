@@ -161,10 +161,11 @@ class GenericLoginViewModel(private val accountCreator: AccountCreator) : ViewMo
             }
 
             override fun onResponse(call: Call, response: Response) {
-                val requestBody = response.body
+                val requestBody = response.body?.string()
 
                 // log status code
                 Log.d("OnuFunctions", "Response code: ${response.code}")
+                Log.d("OnuFunctions", "Response body: $requestBody")
 
                 // check status code
                 if (response.code != 200) {
@@ -182,8 +183,8 @@ class GenericLoginViewModel(private val accountCreator: AccountCreator) : ViewMo
 
                     try {
                         // load the json data
-                        val json = JSONObject(requestBody.string())
-                        Log.d("OnuFunctions", "Response body: ${requestBody.string()}")
+                        val json = JSONObject(requestBody)
+
                         // get the status and reason from json data
                         val status = json.getString("status")
                         val reason = json.getString("reason")
