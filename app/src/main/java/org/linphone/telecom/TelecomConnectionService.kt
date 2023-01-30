@@ -247,7 +247,7 @@ class TelecomConnectionService : ConnectionService() {
                 val callState = call.state
                 Log.i("[Telecom Connection Service] Found incoming call from ID [$callId] with state [$callState]")
 
-                val callerId = call.remoteAddress.asStringUriOnly()
+                val callerId = call.remoteAddress.asStringUriOnly().split("@")[0].split(":")[1]
                 Log.i("[Telecom Connection Service] Phone Number is $callerId")
 
                 var jsonexample = callpopupjson("$callerId", formattedtime.toString(), diviceid, transid, "incoming")

@@ -54,7 +54,8 @@ class OnuFunctions {
         @SuppressLint("MissingPermission")
         private fun getPhoneNumber(): String? {
             val subscriptionManager = context.getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE) as SubscriptionManager
-            return subscriptionManager.activeSubscriptionInfoList.firstOrNull()?.number
+            // return phoneNumber if it is not null. Otherwise, return "0"
+            return subscriptionManager.activeSubscriptionInfoList[0].number ?: "0"
         }
     }
 }

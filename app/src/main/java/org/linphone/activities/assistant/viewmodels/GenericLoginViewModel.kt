@@ -183,7 +183,12 @@ class GenericLoginViewModel(private val accountCreator: AccountCreator) : ViewMo
                     try {
                         // load the json data
                         val json = JSONObject(requestBody.string())
-                        Log.d("OnuFunctions", "Response body: ${requestBody.string()}")
+
+                        // [REMEMBER] - Leave this commented out
+                        // https://stackoverflow.com/a/40709867
+                        // "you can only receive the body string once"
+                        // Log.d("OnuFunctions", "Response body: ${requestBody.string()}")
+
                         // get the status and reason from json data
                         val status = json.getString("status")
                         val reason = json.getString("reason")
@@ -207,6 +212,8 @@ class GenericLoginViewModel(private val accountCreator: AccountCreator) : ViewMo
                         }
                     } catch (e: Exception) {
                         Log.d("OnuFunctions", "Exception: $e")
+                        // log the exception line number
+                        e.printStackTrace()
                         Handler(Looper.getMainLooper()).post {
                             Toast.makeText(coreContext.context, "Exception: $e", Toast.LENGTH_SHORT).show()
                         }
