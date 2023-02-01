@@ -19,6 +19,7 @@
  */
 package org.linphone.telecom
 
+import android.annotation.TargetApi
 import android.content.ComponentName
 import android.content.Intent
 import android.net.Uri
@@ -44,6 +45,7 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
+@TargetApi(29)
 class TelecomConnectionService : ConnectionService() {
     private val listener: CoreListenerStub = object : CoreListenerStub() {
         override fun onCallStateChanged(
@@ -64,7 +66,8 @@ class TelecomConnectionService : ConnectionService() {
                 }
                 Call.State.Error -> onCallError(call)
                 Call.State.End, Call.State.Released -> onCallEnded(call)
-                Call.State.Connected -> onCallConnected(call)
+                Call.State.Paused, Call.State.Pausing, Call.State.PausedByRemote -> onCallPaused(call)
+                Call.State.Connected, Call.State.StreamsRunning -> onCallConnected(call)
                 else -> {}
             }
         }
@@ -101,7 +104,7 @@ class TelecomConnectionService : ConnectionService() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateOutgoingConnection(
-        connectionManagerPhoneAccount: PhoneAccountHandle,
+        connectionManagerPhoneAccount: PhoneAccountHandle?,
         request: ConnectionRequest
     ): Connection {
         val client = OkHttpClient.Builder()
@@ -151,6 +154,11 @@ class TelecomConnectionService : ConnectionService() {
             if (call != null) {
                 val callState = call.state
                 Log.i("[Telecom Connection Service] Found outgoing call from ID [$callId] with state [$callState]")
+
+                // get call time
+                val calltime = call.callLog.conferenceInfo?.dateTime
+                Log.i("[Telecom Connection Service] call time [$calltime]")
+
                 when (callState) {
                     Call.State.OutgoingEarlyMedia, Call.State.OutgoingInit, Call.State.OutgoingProgress, Call.State.OutgoingRinging -> connection.setDialing()
                     Call.State.Paused, Call.State.PausedByRemote, Call.State.Pausing -> connection.setOnHold()
@@ -198,9 +206,8 @@ class TelecomConnectionService : ConnectionService() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateIncomingConnection(
-        connectionManagerPhoneAccount: PhoneAccountHandle,
+        connectionManagerPhoneAccount: PhoneAccountHandle?,
         request: ConnectionRequest
     ): Connection {
 
@@ -304,6 +311,7 @@ class TelecomConnectionService : ConnectionService() {
         }
 
         TelecomHelper.get().connections.remove(connection)
+        Log.i("[Telecom Connection Service] Call [$callId] is in error, destroying connection currently in ${connection.stateAsString()}")
         connection.setDisconnected(DisconnectCause(DisconnectCause.ERROR))
         connection.destroy()
     }
@@ -318,9 +326,20 @@ class TelecomConnectionService : ConnectionService() {
 
         TelecomHelper.get().connections.remove(connection)
         val reason = call.reason
-        Log.i("[Telecom Connection Service] Call [$callId] ended with reason: $reason, destroying connection")
+        Log.i("[Telecom Connection Service] Call [$callId] ended with reason: $reason, destroying connection currently in ${connection.stateAsString()}")
         connection.setDisconnected(DisconnectCause(DisconnectCause.LOCAL))
         connection.destroy()
+    }
+
+    private fun onCallPaused(call: Call) {
+        val callId = call.callLog.callId
+        val connection = TelecomHelper.get().findConnectionForCallId(callId.orEmpty())
+        if (connection == null) {
+            Log.e("[Telecom Connection Service] Failed to find connection for call id: $callId")
+            return
+        }
+        Log.i("[Telecom Connection Service] Setting connection as on hold, currently in ${connection.stateAsString()}")
+        connection.setOnHold()
     }
 
     private fun onCallConnected(call: Call) {
@@ -331,8 +350,7 @@ class TelecomConnectionService : ConnectionService() {
             return
         }
 
-        if (connection.state != Connection.STATE_HOLDING) {
-            connection.setActive()
-        }
+        Log.i("[Telecom Connection Service] Setting connection as active, currently in ${connection.stateAsString()}")
+        connection.setActive()
     }
 }

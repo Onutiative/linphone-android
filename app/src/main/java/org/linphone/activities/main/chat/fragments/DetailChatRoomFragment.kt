@@ -23,11 +23,13 @@ import android.app.Activity
 import android.app.Dialog
 import android.content.*
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.os.Parcelable
 import android.provider.MediaStore
 import android.view.*
 import android.view.ViewTreeObserver.OnGlobalLayoutListener
+import android.webkit.MimeTypeMap
 import android.widget.PopupWindow
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
@@ -85,6 +87,35 @@ class DetailChatRoomFragment : MasterFragment<ChatRoomDetailFragmentBinding, Cha
                 } else {
                     Log.d("[Chat Room] User has scrolled up manually in the messages history, don't scroll to the newly added message at the bottom & don't mark the chat room as read")
                 }
+            }
+        }
+    }
+
+    private val globalLayoutLayout = object : OnGlobalLayoutListener {
+        override fun onGlobalLayout() {
+            if (isBindingAvailable()) {
+                binding.chatMessagesList
+                    .viewTreeObserver
+                    .removeOnGlobalLayoutListener(this)
+
+                if (::chatScrollListener.isInitialized) {
+                    binding.chatMessagesList.addOnScrollListener(chatScrollListener)
+                }
+
+                if (viewModel.chatRoom.unreadMessagesCount > 0) {
+                    Log.i("[Chat Room] Messages have been displayed, scrolling to first unread")
+                    val notAllMessagesDisplayed = scrollToFirstUnreadMessageOrBottom(false)
+                    if (notAllMessagesDisplayed) {
+                        Log.w("[Chat Room] More unread messages than the screen can display, do not mark chat room as read now, wait for user to scroll to bottom")
+                    } else {
+                        // Consider user as scrolled to the end when marking chat room as read
+                        viewModel.isUserScrollingUp.value = false
+                        Log.i("[Chat Room] Marking chat room as read")
+                        viewModel.chatRoom.markAsRead()
+                    }
+                }
+            } else {
+                Log.e("[Chat Room] Binding not available in onGlobalLayout callback!")
             }
         }
     }
@@ -427,20 +458,23 @@ class DetailChatRoomFragment : MasterFragment<ChatRoomDetailFragmentBinding, Cha
                     if (corePreferences.useInAppFileViewerForNonEncryptedFiles || content.isFileEncrypted) {
                         val preventScreenshots =
                             viewModel.chatRoom.currentParams.isEncryptionEnabled
+
+                        val extension = FileUtils.getExtensionFromFileName(path)
+                        val mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension)
                         when {
-                            FileUtils.isExtensionImage(path) -> navigateToImageFileViewer(
+                            FileUtils.isMimeImage(mime) -> navigateToImageFileViewer(
                                 preventScreenshots
                             )
-                            FileUtils.isExtensionVideo(path) -> navigateToVideoFileViewer(
+                            FileUtils.isMimeVideo(mime) -> navigateToVideoFileViewer(
                                 preventScreenshots
                             )
-                            FileUtils.isExtensionAudio(path) -> navigateToAudioFileViewer(
+                            FileUtils.isMimeAudio(mime) -> navigateToAudioFileViewer(
                                 preventScreenshots
                             )
-                            FileUtils.isExtensionPdf(path) -> navigateToPdfFileViewer(
+                            FileUtils.isMimePdf(mime) -> navigateToPdfFileViewer(
                                 preventScreenshots
                             )
-                            FileUtils.isPlainTextFile(path) -> navigateToTextFileViewer(
+                            FileUtils.isMimePlainText(mime) -> navigateToTextFileViewer(
                                 preventScreenshots
                             )
                             else -> {
@@ -463,6 +497,22 @@ class DetailChatRoomFragment : MasterFragment<ChatRoomDetailFragmentBinding, Cha
                             showDialogToSuggestOpeningFileAsText()
                         }
                     }
+                }
+            }
+        }
+
+        adapter.urlClickEvent.observe(
+            viewLifecycleOwner
+        ) {
+            it.consume { url ->
+                val browserIntent = Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse(url)
+                )
+                try {
+                    startActivity(browserIntent)
+                } catch (se: SecurityException) {
+                    Log.e("[Chat Room] Failed to start browser intent, $se")
                 }
             }
         }
@@ -645,9 +695,18 @@ class DetailChatRoomFragment : MasterFragment<ChatRoomDetailFragmentBinding, Cha
             chatSendingViewModel.textToSend.value = textToShare
         }
         if (filesToShare?.isNotEmpty() == true) {
-            for (path in filesToShare) {
-                Log.i("[Chat Room] Found $path file to share")
-                chatSendingViewModel.addAttachment(path)
+            lifecycleScope.launch {
+                withContext(Dispatchers.Main) {
+                    chatSendingViewModel.attachingFileInProgress.value = true
+                    for (filePath in filesToShare) {
+                        val path = FileUtils.copyToLocalStorage(filePath)
+                        Log.i("[Chat Room] Found [$filePath] file to share, matching path is [$path]")
+                        if (path != null) {
+                            chatSendingViewModel.addAttachment(path)
+                        }
+                    }
+                    chatSendingViewModel.attachingFileInProgress.value = false
+                }
             }
         }
 
@@ -658,11 +717,13 @@ class DetailChatRoomFragment : MasterFragment<ChatRoomDetailFragmentBinding, Cha
                 Log.i("[Chat Room] Found rich content URI: $uri")
                 lifecycleScope.launch {
                     withContext(Dispatchers.Main) {
+                        chatSendingViewModel.attachingFileInProgress.value = true
                         val path = FileUtils.getFilePath(requireContext(), uri)
-                        Log.i("[Chat Room] Rich content URI: $uri matching path is: $path")
+                        Log.i("[Chat Room] Rich content URI [$uri] matching path is [$path]")
                         if (path != null) {
                             chatSendingViewModel.addAttachment(path)
                         }
+                        chatSendingViewModel.attachingFileInProgress.value = false
                     }
                 }
             }
@@ -731,36 +792,7 @@ class DetailChatRoomFragment : MasterFragment<ChatRoomDetailFragmentBinding, Cha
             // Wait for items to be displayed
             binding.chatMessagesList
                 .viewTreeObserver
-                .addOnGlobalLayoutListener(
-                    object : OnGlobalLayoutListener {
-                        override fun onGlobalLayout() {
-                            binding.chatMessagesList
-                                .viewTreeObserver
-                                .removeOnGlobalLayoutListener(this)
-
-                            if (isBindingAvailable()) {
-                                if (::chatScrollListener.isInitialized) {
-                                    binding.chatMessagesList.addOnScrollListener(chatScrollListener)
-                                }
-
-                                if (viewModel.chatRoom.unreadMessagesCount > 0) {
-                                    Log.i("[Chat Room] Messages have been displayed, scrolling to first unread")
-                                    val notAllMessagesDisplayed = scrollToFirstUnreadMessageOrBottom(false)
-                                    if (notAllMessagesDisplayed) {
-                                        Log.w("[Chat Room] More unread messages than the screen can display, do not mark chat room as read now, wait for user to scroll to bottom")
-                                    } else {
-                                        // Consider user as scrolled to the end when marking chat room as read
-                                        viewModel.isUserScrollingUp.value = false
-                                        Log.i("[Chat Room] Marking chat room as read")
-                                        viewModel.chatRoom.markAsRead()
-                                    }
-                                }
-                            } else {
-                                Log.e("[Chat Room] Binding not available in onGlobalLayout callback!")
-                            }
-                        }
-                    }
-                )
+                .addOnGlobalLayoutListener(globalLayoutLayout)
         } else {
             Log.e("[Chat Room] Fragment resuming but viewModel lateinit property isn't initialized!")
         }
@@ -770,6 +802,9 @@ class DetailChatRoomFragment : MasterFragment<ChatRoomDetailFragmentBinding, Cha
         if (::chatScrollListener.isInitialized) {
             binding.chatMessagesList.removeOnScrollListener(chatScrollListener)
         }
+
+        binding.chatMessagesList
+            .viewTreeObserver.removeOnGlobalLayoutListener(globalLayoutLayout)
 
         if (_adapter != null) {
             try {
@@ -787,13 +822,18 @@ class DetailChatRoomFragment : MasterFragment<ChatRoomDetailFragmentBinding, Cha
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK) {
             lifecycleScope.launch {
-                for (
-                    fileToUploadPath in FileUtils.getFilesPathFromPickerIntent(
-                        data,
-                        chatSendingViewModel.temporaryFileUploadPath
-                    )
-                ) {
-                    chatSendingViewModel.addAttachment(fileToUploadPath)
+                withContext(Dispatchers.Main) {
+                    chatSendingViewModel.attachingFileInProgress.value = true
+                    for (
+                        fileToUploadPath in FileUtils.getFilesPathFromPickerIntent(
+                            data,
+                            chatSendingViewModel.temporaryFileUploadPath
+                        )
+                    ) {
+                        Log.i("[Chat Room] Found [$fileToUploadPath] file from intent")
+                        chatSendingViewModel.addAttachment(fileToUploadPath)
+                    }
+                    chatSendingViewModel.attachingFileInProgress.value = false
                 }
             }
         }

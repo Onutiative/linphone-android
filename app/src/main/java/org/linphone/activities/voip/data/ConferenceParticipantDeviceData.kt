@@ -47,6 +47,8 @@ class ConferenceParticipantDeviceData(
 
     val isJoining = MutableLiveData<Boolean>()
 
+    val isActiveSpeaker = MutableLiveData<Boolean>()
+
     private var textureView: TextureView? = null
 
     private val listener = object : ParticipantDeviceListenerStub() {
@@ -113,6 +115,7 @@ class ConferenceParticipantDeviceData(
         participantDevice.addListener(listener)
 
         isSpeaking.value = false
+        isActiveSpeaker.value = false
         isMuted.value = participantDevice.isMuted
 
         videoAvailable.value = participantDevice.getStreamAvailability(StreamType.Video)
@@ -122,6 +125,7 @@ class ConferenceParticipantDeviceData(
 
         val state = participantDevice.state
         isJoining.value = state == ParticipantDeviceState.Joining || state == ParticipantDeviceState.Alerting
+        Log.i("[Conference Participant Device] State for participant [${participantDevice.address.asStringUriOnly()}] is $state")
 
         videoEnabled.value = isVideoAvailableAndSendReceive()
         videoEnabled.addSource(videoAvailable) {

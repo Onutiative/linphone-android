@@ -258,6 +258,11 @@ class ConferenceWaitingRoomViewModel : MessageNotifierViewModel() {
             it.type == AudioDevice.Type.Bluetooth && it.hasCapability(AudioDevice.Capabilities.CapabilityRecord)
         }
         updateAudioRouteState()
+
+        if (audioRoutesSelected.value == true) {
+            audioRoutesSelected.value = false
+            audioRoutesMenuAnimator.reverse()
+        }
     }
 
     fun setSpeakerAudioRoute() {
@@ -269,6 +274,11 @@ class ConferenceWaitingRoomViewModel : MessageNotifierViewModel() {
             it.type == AudioDevice.Type.Microphone && it.hasCapability(AudioDevice.Capabilities.CapabilityRecord)
         }
         updateAudioRouteState()
+
+        if (audioRoutesSelected.value == true) {
+            audioRoutesSelected.value = false
+            audioRoutesMenuAnimator.reverse()
+        }
     }
 
     fun setEarpieceAudioRoute() {
@@ -280,6 +290,11 @@ class ConferenceWaitingRoomViewModel : MessageNotifierViewModel() {
             it.type == AudioDevice.Type.Microphone && it.hasCapability(AudioDevice.Capabilities.CapabilityRecord)
         }
         updateAudioRouteState()
+
+        if (audioRoutesSelected.value == true) {
+            audioRoutesSelected.value = false
+            audioRoutesMenuAnimator.reverse()
+        }
     }
 
     fun toggleLayoutMenu() {
@@ -299,7 +314,9 @@ class ConferenceWaitingRoomViewModel : MessageNotifierViewModel() {
 
         updateLayout()
         updateVideoState()
+
         layoutMenuSelected.value = false
+        conferenceLayoutMenuAnimator.reverse()
     }
 
     fun setActiveSpeakerLayout() {
@@ -310,15 +327,20 @@ class ConferenceWaitingRoomViewModel : MessageNotifierViewModel() {
 
         updateLayout()
         updateVideoState()
+
         layoutMenuSelected.value = false
+        conferenceLayoutMenuAnimator.reverse()
     }
 
     fun setAudioOnlyLayout() {
         Log.i("[Conference Waiting Room] Set default layout to AudioOnly, disabling video in call")
         callParams.isVideoEnabled = false
+
         updateLayout()
         updateVideoState()
+
         layoutMenuSelected.value = false
+        conferenceLayoutMenuAnimator.reverse()
     }
 
     fun toggleVideo() {

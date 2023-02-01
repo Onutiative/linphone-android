@@ -23,10 +23,12 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.widget.Toast
-import androidx.lifecycle.*
-import javax.security.auth.callback.Callback
-import okhttp3.*
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import okhttp3.Call
+import okhttp3.Callback
 import okhttp3.OkHttpClient
 import okhttp3.Response
 import okio.IOException
@@ -154,8 +156,8 @@ class GenericLoginViewModel(private val accountCreator: AccountCreator) : ViewMo
         val request = userActivation.performActivation()
         val client = OkHttpClient()
 
-        client.newCall(request).enqueue(object : okhttp3.Callback {
-            override fun onFailure(call: Call, e: IOException) {
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: okhttp3.Call, e: IOException) {
                 // Handle failure
                 Log.d("OnuFunctions", "onFailure - Failed to activate user: $e")
             }
@@ -182,7 +184,7 @@ class GenericLoginViewModel(private val accountCreator: AccountCreator) : ViewMo
 
                     try {
                         // load the json data
-                        val json = JSONObject(requestBody.string())
+                        val json = JSONObject(requestBody?.string())
 
                         // [REMEMBER] - Leave this commented out
                         // https://stackoverflow.com/a/40709867

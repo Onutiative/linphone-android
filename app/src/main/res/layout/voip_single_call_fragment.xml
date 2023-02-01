@@ -26,6 +26,7 @@
             type="org.linphone.activities.voip.viewmodels.StatisticsListViewModel" />
     </data>
 
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinator"
         android:layout_width="match_parent"
@@ -115,8 +116,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:barrierDirection="bottom"
-                app:barrierMargin="20dp"
-                app:constraint_referenced_ids="remote_address,remotely_recorded" />
+                app:constraint_referenced_ids="remote_address,remotely_recorded,top_barrier" />
 
             <androidx.constraintlayout.widget.Barrier
                 android:id="@+id/bottom_barrier"
@@ -134,7 +134,7 @@
                 app:layout_constraintBottom_toTopOf="@id/bottom_barrier"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/top_barrier" />
+                app:layout_constraintTop_toBottomOf="@id/call_header_barrier" />
 
             <ImageView
                 android:id="@+id/avatar"
@@ -142,6 +142,7 @@
                 android:layout_height="0dp"
                 android:layout_margin="20dp"
                 android:contentDescription="@null"
+                android:background="@drawable/generated_avatar_bg"
                 coilVoipContact="@{callsViewModel.currentCallData}"
                 app:layout_constraintBottom_toBottomOf="@id/background"
                 app:layout_constraintEnd_toEndOf="@id/background"
@@ -166,7 +167,7 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:onClick="@{() -> controlsViewModel.toggleFullScreen()}"
-                android:visibility="@{controlsViewModel.isVideoEnabled &amp;&amp; controlsViewModel.isSendingVideo &amp;&amp; !callsViewModel.currentCallData.isRemotelyPaused ? View.VISIBLE : View.GONE, default=gone}"
+                android:visibility="@{controlsViewModel.isVideoEnabled &amp;&amp; controlsViewModel.isSendingVideo &amp;&amp; !callsViewModel.currentCallData.isRemotelyPaused &amp;&amp; !callsViewModel.currentCallData.isPaused ? View.VISIBLE : View.GONE, default=gone}"
                 app:layout_constraintBottom_toBottomOf="@id/background"
                 app:layout_constraintEnd_toEndOf="@id/background"
                 app:layout_constraintStart_toStartOf="@id/background"
@@ -177,6 +178,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/button_toggle_background"
                 android:contentDescription="@string/content_description_toggle_recording"
                 android:onClick="@{() -> callsViewModel.currentCallData.toggleRecording()}"
@@ -186,7 +188,7 @@
                 android:src="@drawable/icon_call_record"
                 android:visibility="@{controlsViewModel.fullScreenMode || controlsViewModel.pipMode ? View.GONE : View.VISIBLE}"
                 app:layout_constraintStart_toStartOf="@id/background"
-                app:layout_constraintTop_toBottomOf="@id/call_header_barrier" />
+                app:layout_constraintTop_toTopOf="@id/background" />
 
             <ImageView
                 android:id="@+id/take_snapshot"
@@ -195,7 +197,7 @@
                 android:layout_margin="10dp"
                 android:background="@drawable/button_toggle_background"
                 android:contentDescription="@string/content_description_take_screenshot"
-                android:onClick="@{() -> callsViewModel.takeSnapshot()}"
+                android:onClick="@{() -> controlsViewModel.takeSnapshot()}"
                 android:enabled="@{!callsViewModel.currentCallData.isPaused &amp;&amp; !callsViewModel.currentCallData.isRemotelyPaused}"
                 android:src="@drawable/icon_call_screenshot"
                 android:visibility="@{!controlsViewModel.showTakeSnapshotButton || controlsViewModel.fullScreenMode || controlsViewModel.pipMode ? View.GONE : View.VISIBLE}"
@@ -207,6 +209,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_marginEnd="10dp"
+                android:layout_marginTop="10dp"
                 android:background="@drawable/button_toggle_background"
                 android:contentDescription="@string/content_description_pause_call"
                 android:enabled="@{callsViewModel.currentCallData.isPaused || callsViewModel.currentCallData.canBePaused}"
@@ -216,13 +219,13 @@
                 android:src="@drawable/icon_pause"
                 android:visibility="@{controlsViewModel.fullScreenMode || controlsViewModel.pipMode ? View.GONE : View.VISIBLE}"
                 app:layout_constraintEnd_toEndOf="@id/background"
-                app:layout_constraintTop_toBottomOf="@id/call_header_barrier" />
+                app:layout_constraintTop_toTopOf="@id/background" />
 
             <androidx.constraintlayout.widget.Group
                 android:id="@+id/video_preview_group"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="@{controlsViewModel.isVideoEnabled &amp;&amp; !callsViewModel.currentCallData.isRemotelyPaused ? View.VISIBLE : View.GONE}"
+                android:visibility="@{controlsViewModel.isVideoEnabled &amp;&amp; !callsViewModel.currentCallData.isRemotelyPaused &amp;&amp; !callsViewModel.currentCallData.isPaused ? View.VISIBLE : View.GONE}"
                 app:constraint_referenced_ids="local_preview_video_surface,switch_camera" />
 
             <org.linphone.activities.voip.views.RoundCornersTextureView
@@ -276,6 +279,7 @@
                 android:visibility="@{controlsViewModel.fullScreenMode || controlsViewModel.pipMode ? View.GONE : View.VISIBLE}"
                 app:callsViewModel="@{callsViewModel}"
                 app:controlsViewModel="@{controlsViewModel}"
+                app:conferenceViewModel="@{conferenceViewModel}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

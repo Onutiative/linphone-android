@@ -218,8 +218,10 @@ class DialerFragment : SecureFragment<DialerFragmentBinding>() {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Log.i("[Dialer] READ_PHONE_STATE permission has been granted")
                 coreContext.initPhoneStateListener()
+                // If first permission has been granted, continue to ask for permissions,
+                // otherwise don't do it or it will loop indefinitely
+                checkPermissions()
             }
-            checkPermissions()
         } else if (requestCode == 1) {
             var allGranted = true
             for (result in grantResults) {
@@ -280,7 +282,7 @@ class DialerFragment : SecureFragment<DialerFragmentBinding>() {
         Log.i("[Dialer] Telecom Manager permissions granted")
         if (!TelecomHelper.exists()) {
             Log.i("[Dialer] Creating Telecom Helper")
-            if (requireContext().packageManager.hasSystemFeature(PackageManager.FEATURE_CONNECTION_SERVICE)) {
+            if (Compatibility.hasTelecomManagerFeature(requireContext())) {
                 TelecomHelper.create(requireContext())
             } else {
                 Log.e("[Dialer] Telecom Helper can't be created, device doesn't support connection service!")

@@ -359,6 +359,12 @@ class CorePreferences constructor(private val context: Context) {
             config.setBool("audio", "android_pause_calls_when_audio_focus_lost", value)
         }
 
+    var enableFullScreenWhenJoiningVideoCall: Boolean
+        get() = config.getBool("app", "enter_video_call_enable_full_screen_mode", false)
+        set(value) {
+            config.setBool("app", "enter_video_call_enable_full_screen_mode", value)
+        }
+
     var enableFullScreenWhenJoiningVideoConference: Boolean
         get() = config.getBool("app", "enter_video_conference_enable_full_screen_mode", true)
         set(value) {
@@ -377,6 +383,12 @@ class CorePreferences constructor(private val context: Context) {
         get() = config.getString("assistant", "xmlrpc_url", null)
         set(value) {
             config.setString("assistant", "xmlrpc_url", value)
+        }
+
+    var hideLinkPhoneNumber: Boolean
+        get() = config.getBool("app", "hide_link_phone_number", false)
+        set(value) {
+            config.setBool("app", "hide_link_phone_number", value)
         }
 
     /* Dialog related */
@@ -434,6 +446,9 @@ class CorePreferences constructor(private val context: Context) {
     val allowMultipleFilesAndTextInSameMessage: Boolean
         get() = config.getBool("app", "allow_multiple_files_and_text_in_same_message", true)
 
+    val enableNativeAddressBookIntegration: Boolean
+        get() = config.getBool("app", "enable_native_address_book", true)
+
     val fetchContactsFromDefaultDirectory: Boolean
         get() = config.getBool("app", "fetch_contacts_from_default_directory", true)
 
@@ -451,6 +466,9 @@ class CorePreferences constructor(private val context: Context) {
     // Will disable chat feature completely
     val disableChat: Boolean
         get() = config.getBool("app", "disable_chat_feature", false)
+
+    val forceEndToEndEncryptedChat: Boolean
+        get() = config.getBool("app", "force_lime_chat_rooms", false)
 
     // This will prevent UI from showing up, except for the launcher & the foreground service notification
     val preventInterfaceFromShowingUp: Boolean
@@ -502,6 +520,13 @@ class CorePreferences constructor(private val context: Context) {
             "app",
             "default_audio_video_conference_factory_uri",
             "sip:videoconference-factory@sip.linphone.org"
+        )!!
+
+    val limeServerUrl: String
+        get() = config.getString(
+            "app",
+            "default_lime_server_url",
+            "https://lime.linphone.org/lime-server/lime-server.php"
         )!!
 
     val checkUpdateAvailableInterval: Int

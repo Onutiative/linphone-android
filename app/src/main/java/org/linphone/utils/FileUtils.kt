@@ -66,37 +66,39 @@ class FileUtils {
                 }
             }
 
-            return extension
+            return extension.lowercase(Locale.getDefault())
         }
 
-        fun isPlainTextFile(path: String): Boolean {
-            val extension = getExtensionFromFileName(path).lowercase(Locale.getDefault())
-            val type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension)
+        fun isMimePlainText(type: String?): Boolean {
             return type?.startsWith("text/plain") ?: false
         }
 
-        fun isExtensionPdf(path: String): Boolean {
-            val extension = getExtensionFromFileName(path).lowercase(Locale.getDefault())
-            val type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension)
+        fun isMimePdf(type: String?): Boolean {
             return type?.startsWith("application/pdf") ?: false
         }
 
-        fun isExtensionImage(path: String): Boolean {
-            val extension = getExtensionFromFileName(path).lowercase(Locale.getDefault())
-            val type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension)
+        fun isMimeImage(type: String?): Boolean {
             return type?.startsWith("image/") ?: false
         }
 
-        fun isExtensionVideo(path: String): Boolean {
-            val extension = getExtensionFromFileName(path).lowercase(Locale.getDefault())
-            val type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension)
+        fun isMimeVideo(type: String?): Boolean {
             return type?.startsWith("video/") ?: false
         }
 
-        fun isExtensionAudio(path: String): Boolean {
-            val extension = getExtensionFromFileName(path).lowercase(Locale.getDefault())
-            val type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension)
+        fun isMimeAudio(type: String?): Boolean {
             return type?.startsWith("audio/") ?: false
+        }
+
+        fun isExtensionImage(path: String): Boolean {
+            val extension = getExtensionFromFileName(path)
+            val type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension)
+            return isMimeImage(type)
+        }
+
+        fun isExtensionVideo(path: String): Boolean {
+            val extension = getExtensionFromFileName(path)
+            val type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension)
+            return isMimeVideo(type)
         }
 
         fun clearExistingPlainFiles() {
@@ -182,7 +184,7 @@ class FileUtils {
                             filePath = dataUri.toString()
                             Log.i("[File Utils] Using data URI $filePath")
                         }
-                        filePath = cleanFilePath(filePath)
+                        filePath = copyToLocalStorage(filePath)
                         if (filePath != null) list.add(filePath)
                     }
                     return list
@@ -199,13 +201,13 @@ class FileUtils {
                         filePath = temporaryImageFilePath.absolutePath
                         Log.i("[File Utils] Data URI is null, using $filePath")
                     }
-                    filePath = cleanFilePath(filePath)
+                    filePath = copyToLocalStorage(filePath)
                     if (filePath != null) return arrayListOf(filePath)
                 }
             } else if (temporaryImageFilePath?.exists() == true) {
                 filePath = temporaryImageFilePath.absolutePath
                 Log.i("[File Utils] Data is null, using $filePath")
-                filePath = cleanFilePath(filePath)
+                filePath = copyToLocalStorage(filePath)
                 if (filePath != null) return arrayListOf(filePath)
             }
             return arrayListOf()
@@ -235,10 +237,10 @@ class FileUtils {
                 filePath = temporaryImageFilePath.absolutePath
                 Log.i("[File Utils] Data is null, using $filePath")
             }
-            return cleanFilePath(filePath)
+            return copyToLocalStorage(filePath)
         }
 
-        private suspend fun cleanFilePath(filePath: String?): String? {
+        suspend fun copyToLocalStorage(filePath: String?): String? {
             if (filePath != null) {
                 val uriToParse = Uri.parse(filePath)
                 if (filePath.startsWith("content://com.android.contacts/contacts/lookup/")) {

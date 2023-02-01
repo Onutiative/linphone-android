@@ -219,7 +219,7 @@ class AudioSettingsViewModel : GenericSettingsViewModel() {
         val default = core.defaultInputAudioDevice
 
         for (audioDevice in core.extendedAudioDevices) {
-            if (audioDevice?.hasCapability(AudioDevice.Capabilities.CapabilityRecord) ?: false) {
+            if (audioDevice.hasCapability(AudioDevice.Capabilities.CapabilityRecord)) {
                 labels.add(audioDevice.id)
                 values.add(audioDevice)
                 if (audioDevice.id == default?.id) {

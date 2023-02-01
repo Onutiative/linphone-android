@@ -41,10 +41,8 @@ import org.linphone.activities.main.chat.data.ChatMessageData
 import org.linphone.compatibility.Compatibility
 import org.linphone.core.*
 import org.linphone.core.tools.Log
-import org.linphone.utils.AppUtils
+import org.linphone.utils.*
 import org.linphone.utils.Event
-import org.linphone.utils.FileUtils
-import org.linphone.utils.PermissionHelper
 
 class ChatMessageSendingViewModelFactory(private val chatRoom: ChatRoom) :
     ViewModelProvider.NewInstanceFactory() {
@@ -63,6 +61,8 @@ class ChatMessageSendingViewModel(private val chatRoom: ChatRoom) : ViewModel() 
     val attachFileEnabled = MutableLiveData<Boolean>()
 
     val sendMessageEnabled = MutableLiveData<Boolean>()
+
+    val attachingFileInProgress = MutableLiveData<Boolean>()
 
     val isReadOnly = MutableLiveData<Boolean>()
 
@@ -101,7 +101,7 @@ class ChatMessageSendingViewModel(private val chatRoom: ChatRoom) : ViewModel() 
         EditorInfo.IME_FLAG_NO_EXTRACT_UI
     }
 
-    private val recorder: Recorder
+    private lateinit var recorder: Recorder
 
     private var voiceRecordAudioFocusRequest: AudioFocusRequestCompat? = null
 
@@ -135,21 +135,19 @@ class ChatMessageSendingViewModel(private val chatRoom: ChatRoom) : ViewModel() 
         attachFileEnabled.value = true
         sendMessageEnabled.value = false
         updateChatRoomReadOnlyState()
-
-        val recorderParams = coreContext.core.createRecorderParams()
-        if (corePreferences.voiceMessagesFormatMkv) {
-            recorderParams.fileFormat = RecorderFileFormat.Mkv
-        } else {
-            recorderParams.fileFormat = RecorderFileFormat.Wav
-        }
-        recorder = coreContext.core.createRecorder(recorderParams)
     }
 
     override fun onCleared() {
         pendingChatMessageToReplyTo.value?.destroy()
 
-        if (recorder.state != RecorderState.Closed) {
-            recorder.close()
+        for (pendingAttachment in attachments.value.orEmpty()) {
+            removeAttachment(pendingAttachment)
+        }
+
+        if (this::recorder.isInitialized) {
+            if (recorder.state != RecorderState.Closed) {
+                recorder.close()
+            }
         }
 
         if (this::voiceRecordingPlayer.isInitialized) {
@@ -197,6 +195,10 @@ class ChatMessageSendingViewModel(private val chatRoom: ChatRoom) : ViewModel() 
         list.addAll(attachments.value.orEmpty())
         list.remove(attachment)
         attachments.value = list
+
+        val pathToDelete = attachment.path
+        Log.i("[Chat Message Sending] Attachment is being removed, delete local copy [$pathToDelete]")
+        FileUtils.deleteFile(pathToDelete)
 
         sendMessageEnabled.value = textToSend.value.orEmpty().trim().isNotEmpty() || list.isNotEmpty() || isPendingVoiceRecord.value == true
         if (!corePreferences.allowMultipleFilesAndTextInSameMessage) {
@@ -287,14 +289,14 @@ class ChatMessageSendingViewModel(private val chatRoom: ChatRoom) : ViewModel() 
     }
 
     private fun tickerFlowRecording() = flow {
-        while (recorder.state == RecorderState.Running) {
+        while (isVoiceRecording.value == true) {
             emit(Unit)
             delay(100)
         }
     }
 
     private fun tickerFlowPlaying() = flow {
-        while (voiceRecordingPlayer.state == Player.State.Playing) {
+        while (isPlayingVoiceRecording.value == true) {
             emit(Unit)
             delay(100)
         }
@@ -304,6 +306,10 @@ class ChatMessageSendingViewModel(private val chatRoom: ChatRoom) : ViewModel() 
         if (corePreferences.holdToRecordVoiceMessage) {
             // Disables click listener just in case, touch listener will be used instead
             return
+        }
+
+        if (!this::recorder.isInitialized) {
+            initVoiceMessageRecorder()
         }
 
         if (isVoiceRecording.value == true) {
@@ -353,14 +359,15 @@ class ChatMessageSendingViewModel(private val chatRoom: ChatRoom) : ViewModel() 
         isVoiceRecording.value = true
         sendMessageEnabled.value = true
 
+        val maxVoiceRecordDuration = corePreferences.voiceRecordingMaxDuration
         tickerFlowRecording().onEach {
-            val duration = recorder.duration
-            voiceRecordingDuration.postValue(recorder.duration % voiceRecordingProgressBarMax)
-            formattedDuration.postValue(SimpleDateFormat("mm:ss", Locale.getDefault()).format(duration)) // duration is in ms
+            withContext(Dispatchers.Main) {
+                val duration = recorder.duration
+                voiceRecordingDuration.value = recorder.duration % voiceRecordingProgressBarMax
+                formattedDuration.value = SimpleDateFormat("mm:ss", Locale.getDefault()).format(duration) // duration is in ms
 
-            if (duration >= corePreferences.voiceRecordingMaxDuration) {
-                withContext(Dispatchers.Main) {
-                    Log.w("[Chat Message Sending] Max duration for voice recording exceeded (${corePreferences.voiceRecordingMaxDuration}ms), stopping.")
+                if (duration >= maxVoiceRecordDuration) {
+                    Log.w("[Chat Message Sending] Max duration for voice recording exceeded (${maxVoiceRecordDuration}ms), stopping.")
                     stopVoiceRecording()
                 }
             }
@@ -435,7 +442,9 @@ class ChatMessageSendingViewModel(private val chatRoom: ChatRoom) : ViewModel() 
         isPlayingVoiceRecording.value = true
 
         tickerFlowPlaying().onEach {
-            voiceRecordPlayingPosition.postValue(voiceRecordingPlayer.currentPosition)
+            withContext(Dispatchers.Main) {
+                voiceRecordPlayingPosition.value = voiceRecordingPlayer.currentPosition
+            }
         }.launchIn(scope)
     }
 
@@ -454,32 +463,29 @@ class ChatMessageSendingViewModel(private val chatRoom: ChatRoom) : ViewModel() 
         isPlayingVoiceRecording.value = false
     }
 
+    private fun initVoiceMessageRecorder() {
+        Log.i("[Chat Message Sending] Creating recorder for voice message")
+        val recorderParams = coreContext.core.createRecorderParams()
+        if (corePreferences.voiceMessagesFormatMkv) {
+            recorderParams.fileFormat = RecorderFileFormat.Mkv
+        } else {
+            recorderParams.fileFormat = RecorderFileFormat.Wav
+        }
+
+        val recordingAudioDevice = AudioRouteUtils.getAudioRecordingDeviceForVoiceMessage()
+        recorderParams.audioDevice = recordingAudioDevice
+        Log.i("[Chat Message Sending] Using device ${recorderParams.audioDevice?.id} to make the voice message recording")
+
+        recorder = coreContext.core.createRecorder(recorderParams)
+    }
+
     private fun initVoiceRecordPlayer() {
         Log.i("[Chat Message Sending] Creating player for voice record")
-        // In case no headphones/headset is connected, use speaker sound card to play recordings, otherwise use earpiece
-        // If none are available, default one will be used
-        var headphonesCard: String? = null
-        var speakerCard: String? = null
-        var earpieceCard: String? = null
-        for (device in coreContext.core.audioDevices) {
-            if (device.hasCapability(AudioDevice.Capabilities.CapabilityPlay)) {
-                when (device.type) {
-                    AudioDevice.Type.Speaker -> {
-                        speakerCard = device.id
-                    }
-                    AudioDevice.Type.Earpiece -> {
-                        earpieceCard = device.id
-                    }
-                    AudioDevice.Type.Headphones, AudioDevice.Type.Headset -> {
-                        headphonesCard = device.id
-                    }
-                    else -> {}
-                }
-            }
-        }
-        Log.i("[Chat Message Sending] Found headset/headphones sound card [$headphonesCard], speaker sound card [$speakerCard] and earpiece sound card [$earpieceCard]")
 
-        val localPlayer = coreContext.core.createLocalPlayer(headphonesCard ?: speakerCard ?: earpieceCard, null, null)
+        val playbackSoundCard = AudioRouteUtils.getAudioPlaybackDeviceIdForCallRecordingOrVoiceMessage()
+        Log.i("[Chat Message Sending] Using device $playbackSoundCard to make the voice message playback")
+
+        val localPlayer = coreContext.core.createLocalPlayer(playbackSoundCard, null, null)
         if (localPlayer != null) {
             voiceRecordingPlayer = localPlayer
         } else {

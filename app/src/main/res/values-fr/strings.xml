@@ -383,11 +383,11 @@
     <string name="missed_calls_notification_body">%d appels manqués</string>
     <string name="missed_call_notification_title">Appel manqué</string>
     <string name="zrtp_dialog_title">Sécurité des communications</string>
-    <string name="zrtp_dialog_message">Confirmez avec votre interlocuteur le code SAS suivant</string>
-    <string name="zrtp_dialog_ok_button_label">Accepter</string>
-    <string name="zrtp_dialog_deny_button_label">Refuser</string>
+    <string name="zrtp_dialog_explanation">Pour accroitre le niveau de sécurité, vous pouvez confirmer les codes suivants avec votre interlocuteur.</string>
+    <string name="zrtp_dialog_later_button_label">Plus tard</string>
+    <string name="zrtp_dialog_correct_button_label">Correct</string>
     <string name="dialog_zrtp_local_sas">Dites :</string>
-    <string name="dialog_zrtp_remote_sas">Confirmez que votre interlocuteur a bien dit :</string>
+    <string name="dialog_zrtp_remote_sas">Votre interlocuteur doit dire :</string>
     <string name="dialog_cancel">Annuler</string>
     <string name="dialog_delete">Supprimer</string>
     <string name="dialog_ok">OK</string>
@@ -755,4 +755,7 @@
     <string name="conference_scheduled_cancelled_by_me">Vous avez annulé la conférence</string>
     <string name="conference_schedule_send_updated_invite_chat">Envoyer la mise à jour par &appName;</string>
     <string name="conference_schedule_send_updated_invite_email">Envoyer la mise à jour par courriel</string>
+    <string name="call_screenshot_taken">Capture sauvegardée : %s</string>
+    <string name="chat_message_voice_recording_received_notification">Vous avez reçu un message vocal</string>
+    <string name="chat_message_voice_recording">Message vocal</string>
 </resources>

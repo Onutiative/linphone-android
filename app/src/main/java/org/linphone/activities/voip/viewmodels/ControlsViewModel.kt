@@ -31,10 +31,8 @@ import org.linphone.LinphoneApplication.Companion.corePreferences
 import org.linphone.R
 import org.linphone.core.*
 import org.linphone.core.tools.Log
-import org.linphone.utils.AppUtils
-import org.linphone.utils.AudioRouteUtils
+import org.linphone.utils.*
 import org.linphone.utils.Event
-import org.linphone.utils.PermissionHelper
 
 class ControlsViewModel : ViewModel() {
     val isSpeakerSelected = MutableLiveData<Boolean>()
@@ -57,6 +55,8 @@ class ControlsViewModel : ViewModel() {
 
     val isOutgoingEarlyMedia = MutableLiveData<Boolean>()
 
+    val isIncomingEarlyMediaVideo = MutableLiveData<Boolean>()
+
     val showExtras = MutableLiveData<Boolean>()
 
     val fullScreenMode = MutableLiveData<Boolean>()
@@ -74,6 +74,8 @@ class ControlsViewModel : ViewModel() {
     val callStatsVisible = MutableLiveData<Boolean>()
 
     val proximitySensorEnabled = MediatorLiveData<Boolean>()
+
+    val forceDisableProximitySensor = MutableLiveData<Boolean>()
 
     val showTakeSnapshotButton = MutableLiveData<Boolean>()
 
@@ -113,8 +115,9 @@ class ControlsViewModel : ViewModel() {
             message: String
         ) {
             Log.i("[Call Controls] State changed: $state")
-
             isOutgoingEarlyMedia.value = state == Call.State.OutgoingEarlyMedia
+            isIncomingEarlyMediaVideo.value = state == Call.State.IncomingEarlyMedia && call.remoteParams?.isVideoEnabled == true
+
             if (state == Call.State.StreamsRunning) {
                 if (!call.currentParams.isVideoEnabled && fullScreenMode.value == true) {
                     fullScreenMode.value = false
@@ -199,6 +202,7 @@ class ControlsViewModel : ViewModel() {
         extraButtonsMenuTranslateY.value = AppUtils.getDimension(R.dimen.voip_call_extra_buttons_translate_y)
         audioRoutesMenuTranslateY.value = AppUtils.getDimension(R.dimen.voip_audio_routes_menu_translate_y)
         audioRoutesSelected.value = false
+        forceDisableProximitySensor.value = false
 
         nonEarpieceOutputAudioDevice.value = coreContext.core.outputAudioDevice?.type != AudioDevice.Type.Earpiece
         proximitySensorEnabled.value = shouldProximitySensorBeEnabled()
@@ -208,6 +212,15 @@ class ControlsViewModel : ViewModel() {
         proximitySensorEnabled.addSource(nonEarpieceOutputAudioDevice) {
             proximitySensorEnabled.value = shouldProximitySensorBeEnabled()
         }
+        proximitySensorEnabled.addSource(forceDisableProximitySensor) {
+            proximitySensorEnabled.value = shouldProximitySensorBeEnabled()
+        }
+
+        val currentCall = coreContext.core.currentCall ?: coreContext.core.calls.firstOrNull()
+        val state = currentCall?.state ?: Call.State.Idle
+        Log.i("[Call Controls] Current state is: $state")
+        isOutgoingEarlyMedia.value = state == Call.State.OutgoingEarlyMedia
+        isIncomingEarlyMediaVideo.value = state == Call.State.IncomingEarlyMedia && currentCall?.remoteParams?.isVideoEnabled == true
 
         updateUI()
 
@@ -280,6 +293,7 @@ class ControlsViewModel : ViewModel() {
 
     fun toggleVideo() {
         if (!PermissionHelper.get().hasCameraPermission()) {
+            Log.w("[Call Controls] Camera permission isn't granted, asking it before toggling video")
             askPermissionEvent.value = Event(Manifest.permission.CAMERA)
             return
         }
@@ -288,8 +302,10 @@ class ControlsViewModel : ViewModel() {
         val currentCall = core.currentCall
         if (currentCall != null) {
             val state = currentCall.state
-            if (state == Call.State.End || state == Call.State.Released || state == Call.State.Error)
+            if (state == Call.State.End || state == Call.State.Released || state == Call.State.Error) {
+                Log.e("[Call Controls] Current call state is $state, aborting video toggle")
                 return
+            }
 
             isVideoUpdateInProgress.value = true
             val params = core.createCallParams(currentCall)
@@ -305,14 +321,33 @@ class ControlsViewModel : ViewModel() {
                     }
                 }
             } else {
-                params?.isVideoEnabled = !currentCall.currentParams.isVideoEnabled
+                params?.isVideoEnabled = params?.isVideoEnabled == false
+                Log.i("[Call Controls] Updating call with video enabled set to ${params?.isVideoEnabled}")
             }
             currentCall.update(params)
+        } else {
+            Log.e("[Call Controls] Can't toggle video, no current call found!")
         }
     }
 
     fun switchCamera() {
         coreContext.switchCamera()
+    }
+
+    fun takeSnapshot() {
+        if (!PermissionHelper.get().hasWriteExternalStoragePermission()) {
+            askPermissionEvent.value = Event(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        } else {
+            val currentCall = coreContext.core.currentCall
+            if (currentCall != null && currentCall.currentParams.isVideoEnabled) {
+                val fileName = System.currentTimeMillis().toString() + ".jpeg"
+                val fullPath = FileUtils.getFileStoragePath(fileName).absolutePath
+                Log.i("[Call Controls] Snapshot will be save under $fullPath")
+                currentCall.takeVideoSnapshot(fullPath)
+            } else {
+                Log.e("[Call Controls] Current call doesn't have video, can't take snapshot")
+            }
+        }
     }
 
     fun showExtraButtons() {
@@ -448,6 +483,6 @@ class ControlsViewModel : ViewModel() {
     }
 
     private fun shouldProximitySensorBeEnabled(): Boolean {
-        return !(isVideoEnabled.value ?: false) && !(nonEarpieceOutputAudioDevice.value ?: false)
+        return forceDisableProximitySensor.value == false && !(isVideoEnabled.value ?: false) && !(nonEarpieceOutputAudioDevice.value ?: false)
     }
 }

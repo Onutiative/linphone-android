@@ -23,7 +23,9 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Configuration
+import android.os.Build
 import android.os.Bundle
+import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
@@ -79,6 +81,10 @@ class CallActivity : ProximitySensorActivity() {
 
         statsViewModel = ViewModelProvider(navControllerStoreOwner)[StatisticsListViewModel::class.java]
 
+        val isInPipMode = Compatibility.isInPictureInPictureMode(this)
+        Log.i("[Call Activity] onPostCreate: is in PiP mode? $isInPipMode")
+        controlsViewModel.pipMode.value = isInPipMode
+
         controlsViewModel.askPermissionEvent.observe(
             this
         ) {
@@ -120,15 +126,6 @@ class CallActivity : ProximitySensorActivity() {
                     Log.i("[Call Activity] No more call event fired, finishing activity")
                     finish()
                 }
-            }
-        }
-
-        callsViewModel.askWriteExternalStoragePermissionEvent.observe(
-            this
-        ) {
-            it.consume {
-                Log.i("[Call Activity] Asking for WRITE_EXTERNAL_STORAGE permission to take snapshot")
-                requestPermissions(arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
             }
         }
 
@@ -186,11 +183,14 @@ class CallActivity : ProximitySensorActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onPictureInPictureModeChanged(
         isInPictureInPictureMode: Boolean,
         newConfig: Configuration
     ) {
-        Log.i("[Call Activity] Is in PiP mode? $isInPictureInPictureMode")
+        super.onPictureInPictureModeChanged(isInPictureInPictureMode, newConfig)
+
+        Log.i("[Call Activity] onPictureInPictureModeChanged: is in PiP mode? $isInPictureInPictureMode")
         if (::controlsViewModel.isInitialized) {
             // To hide UI except for TextureViews
             controlsViewModel.pipMode.value = isInPictureInPictureMode
@@ -293,12 +293,11 @@ class CallActivity : ProximitySensorActivity() {
                     Compatibility.BLUETOOTH_CONNECT -> if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
                         Log.i("[Call Activity] BLUETOOTH_CONNECT permission has been granted")
                     }
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE -> if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                        Log.i("[Call Activity] WRITE_EXTERNAL_STORAGE permission has been granted, taking snapshot")
+                        controlsViewModel.takeSnapshot()
+                    }
                 }
-            }
-        } else if (requestCode == 1) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Log.i("[Call Activity] WRITE_EXTERNAL_STORAGE permission has been granted, taking snapshot")
-                callsViewModel.takeSnapshot()
             }
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)

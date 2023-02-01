@@ -89,6 +89,8 @@
                     android:layout_width="@dimen/contact_avatar_big_size"
                     android:layout_height="@dimen/contact_avatar_big_size"
                     coilContactBig="@{viewModel}"
+                    android:background="@drawable/generated_avatar_bg"
+                    android:src="@drawable/voip_single_contact_avatar"
                     android:contentDescription="@null" />
 
                 <TextView
@@ -122,14 +124,14 @@
                         android:src="@drawable/call_start_default" />
 
                     <ImageView
-                        android:onClick="@{() -> viewModel.startChat(false)}"
-                        android:visibility="@{viewModel.chatAllowed ? View.VISIBLE : View.GONE}"
-                        android:contentDescription="@string/content_description_start_chat"
-                        android:layout_width="60dp"
+                        android:layout_width="56dp"
                         android:layout_height="60dp"
                         android:layout_margin="10dp"
                         android:background="@drawable/round_orange_button_background"
-                        android:src="@drawable/chat_start_default" />
+                        android:contentDescription="@string/content_description_start_chat"
+                        android:onClick="@{() -> viewModel.startChat(false)}"
+                        android:src="@drawable/chat_start_default"
+                        android:visibility="@{viewModel.chatAllowed &amp;&amp; !viewModel.hidePlainChat ? View.VISIBLE : View.GONE}" />
 
                     <RelativeLayout
                         android:onClick="@{() -> viewModel.startChat(true)}"

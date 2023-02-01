@@ -27,10 +27,10 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.media.AudioAttributes
 import android.os.VibrationEffect
 import android.os.Vibrator
+import android.telecom.CallAudioState
 import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
 import android.widget.RemoteViews
@@ -181,7 +181,7 @@ class Api26Compatibility {
                 contact = null
                 displayName = conferenceInfo.subject ?: context.getString(R.string.conference)
                 address = LinphoneUtils.getDisplayableAddress(conferenceInfo.organizer)
-                roundPicture = BitmapFactory.decodeResource(context.resources, R.drawable.voip_multiple_contacts_avatar_alt)
+                roundPicture = coreContext.contactsManager.groupBitmap
                 info = context.getString(R.string.incoming_group_call_notification_title)
                 Log.i("[Notifications Manager] Displaying incoming group call notification with subject $displayName for remote contact address $remoteContact")
             }
@@ -252,7 +252,7 @@ class Api26Compatibility {
                 person = notificationsManager.getPerson(contact, displayName, roundPicture)
             } else {
                 title = conferenceInfo.subject ?: context.getString(R.string.conference)
-                roundPicture = BitmapFactory.decodeResource(context.resources, R.drawable.voip_multiple_contacts_avatar_alt)
+                roundPicture = coreContext.contactsManager.groupBitmap
                 person = Person.Builder()
                     .setName(title)
                     .setIcon(IconCompat.createWithBitmap(roundPicture))
@@ -317,13 +317,16 @@ class Api26Compatibility {
         }
 
         fun changeAudioRouteForTelecomManager(connection: NativeCallWrapper, route: Int): Boolean {
-            Log.i("[Telecom Helper] Changing audio route [$route] on connection ${connection.callId}")
+            Log.i("[Telecom Helper] Changing audio route [${routeToString(route)}] on connection [${connection.callId}] with state [${connection.stateAsString()}]")
 
             val audioState = connection.callAudioState
-            if (audioState != null && audioState.route == route) {
-                Log.w("[Telecom Helper] Connection is already using this route")
-                return false
-            } else if (audioState == null) {
+            if (audioState != null) {
+                Log.i("[Telecom Helper] Current audio route is ${routeToString(audioState.route)}")
+                if (audioState.route == route) {
+                    Log.w("[Telecom Helper] Connection is already using this route")
+                    return false
+                }
+            } else {
                 Log.w("[Telecom Helper] Failed to retrieve connection's call audio state!")
                 return false
             }
@@ -348,6 +351,21 @@ class Api26Compatibility {
 
         fun startForegroundService(context: Context, intent: Intent) {
             context.startForegroundService(intent)
+        }
+
+        fun hasTelecomManagerFeature(context: Context): Boolean {
+            return context.packageManager.hasSystemFeature(PackageManager.FEATURE_CONNECTION_SERVICE)
+        }
+
+        private fun routeToString(route: Int): String {
+            return when (route) {
+                CallAudioState.ROUTE_BLUETOOTH -> "BLUETOOTH"
+                CallAudioState.ROUTE_EARPIECE -> "EARPIECE"
+                CallAudioState.ROUTE_SPEAKER -> "SPEAKER"
+                CallAudioState.ROUTE_WIRED_HEADSET -> "WIRED_HEADSET"
+                CallAudioState.ROUTE_WIRED_OR_EARPIECE -> "WIRED_OR_EARPIECE"
+                else -> "Unknown: $route"
+            }
         }
     }
 }

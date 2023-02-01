@@ -233,6 +233,8 @@
     <string name="chat_message_removal_info">Message will be deleted</string>
     <string name="chat_message_abort_removal">Abort</string>
     <string name="chat_message_download_already_in_progress">Please wait for first download to finish before starting a new one</string>
+    <string name="chat_message_voice_recording_received_notification">You have received a voice message</string>
+    <string name="chat_message_voice_recording">Voice message</string>
 
     <!-- Recordings -->
     <string name="recordings_empty_list">No recordings</string>
@@ -353,6 +355,7 @@
     <string name="call_remotely_paused_title">Call has been paused by remote.</string>
     <string name="call_locally_paused_title">You have paused the call.</string>
     <string name="call_locally_paused_subtitle">Click on play button to resume it.</string>
+    <string name="call_screenshot_taken">Snapshot taken: %s</string>
 
     <!-- Call stats -->
     <string name="call_stats_audio">Audio</string>
@@ -726,11 +729,11 @@
 
     <!-- Dialog -->
     <string name="zrtp_dialog_title">Communication security</string>
-    <string name="zrtp_dialog_message">Confirm the following SAS code with your correspondent</string>
-    <string name="zrtp_dialog_ok_button_label">Accept</string>
-    <string name="zrtp_dialog_deny_button_label">Deny</string>
+    <string name="zrtp_dialog_explanation">To raise the security level, you can check the following codes with your correspondent.</string>
+    <string name="zrtp_dialog_later_button_label">Later</string>
+    <string name="zrtp_dialog_correct_button_label">Correct</string>
     <string name="dialog_zrtp_local_sas">Say:</string>
-    <string name="dialog_zrtp_remote_sas">Confirm that your interlocutor says:</string>
+    <string name="dialog_zrtp_remote_sas">Your correspondent must say:</string>
     <string name="dialog_do_not_ask_again">Do not show again</string>
     <string name="dialog_cancel">Cancel</string>
     <string name="dialog_delete">Delete</string>

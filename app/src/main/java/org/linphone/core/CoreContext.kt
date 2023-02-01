@@ -31,8 +31,7 @@ import android.telephony.TelephonyManager
 import android.util.Base64
 import android.util.Pair
 import android.view.*
-import androidx.emoji.bundled.BundledEmojiCompatConfig
-import androidx.emoji.text.EmojiCompat
+import android.webkit.MimeTypeMap
 import androidx.lifecycle.*
 import androidx.loader.app.LoaderManager
 import com.google.firebase.crashlytics.FirebaseCrashlytics
@@ -197,21 +196,25 @@ class CoreContext(
                     AudioRouteUtils.routeAudioToBluetooth(call)
                 }
             } else if (state == Call.State.Connected) {
-                if (corePreferences.automaticallyStartCallRecording) {
-                    Log.i("[Context] We were asked to start the call recording automatically")
-                    call.startRecording()
-                }
                 onCallStarted()
             } else if (state == Call.State.StreamsRunning) {
-                // Do not automatically route audio to bluetooth after first call
-                if (core.callsNb == 1) {
-                    // Only try to route bluetooth / headphone / headset when the call is in StreamsRunning for the first time
-                    if (previousCallState == Call.State.Connected) {
+                if (previousCallState == Call.State.Connected) {
+                    // Do not automatically route audio to bluetooth after first call
+                    if (core.callsNb == 1) {
+                        // Only try to route bluetooth / headphone / headset when the call is in StreamsRunning for the first time
                         Log.i("[Context] First call going into StreamsRunning state for the first time, trying to route audio to headset or bluetooth if available")
                         if (AudioRouteUtils.isHeadsetAudioRouteAvailable()) {
                             AudioRouteUtils.routeAudioToHeadset(call)
                         } else if (corePreferences.routeAudioToBluetoothIfAvailable && AudioRouteUtils.isBluetoothAudioRouteAvailable()) {
                             AudioRouteUtils.routeAudioToBluetooth(call)
+                        }
+                    }
+
+                    // Only start call recording when the call is in StreamsRunning for the first time
+                    if (corePreferences.automaticallyStartCallRecording && !call.params.isRecording) {
+                        if (call.conference == null) { // TODO: FIXME: We disabled conference recording for now
+                            Log.i("[Context] We were asked to start the call recording automatically")
+                            call.startRecording()
                         }
                     }
                 }
@@ -336,7 +339,6 @@ class CoreContext(
 
         notificationsManager.onCoreReady()
 
-        EmojiCompat.init(BundledEmojiCompatConfig(context))
         collator.strength = Collator.NO_DECOMPOSITION
 
         if (corePreferences.vfsEnabled) {
@@ -449,10 +451,16 @@ class CoreContext(
                     Log.i("[Context] CPIM allowed in basic chat rooms for account ${params.identityAddress?.asString()}")
                 }
 
-                if (account.params.limeServerUrl == null && limeServerUrl.isNotEmpty()) {
-                    params.limeServerUrl = limeServerUrl
-                    paramsChanged = true
-                    Log.i("[Context] Moving Core's LIME X3DH server URL [$limeServerUrl] on account ${params.identityAddress?.asString()}")
+                if (account.params.limeServerUrl.isNullOrEmpty()) {
+                    if (limeServerUrl.isNotEmpty()) {
+                        params.limeServerUrl = limeServerUrl
+                        paramsChanged = true
+                        Log.i("[Context] Moving Core's LIME X3DH server URL [$limeServerUrl] on account ${params.identityAddress?.asString()}")
+                    } else {
+                        params.limeServerUrl = corePreferences.limeServerUrl
+                        paramsChanged = true
+                        Log.w("[Context] Linphone account [${params.identityAddress?.asString()}] didn't have a LIME X3DH server URL, setting one: ${corePreferences.limeServerUrl}")
+                    }
                 }
 
                 if (paramsChanged) {
@@ -488,10 +496,12 @@ class CoreContext(
     }
 
     fun fetchContacts() {
-        if (PermissionHelper.required(context).hasReadContactsPermission()) {
-            Log.i("[Context] Init contacts loader")
-            val manager = LoaderManager.getInstance(this@CoreContext)
-            manager.restartLoader(0, null, contactLoader)
+        if (corePreferences.enableNativeAddressBookIntegration) {
+            if (PermissionHelper.required(context).hasReadContactsPermission()) {
+                Log.i("[Context] Init contacts loader")
+                val manager = LoaderManager.getInstance(this@CoreContext)
+                manager.restartLoader(0, null, contactLoader)
+            }
         }
     }
 
@@ -505,6 +515,10 @@ class CoreContext(
                 for (friendList in core.friendsLists) {
                     friendList.rlsAddress = rlsAddress
                 }
+            }
+            if (core.mediaEncryption == MediaEncryption.None) {
+                Log.i("[Context] Enabling SRTP media encryption instead of None")
+                core.mediaEncryption = MediaEncryption.SRTP
             }
         } else {
             Log.i("[Context] Background mode with foreground service automatically enabled")
@@ -641,7 +655,7 @@ class CoreContext(
     }
 
     fun startCall(to: String) {
-        var stringAddress = to
+        var stringAddress = to.trim()
         if (android.util.Patterns.PHONE.matcher(to).matches()) {
             val contact = contactsManager.findContactByPhoneNumber(to)
             val alias = contact?.getContactForPhoneNumberOrAddress(to)
@@ -822,6 +836,7 @@ class CoreContext(
     /* Coroutine related */
 
     private fun exportFileInMessage(message: ChatMessage) {
+        // Only do it if auto download feature isn't disabled, otherwise it's done in the user-initiated download process
         if (core.maxSizeForAutoDownloadIncomingFiles != -1) {
             var hasFile = false
             for (content in message.contents) {
@@ -853,6 +868,7 @@ class CoreContext(
         if (PermissionHelper.get().hasWriteExternalStoragePermission()) {
             for (content in message.contents) {
                 if (content.isFile && content.filePath != null && content.userData == null) {
+                    Log.i("[Context] Trying to export file [${content.name}] to MediaStore")
                     addContentToMediaStore(content)
                 }
             }
@@ -873,30 +889,35 @@ class CoreContext(
 
         if (PermissionHelper.get().hasWriteExternalStoragePermission()) {
             coroutineScope.launch {
-                when (content.type) {
-                    "image" -> {
+                val filePath = content.filePath.orEmpty()
+                Log.i("[Context] Trying to export file [$filePath] through Media Store API")
+
+                val extension = FileUtils.getExtensionFromFileName(filePath)
+                val mime = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension)
+                when {
+                    FileUtils.isMimeImage(mime) -> {
                         if (Compatibility.addImageToMediaStore(context, content)) {
-                            Log.i("[Context] Adding image ${content.name} to Media Store terminated")
+                            Log.i("[Context] Successfully exported image [${content.name}] to Media Store")
                         } else {
                             Log.e("[Context] Something went wrong while copying file to Media Store...")
                         }
                     }
-                    "video" -> {
+                    FileUtils.isMimeVideo(mime) -> {
                         if (Compatibility.addVideoToMediaStore(context, content)) {
-                            Log.i("[Context] Adding video ${content.name} to Media Store terminated")
+                            Log.i("[Context] Successfully exported video [${content.name}] to Media Store")
                         } else {
                             Log.e("[Context] Something went wrong while copying file to Media Store...")
                         }
                     }
-                    "audio" -> {
+                    FileUtils.isMimeAudio(mime) -> {
                         if (Compatibility.addAudioToMediaStore(context, content)) {
-                            Log.i("[Context] Adding audio ${content.name} to Media Store terminated")
+                            Log.i("[Context] Successfully exported audio [${content.name}] to Media Store")
                         } else {
                             Log.e("[Context] Something went wrong while copying file to Media Store...")
                         }
                     }
                     else -> {
-                        Log.w("[Context] File ${content.name} isn't either an image, an audio file or a video, can't add it to the Media Store")
+                        Log.w("[Context] File [$filePath] isn't either an image, an audio file or a video [${content.type}/${content.subtype}], can't add it to the Media Store")
                     }
                 }
             }

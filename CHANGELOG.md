@@ -10,7 +10,63 @@ Group changes to describe their impact on the project, as follows:
     Fixed for any bug fixes.
     Security to invite users to upgrade in case of vulnerabilities.
 
-## [4.7.0] - Unreleased
+## [5.1.0] - Unreleased
+
+### Changed
+- Replaced voice recordings file name by localized placeholder text, like for video conferences invitations
+- Removed jetifier as it is not needed
+
+## [5.0.5] - 2023-01-19
+
+### Fixed
+- Issue with how replies where added to chat message notification from reply action
+
+## [5.0.4] - 2023-01-18
+
+### Added
+- Show a progress bar while importing files to the chat sending area
+
+### Changed
+- Prevent keyboard from auto-replacing some user input such as username, breaking SIP URIs unknowingly
+
+### Fixed
+- Prevent copy of files that weren't sent in chat to be kept in app local folder
+
+## [5.0.3] - 2023-01-13
+
+### Added
+- Voice message recording/playback will use bluetooth/headset/headphones/hearing aid device if available
+- Chat message notifications are now compatible with Android Auto
+
+### Changed
+- In video conference, when in active speaker layout, currently speaking participant miniature will be hidden
+- Attach file, voice recording and send message icons are now a bit bigger
+- Updated Firebase BoM, gradle & some dependencies
+
+### Fixed
+- ANR happening sometimes during voice message playback
+
+## [5.0.2] - 2023-01-05
+
+### Changed
+- Export files to native gallery is now available even if automatically download files setting is enabled
+
+### Fixed
+- Makes sure sip.linphone.org accounts have a LIME X3DH server URL for E2E chat messages encryption
+- Files not being exported to native gallery sometimes
+- Crashes reported by Google Play Store & Crashlytics
+
+## [5.0.1] - 2022-12-16
+
+### Changed
+- File transfer progress indication & error status improvements
+
+### Fixed
+- Wrong LIME status for participant that has multiple devices
+- No longer sends video when switching from audio only to another conference layout
+- SIP URI regex pattern to prevent HTTP URLs containing '@' to be handled as SIP URI
+
+## [5.0.0] - 2022-12-06
 
 ### Added
 - Post Quantum encryption when using ZRTP
@@ -28,6 +84,7 @@ Group changes to describe their impact on the project, as follows:
 
 ### Changed
 - In-call views have been re-designed
+- "Media Encryption Mandatory" setting now allows for any media encryption (instead of only the one selected in the above setting previously)
 - Improved how call logs are handled to improve performances
 - Improved how contact avatars are generated
 - 3-dots menu even for basic chat rooms with more options
@@ -42,12 +99,23 @@ Group changes to describe their impact on the project, as follows:
 - Show service notification sooner to prevent crash if Core creation takes too long
 - Incoming call screen not being showed up to user (& screen staying off) when using app in Samsung secure folder
 - One to one chat room creation process waiting indefinitely if chat room already exists
+- Contact edition (SIP addresses & phone numbers) not working due to original value being lost in Friend parsing
+- Automatically start call recording
 - "Blinking" in some views when presence is being received
 - Trying to keep the preferred driver (OpenSLES / AAudio) when switching device
 - Issues when storing presence in native contacts + potentially duplicated SIP addresses in contact details
 - Chat room scroll position lost when going into sub-view
+- Trim user input to remove any space at end of string due to keyboard auto completion
 - No longer makes requests to our LIME server (end-to-end encryption keys server) for non sip.linphone.org accounts
 - Fixed incoming call/notification not ringing if Do not Disturb mode is enabled except for favorite contacts
+
+## [4.6.14] - 2022-09-19
+
+### Fixed
+- ANR that happens sometimes when playing voice recording
+
+### Changed
+- Improved contact loader by querying only relevant fields
 
 ## [4.6.13] - 2022-08-25
 

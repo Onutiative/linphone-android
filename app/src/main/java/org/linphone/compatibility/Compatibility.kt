@@ -270,6 +270,13 @@ class Compatibility {
             return Api23Compatibility.canDrawOverlay(context)
         }
 
+        fun isInPictureInPictureMode(activity: Activity): Boolean {
+            if (Version.sdkAboveOrEqual(Version.API25_NOUGAT_71)) {
+                return Api25Compatibility.isInPictureInPictureMode(activity)
+            }
+            return false
+        }
+
         fun enterPipMode(activity: Activity, conference: Boolean) {
             if (Version.sdkStrictlyBelow(Version.API31_ANDROID_12) && Version.sdkAboveOrEqual(Version.API26_O_80)) {
                 Api26Compatibility.enterPipMode(activity, conference)
@@ -401,6 +408,15 @@ class Compatibility {
                 return Api26Compatibility.getImeFlagsForSecureChatRoom()
             }
             return Api23Compatibility.getImeFlagsForSecureChatRoom()
+        }
+
+        fun hasTelecomManagerFeature(context: Context): Boolean {
+            if (Version.sdkAboveOrEqual(Version.API33_ANDROID_13_TIRAMISU)) {
+                return Api33Compatibility.hasTelecomManagerFeature(context)
+            } else if (Version.sdkAboveOrEqual(Version.API26_O_80)) {
+                return Api26Compatibility.hasTelecomManagerFeature(context)
+            }
+            return false
         }
     }
 }

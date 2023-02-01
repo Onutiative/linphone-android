@@ -34,6 +34,7 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.Guideline
 import androidx.databinding.*
+import coil.dispose
 import coil.load
 import coil.request.CachePolicy
 import coil.request.videoFrameMillis
@@ -325,11 +326,22 @@ fun loadImageWithCoil(imageView: ImageView, path: String?) {
         if (corePreferences.vfsEnabled && path.endsWith(FileUtils.VFS_PLAIN_FILE_EXTENSION)) {
             imageView.load(path) {
                 diskCachePolicy(CachePolicy.DISABLED)
+                listener(
+                    onError = { _, result ->
+                        Log.e("[Data Binding] [Coil] Error loading [$path]: ${result.throwable}")
+                    }
+                )
             }
         } else {
-            imageView.load(path)
+            imageView.load(path) {
+                listener(
+                    onError = { _, result ->
+                        Log.e("[Data Binding] [Coil] Error loading [$path]: ${result.throwable}")
+                    }
+                )
+            }
         }
-    } else {
+    } else if (path != null) {
         Log.w("[Data Binding] [Coil] Can't load $path")
     }
 }
@@ -344,6 +356,8 @@ private suspend fun loadContactPictureWithCoil(
     textColor: Int = 0,
     defaultAvatar: String? = null
 ) {
+    imageView.dispose()
+
     val context = imageView.context
     if (contact == null) {
         if (defaultAvatar != null) {
@@ -463,8 +477,8 @@ fun loadAvatarWithCoil(imageView: ImageView, path: String?) {
         imageView.load(path) {
             transformations(CircleCropTransformation())
             listener(
-                onError = { _, _ ->
-                    Log.w("[Data Binding] [Coil] Can't load $path")
+                onError = { _, result ->
+                    Log.e("[Data Binding] [Coil] Error loading [$path]: ${result.throwable}")
                     imageView.visibility = View.GONE
                 },
                 onSuccess = { _, _ ->
@@ -695,8 +709,10 @@ fun setConstraintLayoutEndMargin(view: View, margins: Float) {
 }
 
 @BindingAdapter("android:onTouch")
-fun View.setTouchListener(listener: View.OnTouchListener) {
-    setOnTouchListener(listener)
+fun View.setTouchListener(listener: View.OnTouchListener?) {
+    if (listener != null) {
+        setOnTouchListener(listener)
+    }
 }
 
 @BindingAdapter("entries")
