@@ -22,7 +22,6 @@ package org.linphone.activities.main.recordings.viewmodels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.media.AudioFocusRequestCompat
-import kotlin.collections.ArrayList
 import org.linphone.LinphoneApplication.Companion.coreContext
 import org.linphone.activities.main.recordings.data.RecordingData
 import org.linphone.core.tools.Log

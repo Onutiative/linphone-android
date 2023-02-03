@@ -27,21 +27,22 @@ import android.os.Build
 import android.provider.Settings
 import android.telecom.*
 import androidx.annotation.RequiresApi
+import java.io.File
+import java.time.Instant
 import java.time.LocalDateTime
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import java.util.*
 import okhttp3.OkHttpClient
 import org.linphone.BasicAuthInterceptor.BasicAuthInterceptor
 import org.linphone.LinphoneApplication
 import org.linphone.LinphoneApplication.Companion.coreContext
 import org.linphone.LinphoneApplication.Companion.ensureCoreExists
 import org.linphone.`interface`.callpopupinterface
+import org.linphone.core.*
 import org.linphone.core.Call
-import org.linphone.core.Core
-import org.linphone.core.CoreListenerStub
 import org.linphone.core.tools.Log
-import org.linphone.model.callpopupjson
-import retrofit2.Callback
-import retrofit2.Response
+import org.linphone.onuspecific.OnuFunctions
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -155,9 +156,27 @@ class TelecomConnectionService : ConnectionService() {
                 val callState = call.state
                 Log.i("[Telecom Connection Service] Found outgoing call from ID [$callId] with state [$callState]")
 
-                // get call time
-                val calltime = call.callLog.conferenceInfo?.dateTime
-                Log.i("[Telecom Connection Service] call time [$calltime]")
+                // convert calltime to human readable format in Asia/Dhaka timezone like `20210331120000`
+                var calltime1 = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(Instant.ofEpochMilli(call.callLog.startDate * 1000L).atZone(ZoneId.systemDefault()))
+                // val calltime = Date(call.callLog.startDate).toInstant().atZone(ZoneId.of("Asia/Dhaka")).format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"))
+                val calltime = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSS").format(Instant.ofEpochMilli(call.callLog.startDate * 1000L).atZone(ZoneId.systemDefault()))
+
+                Log.i("[Telecom Connection Service] call time [$calltime] with state [$calltime1]")
+
+                // get caller id
+                val providedHandle = request.address
+                val callerId = providedHandle.schemeSpecificPart.split("@")[0]
+                Log.i("[Telecom Connection Service] Phone Number is $callerId")
+
+                Thread {
+                    val callDataSender = OnuFunctions.CallDataSender(
+                        callerId,
+                        DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(Instant.ofEpochMilli(call.callLog.startDate * 1000L).atZone(ZoneId.systemDefault())),
+                        DateTimeFormatter.ofPattern("yyyyMMddHHmmssSS").format(Instant.ofEpochMilli(call.callLog.startDate * 1000L).atZone(ZoneId.systemDefault())),
+                        call?.dir.toString() ?: "outgoing",
+                    )
+                    callDataSender.send()
+                }.start()
 
                 when (callState) {
                     Call.State.OutgoingEarlyMedia, Call.State.OutgoingInit, Call.State.OutgoingProgress, Call.State.OutgoingRinging -> connection.setDialing()
@@ -175,24 +194,21 @@ class TelecomConnectionService : ConnectionService() {
             connection.setCallerDisplayName(displayName, TelecomManager.PRESENTATION_ALLOWED)
             Log.i("[Telecom Connection Service] Address is $providedHandle")
 
-            // get caller id
-            val callerid = providedHandle.schemeSpecificPart.split("@")[0]
-            Log.i("[Telecom Connection Service] Phone Number is $callerid")
+//            var jsonexample = callpopupjson(callerid, formattedtime.toString(), diviceid, transid, "outgoing")
+//            var callgetback = callloginterface.calllogpost(jsonexample)
+//            callgetback.enqueue(object : Callback<callpopupjson> {
+//                override fun onResponse(
+//                    call: retrofit2.Call<callpopupjson>,
+//                    response: Response<callpopupjson>
+//                ) {
+//                    Log.i("outgoing call popup done ${response.code()}")
+//                }
+//
+//                override fun onFailure(call: retrofit2.Call<callpopupjson>, t: Throwable) {
+//                    Log.i("outgoing call popup falied $t")
+//                }
+//            })
 
-            var jsonexample = callpopupjson(callerid, formattedtime.toString(), diviceid, transid, "outgoing")
-            var callgetback = callloginterface.calllogpost(jsonexample)
-            callgetback.enqueue(object : Callback<callpopupjson> {
-                override fun onResponse(
-                    call: retrofit2.Call<callpopupjson>,
-                    response: Response<callpopupjson>
-                ) {
-                    Log.i("outgoing call popup done ${response.code()}")
-                }
-
-                override fun onFailure(call: retrofit2.Call<callpopupjson>, t: Throwable) {
-                    Log.i("outgoing call popup falied $t")
-                }
-            })
             TelecomHelper.get().connections.add(connection)
             connection
         } else {
@@ -257,20 +273,30 @@ class TelecomConnectionService : ConnectionService() {
                 val callerId = call.remoteAddress.asStringUriOnly().split("@")[0].split(":")[1]
                 Log.i("[Telecom Connection Service] Phone Number is $callerId")
 
-                var jsonexample = callpopupjson("$callerId", formattedtime.toString(), diviceid, transid, "incoming")
-                var callgetback = callloginterface.calllogpost(jsonexample)
-                callgetback.enqueue(object : Callback<callpopupjson> {
-                    override fun onResponse(
-                        call: retrofit2.Call<callpopupjson>,
-                        response: Response<callpopupjson>
-                    ) {
-                        Log.i("incoming call popup done ${response.code()}")
-                    }
+//                var jsonexample = callpopupjson("$callerId", formattedtime.toString(), diviceid, transid, "incoming")
+//                var callgetback = callloginterface.calllogpost(jsonexample)
+//                callgetback.enqueue(object : Callback<callpopupjson> {
+//                    override fun onResponse(
+//                        call: retrofit2.Call<callpopupjson>,
+//                        response: Response<callpopupjson>
+//                    ) {
+//                        Log.i("incoming call popup done ${response.code()}")
+//                    }
+//
+//                    override fun onFailure(call: retrofit2.Call<callpopupjson>, t: Throwable) {
+//                        Log.i("incoming call popup falied $t")
+//                    }
+//                })
 
-                    override fun onFailure(call: retrofit2.Call<callpopupjson>, t: Throwable) {
-                        Log.i("incoming call popup falied $t")
-                    }
-                })
+                Thread {
+                    val callDataSender = OnuFunctions.CallDataSender(
+                        callerId,
+                        DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(Instant.ofEpochMilli(call.callLog.startDate * 1000L).atZone(ZoneId.systemDefault())),
+                        DateTimeFormatter.ofPattern("yyyyMMddHHmmssSS").format(Instant.ofEpochMilli(call.callLog.startDate * 1000L).atZone(ZoneId.systemDefault())),
+                        call.dir.toString() ?: "incoming",
+                    )
+                    callDataSender.send()
+                }.start()
 
                 when (callState) {
                     Call.State.IncomingEarlyMedia, Call.State.IncomingReceived -> connection.setRinging()
@@ -323,6 +349,52 @@ class TelecomConnectionService : ConnectionService() {
             Log.e("[Telecom Connection Service] Failed to find connection for call id: $callId")
             return
         }
+
+        val params = coreContext.core.createCallParams(call)
+        // params?.recordFile = LinphoneUtils.getRecordingFilePathForAddress(call.remoteAddress) ?: ""
+        Log.i("[Telecom Connection Service] [OnuFunctions] recording path ${params?.recordFile}  ${call.core.recordFile}")
+        // rename the file extension from .mkv to .amr
+        var recordingFilePath = File(params?.recordFile?.replace(".mkv", ".amr")).absolutePath
+        Log.i("[Telecom Connection Service] [OnuFunctions] recording path $recordingFilePath")
+        File(params?.recordFile).renameTo(File(recordingFilePath)).toString()
+        Log.i("[Telecom Connection Service] [OnuFunctions] recording path $recordingFilePath")
+
+        // get the call start time from call object
+        val callStartTime = call.callLog.startDate
+        Log.i("[Telecom Connection Service] [OnuFunctions] callStartTime $callStartTime")
+
+        // replace `/storage/emulated/0/` with `/sdcard/` in recordingFilePath
+        // recordingFilePath = recordingFilePath.replace("/storage/emulated/0/", "/sdcard/")
+
+        Log.i("[Telecom Connection Service] [OnuFunctions] recordingFilePath $recordingFilePath")
+        Thread {
+            // sleep for 5 second to make sure the recording file is ready
+            Thread.sleep(5000)
+            // check if recording file exists
+            if (!File(recordingFilePath).exists()) {
+                Log.e("[OnuFunctions] Recording file does not exist")
+                return@Thread
+            }
+
+            try {
+                // get the trxId from recordingFile name in like `2023-02-01 23:19:28` to `20230201231928` format
+                val trxId = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSS").format(Instant.ofEpochMilli(call.callLog.startDate * 1000L).atZone(ZoneId.systemDefault()))
+                val file = File(recordingFilePath)
+                val callType = call.callLog.dir.toString()
+                val callRecordService = OnuFunctions.CallRecordSender()
+                Log.i("[OnuFunctions] Call record request: $trxId, $file, $callType")
+                val response = callRecordService.send(
+                    trxId,
+                    file,
+                    callType,
+                )
+                println(response)
+                Log.d("[OnuFunctions] Call record response: $response")
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Log.e("[OnuFunctions] Call record error: $e")
+            }
+        }.start()
 
         TelecomHelper.get().connections.remove(connection)
         val reason = call.reason

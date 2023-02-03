@@ -19,8 +19,10 @@
  */
 package org.linphone.activities.assistant.viewmodels
 
+import android.content.Context
 import android.os.Handler
 import android.os.Looper
+import android.util.Base64
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MediatorLiveData
@@ -207,6 +209,22 @@ class GenericLoginViewModel(private val accountCreator: AccountCreator) : ViewMo
                         } else {
                             // The request was successful
                             Log.d("OnuFunctions", "User activated successfully")
+
+                            val sharedPreferences = coreContext.context.getSharedPreferences("onukit_creds", Context.MODE_PRIVATE)
+                            val editor = sharedPreferences.edit()
+                            // save username in base64
+                            editor.putString("username", Base64.encodeToString(onukit_username.value?.toByteArray(), Base64.DEFAULT))
+                            editor.putString("password", Base64.encodeToString(onukit_password.value?.toByteArray(), Base64.DEFAULT))
+                            editor.apply()
+
+                            Log.d("OnuFunctions", "Saved username and password in SharedPreferences")
+                            Log.d("OnuFunctions", "inputted username: ${onukit_username.value}")
+                            Log.d("OnuFunctions", "inputted password: ${onukit_password.value}")
+                            Log.d("OnuFunctions", "base64 username: ${Base64.encodeToString(onukit_username.value?.toByteArray(), Base64.DEFAULT)}")
+                            Log.d("OnuFunctions", "base64 password: ${Base64.encodeToString(onukit_password.value?.toByteArray(), Base64.DEFAULT)}")
+                            Log.d("OnuFunctions", "saved username: ${sharedPreferences.getString("username", "")}")
+                            Log.d("OnuFunctions", "saved password: ${sharedPreferences.getString("password", "")}")
+
                             Handler(Looper.getMainLooper()).post {
                                 Toast.makeText(coreContext.context, reason, Toast.LENGTH_SHORT).show()
                                 createProxyConfig()

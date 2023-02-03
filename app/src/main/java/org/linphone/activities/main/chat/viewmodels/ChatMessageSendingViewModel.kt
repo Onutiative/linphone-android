@@ -342,6 +342,7 @@ class ChatMessageSendingViewModel(private val chatRoom: ChatRoom) : ViewModel() 
                     RecorderFileFormat.Mkv -> "mkv"
                     else -> "wav"
                 }
+
                 val tempFileName = "voice-recording-${System.currentTimeMillis()}.$extension"
                 val file = FileUtils.getFileStoragePath(tempFileName)
                 Log.w("[Chat Message Sending] Recorder is closed, starting recording in ${file.absoluteFile}")
