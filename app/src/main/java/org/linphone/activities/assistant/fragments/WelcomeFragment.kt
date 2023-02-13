@@ -86,7 +86,7 @@ class WelcomeFragment : GenericFragment<AssistantWelcomeFragmentBinding>() {
         val privacy = getString(R.string.assistant_privacy_policy)
 
         val label = getString(
-            R.string.assistant_read_and_agree_terms,
+            R.string.assistant_read_and_agree_terms_onu,
             terms,
             privacy
         )

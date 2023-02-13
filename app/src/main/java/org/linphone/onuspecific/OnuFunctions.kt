@@ -1,12 +1,15 @@
 package org.linphone.onuspecific
 
-import android.annotation.SuppressLint
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
 import android.os.Build
 import android.provider.Settings
 import android.telephony.SubscriptionManager
+import android.telephony.TelephonyManager
 import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.core.app.ActivityCompat
 import java.io.File
 import java.nio.charset.StandardCharsets
 import java.util.*
@@ -17,19 +20,20 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import okio.IOException
 import org.json.JSONObject
 import org.linphone.LinphoneApplication
+import org.linphone.activities.main.MainActivity
 import retrofit2.Callback
 import retrofit2.Response
 
 open class OnuFunctions {
 
-    fun String.toBase64(): String {
+    private fun String.toBase64(): String {
         return String(
             android.util.Base64.encode(this.toByteArray(), android.util.Base64.DEFAULT),
             StandardCharsets.UTF_8
         )
     }
 
-    fun String.fromBase64(): String {
+    private fun String.fromBase64(): String {
         return String(
             android.util.Base64.decode(this, android.util.Base64.DEFAULT),
             StandardCharsets.UTF_8
@@ -75,8 +79,8 @@ open class OnuFunctions {
             json.put("version", android.os.Build.VERSION.RELEASE)
             json.put("brand", android.os.Build.BRAND)
             json.put("model", android.os.Build.MODEL)
-            json.put("password", username)
-            json.put("email", password)
+            json.put("email", username)
+            json.put("password", password)
             json.put("thirdPartyUserData", "null")
             json.put("oid", "null")
             json.put("mobile", getPhoneNumber())
@@ -100,11 +104,57 @@ open class OnuFunctions {
                 .build()
         }
 
-        @SuppressLint("MissingPermission")
+        // @RequiresApi(Build.VERSION_CODES.TIRAMISU)
         private fun getPhoneNumber(): String? {
             val subscriptionManager = context.getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE) as SubscriptionManager
             // return phoneNumber if it is not null. Otherwise, return "0"
-            return subscriptionManager.activeSubscriptionInfoList[0].number ?: "0"
+            try {
+                if (ActivityCompat.checkSelfPermission(
+                        LinphoneApplication.coreContext.context,
+                        Manifest.permission.READ_PHONE_NUMBERS
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    //  call  ActivityCompat to request the missing permissions
+                    ActivityCompat.requestPermissions(
+                        LinphoneApplication.coreContext.context as MainActivity,
+                        arrayOf(Manifest.permission.READ_PHONE_NUMBERS),
+                        1
+                    )
+
+                    // check if the permission is granted
+                    if (ActivityCompat.checkSelfPermission(
+                            LinphoneApplication.coreContext.context,
+                            Manifest.permission.READ_PHONE_NUMBERS
+                        ) != PackageManager.PERMISSION_GRANTED
+                    ) {
+                        // if the permission is not granted, return "0"
+                        return "0"
+                    } else {
+                        // if the permission is granted, return the phone number
+                        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            subscriptionManager.getPhoneNumber(0) ?: "0"
+                        } else {
+                            try {
+                                val telephonyManager = LinphoneApplication.coreContext.context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+                                telephonyManager.line1Number ?: "0"
+                            } catch (e: Exception) {
+                                Log.d("OnuFunctions", "Error: ${e.message}")
+                                "0"
+                            }
+                        }
+                    }
+                }
+            } catch (e: Exception) {
+                Log.d("OnuFunctions", "Error: ${e.message}")
+                return try {
+                    val telephonyManager = LinphoneApplication.coreContext.context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+                    telephonyManager.line1Number ?: "0"
+                } catch (e: Exception) {
+                    Log.d("OnuFunctions", "Error: ${e.message}")
+                    "0"
+                }
+            }
+            return "0"
         }
     }
 

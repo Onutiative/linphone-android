@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 
 <!DOCTYPE resources [
-    <!ENTITY appName "Linphone">
+    <!ENTITY appName "Onukit">
 ]>
 
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
@@ -13,12 +13,41 @@
     <string name="service_description">This is required to receive calls while in background</string>
     <string name="sync_account_name">&appName; contacts</string>
 
+    <string name="slide_1_title">OnuKit Privacy Policy</string>
+    <string name="slide_1_desc">OnuKit is a call center alternative for SME and SoHo businesses to cater customer service better using  smartphone on the GO.\n\n
+      Please allow the following permissions to make OnuKit Functional.
+    </string>
+
+
+    <string name="slide_2_title">Call and Call Log Read Permission</string>
+    <string name="slide_2_desc">OnuKit lets you make calls using mobile number to your clients, contacts, leads or for telemarketing from web panel or google sheet.\n\n
+      Also OnuKit mobile app let you make task against your clients calls. So OnuKit needs to read your call data. You can create task easily by allowing this permission.</string>
+
+    <string name="slide_2_1_title">Call Log Read Permission</string>
+    <string name="slide_2_1_desc">Also OnuKit mobile app let you make task against your clients calls. So OnuKit need to access your read call data, you can create task easily by allow this permission.</string>
+
+    <string name="slide_3_title">SMS Permission</string>
+    <string name="slide_3_desc">Read your SMS from anywhere and send Single or bulk SMS with schedule option to your client in one click by allowing this permission.</string>
+
+    <string name="slide_4_title">Contact Permission</string>
+    <string name="slide_4_desc">Backup, Organize, share and identify your contacts from both web and phone using OnuKit with the ensurity of your privacy.</string>
+
+    <string name="slide_5_title">Microphone Permission</string>
+    <string name="slide_5_desc">Ever needed the option of automatic call recording in your phone? Then OnuKit is the answer to back them and retrieve them anytime-anywhere just allowing this permission.</string>
+
+    <string name="slide_6_title">Storage  Permission</string>
+    <string name="slide_6_desc">Let OnuKit save the necessary data and recording files locally, also synchronize to online account by allowing this permission. </string>
+
+    <string name="slide_7_title">Popup Permission</string>
+    <string name="slide_7_desc">OnuKit gives you task management facility on the go with a popup for incoming calls obviously with your permission.</string>
+
+
     <!-- About screen -->
-    <string name="about_link" translatable="false">https://linphone.org</string>
+    <string name="about_link" translatable="false">https://user.onukit.com</string>
     <string name="about_privacy_policy_link" translatable="false">https://www.linphone.org/privacy-policy</string>
     <string name="about_license_link" translatable="false">https://www.gnu.org/licenses/gpl-3.0.html</string>
     <string name="about_version" translatable="false">&appName; Android %s</string>
-    <string name="about_liblinphone_sdk_version" translatable="false">&appName; SDK %s</string>
+    <string name="about_liblinphone_sdk_version" translatable="false">Linphone SDK %s</string>
     <string name="about_privacy_policy">Visit our privacy policy</string>
     <string name="about_text" translatable="false">GNU General Public License v3.0\n © 2010–2022 Belledonne Communications</string>
     <string name="about_weblate_link" translatable="false">https://weblate.linphone.org/projects/linphone/</string>
@@ -65,7 +94,8 @@
     <string name="transport_tls">TLS</string>
 
     <!-- Launch screen -->
-    <string name="app_description">the <i>libre</i> SIP client</string>
+<!--    <string name="app_description">the <i>libre</i> SIP client</string>-->
+    <string name="app_description">Call Center In Your Pocket</string>
 
     <!-- Status fragment -->
     <string name="status_connected">Connected</string>
@@ -390,6 +420,7 @@
     <string name="assistant_create_account">Create account</string>
     <string name="assistant_login_linphone">Use &appName; account</string>
     <string name="assistant_login_generic">Use SIP account</string>
+    <string name="assistant_login_generic_onu">Proceed</string>
     <string name="assistant_remote_provisioning">Fetch remote configuration</string>
     <string name="assistant_ec_calibration">Echo canceler calibration in progress</string>
     <string name="assistant_phone_number_info_title">What will my phone number be used for?</string>
@@ -400,6 +431,7 @@
     <string name="assistant_general_terms">terms of use</string>
     <string name="assistant_privacy_policy">privacy policy</string>
     <string name="assistant_read_and_agree_terms">I accept Belledonne Communications\' %1$s and %2$s</string>
+    <string name="assistant_read_and_agree_terms_onu">I accept &appName;\'s  %1$s and %2$s</string>
     <string name="assistant_generic_account_warning">Some features require a &appName; account, such as group messaging or ephemeral messaging.\n\nThese features are hidden when you register with a third party SIP account.\n\nTo enable it in a commercial project, please contact us.</string>
     <string name="assistant_generic_account_warning_contact_link" translatable="false">https://www.linphone.org/contact</string>
     <string name="assistant_generic_account_warning_continue_button_text">I understand</string>
@@ -892,4 +924,10 @@
     <string name="content_description_toggle_conference_info_details">Toggle meeting information details visibility</string>
     <string name="content_description_conference_participants">Group call participants</string>
     <string name="content_description_recording_export">Export recording</string>
+
+    <string name="permission_needed_title">Permission needed</string>
+    <string name="permission_needed_message">To use this feature, you need to grant the following permission:</string>
+    <string name="retry">Retry</string>
+    <string name="go_to_settings">Go to settings</string>
+
 </resources>

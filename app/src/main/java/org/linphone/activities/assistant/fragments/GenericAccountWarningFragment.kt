@@ -24,6 +24,7 @@ import android.view.View
 import org.linphone.R
 import org.linphone.activities.GenericFragment
 import org.linphone.activities.navigateToGenericLogin
+import org.linphone.core.tools.Log
 import org.linphone.databinding.AssistantGenericAccountWarningFragmentBinding
 
 class GenericAccountWarningFragment : GenericFragment<AssistantGenericAccountWarningFragmentBinding>() {
@@ -34,7 +35,11 @@ class GenericAccountWarningFragment : GenericFragment<AssistantGenericAccountWar
 
         binding.lifecycleOwner = viewLifecycleOwner
 
+        // [Dirty HACK] Go to login page directly. Comment this page if you want to keep showing the warning page.
+        navigateToGenericLogin()
+
         binding.setUnderstoodClickListener {
+            Log.i("navigateToGenericLogin [Generic Account Warning] User understood the warning, going to login page...")
             navigateToGenericLogin()
         }
     }

@@ -92,6 +92,10 @@ class LinphoneApplication : Application(), ImageLoaderFactory {
         fun contextExists(): Boolean {
             return ::coreContext.isInitialized
         }
+
+        fun instance(): Any {
+            return coreContext.core
+        }
     }
 
     override fun onCreate() {

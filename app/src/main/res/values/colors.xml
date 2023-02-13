@@ -2,11 +2,23 @@
 <resources>
     <color name="transparent_color">#00000000</color>
 
-    <color name="primary_color">#ff5e00</color> <!-- Try to have a color that renders well on both light & dark theme -->
+    <color name="primary_color">#3F51B5</color> <!-- Try to have a color that renders well on both light & dark theme -->
     <!-- You can use https://material.io/design/color/#tools-for-picking-colors to get dark color value from primary -->
-    <color name="primary_dark_color">#e65000</color>
+    <color name="primary_dark_color">#303F9F</color>
     <color name="primary_light_color">#ffab4d</color>
     <color name="notification_led_color">#ff8000</color>
+
+    <color name="OnuKit_color">#00aef0</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <!-- Screen Background Colour -->
+    <color name="bg_screen1">#FFFFFF</color>
+    <color name="bg_screen2">#0C1D55</color>
+    <color name="bg_screen3">#A79FEC</color>
+    <color name="bg_screen4">#00D1F0</color>
+    <color name="bg_screen5">#F1D700</color>
+    <color name="bg_screen6">#4F3981</color>
+    <color name="bg_screen7">#0085D1</color>
 
     <color name="black_color">#000000</color>
     <color name="dark_grey_color">#444444</color>

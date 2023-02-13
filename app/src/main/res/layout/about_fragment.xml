@@ -78,14 +78,14 @@
                     android:orientation="vertical"
                     android:padding="20dp">
 
-                    <ImageView
-                        android:layout_width="50dp"
-                        android:layout_height="wrap_content"
-                        android:adjustViewBounds="true"
-                        android:layout_gravity="center"
-                        android:layout_marginBottom="10dp"
-                        android:contentDescription="@null"
-                        android:src="@drawable/linphone_logo_tinted"/>
+<!--                    <ImageView-->
+<!--                        android:layout_width="50dp"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:adjustViewBounds="true"-->
+<!--                        android:layout_gravity="center"-->
+<!--                        android:layout_marginBottom="10dp"-->
+<!--                        android:contentDescription="@null"-->
+<!--                        android:src="@drawable/linphone_logo_tinted"/>-->
 
                     <ImageView
                         android:layout_width="125dp"
@@ -93,7 +93,7 @@
                         android:adjustViewBounds="true"
                         android:layout_gravity="center"
                         android:contentDescription="@null"
-                        android:src="@drawable/linphone_app_name_logo" />
+                        android:src="@drawable/onukit_logo" />
 
                     <TextView
                         android:textSize="13sp"
@@ -146,40 +146,40 @@
                         android:text="@string/about_link"
                         android:textColorLink="@color/primary_color" />
 
-                    <TextView
-                        android:onClick="@{privacyPolicyClickListener}"
-                        style="@style/about_license_font"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:autoLink="web"
-                        android:paddingTop="10dp"
-                        android:gravity="center"
-                        android:text="@string/about_privacy_policy"
-                        android:textColorLink="@color/primary_color" />
+<!--                    <TextView-->
+<!--                        android:onClick="@{privacyPolicyClickListener}"-->
+<!--                        style="@style/about_license_font"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_gravity="center"-->
+<!--                        android:autoLink="web"-->
+<!--                        android:paddingTop="10dp"-->
+<!--                        android:gravity="center"-->
+<!--                        android:text="@string/about_privacy_policy"-->
+<!--                        android:textColorLink="@color/primary_color" />-->
 
-                    <TextView
-                        android:onClick="@{licenseClickListener}"
-                        style="@style/about_license_font"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="10dp"
-                        android:text="@string/about_text" />
+<!--                    <TextView-->
+<!--                        android:onClick="@{licenseClickListener}"-->
+<!--                        style="@style/about_license_font"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_gravity="center"-->
+<!--                        android:gravity="center"-->
+<!--                        android:paddingTop="10dp"-->
+<!--                        android:paddingBottom="10dp"-->
+<!--                        android:text="@string/about_text" />-->
 
-                    <TextView
-                        android:onClick="@{weblateClickListener}"
-                        android:textColor="?attr/accentColor"
-                        android:textSize="16sp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="20dp"
-                        android:text="@string/about_weblate_translation" />
+<!--                    <TextView-->
+<!--                        android:onClick="@{weblateClickListener}"-->
+<!--                        android:textColor="?attr/accentColor"-->
+<!--                        android:textSize="16sp"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_gravity="center"-->
+<!--                        android:gravity="center"-->
+<!--                        android:paddingTop="10dp"-->
+<!--                        android:paddingBottom="20dp"-->
+<!--                        android:text="@string/about_weblate_translation" />-->
 
                     <View
                         android:layout_width="match_parent"

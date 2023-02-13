@@ -1033,6 +1033,7 @@ internal fun WelcomeFragment.navigateToGenericLoginWarning() {
     if (findNavController().currentDestination?.id == R.id.welcomeFragment) {
         findNavController().navigate(
             R.id.action_welcomeFragment_to_genericAccountWarningFragment,
+            // R.id.action_genericAccountWarningFragment_to_genericAccountLoginFragment,
             null,
             popupTo()
         )

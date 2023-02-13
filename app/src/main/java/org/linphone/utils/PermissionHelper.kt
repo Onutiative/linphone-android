@@ -31,7 +31,7 @@ import org.linphone.mediastream.Version
 class PermissionHelper private constructor(private val context: Context) {
     companion object : SingletonHolder<PermissionHelper, Context>(::PermissionHelper)
 
-    private fun hasPermission(permission: String): Boolean {
+    fun hasPermission(permission: String): Boolean {
         val granted = Compatibility.hasPermission(context, permission)
 
         if (granted) {

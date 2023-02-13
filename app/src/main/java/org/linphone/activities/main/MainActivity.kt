@@ -19,6 +19,7 @@
  */
 package org.linphone.activities.main
 
+import android.annotation.SuppressLint
 import android.content.ComponentCallbacks2
 import android.content.Intent
 import android.content.res.Configuration
@@ -51,7 +52,6 @@ import org.linphone.LinphoneApplication.Companion.coreContext
 import org.linphone.LinphoneApplication.Companion.corePreferences
 import org.linphone.R
 import org.linphone.activities.*
-import org.linphone.activities.assistant.AssistantActivity
 import org.linphone.activities.main.viewmodels.CallOverlayViewModel
 import org.linphone.activities.main.viewmodels.SharedMainViewModel
 import org.linphone.activities.navigateToDialer
@@ -107,6 +107,7 @@ class MainActivity : GenericActivity(), SnackBarActivity, NavController.OnDestin
     private var shouldTabsBeVisibleDependingOnDestination = true
     private var shouldTabsBeVisibleDueToOrientationAndKeyboard = true
 
+    @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -143,9 +144,13 @@ class MainActivity : GenericActivity(), SnackBarActivity, NavController.OnDestin
         }
 
         if (coreContext.core.accountList.isEmpty()) {
-            if (corePreferences.firstStart) {
-                startActivity(Intent(this, AssistantActivity::class.java))
-            }
+//            if (corePreferences.firstStart) {
+//                // startActivity(Intent(this, AssistantActivity::class.java))
+//                startActivity(Intent(this, WelcomeScreen::class.java))
+//            } else {
+//                startActivity(Intent(this, AssistantActivity::class.java))
+//            }
+            startActivity(Intent(this, WelcomeScreen::class.java))
         }
 
         tabsFragment = findViewById(R.id.tabs_fragment)

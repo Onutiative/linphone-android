@@ -134,18 +134,37 @@
                     linphone:listener="@{viewModel.rfc2833DtmfListener}"
                     linphone:checked="@={viewModel.rfc2833Dtmf}"/>
 
+<!--                <include-->
+<!--                    layout="@layout/settings_widget_switch"-->
+<!--                    linphone:title="@{@string/call_settings_auto_start_recording_title}"-->
+<!--                    linphone:listener="@{viewModel.autoStartCallRecordingListener}"-->
+<!--                    linphone:checked="@={viewModel.autoStartCallRecording}"-->
+<!--                    android:enabled="false"/>-->
+
+<!--                <include-->
+<!--                    layout="@layout/settings_widget_switch"-->
+<!--                    linphone:title="@{@string/call_settings_remote_recording_title}"-->
+<!--                    linphone:listener="@{viewModel.remoteCallRecordingListener}"-->
+<!--                    linphone:checked="@={viewModel.remoteCallRecording}"-->
+<!--                    android:visibility="gone"-->
+<!--                    android:enabled="false"/>-->
+
                 <include
                     layout="@layout/settings_widget_switch"
                     linphone:title="@{@string/call_settings_auto_start_recording_title}"
-                    linphone:listener="@{viewModel.autoStartCallRecordingListener}"
-                    linphone:checked="@={viewModel.autoStartCallRecording}"/>
+                    linphone:checked="false"
+                    android:visibility="gone"
+                    android:enabled="false"
+                    android:clickable="false"/>
 
                 <include
                     layout="@layout/settings_widget_switch"
                     linphone:title="@{@string/call_settings_remote_recording_title}"
-                    linphone:listener="@{viewModel.remoteCallRecordingListener}"
-                    linphone:checked="@={viewModel.remoteCallRecording}"
-                    android:visibility="gone"/>
+                    linphone:checked="false"
+                    android:visibility="gone"
+                    android:enabled="false"
+                    android:clickable="false"/>
+
 
                 <include
                     layout="@layout/settings_widget_switch"
