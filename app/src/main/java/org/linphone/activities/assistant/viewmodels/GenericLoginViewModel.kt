@@ -151,8 +151,7 @@ class GenericLoginViewModel(private val accountCreator: AccountCreator) : ViewMo
     fun checkOnukitCredentials() {
         waitForServerAnswer.value = true
         val userActivation = UserActivation(
-            onukit_username?.value, onukit_password?.value,
-            coreContext.context
+            onukit_username?.value, onukit_password?.value
         )
 
         val request = userActivation.performActivation()

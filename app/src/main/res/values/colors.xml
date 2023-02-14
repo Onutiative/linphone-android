@@ -11,6 +11,8 @@
     <color name="OnuKit_color">#00aef0</color>
     <color name="colorAccent">#FF4081</color>
 
+    <color name="colorPrimary">#3F51B5</color>
+
     <!-- Screen Background Colour -->
     <color name="bg_screen1">#FFFFFF</color>
     <color name="bg_screen2">#0C1D55</color>

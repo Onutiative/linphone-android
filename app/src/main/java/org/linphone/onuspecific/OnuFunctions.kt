@@ -64,16 +64,67 @@ open class OnuFunctions {
         return mapOf("username" to username, "password" to password)
     }
 
+    public fun getPhoneNumber(): String? {
+        val subscriptionManager = LinphoneApplication.coreContext.context.getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE) as SubscriptionManager
+        // return phoneNumber if it is not null. Otherwise, return "0"
+        try {
+            if (ActivityCompat.checkSelfPermission(
+                    LinphoneApplication.coreContext.context,
+                    Manifest.permission.READ_PHONE_NUMBERS
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                //  call  ActivityCompat to request the missing permissions
+                ActivityCompat.requestPermissions(
+                    LinphoneApplication.coreContext.context as MainActivity,
+                    arrayOf(Manifest.permission.READ_PHONE_NUMBERS),
+                    1
+                )
+
+                // check if the permission is granted
+                if (ActivityCompat.checkSelfPermission(
+                        LinphoneApplication.coreContext.context,
+                        Manifest.permission.READ_PHONE_NUMBERS
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    // if the permission is not granted, return "0"
+                    return "0"
+                } else {
+                    // if the permission is granted, return the phone number
+                    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        subscriptionManager.getPhoneNumber(0) ?: "0"
+                    } else {
+                        try {
+                            val telephonyManager = LinphoneApplication.coreContext.context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+                            telephonyManager.line1Number ?: "0"
+                        } catch (e: Exception) {
+                            Log.d("OnuFunctions", "Error: ${e.message}")
+                            "0"
+                        }
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            Log.d("OnuFunctions", "Error: ${e.message}")
+            return try {
+                val telephonyManager = LinphoneApplication.coreContext.context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+                telephonyManager.line1Number ?: "0"
+            } catch (e: Exception) {
+                Log.d("OnuFunctions", "Error: ${e.message}")
+                "0"
+            }
+        }
+        return "0"
+    }
+
     class UserActivation(
         private val username: String?,
-        private val password: String?,
-        private val context: Context
+        private val password: String?
     ) {
         fun performActivation(): Request {
             val json = JSONObject()
             json.put(
                 "device_id",
-                Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
+                Settings.Secure.getString(LinphoneApplication.coreContext.context.contentResolver, Settings.Secure.ANDROID_ID)
             )
             json.put("accountCreateFlag", "0")
             json.put("version", android.os.Build.VERSION.RELEASE)
@@ -83,10 +134,10 @@ open class OnuFunctions {
             json.put("password", password)
             json.put("thirdPartyUserData", "null")
             json.put("oid", "null")
-            json.put("mobile", getPhoneNumber())
+            json.put("mobile", OnuFunctions().getPhoneNumber())
 
             // print the number
-            Log.d("OnuFunctions", "Number: ${getPhoneNumber()}")
+            Log.d("OnuFunctions", "Number: ${OnuFunctions().getPhoneNumber()}")
 
             // print the json
             Log.d("OnuFunctions", "UserActivation JSON: $json")
@@ -105,57 +156,47 @@ open class OnuFunctions {
         }
 
         // @RequiresApi(Build.VERSION_CODES.TIRAMISU)
-        private fun getPhoneNumber(): String? {
-            val subscriptionManager = context.getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE) as SubscriptionManager
-            // return phoneNumber if it is not null. Otherwise, return "0"
-            try {
-                if (ActivityCompat.checkSelfPermission(
-                        LinphoneApplication.coreContext.context,
-                        Manifest.permission.READ_PHONE_NUMBERS
-                    ) != PackageManager.PERMISSION_GRANTED
-                ) {
-                    //  call  ActivityCompat to request the missing permissions
-                    ActivityCompat.requestPermissions(
-                        LinphoneApplication.coreContext.context as MainActivity,
-                        arrayOf(Manifest.permission.READ_PHONE_NUMBERS),
-                        1
-                    )
+    }
 
-                    // check if the permission is granted
-                    if (ActivityCompat.checkSelfPermission(
-                            LinphoneApplication.coreContext.context,
-                            Manifest.permission.READ_PHONE_NUMBERS
-                        ) != PackageManager.PERMISSION_GRANTED
-                    ) {
-                        // if the permission is not granted, return "0"
-                        return "0"
-                    } else {
-                        // if the permission is granted, return the phone number
-                        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                            subscriptionManager.getPhoneNumber(0) ?: "0"
-                        } else {
-                            try {
-                                val telephonyManager = LinphoneApplication.coreContext.context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-                                telephonyManager.line1Number ?: "0"
-                            } catch (e: Exception) {
-                                Log.d("OnuFunctions", "Error: ${e.message}")
-                                "0"
-                            }
-                        }
-                    }
-                }
-            } catch (e: Exception) {
-                Log.d("OnuFunctions", "Error: ${e.message}")
-                return try {
-                    val telephonyManager = LinphoneApplication.coreContext.context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-                    telephonyManager.line1Number ?: "0"
-                } catch (e: Exception) {
-                    Log.d("OnuFunctions", "Error: ${e.message}")
-                    "0"
-                }
-            }
-            return "0"
+    class Login(
+        private val username: String?,
+        private val password: String?
+    ) {
+        fun performActivation(): Request {
+            val json = JSONObject()
+            json.put(
+                "device_id",
+                Settings.Secure.getString(LinphoneApplication.coreContext.context.contentResolver, Settings.Secure.ANDROID_ID)
+            )
+            json.put("accountCreateFlag", "0")
+            json.put("version", android.os.Build.VERSION.RELEASE)
+            json.put("brand", android.os.Build.BRAND)
+            json.put("model", android.os.Build.MODEL)
+            json.put("email", username)
+            json.put("password", password)
+            json.put("thirdPartyUserData", "null")
+            json.put("oid", "null")
+            json.put("mobile", OnuFunctions().getPhoneNumber())
+
+            // print the number
+            Log.d("OnuFunctions", "Number: ${OnuFunctions().getPhoneNumber()}")
+
+            // print the json
+            Log.d("OnuFunctions", "UserActivation JSON: $json")
+            val url = "https://api.onukit.com/6v1/login"
+
+            val requestBody = RequestBody.create(
+                "application/json; charset=utf-8".toMediaTypeOrNull(),
+                json.toString()
+            )
+
+            return Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .header("Authorization", Credentials.basic(username!!, password!!))
+                .build()
         }
+
     }
 
     class CallRecordSender {

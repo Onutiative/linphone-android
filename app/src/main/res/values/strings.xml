@@ -930,4 +930,7 @@
     <string name="retry">Retry</string>
     <string name="go_to_settings">Go to settings</string>
 
+    <string name="sign_out">Sign Out</string>
+    <string name="disconnect">Disconnect</string>
+
 </resources>
