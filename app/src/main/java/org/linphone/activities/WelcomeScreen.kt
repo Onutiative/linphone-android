@@ -12,10 +12,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import kotlin.system.exitProcess
-import org.linphone.LinphoneApplication
 import org.linphone.R
-import org.linphone.activities.assistant.AssistantActivity
-import org.linphone.activities.main.MainActivity
 import org.linphone.utils.PermissionHelper
 
 class WelcomeScreen : AppCompatActivity() {
@@ -69,17 +66,19 @@ class WelcomeScreen : AppCompatActivity() {
         // check if all permissions are granted
         if (PermissionHelper.get().hasReadContactsPermission() && PermissionHelper.get().hasReadPhoneStatePermission() && PermissionHelper.get().hasRecordAudioPermission()) {
             // all permissions are granted, start the app
-            if (LinphoneApplication.coreContext.core.accountList.isEmpty()) {
-                Log.i("Permissions", "[onCreate] All permissions granted")
-                val intent = Intent(this, AssistantActivity::class.java)
-                startActivity(intent)
-                finish()
-            } else {
-                Log.i("Permissions", "[onCreate] All permissions granted")
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-                finish()
-            }
+//            if (LinphoneApplication.coreContext.core.accountList.isEmpty()) {
+//                Log.i("Permissions", "[onCreate] All permissions granted")
+//                val intent = Intent(this, OnuAuthentication::class.java)
+//                startActivity(intent)
+//                finish()
+//            } else {
+//                Log.i("Permissions", "[onCreate] All permissions granted")
+//                val intent = Intent(this, MainActivity::class.java)
+//                startActivity(intent)
+//                finish()
+//            }
+            val intent = Intent(this, OnuAuthentication::class.java)
+            startActivity(intent)
         } else {
             // some or all permissions are denied
             // request permissions
@@ -177,7 +176,7 @@ class WelcomeScreen : AppCompatActivity() {
                 setContentView(R.layout.welcome_slide7)
             } else if (permissions[0] == android.Manifest.permission.SYSTEM_ALERT_WINDOW || allPermissionsGranted) {
                 // start MainActivity
-                val intent = Intent(this, AssistantActivity::class.java)
+                val intent = Intent(this, OnuAuthentication::class.java)
                 startActivity(intent)
             }
         }
@@ -258,7 +257,7 @@ class WelcomeScreen : AppCompatActivity() {
         if (checkSelfPermission(android.Manifest.permission.SYSTEM_ALERT_WINDOW) == PackageManager.PERMISSION_GRANTED || Settings.canDrawOverlays(this)) {
             // open main activity
             Log.i("Permission", "Pop up permission granted, Opening main activity")
-            val intent = Intent(this, AssistantActivity::class.java)
+            val intent = Intent(this, OnuAuthentication::class.java)
             startActivity(intent)
         } else {
             // show pop up permission android.Manifest.permission.SYSTEM_ALERT_WINDOW

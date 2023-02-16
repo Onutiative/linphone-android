@@ -1,12 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--used in 6v3-->
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="OnuAuthentication"
+            type="org.linphone.activities.OnuAuthentication" />
+    </data>
 <RelativeLayout
     android:id="@+id/signUpActivity"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
     android:layout_centerHorizontal="true">
+
 
     <LinearLayout
         android:orientation="vertical"
@@ -214,5 +222,9 @@
         </LinearLayout>
     </ScrollView>
 
-</RelativeLayout>
+    <include
+        layout="@layout/wait_layout"
+        bind:visibility="@{OnuAuthentication.waitForServerAnswer}"/>
 
+</RelativeLayout>
+</layout>

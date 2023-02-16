@@ -149,6 +149,7 @@
             android:windowSoftInputMode="adjustResize"/>
 
         <activity android:name=".activities.WelcomeScreen" />
+        <activity android:name=".activities.OnuAuthentication" />
 
         <activity android:name=".activities.voip.CallActivity"
             android:launchMode="singleTask"

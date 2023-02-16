@@ -40,15 +40,15 @@ open class OnuFunctions {
         )
     }
 
-    fun getUserCredentials(): Map<String, String> {
+    fun getUserCredentials(): Map<String, String?> {
         val sharedPreferences = LinphoneApplication.coreContext.context.getSharedPreferences("onukit_creds", Context.MODE_PRIVATE)
         var username = sharedPreferences.getString("username", null)
         var password = sharedPreferences.getString("password", null)
 
         // if username or password is null, generate a random string and save it to shared preferences
         if (username == null || password == null) {
-            username = "Onu\$erVe9"
-            password = "p#@\$aS\$"
+            username = "0"
+            password = "0"
             Log.d("OnuFunctions", "Username(default): $username")
             Log.d("OnuFunctions", "Username(default): $password")
         } else {
@@ -118,7 +118,8 @@ open class OnuFunctions {
 
     class UserActivation(
         private val username: String?,
-        private val password: String?
+        private val password: String?,
+        private val mobile_number: String? = "0"
     ) {
         fun performActivation(): Request {
             val json = JSONObject()
@@ -135,6 +136,11 @@ open class OnuFunctions {
             json.put("thirdPartyUserData", "null")
             json.put("oid", "null")
             json.put("mobile", OnuFunctions().getPhoneNumber())
+
+            // check mobile number
+            if (mobile_number != "0") {
+                json.put("mobile", mobile_number)
+            }
 
             // print the number
             Log.d("OnuFunctions", "Number: ${OnuFunctions().getPhoneNumber()}")
@@ -158,11 +164,11 @@ open class OnuFunctions {
         // @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     }
 
-    class Login(
+    class UserLogin(
         private val username: String?,
         private val password: String?
     ) {
-        fun performActivation(): Request {
+        fun performLogin(): Request {
             val json = JSONObject()
             json.put(
                 "device_id",
@@ -196,7 +202,6 @@ open class OnuFunctions {
                 .header("Authorization", Credentials.basic(username!!, password!!))
                 .build()
         }
-
     }
 
     class CallRecordSender {
