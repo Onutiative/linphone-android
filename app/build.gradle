@@ -24,6 +24,8 @@ if (crashlyticsEnabled) {
     apply plugin: 'com.google.firebase.crashlytics'
 }
 
+apply plugin: "kotlin-android-extensions"
+
 def gitBranch = new ByteArrayOutputStream()
 task getGitVersion() {
     def gitVersion = appVersionName

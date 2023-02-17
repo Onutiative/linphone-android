@@ -2,11 +2,6 @@
 <!--used in 6v3-->
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <data>
-        <variable
-            name="OnuAuthentication"
-            type="org.linphone.activities.OnuAuthentication" />
-    </data>
 <RelativeLayout
     android:id="@+id/signUpActivity"
     android:orientation="vertical"
@@ -213,6 +208,7 @@
                     android:layout_height="wrap_content"
                     android:text="Sign Up"
                     android:id="@+id/activate"
+                    android:onClick="registration"
                     android:layout_gravity="center_vertical"
                     android:layout_weight="1"
                     android:background="#1a99d5"
@@ -224,7 +220,9 @@
 
     <include
         layout="@layout/wait_layout"
-        bind:visibility="@{OnuAuthentication.waitForServerAnswer}"/>
+        android:id="@+id/wait_layout_onuactivation"
+        android:visibility="invisible"
+        />
 
 </RelativeLayout>
 </layout>

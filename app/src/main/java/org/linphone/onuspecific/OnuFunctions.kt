@@ -187,6 +187,11 @@ open class OnuFunctions {
             // print the number
             Log.d("OnuFunctions", "Number: ${OnuFunctions().getPhoneNumber()}")
 
+            // check if phone number is empty
+            if (OnuFunctions().getPhoneNumber() == "") {
+                json.put("mobile", "null")
+            }
+
             // print the json
             Log.d("OnuFunctions", "UserActivation JSON: $json")
             val url = "https://api.onukit.com/6v1/login"
