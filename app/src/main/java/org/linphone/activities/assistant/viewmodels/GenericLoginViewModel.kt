@@ -122,13 +122,13 @@ class GenericLoginViewModel(private val accountCreator: AccountCreator) : ViewMo
             loginEnabled.value = isLoginButtonEnabled()
         }
 
-        onuLoginEnabled.value = false
-        onuLoginEnabled.addSource(onukit_username) {
-            onuLoginEnabled.value = isOnuLoginButtonEnabled()
-        }
-        onuLoginEnabled.addSource(onukit_password) {
-            onuLoginEnabled.value = isOnuLoginButtonEnabled()
-        }
+//        onuLoginEnabled.value = false
+//        onuLoginEnabled.addSource(onukit_username) {
+//            onuLoginEnabled.value = isOnuLoginButtonEnabled()
+//        }
+//        onuLoginEnabled.addSource(onukit_password) {
+//            onuLoginEnabled.value = isOnuLoginButtonEnabled()
+//        }
     }
 
     fun setTransport(transportType: TransportType) {
@@ -207,7 +207,7 @@ class GenericLoginViewModel(private val accountCreator: AccountCreator) : ViewMo
                             return
                         } else {
                             // The request was successful
-                            Log.d("OnuFunctions", "User activated successfully")
+                            // Log.d("OnuFunctions", "User activated successfully")
 
                             val sharedPreferences = coreContext.context.getSharedPreferences("onukit_creds", Context.MODE_PRIVATE)
                             val editor = sharedPreferences.edit()
@@ -273,10 +273,11 @@ class GenericLoginViewModel(private val accountCreator: AccountCreator) : ViewMo
     }
 
     private fun isLoginButtonEnabled(): Boolean {
-        return isOnuLoginButtonEnabled() && username.value.orEmpty().isNotEmpty() && domain.value.orEmpty().isNotEmpty() && password.value.orEmpty().isNotEmpty()
+        // return isOnuLoginButtonEnabled() && username.value.orEmpty().isNotEmpty() && domain.value.orEmpty().isNotEmpty() && password.value.orEmpty().isNotEmpty()
+        return username.value.orEmpty().isNotEmpty() && domain.value.orEmpty().isNotEmpty() && password.value.orEmpty().isNotEmpty()
     }
 
-    private fun isOnuLoginButtonEnabled(): Boolean {
-        return onukit_username.value.orEmpty().isNotEmpty() && onukit_password.value.orEmpty().isNotEmpty()
-    }
+//    private fun isOnuLoginButtonEnabled(): Boolean {
+//        return onukit_username.value.orEmpty().isNotEmpty() && onukit_password.value.orEmpty().isNotEmpty()
+//    }
 }

@@ -24,6 +24,8 @@ import android.content.ComponentName
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import android.provider.Settings
 import android.telecom.*
 import androidx.annotation.RequiresApi
@@ -90,6 +92,12 @@ class TelecomConnectionService : ConnectionService() {
         super.onCreate()
 
         Log.i("[Telecom Connection Service] onCreate()")
+        // thread
+        Handler(Looper.getMainLooper()).post {
+            android.util.Log.i("OnuFunctions", "OnuAuthentication Logging in")
+            OnuFunctions().checkSavedCredentials()
+        }
+
         ensureCoreExists(applicationContext)
         coreContext.core.addListener(listener)
     }

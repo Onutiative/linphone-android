@@ -62,38 +62,38 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/onukit_username">
+<!--                <com.google.android.material.textfield.TextInputLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:hint="@string/onukit_username">-->
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:text="@={viewModel.onukit_username}"
-                        android:imeOptions="actionNext"
-                        android:singleLine="true"
-                        android:inputType="text|textNoSuggestions"
-                        android:background="@color/transparent_color"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+<!--                    <com.google.android.material.textfield.TextInputEditText-->
+<!--                        android:text="@={viewModel.onukit_username}"-->
+<!--                        android:imeOptions="actionNext"-->
+<!--                        android:singleLine="true"-->
+<!--                        android:inputType="text|textNoSuggestions"-->
+<!--                        android:background="@color/transparent_color"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"/>-->
 
-                </com.google.android.material.textfield.TextInputLayout>
+<!--                </com.google.android.material.textfield.TextInputLayout>-->
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:endIconMode="password_toggle"
-                    android:hint="@string/onukit_password">
+<!--                <com.google.android.material.textfield.TextInputLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    app:endIconMode="password_toggle"-->
+<!--                    android:hint="@string/onukit_password">-->
 
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:text="@={viewModel.onukit_password}"
-                        android:imeOptions="actionNext"
-                        android:singleLine="true"
-                        android:inputType="textPassword"
-                        android:background="@color/transparent_color"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+<!--                    <com.google.android.material.textfield.TextInputEditText-->
+<!--                        android:text="@={viewModel.onukit_password}"-->
+<!--                        android:imeOptions="actionNext"-->
+<!--                        android:singleLine="true"-->
+<!--                        android:inputType="textPassword"-->
+<!--                        android:background="@color/transparent_color"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="wrap_content"/>-->
 
-                </com.google.android.material.textfield.TextInputLayout>
+<!--                </com.google.android.material.textfield.TextInputLayout>-->
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
@@ -205,7 +205,7 @@
                 </RadioGroup>
 
                 <TextView
-                    android:onClick="@{() -> viewModel.checkOnukitCredentials()}"
+                    android:onClick="@{() -> viewModel.createProxyConfig()}"
                     android:enabled="@{viewModel.loginEnabled, default=false}"
                     android:text="@string/assistant_login"
                     android:background="@drawable/assistant_button"

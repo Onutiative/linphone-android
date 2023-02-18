@@ -926,7 +926,7 @@
     <string name="content_description_recording_export">Export recording</string>
 
     <string name="permission_needed_title">Permission needed</string>
-    <string name="permission_needed_message">To use this feature, you need to grant the following permission:</string>
+    <string name="permission_needed_message">To use the app, you have to allow all the permissions.</string>
     <string name="retry">Retry</string>
     <string name="go_to_settings">Go to settings</string>
 

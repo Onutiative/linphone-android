@@ -11,7 +11,6 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import kotlin.system.exitProcess
 import org.linphone.R
 import org.linphone.utils.PermissionHelper
 
@@ -64,7 +63,7 @@ class WelcomeScreen : AppCompatActivity() {
         Log.i("Permissions", PermissionHelper.get().hasRecordAudioPermission().toString())
 
         // check if all permissions are granted
-        if (PermissionHelper.get().hasReadContactsPermission() && PermissionHelper.get().hasReadPhoneStatePermission() && PermissionHelper.get().hasRecordAudioPermission()) {
+        if (PermissionHelper.get().hasReadContactsPermission() && PermissionHelper.get().hasReadPhoneStatePermission() && PermissionHelper.get().hasRecordAudioPermission() && PermissionHelper.get().hasWriteExternalStoragePermission()) {
             // all permissions are granted, start the app
 //            if (LinphoneApplication.coreContext.core.accountList.isEmpty()) {
 //                Log.i("Permissions", "[onCreate] All permissions granted")
@@ -79,6 +78,7 @@ class WelcomeScreen : AppCompatActivity() {
 //            }
             val intent = Intent(this, OnuAuthentication::class.java)
             startActivity(intent)
+            finish()
         } else {
             // some or all permissions are denied
             // request permissions
@@ -176,16 +176,21 @@ class WelcomeScreen : AppCompatActivity() {
                 setContentView(R.layout.welcome_slide7)
             } else if (permissions[0] == android.Manifest.permission.SYSTEM_ALERT_WINDOW || allPermissionsGranted) {
                 // start MainActivity
-                val intent = Intent(this, OnuAuthentication::class.java)
-                startActivity(intent)
+                startActivity(Intent(this, OnuAuthentication::class.java))
+                finish()
             }
         }
     }
 
-    override fun onBackPressed() {
-        // terminate app if back button is pressed
-        moveTaskToBack(true)
-        exitProcess(-1)
+//    override fun onBackPressed() {
+//        super.onBackPressed();
+//        // kill the app
+//        android.os.Process.killProcess(android.os.Process.myPid())
+//    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // android.os.Process.killProcess(android.os.Process.myPid())
     }
 
     // welcome_slide1
@@ -259,6 +264,7 @@ class WelcomeScreen : AppCompatActivity() {
             Log.i("Permission", "Pop up permission granted, Opening main activity")
             val intent = Intent(this, OnuAuthentication::class.java)
             startActivity(intent)
+            finish()
         } else {
             // show pop up permission android.Manifest.permission.SYSTEM_ALERT_WINDOW
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

@@ -51,11 +51,17 @@ class OnuAuthentication : AppCompatActivity() {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        // android.os.Process.killProcess(android.os.Process.myPid())
+    }
+
     public fun loginBtn(view: View) {
         Log.i("OnuFunctions", "OnuAuthentication loginBtn function called")
         login()
     }
-    fun login(onukit_username_: String = "", onukit_password_: String = "") {
+
+    public fun login(onukit_username_: String = "", onukit_password_: String = "") {
         Log.i("OnuFunctions", "OnuAuthentication login function called")
 
         val onukit_username = if (onukit_username_.isEmpty()) {
@@ -166,6 +172,7 @@ class OnuAuthentication : AppCompatActivity() {
                                 // open the assistant activity
                                 val intent = android.content.Intent(LinphoneApplication.coreContext.context, AssistantActivity::class.java)
                                 startActivity(intent)
+                                finish()
                             }
                         }
                     } catch (e: Exception) {
@@ -266,19 +273,20 @@ class OnuAuthentication : AppCompatActivity() {
                             editor.putString("password", Base64.encodeToString(onukit_password?.toByteArray(), Base64.DEFAULT))
                             editor.apply()
 
-                            Log.d("OnuFunctions", "Saved username and password in SharedPreferences")
-                            Log.d("OnuFunctions", "inputted username: $onukit_username")
-                            Log.d("OnuFunctions", "inputted password: $onukit_password")
-                            Log.d("OnuFunctions", "base64 username: ${Base64.encodeToString(onukit_username?.toByteArray(), Base64.DEFAULT)}")
-                            Log.d("OnuFunctions", "base64 password: ${Base64.encodeToString(onukit_password?.toByteArray(), Base64.DEFAULT)}")
-                            Log.d("OnuFunctions", "saved username: ${sharedPreferences.getString("username", "")}")
-                            Log.d("OnuFunctions", "saved password: ${sharedPreferences.getString("password", "")}")
+//                            Log.d("OnuFunctions", "Saved username and password in SharedPreferences")
+//                            Log.d("OnuFunctions", "inputted username: $onukit_username")
+//                            Log.d("OnuFunctions", "inputted password: $onukit_password")
+//                            Log.d("OnuFunctions", "base64 username: ${Base64.encodeToString(onukit_username?.toByteArray(), Base64.DEFAULT)}")
+//                            Log.d("OnuFunctions", "base64 password: ${Base64.encodeToString(onukit_password?.toByteArray(), Base64.DEFAULT)}")
+//                            Log.d("OnuFunctions", "saved username: ${sharedPreferences.getString("username", "")}")
+//                            Log.d("OnuFunctions", "saved password: ${sharedPreferences.getString("password", "")}")
 
                             Handler(Looper.getMainLooper()).post {
                                 Toast.makeText(LinphoneApplication.coreContext.context, reason, Toast.LENGTH_SHORT).show()
                                 // open the assistant activity
                                 val intent = android.content.Intent(LinphoneApplication.coreContext.context, AssistantActivity::class.java)
                                 startActivity(intent)
+                                finish()
                             }
                         }
                     } catch (e: Exception) {
@@ -300,7 +308,7 @@ class OnuAuthentication : AppCompatActivity() {
         })
     }
 
-    fun switchToRegistration() {
+    fun switchToRegistration(view: View) {
         setContentView(R.layout.onu_activation_activity)
     }
 

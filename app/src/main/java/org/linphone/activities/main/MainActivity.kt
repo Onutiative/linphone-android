@@ -47,6 +47,7 @@ import com.google.android.material.snackbar.Snackbar
 import java.io.UnsupportedEncodingException
 import java.net.URLDecoder
 import kotlin.math.abs
+import kotlinx.android.synthetic.main.onu_login_activity.*
 import kotlinx.coroutines.*
 import org.linphone.LinphoneApplication.Companion.coreContext
 import org.linphone.LinphoneApplication.Companion.corePreferences
@@ -158,6 +159,7 @@ class MainActivity : GenericActivity(), SnackBarActivity, NavController.OnDestin
 
         binding.root.doOnAttach {
             Log.i("[Main Activity] Report UI has been fully drawn (TTFD)")
+
             try {
                 reportFullyDrawn()
             } catch (se: SecurityException) {

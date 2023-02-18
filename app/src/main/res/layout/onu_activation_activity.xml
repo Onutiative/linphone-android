@@ -124,20 +124,20 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:gravity="center" />
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="40dp"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Medium Text"
-                android:id="@+id/user_imei"
-                android:gravity="center"
-                android:textColor="#2b2b2b"
-                android:textSize="16sp"
-                android:layout_weight="1"
-                android:background="@drawable/round"
-                android:layout_marginTop="5dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp" />
+<!--            <TextView-->
+<!--                android:layout_width="fill_parent"-->
+<!--                android:layout_height="40dp"-->
+<!--                android:textAppearance="?android:attr/textAppearanceMedium"-->
+<!--                android:text="Medium Text"-->
+<!--                android:id="@+id/user_imei"-->
+<!--                android:gravity="center"-->
+<!--                android:textColor="#2b2b2b"-->
+<!--                android:textSize="16sp"-->
+<!--                android:layout_weight="1"-->
+<!--                android:background="@drawable/round"-->
+<!--                android:layout_marginTop="5dp"-->
+<!--                android:layout_marginLeft="8dp"-->
+<!--                android:layout_marginRight="8dp" />-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

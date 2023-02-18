@@ -145,7 +145,8 @@ class DialerFragment : SecureFragment<DialerFragmentBinding>() {
             viewLifecycleOwner
         ) {
             it.consume { url ->
-                displayNewVersionAvailableDialog(url)
+                // displayNewVersionAvailableDialog(url)
+                Log.i("[Dialer] New version available: $url, Currently avoiding...")
             }
         }
 

@@ -4,10 +4,13 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import android.provider.Settings
 import android.telephony.SubscriptionManager
 import android.telephony.TelephonyManager
 import android.util.Log
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import java.io.File
@@ -49,15 +52,15 @@ open class OnuFunctions {
         if (username == null || password == null) {
             username = "0"
             password = "0"
-            Log.d("OnuFunctions", "Username(default): $username")
-            Log.d("OnuFunctions", "Username(default): $password")
+            // Log.d("OnuFunctions", "Username(default): $username")
+            // Log.d("OnuFunctions", "Username(default): $password")
         } else {
-            Log.d("OnuFunctions", "Username(base64): $username")
-            Log.d("OnuFunctions", "Username(base64): $password")
+            // Log.d("OnuFunctions", "Username(base64): $username")
+            // Log.d("OnuFunctions", "Username(base64): $password")
             username = username.fromBase64()
             password = password.fromBase64()
-            Log.d("OnuFunctions", "Username: $username")
-            Log.d("OnuFunctions", "Password: $password")
+            // Log.d("OnuFunctions", "Username: $username")
+            // Log.d("OnuFunctions", "Password: $password")
         }
 
         // return as dictionary
@@ -146,7 +149,7 @@ open class OnuFunctions {
             Log.d("OnuFunctions", "Number: ${OnuFunctions().getPhoneNumber()}")
 
             // print the json
-            Log.d("OnuFunctions", "UserActivation JSON: $json")
+            // Log.d("OnuFunctions", "UserActivation JSON: $json")
             val url = "https://api.onukit.com/6v1/userActivation"
 
             val requestBody = RequestBody.create(
@@ -193,7 +196,7 @@ open class OnuFunctions {
             }
 
             // print the json
-            Log.d("OnuFunctions", "UserActivation JSON: $json")
+            // Log.d("OnuFunctions", "UserActivation JSON: $json")
             val url = "https://api.onukit.com/6v1/login"
 
             val requestBody = RequestBody.create(
@@ -206,6 +209,118 @@ open class OnuFunctions {
                 .post(requestBody)
                 .header("Authorization", Credentials.basic(username!!, password!!))
                 .build()
+        }
+    }
+
+    fun checkSavedCredentials() {
+        Log.i("OnuFunctions", "OnuAuthentication checkSavedCredentials function called")
+        val userCredentials = OnuFunctions().getUserCredentials()
+        if (userCredentials != null) {
+            // get the username and password from the credentials
+            val username = userCredentials["username"]
+            val password = userCredentials["password"]
+
+            // check if the credentials are not null
+            if (username != "0" && password != "0") {
+                // login the user
+                Log.i("OnuFunctions", "OnuAuthentication Logging in")
+
+                val request = OnuFunctions.UserLogin(username, password).performLogin()
+                val client = OkHttpClient()
+
+                val sharedPreferences = LinphoneApplication.coreContext.context.getSharedPreferences("onukit_creds", Context.MODE_PRIVATE)
+                val editor = sharedPreferences.edit()
+
+                client.newCall(request).enqueue(object : okhttp3.Callback {
+                    override fun onFailure(call: okhttp3.Call, e: IOException) {
+                        Handler(Looper.getMainLooper()).post {
+                            // show a toast
+                            Toast.makeText(LinphoneApplication.coreContext.context, "Failed to check credentials: $e", Toast.LENGTH_SHORT).show()
+                        }
+                        Log.d("OnuFunctions", "onFailure - Failed to login user: $e")
+                    }
+
+                    override fun onResponse(call: Call, response: okhttp3.Response) {
+
+                        val requestBody = response.body
+
+                        // log status code
+                        Log.d("OnuFunctions", "Response code: ${response.code}")
+
+                        // check status code
+                        if (response.code != 200) {
+                            editor.putString("username", null)
+                            editor.putString("password", null)
+                            editor.apply()
+                            // Show a toast message
+                            Log.d("OnuFunctions", "response.code != 200 | Failed to login user")
+                            // thread
+                            Handler(Looper.getMainLooper()).post {
+                                Toast.makeText(LinphoneApplication.coreContext.context, "Server error! ${response.code}", Toast.LENGTH_SHORT).show()
+                                // kill the app
+                                android.os.Process.killProcess(android.os.Process.myPid())
+                            }
+                        }
+
+                        // Handle response
+                        if (response.isSuccessful) {
+                            try {
+                                // load the json data
+                                val json = JSONObject(requestBody?.string())
+
+                                // [REMEMBER] - Leave this commented out
+                                // https://stackoverflow.com/a/40709867
+                                // "you can only receive the body string once"
+                                // Log.d("OnuFunctions", "Response body: ${requestBody.string()}")
+
+                                // get the status and reason from json data
+                                val status = json.getString("status")
+                                Log.d("OnuFunctions", "status: $status")
+
+                                // show in a toast message
+                                if (status.toInt() > 4000) {
+                                    Handler(Looper.getMainLooper()).post {
+                                        Toast.makeText(LinphoneApplication.coreContext.context, "Onukit Login Failed", Toast.LENGTH_SHORT).show()
+                                        // kill the app
+                                        android.os.Process.killProcess(android.os.Process.myPid())
+                                    }
+                                    return
+                                } else {
+                                    Handler(Looper.getMainLooper()).post {
+                                        Toast.makeText(LinphoneApplication.coreContext.context, "Onukit Login Successful", Toast.LENGTH_SHORT).show()
+                                    }
+                                }
+                            } catch (e: Exception) {
+                                Log.d("OnuFunctions", "Exception: $e")
+                                // log the exception line number
+                                e.printStackTrace()
+                                Handler(Looper.getMainLooper()).post {
+                                    Toast.makeText(LinphoneApplication.coreContext.context, "Exception: $e", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+                        } else {
+                            editor.putString("username", null)
+                            editor.putString("password", null)
+                            editor.apply()
+                            // The request failed
+                            Log.d("OnuFunctions", "response.isSuccessful == false | Failed to activate user")
+                            Handler(Looper.getMainLooper()).post {
+                                Toast.makeText(LinphoneApplication.coreContext.context, "Wrong usename or password", Toast.LENGTH_SHORT).show()
+                                // Toast.makeText(LinphoneApplication.coreContext.context, "Request Error! Try Again!", Toast.LENGTH_SHORT).show()
+                                // kill the app
+                                android.os.Process.killProcess(android.os.Process.myPid())
+                            }
+                        }
+                    }
+                })
+            } else {
+                Log.i("OnuFunctions", "OnuAuthentication No saved credentials")
+                Handler(Looper.getMainLooper()).post {
+                    Toast.makeText(LinphoneApplication.coreContext.context, "User Not Logged in", Toast.LENGTH_SHORT).show()
+                    // kill the app
+                    android.os.Process.killProcess(android.os.Process.myPid())
+                }
+            }
         }
     }
 
