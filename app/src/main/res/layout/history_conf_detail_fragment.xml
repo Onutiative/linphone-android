@@ -16,11 +16,11 @@
 
         <variable
             name="viewModel"
-            type="org.linphone.activities.main.history.viewmodels.CallLogViewModel" />
+            type="com.onutiative.onukit.activities.main.history.viewmodels.CallLogViewModel" />
 
         <variable
             name="sharedMainViewModel"
-            type="org.linphone.activities.main.viewmodels.SharedMainViewModel" />
+            type="com.onutiative.onukit.activities.main.viewmodels.SharedMainViewModel" />
     </data>
 
     <RelativeLayout

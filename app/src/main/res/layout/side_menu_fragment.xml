@@ -27,7 +27,7 @@
             type="android.view.View.OnClickListener"/>
         <variable
             name="viewModel"
-            type="org.linphone.activities.main.sidemenu.viewmodels.SideMenuViewModel" />
+            type="com.onutiative.onukit.activities.main.sidemenu.viewmodels.SideMenuViewModel" />
     </data>
 
     <RelativeLayout

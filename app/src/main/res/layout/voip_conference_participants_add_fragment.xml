@@ -9,7 +9,7 @@
             type="android.view.View.OnClickListener"/>
         <variable
             name="viewModel"
-            type="org.linphone.activities.voip.viewmodels.ConferenceParticipantsViewModel" />
+            type="com.onutiative.onukit.activities.voip.viewmodels.ConferenceParticipantsViewModel" />
     </data>
 
     <LinearLayout

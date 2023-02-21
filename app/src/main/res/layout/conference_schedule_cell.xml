@@ -28,10 +28,10 @@
             type="Integer" />
         <variable
             name="selectionListViewModel"
-            type="org.linphone.activities.main.viewmodels.ListTopBarViewModel" />
+            type="com.onutiative.onukit.activities.main.viewmodels.ListTopBarViewModel" />
         <variable
             name="data"
-            type="org.linphone.activities.main.conference.data.ScheduledConferenceData" />
+            type="com.onutiative.onukit.activities.main.conference.data.ScheduledConferenceData" />
     </data>
 
     <LinearLayout

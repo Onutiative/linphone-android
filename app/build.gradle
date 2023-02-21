@@ -9,7 +9,7 @@ def appVersionName = "0.1.1"
 def appVersionCode = 00011
 
 static def getPackageName() {
-    return "org.linphone"
+    return "com.onutiative.onukit"
 }
 
 def firebaseEnabled = new File(projectDir.absolutePath +'/google-services.json').exists()
@@ -189,7 +189,7 @@ android {
         dataBinding = true
     }
 
-    namespace 'org.linphone'
+    namespace 'com.onutiative.onukit'
 }
 
 dependencies {

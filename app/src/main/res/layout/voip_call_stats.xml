@@ -6,10 +6,10 @@
         <import type="android.view.View" />
         <variable
             name="statsViewModel"
-            type="org.linphone.activities.voip.viewmodels.StatisticsListViewModel" />
+            type="com.onutiative.onukit.activities.voip.viewmodels.StatisticsListViewModel" />
         <variable
             name="controlsViewModel"
-            type="org.linphone.activities.voip.viewmodels.ControlsViewModel" />
+            type="com.onutiative.onukit.activities.voip.viewmodels.ControlsViewModel" />
         <variable
             name="inflatedVisibility"
             type="Integer" />

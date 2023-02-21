@@ -18,7 +18,7 @@
             type="Boolean" />
         <variable
             name="listener"
-            type="org.linphone.activities.main.settings.SettingListener" />
+            type="com.onutiative.onukit.activities.main.settings.SettingListener" />
     </data>
 
     <RelativeLayout

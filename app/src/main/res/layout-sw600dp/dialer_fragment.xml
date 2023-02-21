@@ -15,7 +15,7 @@
             type="android.view.View.OnClickListener"/>
         <variable
             name="viewModel"
-            type="org.linphone.activities.main.dialer.viewmodels.DialerViewModel"/>
+            type="com.onutiative.onukit.activities.main.dialer.viewmodels.DialerViewModel"/>
     </data>
 
     <RelativeLayout
@@ -33,7 +33,7 @@
             android:contentDescription="@null"
             android:src="@drawable/dialer_background" />
 
-        <org.linphone.mediastream.video.capture.CaptureTextureView
+        <com.onutiative.onukit.mediastream.video.capture.CaptureTextureView
             android:id="@+id/video_preview_window"
             android:visibility="@{viewModel.showPreview ? View.VISIBLE : View.GONE, default=gone}"
             android:layout_width="match_parent"

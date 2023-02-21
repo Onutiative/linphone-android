@@ -5,7 +5,7 @@
         <import type="android.view.View" />
         <variable
             name="controlsViewModel"
-            type="org.linphone.activities.voip.viewmodels.ControlsViewModel" />
+            type="com.onutiative.onukit.activities.voip.viewmodels.ControlsViewModel" />
         <variable
             name="inflatedVisibility"
             type="Integer" />

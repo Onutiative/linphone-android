@@ -8,11 +8,11 @@
 
         <variable
             name="conferenceViewModel"
-            type="org.linphone.activities.voip.viewmodels.ConferenceViewModel" />
+            type="com.onutiative.onukit.activities.voip.viewmodels.ConferenceViewModel" />
 
         <variable
             name="controlsViewModel"
-            type="org.linphone.activities.voip.viewmodels.ControlsViewModel" />
+            type="com.onutiative.onukit.activities.voip.viewmodels.ControlsViewModel" />
 
         <variable
             name="inflatedVisibility"
@@ -121,7 +121,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:visibility="@{conferenceViewModel.isRemotelyRecorded ? View.VISIBLE : View.GONE, default=gone}" />
 
-        <org.linphone.activities.voip.views.GridBoxLayout
+        <com.onutiative.onukit.activities.voip.views.GridBoxLayout
             android:id="@+id/grid_box_layout"
             centerContent="@{true}"
             android:layout_width="0dp"

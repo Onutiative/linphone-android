@@ -11,19 +11,19 @@
 
         <variable
             name="controlsViewModel"
-            type="org.linphone.activities.voip.viewmodels.ControlsViewModel" />
+            type="com.onutiative.onukit.activities.voip.viewmodels.ControlsViewModel" />
 
         <variable
             name="callsViewModel"
-            type="org.linphone.activities.voip.viewmodels.CallsViewModel" />
+            type="com.onutiative.onukit.activities.voip.viewmodels.CallsViewModel" />
 
         <variable
             name="conferenceViewModel"
-            type="org.linphone.activities.voip.viewmodels.ConferenceViewModel" />
+            type="com.onutiative.onukit.activities.voip.viewmodels.ConferenceViewModel" />
 
         <variable
             name="statsViewModel"
-            type="org.linphone.activities.voip.viewmodels.StatisticsListViewModel" />
+            type="com.onutiative.onukit.activities.voip.viewmodels.StatisticsListViewModel" />
     </data>
 
 
@@ -162,7 +162,7 @@
                 app:layout_constraintBottom_toBottomOf="@id/background"
                 app:layout_constraintStart_toStartOf="@id/background" />
 
-            <org.linphone.activities.voip.views.RoundCornersTextureView
+            <com.onutiative.onukit.activities.voip.views.RoundCornersTextureView
                 android:id="@+id/remote_video_surface"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
@@ -228,7 +228,7 @@
                 android:visibility="@{controlsViewModel.isVideoEnabled &amp;&amp; !callsViewModel.currentCallData.isRemotelyPaused &amp;&amp; !callsViewModel.currentCallData.isPaused ? View.VISIBLE : View.GONE}"
                 app:constraint_referenced_ids="local_preview_video_surface,switch_camera" />
 
-            <org.linphone.activities.voip.views.RoundCornersTextureView
+            <com.onutiative.onukit.activities.voip.views.RoundCornersTextureView
                 android:id="@+id/local_preview_video_surface"
                 android:layout_width="0dp"
                 android:layout_height="0dp"

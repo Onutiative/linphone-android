@@ -7,10 +7,10 @@
         <import type="android.text.InputType"/>
         <variable
             name="viewModel"
-            type="org.linphone.activities.main.settings.viewmodels.ChatSettingsViewModel"/>
+            type="com.onutiative.onukit.activities.main.settings.viewmodels.ChatSettingsViewModel"/>
         <variable
             name="sharedMainViewModel"
-            type="org.linphone.activities.main.viewmodels.SharedMainViewModel" />
+            type="com.onutiative.onukit.activities.main.viewmodels.SharedMainViewModel" />
     </data>
 
     <RelativeLayout

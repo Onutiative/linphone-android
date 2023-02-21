@@ -7,7 +7,7 @@
         <import type="android.view.View" />
         <variable
             name="data"
-            type="org.linphone.activities.voip.data.CallStatisticsData" />
+            type="com.onutiative.onukit.activities.voip.data.CallStatisticsData" />
     </data>
 
     <LinearLayout

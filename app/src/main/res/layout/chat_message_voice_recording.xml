@@ -6,7 +6,7 @@
         <import type="android.view.View"/>
         <variable
             name="viewModel"
-            type="org.linphone.activities.main.chat.viewmodels.ChatMessageSendingViewModel" />
+            type="com.onutiative.onukit.activities.main.chat.viewmodels.ChatMessageSendingViewModel" />
         <variable
             name="inflatedVisibility"
             type="Integer" />
@@ -44,7 +44,7 @@
             android:layout_toLeftOf="@id/play_pause_stop"
             android:background="@drawable/chat_message_voice_recording_background">
 
-            <org.linphone.views.VoiceRecordProgressBar
+            <com.onutiative.onukit.views.VoiceRecordProgressBar
                 android:visibility="@{viewModel.isVoiceRecording ? View.GONE : View.VISIBLE}"
                 android:layout_width="0dp"
                 android:layout_weight="1"

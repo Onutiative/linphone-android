@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/emptyCallHistoryFragment"
-        android:name="org.linphone.activities.main.fragments.EmptyFragment"
+        android:name="com.onutiative.onukit.activities.main.fragments.EmptyFragment"
         tools:layout="@layout/empty_fragment"
         android:label="EmptyCallHistoryFragment" />
 
@@ -15,13 +15,13 @@
 
     <fragment
         android:id="@+id/detailCallLogFragment"
-        android:name="org.linphone.activities.main.history.fragments.DetailCallLogFragment"
+        android:name="com.onutiative.onukit.activities.main.history.fragments.DetailCallLogFragment"
         tools:layout="@layout/history_detail_fragment"
         android:label="DetailCallLogFragment" />
 
     <fragment
         android:id="@+id/detailConferenceCallLogFragment"
-        android:name="org.linphone.activities.main.history.fragments.DetailConferenceCallLogFragment"
+        android:name="com.onutiative.onukit.activities.main.history.fragments.DetailConferenceCallLogFragment"
         tools:layout="@layout/history_conf_detail_fragment"
         android:label="DetailConferenceCallLogFragment" />
 

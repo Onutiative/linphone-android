@@ -8,7 +8,7 @@
             type="android.view.View.OnClickListener"/>
         <variable
             name="viewModel"
-            type="org.linphone.activities.voip.viewmodels.StatusViewModel" />
+            type="com.onutiative.onukit.activities.voip.viewmodels.StatusViewModel" />
     </data>
 
     <RelativeLayout

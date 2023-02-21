@@ -15,7 +15,7 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/top_bar_fragment"
-            android:name="org.linphone.activities.assistant.fragments.TopBarFragment"
+            android:name="com.onutiative.onukit.activities.assistant.fragments.TopBarFragment"
             android:layout_width="match_parent"
             android:layout_height="@dimen/main_activity_top_bar_size"
             android:layout_alignParentTop="true"

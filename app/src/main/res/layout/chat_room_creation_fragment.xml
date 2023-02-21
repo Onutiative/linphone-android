@@ -16,7 +16,7 @@
             type="android.view.View.OnClickListener"/>
         <variable
             name="viewModel"
-            type="org.linphone.activities.main.chat.viewmodels.ChatRoomCreationViewModel" />
+            type="com.onutiative.onukit.activities.main.chat.viewmodels.ChatRoomCreationViewModel" />
     </data>
 
     <RelativeLayout

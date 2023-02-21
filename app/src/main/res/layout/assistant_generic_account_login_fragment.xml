@@ -6,10 +6,10 @@
 
     <data>
         <import type="android.view.View"/>
-        <import type="org.linphone.core.TransportType"/>
+        <import type="com.onutiative.onukit.core.TransportType"/>
         <variable
             name="viewModel"
-            type="org.linphone.activities.assistant.viewmodels.GenericLoginViewModel" />
+            type="com.onutiative.onukit.activities.assistant.viewmodels.GenericLoginViewModel" />
     </data>
 
     <RelativeLayout
@@ -18,7 +18,7 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/top_bar_fragment"
-            android:name="org.linphone.activities.assistant.fragments.TopBarFragment"
+            android:name="com.onutiative.onukit.activities.assistant.fragments.TopBarFragment"
             android:layout_width="match_parent"
             android:layout_height="@dimen/main_activity_top_bar_size"
             android:layout_alignParentTop="true"

@@ -22,7 +22,7 @@
             type="android.view.View.OnClickListener" />
         <variable
             name="viewModel"
-            type="org.linphone.activities.main.chat.viewmodels.ChatRoomsListViewModel" />
+            type="com.onutiative.onukit.activities.main.chat.viewmodels.ChatRoomsListViewModel" />
     </data>
 
     <androidx.slidingpanelayout.widget.SlidingPaneLayout
@@ -123,7 +123,7 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/list_edit_top_bar_fragment"
-            android:name="org.linphone.activities.main.fragments.ListTopBarFragment"
+            android:name="com.onutiative.onukit.activities.main.fragments.ListTopBarFragment"
             android:layout_width="match_parent"
             android:layout_height="@dimen/main_activity_top_bar_size"
             android:layout_alignTop="@id/top_bar"

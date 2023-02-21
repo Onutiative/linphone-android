@@ -8,7 +8,7 @@
 
         <variable
             name="data"
-            type="org.linphone.activities.voip.data.ConferenceParticipantDeviceData" />
+            type="com.onutiative.onukit.activities.voip.data.ConferenceParticipantDeviceData" />
     </data>
 
     <!-- Width MUST BE 0dp, otherwise column width will be broken when mute mic icon will be show! -->

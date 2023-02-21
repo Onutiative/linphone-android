@@ -6,7 +6,7 @@
         <import type="android.view.View" />
         <variable
             name="conferenceViewModel"
-            type="org.linphone.activities.voip.viewmodels.ConferenceViewModel" />
+            type="com.onutiative.onukit.activities.voip.viewmodels.ConferenceViewModel" />
         <variable
             name="inflatedVisibility"
             type="Integer" />

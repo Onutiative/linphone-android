@@ -8,11 +8,11 @@
 
         <variable
             name="conferenceViewModel"
-            type="org.linphone.activities.voip.viewmodels.ConferenceViewModel" />
+            type="com.onutiative.onukit.activities.voip.viewmodels.ConferenceViewModel" />
 
         <variable
             name="controlsViewModel"
-            type="org.linphone.activities.voip.viewmodels.ControlsViewModel" />
+            type="com.onutiative.onukit.activities.voip.viewmodels.ControlsViewModel" />
 
         <variable
             name="inflatedVisibility"
@@ -121,7 +121,7 @@
             android:visibility="@{controlsViewModel.fullScreenMode || controlsViewModel.pipMode ? View.GONE : View.VISIBLE}"
             app:constraint_referenced_ids="remote_name,active_conference_timer,toggle_pause_conference" />
 
-        <org.linphone.activities.voip.views.ScrollDotsView
+        <com.onutiative.onukit.activities.voip.views.ScrollDotsView
             android:id="@+id/scroll_indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -215,7 +215,7 @@
             app:layout_constraintLeft_toLeftOf="@id/active_speaker_background"
             app:layout_constraintTop_toTopOf="@id/active_speaker_background" />
 
-        <org.linphone.activities.voip.views.RoundCornersTextureView
+        <com.onutiative.onukit.activities.voip.views.RoundCornersTextureView
             android:id="@+id/conference_active_speaker_remote_video"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -277,7 +277,7 @@
             app:layout_constraintTop_toTopOf="@id/local_participant_background"
             app:layout_constraintWidth_max="@dimen/voip_contact_avatar_max_size" />
 
-        <org.linphone.activities.voip.views.RoundCornersTextureView
+        <com.onutiative.onukit.activities.voip.views.RoundCornersTextureView
             android:id="@+id/local_preview_video_surface"
             android:layout_width="0dp"
             android:layout_height="0dp"

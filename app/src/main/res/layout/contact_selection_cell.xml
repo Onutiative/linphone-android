@@ -8,7 +8,7 @@
             type="android.view.View.OnClickListener"/>
         <variable
             name="data"
-            type="org.linphone.contact.ContactSelectionData" />
+            type="com.onutiative.onukit.contact.ContactSelectionData" />
     </data>
 
     <FrameLayout

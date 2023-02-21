@@ -15,7 +15,7 @@
             type="android.view.View.OnClickListener"/>
         <variable
             name="viewModel"
-            type="org.linphone.activities.main.dialer.viewmodels.DialerViewModel"/>
+            type="com.onutiative.onukit.activities.main.dialer.viewmodels.DialerViewModel"/>
     </data>
 
     <RelativeLayout

@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/emptyContactFragment"
-        android:name="org.linphone.activities.main.fragments.EmptyFragment"
+        android:name="com.onutiative.onukit.activities.main.fragments.EmptyFragment"
         tools:layout="@layout/empty_fragment"
         android:label="EmptyContactFragment" />
 
@@ -15,7 +15,7 @@
 
     <fragment
         android:id="@+id/detailContactFragment"
-        android:name="org.linphone.activities.main.contact.fragments.DetailContactFragment"
+        android:name="com.onutiative.onukit.activities.main.contact.fragments.DetailContactFragment"
         tools:layout="@layout/contact_detail_fragment"
         android:label="DetailContactFragment">
 
@@ -34,7 +34,7 @@
 
     <fragment
         android:id="@+id/contactEditorFragment"
-        android:name="org.linphone.activities.main.contact.fragments.ContactEditorFragment"
+        android:name="com.onutiative.onukit.activities.main.contact.fragments.ContactEditorFragment"
         tools:layout="@layout/contact_editor_fragment"
         android:label="ContactEditorFragment">
         <argument

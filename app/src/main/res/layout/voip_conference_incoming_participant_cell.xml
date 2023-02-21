@@ -5,7 +5,7 @@
         <import type="android.view.View"/>
         <variable
             name="data"
-            type="org.linphone.activities.voip.data.ConferenceInfoParticipantData" />
+            type="com.onutiative.onukit.activities.voip.data.ConferenceInfoParticipantData" />
     </data>
 
     <LinearLayout
@@ -15,14 +15,14 @@
         android:orientation="vertical"
         android:gravity="center">
 
-        <org.linphone.views.MarqueeTextView
+        <com.onutiative.onukit.views.MarqueeTextView
             style="@style/call_header_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:singleLine="true"
             android:text="@{data.contact.name ?? data.displayName, default=`Bilbo Baggins`}" />
 
-        <org.linphone.views.MarqueeTextView
+        <com.onutiative.onukit.views.MarqueeTextView
             style="@style/sip_uri_font"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

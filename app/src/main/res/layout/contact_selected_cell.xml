@@ -5,10 +5,10 @@
         <import type="android.view.View"/>
         <variable
             name="data"
-            type="org.linphone.core.Address" />
+            type="com.onutiative.onukit.core.Address" />
         <variable
             name="parent"
-            type="org.linphone.contact.ContactsSelectionViewModel" />
+            type="com.onutiative.onukit.contact.ContactsSelectionViewModel" />
     </data>
 
     <LinearLayout

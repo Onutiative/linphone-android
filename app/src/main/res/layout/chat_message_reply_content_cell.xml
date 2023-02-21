@@ -7,7 +7,7 @@
         <import type="android.widget.ImageView.ScaleType"/>
         <variable
             name="data"
-            type="org.linphone.activities.main.chat.data.ChatMessageContentData" />
+            type="com.onutiative.onukit.activities.main.chat.data.ChatMessageContentData" />
     </data>
 
     <RelativeLayout

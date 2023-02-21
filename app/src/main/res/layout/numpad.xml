@@ -5,7 +5,7 @@
     <data>
         <variable
             name="keyListener"
-            type="org.linphone.activities.main.dialer.NumpadDigitListener" />
+            type="com.onutiative.onukit.activities.main.dialer.NumpadDigitListener" />
     </data>
 
     <com.google.android.flexbox.FlexboxLayout

@@ -6,11 +6,11 @@
 
         <import type="android.view.View" />
 
-        <import type="org.linphone.activities.voip.ConferenceDisplayMode" />
+        <import type="com.onutiative.onukit.activities.voip.ConferenceDisplayMode" />
 
         <variable
             name="viewModel"
-            type="org.linphone.activities.main.conference.viewmodels.ConferenceWaitingRoomViewModel" />
+            type="com.onutiative.onukit.activities.main.conference.viewmodels.ConferenceWaitingRoomViewModel" />
     </data>
 
     <RelativeLayout
@@ -48,7 +48,7 @@
             android:background="@drawable/shape_remote_video_background"
             android:visibility="@{viewModel.isVideoEnabled ? View.VISIBLE : View.GONE, default=gone}">
 
-            <org.linphone.activities.voip.views.RoundCornersTextureView
+            <com.onutiative.onukit.activities.voip.views.RoundCornersTextureView
                 android:id="@+id/local_preview_video_surface"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
