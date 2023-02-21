@@ -19,20 +19,16 @@
  */
 package org.linphone.activities.assistant
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.annotation.StringRes
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
-import org.linphone.LinphoneApplication
 import org.linphone.LinphoneApplication.Companion.corePreferences
 import org.linphone.R
 import org.linphone.activities.GenericActivity
-import org.linphone.activities.OnuAuthentication
 import org.linphone.activities.SnackBarActivity
 import org.linphone.activities.assistant.viewmodels.SharedAssistantViewModel
-import org.linphone.core.tools.Log
 
 class AssistantActivity : GenericActivity(), SnackBarActivity {
     private lateinit var sharedViewModel: SharedAssistantViewModel
@@ -49,13 +45,13 @@ class AssistantActivity : GenericActivity(), SnackBarActivity {
 
         corePreferences.firstStart = false
 
-        Log.i("[Assistant] LinphoneApplication.coreContext.core.accountList.isEmpty() ${LinphoneApplication.coreContext.core.accountList.isEmpty()}")
-        if (!LinphoneApplication.coreContext.core.accountList.isEmpty()) {
-            Log.i("[Assistant] Account exists, going to main activity")
-            val intent = Intent(this, OnuAuthentication::class.java)
-            startActivity(intent)
-            finish()
-        }
+//        Log.i("[Assistant] LinphoneApplication.coreContext.core.accountList.isEmpty() ${LinphoneApplication.coreContext.core.accountList.isEmpty()}")
+//        if (!LinphoneApplication.coreContext.core.accountList.isEmpty()) {
+//            Log.i("[Assistant] Account exists, going to main activity")
+//            val intent = Intent(this, OnuAuthentication::class.java)
+//            startActivity(intent)
+//            finish()
+//        }
     }
 
     override fun showSnackBar(@StringRes resourceId: Int) {
