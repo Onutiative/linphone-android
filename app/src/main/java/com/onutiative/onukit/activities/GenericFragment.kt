@@ -33,8 +33,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.transition.MaterialSharedAxis
 import com.onutiative.onukit.LinphoneApplication.Companion.corePreferences
-import org.linphone.R
-import org.linphone.activities.main.viewmodels.SharedMainViewModel
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.viewmodels.SharedMainViewModel
 import org.linphone.core.tools.Log
 
 abstract class GenericFragment<T : ViewDataBinding> : Fragment() {

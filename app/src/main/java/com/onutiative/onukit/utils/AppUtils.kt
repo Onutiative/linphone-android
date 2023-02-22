@@ -35,9 +35,9 @@ import androidx.media.AudioManagerCompat
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.viewmodels.SharedMainViewModel
 import java.util.*
-import org.linphone.R
-import org.linphone.activities.main.viewmodels.SharedMainViewModel
 import org.linphone.core.tools.Log
 
 /**

@@ -26,16 +26,16 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
-import org.linphone.R
-import org.linphone.activities.assistant.AssistantActivity
-import org.linphone.activities.assistant.viewmodels.AccountLoginViewModel
-import org.linphone.activities.assistant.viewmodels.AccountLoginViewModelFactory
-import org.linphone.activities.assistant.viewmodels.SharedAssistantViewModel
-import org.linphone.activities.main.viewmodels.DialogViewModel
-import org.linphone.activities.navigateToEchoCancellerCalibration
-import org.linphone.activities.navigateToPhoneAccountValidation
-import org.linphone.databinding.AssistantAccountLoginFragmentBinding
-import org.linphone.utils.DialogUtils
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.assistant.AssistantActivity
+import com.onutiative.onukit.activities.assistant.viewmodels.AccountLoginViewModel
+import com.onutiative.onukit.activities.assistant.viewmodels.AccountLoginViewModelFactory
+import com.onutiative.onukit.activities.assistant.viewmodels.SharedAssistantViewModel
+import com.onutiative.onukit.activities.main.viewmodels.DialogViewModel
+import com.onutiative.onukit.activities.navigateToEchoCancellerCalibration
+import com.onutiative.onukit.activities.navigateToPhoneAccountValidation
+import com.onutiative.onukit.databinding.AssistantAccountLoginFragmentBinding
+import com.onutiative.onukit.utils.DialogUtils
 
 class AccountLoginFragment : AbstractPhoneFragment<AssistantAccountLoginFragmentBinding>() {
     override lateinit var viewModel: AccountLoginViewModel

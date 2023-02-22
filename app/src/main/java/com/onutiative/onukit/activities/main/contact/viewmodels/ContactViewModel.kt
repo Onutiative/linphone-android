@@ -27,18 +27,19 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
 import com.onutiative.onukit.LinphoneApplication.Companion.corePreferences
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.contact.data.ContactNumberOrAddressClickListener
+import com.onutiative.onukit.activities.main.contact.data.ContactNumberOrAddressData
+import com.onutiative.onukit.activities.main.viewmodels.MessageNotifierViewModel
+import com.onutiative.onukit.contact.ContactDataInterface
+import com.onutiative.onukit.contact.ContactsUpdatedListenerStub
+import com.onutiative.onukit.contact.hasPresence
+import com.onutiative.onukit.utils.Event
+import com.onutiative.onukit.utils.LinphoneUtils
+import com.onutiative.onukit.utils.PhoneNumberUtils
 import kotlinx.coroutines.CoroutineScope
-import org.linphone.R
-import org.linphone.activities.main.contact.data.ContactNumberOrAddressClickListener
-import org.linphone.activities.main.contact.data.ContactNumberOrAddressData
-import org.linphone.activities.main.viewmodels.MessageNotifierViewModel
-import org.linphone.contact.ContactDataInterface
-import org.linphone.contact.ContactsUpdatedListenerStub
-import org.linphone.contact.hasPresence
 import org.linphone.core.*
 import org.linphone.core.tools.Log
-import org.linphone.utils.LinphoneUtils
-import org.linphone.utils.PhoneNumberUtils
 
 class ContactViewModelFactory(private val friend: Friend) :
     ViewModelProvider.NewInstanceFactory() {

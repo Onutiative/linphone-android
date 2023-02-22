@@ -28,10 +28,10 @@ import android.view.Window
 import android.view.WindowManager
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
-import org.linphone.R
-import org.linphone.activities.main.viewmodels.DialogViewModel
-import org.linphone.databinding.DialogBinding
-import org.linphone.databinding.VoipDialogBinding
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.viewmodels.DialogViewModel
+import com.onutiative.onukit.databinding.DialogBinding
+import com.onutiative.onukit.databinding.VoipDialogBinding
 
 class DialogUtils {
     companion object {

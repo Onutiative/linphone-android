@@ -32,22 +32,23 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.onutiative.databinding.ChatMessageLongPressMenuBindingImpl
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
-import org.linphone.R
-import org.linphone.activities.main.adapters.SelectionListAdapter
-import org.linphone.activities.main.chat.data.ChatMessageData
-import org.linphone.activities.main.chat.data.EventData
-import org.linphone.activities.main.chat.data.EventLogData
-import org.linphone.activities.main.chat.data.OnContentClickedListener
-import org.linphone.activities.main.viewmodels.ListTopBarViewModel
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.adapters.SelectionListAdapter
+import com.onutiative.onukit.activities.main.chat.data.ChatMessageData
+import com.onutiative.onukit.activities.main.chat.data.EventData
+import com.onutiative.onukit.activities.main.chat.data.EventLogData
+import com.onutiative.onukit.activities.main.chat.data.OnContentClickedListener
+import com.onutiative.onukit.activities.main.viewmodels.ListTopBarViewModel
+import com.onutiative.onukit.databinding.ChatEventListCellBinding
+import com.onutiative.onukit.databinding.ChatMessageListCellBinding
+import com.onutiative.onukit.databinding.ChatUnreadMessagesListHeaderBinding
+import com.onutiative.onukit.utils.AppUtils
+import com.onutiative.onukit.utils.Event
+import com.onutiative.onukit.utils.HeaderAdapter
 import org.linphone.core.*
 import org.linphone.core.tools.Log
-import org.linphone.databinding.ChatEventListCellBinding
-import org.linphone.databinding.ChatMessageListCellBinding
-import org.linphone.databinding.ChatUnreadMessagesListHeaderBinding
-import org.linphone.utils.AppUtils
-import org.linphone.utils.HeaderAdapter
+import org.linphone.databinding.ChatMessageLongPressMenuBindingImpl
 
 class ChatMessagesListAdapter(
     selectionVM: ListTopBarViewModel,
@@ -303,7 +304,7 @@ class ChatMessagesListAdapter(
                     executePendingBindings()
 
                     setContextMenuClickListener {
-                        val popupView: com.onutiative.databinding.ChatMessageLongPressMenuBindingImpl = DataBindingUtil.inflate(
+                        val popupView: com.onutiative.onukit.databinding.ChatMessageLongPressMenuBindingImpl = DataBindingUtil.inflate(
                             LayoutInflater.from(root.context),
                             R.layout.chat_message_long_press_menu, null, false
                         )

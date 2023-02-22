@@ -25,7 +25,7 @@ import android.view.View
 import android.widget.ImageView
 import androidx.databinding.ViewDataBinding
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
-import org.linphone.activities.GenericFragment
+import com.onutiative.onukit.activities.GenericFragment
 
 abstract class GenericVideoPreviewFragment<T : ViewDataBinding> : GenericFragment<T>() {
     private var previewX: Float = 0f

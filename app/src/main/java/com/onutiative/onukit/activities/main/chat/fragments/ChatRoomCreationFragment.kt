@@ -26,18 +26,18 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
 import com.onutiative.onukit.LinphoneApplication.Companion.corePreferences
-import org.linphone.R
-import org.linphone.activities.main.MainActivity
-import org.linphone.activities.main.chat.viewmodels.ChatRoomCreationViewModel
-import org.linphone.activities.main.fragments.SecureFragment
-import org.linphone.activities.navigateToChatRoom
-import org.linphone.activities.navigateToGroupInfo
-import org.linphone.contact.ContactsSelectionAdapter
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.MainActivity
+import com.onutiative.onukit.activities.main.chat.viewmodels.ChatRoomCreationViewModel
+import com.onutiative.onukit.activities.main.fragments.SecureFragment
+import com.onutiative.onukit.activities.navigateToChatRoom
+import com.onutiative.onukit.activities.navigateToGroupInfo
+import com.onutiative.onukit.contact.ContactsSelectionAdapter
+import com.onutiative.onukit.databinding.ChatRoomCreationFragmentBinding
+import com.onutiative.onukit.utils.AppUtils
+import com.onutiative.onukit.utils.LinphoneUtils
+import com.onutiative.onukit.utils.PermissionHelper
 import org.linphone.core.tools.Log
-import org.linphone.databinding.ChatRoomCreationFragmentBinding
-import org.linphone.utils.AppUtils
-import org.linphone.utils.LinphoneUtils
-import org.linphone.utils.PermissionHelper
 
 class ChatRoomCreationFragment : SecureFragment<ChatRoomCreationFragmentBinding>() {
     private lateinit var viewModel: ChatRoomCreationViewModel

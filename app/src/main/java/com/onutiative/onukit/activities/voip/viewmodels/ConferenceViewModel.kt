@@ -24,14 +24,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
 import com.onutiative.onukit.LinphoneApplication.Companion.corePreferences
-import org.linphone.R
-import org.linphone.activities.voip.ConferenceDisplayMode
-import org.linphone.activities.voip.data.ConferenceParticipantData
-import org.linphone.activities.voip.data.ConferenceParticipantDeviceData
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.voip.ConferenceDisplayMode
+import com.onutiative.onukit.activities.voip.data.ConferenceParticipantData
+import com.onutiative.onukit.activities.voip.data.ConferenceParticipantDeviceData
+import com.onutiative.onukit.utils.AppUtils
+import com.onutiative.onukit.utils.Event
+import com.onutiative.onukit.utils.LinphoneUtils
 import org.linphone.core.*
 import org.linphone.core.tools.Log
-import org.linphone.utils.AppUtils
-import org.linphone.utils.LinphoneUtils
 
 class ConferenceViewModel : ViewModel() {
     val conferenceExists = MutableLiveData<Boolean>()

@@ -25,14 +25,14 @@ import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
 import com.onutiative.onukit.LinphoneApplication.Companion.corePreferences
-import org.linphone.R
-import org.linphone.activities.main.settings.SettingListenerStub
-import org.linphone.activities.main.settings.viewmodels.ContactsSettingsViewModel
-import org.linphone.activities.navigateToLdapSettings
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.settings.SettingListenerStub
+import com.onutiative.onukit.activities.main.settings.viewmodels.ContactsSettingsViewModel
+import com.onutiative.onukit.activities.navigateToLdapSettings
+import com.onutiative.onukit.databinding.SettingsContactsFragmentBinding
+import com.onutiative.onukit.utils.PermissionHelper
+import com.onutiative.onukit.utils.ShortcutsHelper
 import org.linphone.core.tools.Log
-import org.linphone.databinding.SettingsContactsFragmentBinding
-import org.linphone.utils.PermissionHelper
-import org.linphone.utils.ShortcutsHelper
 
 class ContactsSettingsFragment : GenericSettingFragment<SettingsContactsFragmentBinding>() {
     private lateinit var viewModel: ContactsSettingsViewModel

@@ -22,13 +22,13 @@ package com.onutiative.onukit.activities.main.settings.viewmodels
 import androidx.lifecycle.MutableLiveData
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
 import com.onutiative.onukit.LinphoneApplication.Companion.corePreferences
-import org.linphone.R
-import org.linphone.activities.main.settings.SettingListenerStub
-import org.linphone.activities.main.viewmodels.LogsUploadViewModel
-import org.linphone.core.CoreContext
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.settings.SettingListenerStub
+import com.onutiative.onukit.activities.main.viewmodels.LogsUploadViewModel
+import com.onutiative.onukit.core.CoreContext
+import com.onutiative.onukit.utils.Event
 import org.linphone.core.Factory
 import org.linphone.core.LogLevel
-import org.linphone.utils.Event
 
 class AdvancedSettingsViewModel : LogsUploadViewModel() {
     private val prefs = corePreferences

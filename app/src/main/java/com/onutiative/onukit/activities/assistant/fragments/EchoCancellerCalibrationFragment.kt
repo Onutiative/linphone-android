@@ -23,12 +23,12 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
-import org.linphone.R
-import org.linphone.activities.GenericFragment
-import org.linphone.activities.assistant.viewmodels.EchoCancellerCalibrationViewModel
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.GenericFragment
+import com.onutiative.onukit.activities.assistant.viewmodels.EchoCancellerCalibrationViewModel
+import com.onutiative.onukit.databinding.AssistantEchoCancellerCalibrationFragmentBinding
+import com.onutiative.onukit.utils.PermissionHelper
 import org.linphone.core.tools.Log
-import org.linphone.databinding.AssistantEchoCancellerCalibrationFragmentBinding
-import org.linphone.utils.PermissionHelper
 
 class EchoCancellerCalibrationFragment : GenericFragment<AssistantEchoCancellerCalibrationFragmentBinding>() {
     companion object {

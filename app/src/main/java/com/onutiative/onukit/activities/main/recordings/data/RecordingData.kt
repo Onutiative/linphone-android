@@ -23,6 +23,8 @@ import android.graphics.SurfaceTexture
 import android.view.TextureView
 import androidx.lifecycle.MutableLiveData
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
+import com.onutiative.onukit.utils.AudioRouteUtils
+import com.onutiative.onukit.utils.LinphoneUtils
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -32,8 +34,6 @@ import kotlinx.coroutines.channels.ticker
 import org.linphone.core.Player
 import org.linphone.core.PlayerListener
 import org.linphone.core.tools.Log
-import org.linphone.utils.AudioRouteUtils
-import org.linphone.utils.LinphoneUtils
 
 class RecordingData(val path: String, private val recordingListener: RecordingListener) : Comparable<RecordingData> {
     companion object {

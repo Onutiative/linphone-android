@@ -22,9 +22,9 @@ package com.onutiative.onukit.activities.main.chat.viewmodels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import org.linphone.R
-import org.linphone.activities.main.chat.data.DurationItemClicked
-import org.linphone.activities.main.chat.data.EphemeralDurationData
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.chat.data.DurationItemClicked
+import com.onutiative.onukit.activities.main.chat.data.EphemeralDurationData
 import org.linphone.core.ChatRoom
 import org.linphone.core.tools.Log
 

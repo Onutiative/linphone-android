@@ -21,11 +21,11 @@ package com.onutiative.onukit.activities.main.chat.data
 
 import androidx.lifecycle.MutableLiveData
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
-import org.linphone.R
-import org.linphone.contact.GenericContactData
+import com.onutiative.onukit.R
+import com.onutiative.onukit.contact.GenericContactData
+import com.onutiative.onukit.utils.LinphoneUtils
 import org.linphone.core.ChatRoomSecurityLevel
 import org.linphone.core.Participant
-import org.linphone.utils.LinphoneUtils
 
 class DevicesListGroupData(private val participant: Participant) : GenericContactData(participant.address) {
     val securityLevelIcon: Int by lazy {

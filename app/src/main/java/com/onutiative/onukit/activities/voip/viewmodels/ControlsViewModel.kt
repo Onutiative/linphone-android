@@ -28,10 +28,11 @@ import androidx.lifecycle.ViewModel
 import androidx.window.layout.FoldingFeature
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
 import com.onutiative.onukit.LinphoneApplication.Companion.corePreferences
-import org.linphone.R
+import com.onutiative.onukit.R
+import com.onutiative.onukit.utils.*
+import com.onutiative.onukit.utils.Event
 import org.linphone.core.*
 import org.linphone.core.tools.Log
-import org.linphone.utils.*
 
 class ControlsViewModel : ViewModel() {
     val isSpeakerSelected = MutableLiveData<Boolean>()

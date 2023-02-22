@@ -28,13 +28,13 @@ import android.provider.Settings
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import com.onutiative.onukit.LinphoneApplication.Companion.corePreferences
-import org.linphone.R
-import org.linphone.activities.main.settings.viewmodels.CallSettingsViewModel
-import org.linphone.compatibility.Compatibility
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.settings.viewmodels.CallSettingsViewModel
+import com.onutiative.onukit.compatibility.Compatibility
+import com.onutiative.onukit.databinding.SettingsCallFragmentBinding
+import com.onutiative.onukit.telecom.TelecomHelper
 import org.linphone.core.tools.Log
-import org.linphone.databinding.SettingsCallFragmentBinding
 import org.linphone.mediastream.Version
-import org.linphone.telecom.TelecomHelper
 
 class CallSettingsFragment : GenericSettingFragment<SettingsCallFragmentBinding>() {
     private lateinit var viewModel: CallSettingsViewModel

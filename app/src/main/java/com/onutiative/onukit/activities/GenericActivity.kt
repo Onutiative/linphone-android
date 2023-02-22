@@ -35,10 +35,10 @@ import androidx.window.layout.WindowLayoutInfo
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
 import com.onutiative.onukit.LinphoneApplication.Companion.corePreferences
 import com.onutiative.onukit.LinphoneApplication.Companion.ensureCoreExists
+import com.onutiative.onukit.R
 import java.util.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import org.linphone.R
 import org.linphone.core.tools.Log
 
 abstract class GenericActivity : AppCompatActivity() {

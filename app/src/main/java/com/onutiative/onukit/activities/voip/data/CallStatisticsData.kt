@@ -20,7 +20,7 @@
 package com.onutiative.onukit.activities.voip.data
 
 import androidx.lifecycle.MutableLiveData
-import org.linphone.contact.GenericContactData
+import com.onutiative.onukit.contact.GenericContactData
 import org.linphone.core.*
 
 class CallStatisticsData(val call: Call) : GenericContactData(call.remoteAddress) {

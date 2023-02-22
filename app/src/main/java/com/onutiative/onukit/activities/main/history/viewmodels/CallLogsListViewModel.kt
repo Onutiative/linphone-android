@@ -22,12 +22,13 @@ package com.onutiative.onukit.activities.main.history.viewmodels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
-import org.linphone.activities.main.history.data.GroupedCallLogData
-import org.linphone.contact.ContactsUpdatedListenerStub
+import com.onutiative.onukit.activities.main.history.data.GroupedCallLogData
+import com.onutiative.onukit.contact.ContactsUpdatedListenerStub
+import com.onutiative.onukit.utils.Event
+import com.onutiative.onukit.utils.LinphoneUtils
+import com.onutiative.onukit.utils.TimestampUtils
 import org.linphone.core.*
 import org.linphone.core.tools.Log
-import org.linphone.utils.LinphoneUtils
-import org.linphone.utils.TimestampUtils
 
 class CallLogsListViewModel : ViewModel() {
     val callLogs = MutableLiveData<List<GroupedCallLogData>>()

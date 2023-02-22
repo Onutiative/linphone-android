@@ -21,21 +21,22 @@ package com.onutiative.onukit.activities.assistant.fragments
 
 import android.content.ClipboardManager
 import android.content.Context.CLIPBOARD_SERVICE
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
-import org.linphone.R
-import org.linphone.activities.GenericFragment
-import org.linphone.activities.SnackBarActivity
-import org.linphone.activities.assistant.viewmodels.PhoneAccountValidationViewModel
-import org.linphone.activities.assistant.viewmodels.PhoneAccountValidationViewModelFactory
-import org.linphone.activities.assistant.viewmodels.SharedAssistantViewModel
-import org.linphone.activities.navigateToAccountSettings
-import org.linphone.activities.navigateToEchoCancellerCalibration
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.GenericFragment
+import com.onutiative.onukit.activities.SnackBarActivity
+import com.onutiative.onukit.activities.assistant.viewmodels.PhoneAccountValidationViewModel
+import com.onutiative.onukit.activities.assistant.viewmodels.PhoneAccountValidationViewModelFactory
+import com.onutiative.onukit.activities.assistant.viewmodels.SharedAssistantViewModel
+import com.onutiative.onukit.activities.navigateToAccountSettings
+import com.onutiative.onukit.activities.navigateToEchoCancellerCalibration
+import com.onutiative.onukit.databinding.AssistantPhoneAccountValidationFragmentBinding
 import org.linphone.core.tools.Log
-import org.linphone.databinding.AssistantPhoneAccountValidationFragmentBinding
 
 class PhoneAccountValidationFragment : GenericFragment<AssistantPhoneAccountValidationFragmentBinding>() {
     private lateinit var sharedAssistantViewModel: SharedAssistantViewModel
@@ -108,7 +109,9 @@ class PhoneAccountValidationFragment : GenericFragment<AssistantPhoneAccountVali
                 if (clip.length == 4) {
                     Log.i("[Assistant] [Phone Account Validation] Found 4 digits as primary clip in clipboard, using it and clear it")
                     viewModel.code.value = clip
-                    clipboard.clearPrimaryClip()
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                        clipboard.clearPrimaryClip()
+                    }
                 }
             }
         }

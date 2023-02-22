@@ -157,7 +157,7 @@
                 </RelativeLayout>
 
                 <TextView
-                    android:onClick="@{() -> viewModel.link()}"
+                    android:onClick="@={() -> viewModel.link()}"
                     android:enabled="@{viewModel.linkEnabled, default=false}"
                     android:text="@string/assistant_link_account"
                     android:background="@drawable/assistant_button"
@@ -171,7 +171,7 @@
 
                 <TextView
                     android:visibility="@{viewModel.allowSkip ? View.VISIBLE : View.GONE}"
-                    android:onClick="@{() -> viewModel.skip()}"
+                    android:onClick="@={() -> viewModel.skip()}"
                     style="@style/standard_small_text_font"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

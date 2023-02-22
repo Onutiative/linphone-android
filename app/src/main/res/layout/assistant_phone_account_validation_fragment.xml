@@ -104,7 +104,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
-                android:onClick="@{() -> viewModel.finish()}"
+                android:onClick="@={() -> viewModel.finish()}"
                 android:text="@string/assistant_finish"
                 android:enabled="@{viewModel.code.length() > 0, default=false}"
                 android:background="@drawable/assistant_button"

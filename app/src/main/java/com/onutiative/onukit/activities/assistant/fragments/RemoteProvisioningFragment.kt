@@ -23,14 +23,14 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
-import org.linphone.R
-import org.linphone.activities.GenericFragment
-import org.linphone.activities.assistant.AssistantActivity
-import org.linphone.activities.assistant.viewmodels.RemoteProvisioningViewModel
-import org.linphone.activities.assistant.viewmodels.SharedAssistantViewModel
-import org.linphone.activities.navigateToEchoCancellerCalibration
-import org.linphone.activities.navigateToQrCode
-import org.linphone.databinding.AssistantRemoteProvisioningFragmentBinding
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.GenericFragment
+import com.onutiative.onukit.activities.assistant.AssistantActivity
+import com.onutiative.onukit.activities.assistant.viewmodels.RemoteProvisioningViewModel
+import com.onutiative.onukit.activities.assistant.viewmodels.SharedAssistantViewModel
+import com.onutiative.onukit.activities.navigateToEchoCancellerCalibration
+import com.onutiative.onukit.activities.navigateToQrCode
+import com.onutiative.onukit.databinding.AssistantRemoteProvisioningFragmentBinding
 
 class RemoteProvisioningFragment : GenericFragment<AssistantRemoteProvisioningFragmentBinding>() {
     private lateinit var sharedAssistantViewModel: SharedAssistantViewModel

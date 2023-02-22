@@ -38,7 +38,7 @@
                 android:layout_centerInParent="true"/>
 
             <ImageView
-                android:onClick="@{() -> viewModel.switchCamera()}"
+                android:onClick="@={() -> viewModel.switchCamera()}"
                 android:visibility="@{viewModel.showSwitchCamera ? View.VISIBLE : View.GONE}"
                 android:contentDescription="@string/content_description_switch_camera"
                 android:layout_width="50dp"

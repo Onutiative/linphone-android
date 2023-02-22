@@ -21,7 +21,7 @@ package com.onutiative.onukit.utils
 
 import android.Manifest
 import android.content.Context
-import org.linphone.compatibility.Compatibility
+import com.onutiative.onukit.compatibility.Compatibility
 import org.linphone.core.tools.Log
 import org.linphone.mediastream.Version
 

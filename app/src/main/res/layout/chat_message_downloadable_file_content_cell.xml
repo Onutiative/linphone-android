@@ -33,7 +33,7 @@
             android:drawablePadding="5dp"
             android:ellipsize="middle"
             android:gravity="center"
-            android:onClick="@{() -> data.download()}"
+            android:onClick="@={() -> data.download()}"
             android:onLongClick="@{longClickListener}"
             android:singleLine="true"
             android:text="@{data.fileName, default=`test.pdf`}"
@@ -46,7 +46,7 @@
             android:gravity="center"
             android:layout_marginBottom="5dp"
             android:text="@{data.downloadLabel, default=`Download (10ko)`}"
-            android:onClick="@{() -> data.download()}"
+            android:onClick="@={() -> data.download()}"
             android:visibility="@{data.downloadable ? View.VISIBLE : View.GONE}"/>
 
     </LinearLayout>

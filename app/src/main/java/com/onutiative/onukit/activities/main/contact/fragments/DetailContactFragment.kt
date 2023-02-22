@@ -27,19 +27,19 @@ import android.view.View
 import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.ViewModelProvider
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
-import org.linphone.R
-import org.linphone.activities.*
-import org.linphone.activities.main.*
-import org.linphone.activities.main.contact.viewmodels.ContactViewModel
-import org.linphone.activities.main.contact.viewmodels.ContactViewModelFactory
-import org.linphone.activities.main.viewmodels.DialogViewModel
-import org.linphone.activities.navigateToChatRoom
-import org.linphone.activities.navigateToContactEditor
-import org.linphone.activities.navigateToDialer
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.*
+import com.onutiative.onukit.activities.main.*
+import com.onutiative.onukit.activities.main.contact.viewmodels.ContactViewModel
+import com.onutiative.onukit.activities.main.contact.viewmodels.ContactViewModelFactory
+import com.onutiative.onukit.activities.main.viewmodels.DialogViewModel
+import com.onutiative.onukit.activities.navigateToChatRoom
+import com.onutiative.onukit.activities.navigateToContactEditor
+import com.onutiative.onukit.activities.navigateToDialer
+import com.onutiative.onukit.databinding.ContactDetailFragmentBinding
+import com.onutiative.onukit.utils.DialogUtils
+import com.onutiative.onukit.utils.Event
 import org.linphone.core.tools.Log
-import org.linphone.databinding.ContactDetailFragmentBinding
-import org.linphone.utils.DialogUtils
-import org.linphone.utils.Event
 
 class DetailContactFragment : GenericFragment<ContactDetailFragmentBinding>() {
     private lateinit var viewModel: ContactViewModel

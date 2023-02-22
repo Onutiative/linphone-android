@@ -3,7 +3,7 @@
 
     <data>
         <import type="android.view.View"/>
-        <import type="com.onutiative.onukit.core.ChatRoomSecurityLevel"/>
+        <import type="org.linphone.core.ChatRoomSecurityLevel"/>
         <variable
             name="removeClickListener"
             type="android.view.View.OnClickListener"/>
@@ -82,7 +82,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="20dp"
-                android:onClick="@{() -> data.unSetAdmin()}"
+                android:onClick="@={() -> data.unSetAdmin()}"
                 android:visibility="@{data.admin ? View.VISIBLE : View.GONE}">
 
                 <ImageView
@@ -110,7 +110,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="20dp"
-                android:onClick="@{() -> data.setAdmin()}"
+                android:onClick="@={() -> data.setAdmin()}"
                 android:visibility="@{data.admin ? View.GONE : View.VISIBLE}">
 
                 <ImageView

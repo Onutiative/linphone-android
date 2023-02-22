@@ -29,9 +29,9 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.fragment.app.Fragment
+import com.onutiative.onukit.utils.LinphoneUtils
 import org.linphone.core.ChatRoom
 import org.linphone.core.tools.Log
-import org.linphone.utils.LinphoneUtils
 
 @TargetApi(30)
 class Api30Compatibility {

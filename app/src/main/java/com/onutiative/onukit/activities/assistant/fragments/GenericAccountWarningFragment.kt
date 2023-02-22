@@ -21,11 +21,11 @@ package com.onutiative.onukit.activities.assistant.fragments
 
 import android.os.Bundle
 import android.view.View
-import org.linphone.R
-import org.linphone.activities.GenericFragment
-import org.linphone.activities.navigateToGenericLogin
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.GenericFragment
+import com.onutiative.onukit.activities.navigateToGenericLogin
+import com.onutiative.onukit.databinding.AssistantGenericAccountWarningFragmentBinding
 import org.linphone.core.tools.Log
-import org.linphone.databinding.AssistantGenericAccountWarningFragmentBinding
 
 class GenericAccountWarningFragment : GenericFragment<AssistantGenericAccountWarningFragmentBinding>() {
     override fun getLayoutId(): Int = R.layout.assistant_generic_account_warning_fragment

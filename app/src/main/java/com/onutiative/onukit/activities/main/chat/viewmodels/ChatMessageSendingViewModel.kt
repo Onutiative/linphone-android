@@ -27,6 +27,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.media.AudioFocusRequestCompat
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
 import com.onutiative.onukit.LinphoneApplication.Companion.corePreferences
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.chat.data.ChatMessageAttachmentData
+import com.onutiative.onukit.activities.main.chat.data.ChatMessageData
+import com.onutiative.onukit.compatibility.Compatibility
+import com.onutiative.onukit.utils.*
+import com.onutiative.onukit.utils.Event
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -35,13 +41,8 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import org.linphone.R
-import org.linphone.activities.main.chat.data.ChatMessageAttachmentData
-import org.linphone.activities.main.chat.data.ChatMessageData
-import org.linphone.compatibility.Compatibility
 import org.linphone.core.*
 import org.linphone.core.tools.Log
-import org.linphone.utils.*
 
 class ChatMessageSendingViewModelFactory(private val chatRoom: ChatRoom) :
     ViewModelProvider.NewInstanceFactory() {

@@ -22,9 +22,9 @@ package com.onutiative.onukit.activities.main.settings.fragments
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
-import org.linphone.R
-import org.linphone.activities.main.settings.viewmodels.TunnelSettingsViewModel
-import org.linphone.databinding.SettingsTunnelFragmentBinding
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.settings.viewmodels.TunnelSettingsViewModel
+import com.onutiative.onukit.databinding.SettingsTunnelFragmentBinding
 
 class TunnelSettingsFragment : GenericSettingFragment<SettingsTunnelFragmentBinding>() {
     private lateinit var viewModel: TunnelSettingsViewModel

@@ -23,8 +23,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.databinding.ViewDataBinding
 import androidx.navigation.fragment.findNavController
-import org.linphone.R
-import org.linphone.activities.main.fragments.SecureFragment
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.fragments.SecureFragment
 import org.linphone.core.tools.Log
 
 abstract class GenericViewerFragment<T : ViewDataBinding> : SecureFragment<T>() {

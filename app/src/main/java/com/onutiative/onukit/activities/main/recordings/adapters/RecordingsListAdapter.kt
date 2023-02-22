@@ -28,13 +28,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import org.linphone.R
-import org.linphone.activities.main.adapters.SelectionListAdapter
-import org.linphone.activities.main.recordings.data.RecordingData
-import org.linphone.activities.main.viewmodels.ListTopBarViewModel
-import org.linphone.databinding.GenericListHeaderBinding
-import org.linphone.databinding.RecordingListCellBinding
-import org.linphone.utils.*
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.adapters.SelectionListAdapter
+import com.onutiative.onukit.activities.main.recordings.data.RecordingData
+import com.onutiative.onukit.activities.main.viewmodels.ListTopBarViewModel
+import com.onutiative.onukit.databinding.GenericListHeaderBinding
+import com.onutiative.onukit.databinding.RecordingListCellBinding
+import com.onutiative.onukit.utils.*
 
 class RecordingsListAdapter(
     selectionVM: ListTopBarViewModel,

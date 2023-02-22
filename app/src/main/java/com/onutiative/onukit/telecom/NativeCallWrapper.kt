@@ -27,10 +27,10 @@ import android.telecom.Connection
 import android.telecom.DisconnectCause
 import android.telecom.StatusHints
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
-import org.linphone.R
+import com.onutiative.onukit.R
+import com.onutiative.onukit.utils.AudioRouteUtils
 import org.linphone.core.Call
 import org.linphone.core.tools.Log
-import org.linphone.utils.AudioRouteUtils
 
 @TargetApi(29)
 class NativeCallWrapper(var callId: String) : Connection() {

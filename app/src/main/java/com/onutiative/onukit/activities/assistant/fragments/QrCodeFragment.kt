@@ -25,13 +25,13 @@ import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
-import org.linphone.R
-import org.linphone.activities.GenericFragment
-import org.linphone.activities.assistant.viewmodels.QrCodeViewModel
-import org.linphone.activities.assistant.viewmodels.SharedAssistantViewModel
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.GenericFragment
+import com.onutiative.onukit.activities.assistant.viewmodels.QrCodeViewModel
+import com.onutiative.onukit.activities.assistant.viewmodels.SharedAssistantViewModel
+import com.onutiative.onukit.databinding.AssistantQrCodeFragmentBinding
+import com.onutiative.onukit.utils.PermissionHelper
 import org.linphone.core.tools.Log
-import org.linphone.databinding.AssistantQrCodeFragmentBinding
-import org.linphone.utils.PermissionHelper
 
 class QrCodeFragment : GenericFragment<AssistantQrCodeFragmentBinding>() {
     companion object {

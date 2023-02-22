@@ -22,12 +22,12 @@ package com.onutiative.onukit.activities.main.history.fragments
 import android.os.Bundle
 import android.view.View
 import androidx.navigation.fragment.findNavController
-import org.linphone.R
-import org.linphone.activities.*
-import org.linphone.activities.main.*
-import org.linphone.activities.main.history.viewmodels.CallLogViewModel
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.*
+import com.onutiative.onukit.activities.main.*
+import com.onutiative.onukit.activities.main.history.viewmodels.CallLogViewModel
+import com.onutiative.onukit.databinding.HistoryConfDetailFragmentBinding
 import org.linphone.core.tools.Log
-import org.linphone.databinding.HistoryConfDetailFragmentBinding
 
 class DetailConferenceCallLogFragment : GenericFragment<HistoryConfDetailFragmentBinding>() {
     private lateinit var viewModel: CallLogViewModel

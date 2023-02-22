@@ -23,15 +23,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.settings.SettingListenerStub
+import com.onutiative.onukit.utils.Event
 import java.lang.NumberFormatException
-import org.linphone.R
-import org.linphone.activities.main.settings.SettingListenerStub
 import org.linphone.core.Ldap
 import org.linphone.core.LdapAuthMethod
 import org.linphone.core.LdapCertVerificationMode
 import org.linphone.core.LdapDebugLevel
 import org.linphone.core.tools.Log
-import org.linphone.utils.Event
 
 class LdapSettingsViewModelFactory(private val index: Int) :
     ViewModelProvider.NewInstanceFactory() {

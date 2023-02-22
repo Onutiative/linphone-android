@@ -21,9 +21,9 @@ package com.onutiative.onukit.activities.main.viewmodels
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import org.linphone.R
-import org.linphone.utils.AppUtils
-import org.linphone.utils.Event
+import com.onutiative.onukit.R
+import com.onutiative.onukit.utils.AppUtils
+import com.onutiative.onukit.utils.Event
 
 class DialogViewModel(val message: String, val title: String = "") : ViewModel() {
     var showDoNotAskAgain: Boolean = false

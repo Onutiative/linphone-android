@@ -21,11 +21,11 @@ package com.onutiative.onukit.utils
 
 import android.telecom.CallAudioState
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
-import org.linphone.compatibility.Compatibility
+import com.onutiative.onukit.compatibility.Compatibility
+import com.onutiative.onukit.telecom.TelecomHelper
 import org.linphone.core.AudioDevice
 import org.linphone.core.Call
 import org.linphone.core.tools.Log
-import org.linphone.telecom.TelecomHelper
 
 class AudioRouteUtils {
     companion object {

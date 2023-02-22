@@ -26,12 +26,12 @@ import android.provider.ContactsContract
 import android.provider.ContactsContract.CommonDataKinds
 import android.provider.ContactsContract.RawContacts
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
-import org.linphone.R
-import org.linphone.activities.main.contact.data.NumberOrAddressEditorData
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.contact.data.NumberOrAddressEditorData
+import com.onutiative.onukit.utils.AppUtils
+import com.onutiative.onukit.utils.PermissionHelper
 import org.linphone.core.Friend
 import org.linphone.core.tools.Log
-import org.linphone.utils.AppUtils
-import org.linphone.utils.PermissionHelper
 
 class NativeContactEditor(val friend: Friend) {
     companion object {

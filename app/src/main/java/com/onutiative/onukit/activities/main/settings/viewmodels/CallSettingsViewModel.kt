@@ -20,17 +20,17 @@
 package com.onutiative.onukit.activities.main.settings.viewmodels
 
 import androidx.lifecycle.MutableLiveData
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.settings.SettingListenerStub
+import com.onutiative.onukit.telecom.TelecomHelper
+import com.onutiative.onukit.utils.AppUtils
+import com.onutiative.onukit.utils.Event
 import java.io.File
 import java.util.*
 import kotlin.collections.ArrayList
-import org.linphone.R
-import org.linphone.activities.main.settings.SettingListenerStub
 import org.linphone.core.MediaEncryption
 import org.linphone.core.tools.Log
 import org.linphone.mediastream.Version
-import org.linphone.telecom.TelecomHelper
-import org.linphone.utils.AppUtils
-import org.linphone.utils.Event
 
 class CallSettingsViewModel : GenericSettingsViewModel() {
     val deviceRingtoneListener = object : SettingListenerStub() {

@@ -10,7 +10,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:onClick="@{() -> viewModel.dismiss()}"
+        android:onClick="@={() -> viewModel.dismiss()}"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clickable="true"
@@ -153,7 +153,7 @@
             android:background="@drawable/shape_rect_gray_button"
             android:ellipsize="end"
             android:gravity="center"
-            android:onClick="@{() -> viewModel.onCancelClicked()}"
+            android:onClick="@={() -> viewModel.onCancelClicked()}"
             android:padding="10dp"
             android:singleLine="true"
             android:text="@{viewModel.cancelLabel, default=Cancel}"
@@ -177,7 +177,7 @@
             android:background="@drawable/shape_rect_orange_button"
             android:ellipsize="end"
             android:gravity="center"
-            android:onClick="@{() -> viewModel.onDeleteClicked()}"
+            android:onClick="@={() -> viewModel.onDeleteClicked()}"
             android:padding="10dp"
             android:singleLine="true"
             android:text="@{viewModel.deleteLabel, default=Delete}"
@@ -198,7 +198,7 @@
             android:background="@drawable/shape_rect_green_button"
             android:ellipsize="end"
             android:gravity="center"
-            android:onClick="@{() -> viewModel.onOkClicked()}"
+            android:onClick="@={() -> viewModel.onOkClicked()}"
             android:padding="10dp"
             android:singleLine="true"
             android:text="@{viewModel.okLabel, default=OK}"

@@ -25,16 +25,16 @@ import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
 import com.onutiative.onukit.LinphoneApplication.Companion.corePreferences
-import org.linphone.R
-import org.linphone.activities.GenericFragment
-import org.linphone.activities.assistant.AssistantActivity
-import org.linphone.activities.assistant.viewmodels.GenericLoginViewModel
-import org.linphone.activities.assistant.viewmodels.GenericLoginViewModelFactory
-import org.linphone.activities.assistant.viewmodels.SharedAssistantViewModel
-import org.linphone.activities.main.viewmodels.DialogViewModel
-import org.linphone.activities.navigateToEchoCancellerCalibration
-import org.linphone.databinding.AssistantGenericAccountLoginFragmentBinding
-import org.linphone.utils.DialogUtils
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.GenericFragment
+import com.onutiative.onukit.activities.assistant.AssistantActivity
+import com.onutiative.onukit.activities.assistant.viewmodels.GenericLoginViewModel
+import com.onutiative.onukit.activities.assistant.viewmodels.GenericLoginViewModelFactory
+import com.onutiative.onukit.activities.assistant.viewmodels.SharedAssistantViewModel
+import com.onutiative.onukit.activities.main.viewmodels.DialogViewModel
+import com.onutiative.onukit.activities.navigateToEchoCancellerCalibration
+import com.onutiative.onukit.databinding.AssistantGenericAccountLoginFragmentBinding
+import com.onutiative.onukit.utils.DialogUtils
 
 class GenericAccountLoginFragment : GenericFragment<AssistantGenericAccountLoginFragmentBinding>() {
     private lateinit var sharedAssistantViewModel: SharedAssistantViewModel

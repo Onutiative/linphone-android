@@ -21,9 +21,9 @@ package com.onutiative.onukit.contact
 
 import androidx.lifecycle.MutableLiveData
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
+import com.onutiative.onukit.utils.LinphoneUtils
 import kotlinx.coroutines.CoroutineScope
 import org.linphone.core.*
-import org.linphone.utils.LinphoneUtils
 
 class ContactSelectionData(private val searchResult: SearchResult) : ContactDataInterface {
     override val contact: MutableLiveData<Friend> = MutableLiveData<Friend>()

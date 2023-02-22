@@ -27,14 +27,14 @@ import androidx.core.view.doOnPreDraw
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProvider
 import androidx.slidingpanelayout.widget.SlidingPaneLayout
-import org.linphone.R
-import org.linphone.activities.main.adapters.SelectionListAdapter
-import org.linphone.activities.main.viewmodels.DialogViewModel
-import org.linphone.activities.main.viewmodels.ListTopBarViewModel
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.adapters.SelectionListAdapter
+import com.onutiative.onukit.activities.main.viewmodels.DialogViewModel
+import com.onutiative.onukit.activities.main.viewmodels.ListTopBarViewModel
+import com.onutiative.onukit.utils.AppUtils
+import com.onutiative.onukit.utils.DialogUtils
+import com.onutiative.onukit.utils.hideKeyboard
 import org.linphone.core.tools.Log
-import org.linphone.utils.AppUtils
-import org.linphone.utils.DialogUtils
-import org.linphone.utils.hideKeyboard
 
 /**
  * This fragment can be inherited by all fragments that will display a list

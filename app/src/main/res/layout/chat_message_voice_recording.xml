@@ -24,7 +24,7 @@
 
         <ImageView
             android:id="@+id/cancel_recording"
-            android:onClick="@{() -> viewModel.cancelVoiceRecording()}"
+            android:onClick="@={() -> viewModel.cancelVoiceRecording()}"
             android:contentDescription="@string/content_description_cancel_voice_recording"
             android:layout_width="30dp"
             android:layout_height="30dp"
@@ -88,7 +88,7 @@
 
             <ImageView
                 android:visibility="@{viewModel.isVoiceRecording ? View.VISIBLE : View.GONE}"
-                android:onClick="@{() -> viewModel.stopVoiceRecording()}"
+                android:onClick="@={() -> viewModel.stopVoiceRecording()}"
                 android:contentDescription="@string/content_description_stop_voice_recording"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
@@ -98,7 +98,7 @@
 
             <ImageView
                 android:visibility="@{!viewModel.isVoiceRecording &amp;&amp; !viewModel.isPlayingVoiceRecording ? View.VISIBLE : View.GONE, default=gone}"
-                android:onClick="@{() -> viewModel.playRecordedMessage()}"
+                android:onClick="@={() -> viewModel.playRecordedMessage()}"
                 android:contentDescription="@string/content_description_play_voice_recording"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
@@ -108,7 +108,7 @@
 
             <ImageView
                 android:visibility="@{!viewModel.isVoiceRecording &amp;&amp; viewModel.isPlayingVoiceRecording ? View.VISIBLE : View.GONE, default=gone}"
-                android:onClick="@{() -> viewModel.pauseRecordedMessage()}"
+                android:onClick="@={() -> viewModel.pauseRecordedMessage()}"
                 android:contentDescription="@string/content_description_pause_voice_recording_playback"
                 android:layout_width="30dp"
                 android:layout_height="30dp"

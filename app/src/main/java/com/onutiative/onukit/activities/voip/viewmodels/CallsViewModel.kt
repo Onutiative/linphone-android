@@ -24,12 +24,14 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
-import org.linphone.R
-import org.linphone.activities.voip.data.CallData
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.voip.data.CallData
+import com.onutiative.onukit.core.*
+import com.onutiative.onukit.utils.AppUtils
+import com.onutiative.onukit.utils.Event
+import com.onutiative.onukit.utils.PermissionHelper
 import org.linphone.core.*
 import org.linphone.core.tools.Log
-import org.linphone.utils.AppUtils
-import org.linphone.utils.PermissionHelper
 
 class CallsViewModel : ViewModel() {
     val currentCallData = MutableLiveData<CallData>()

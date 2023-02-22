@@ -24,10 +24,10 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.*
 import androidx.fragment.app.DialogFragment
-import org.linphone.R
-import org.linphone.activities.assistant.adapters.CountryPickerAdapter
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.assistant.adapters.CountryPickerAdapter
+import com.onutiative.onukit.databinding.AssistantCountryPickerFragmentBinding
 import org.linphone.core.DialPlan
-import org.linphone.databinding.AssistantCountryPickerFragmentBinding
 
 class CountryPickerFragment() : DialogFragment() {
     private var _binding: AssistantCountryPickerFragmentBinding? = null

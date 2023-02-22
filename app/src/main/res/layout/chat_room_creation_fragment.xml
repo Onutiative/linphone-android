@@ -52,7 +52,7 @@
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:onClick="@{() -> viewModel.updateEncryption(false)}"
+                    android:onClick="@={() -> viewModel.updateEncryption(false)}"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:contentDescription="@string/content_description_e2e_encryption_disabled"
@@ -69,7 +69,7 @@
                     android:textOn=""/>
 
                 <ImageView
-                    android:onClick="@{() -> viewModel.updateEncryption(true)}"
+                    android:onClick="@={() -> viewModel.updateEncryption(true)}"
                     android:contentDescription="@string/content_description_e2e_encryption_enabled"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -162,7 +162,7 @@
             android:layout_alignTop="@id/searchBar"
             android:layout_alignRight="@id/searchBar"
             android:layout_alignBottom="@id/searchBar"
-            android:onClick="@{() -> viewModel.clearFilter()}"
+            android:onClick="@={() -> viewModel.clearFilter()}"
             android:src="@drawable/field_clean" />
 
         <View

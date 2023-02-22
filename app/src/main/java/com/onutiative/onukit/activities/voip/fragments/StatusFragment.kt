@@ -24,16 +24,16 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.navGraphViewModels
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.GenericFragment
+import com.onutiative.onukit.activities.main.viewmodels.DialogViewModel
+import com.onutiative.onukit.activities.voip.viewmodels.ControlsViewModel
+import com.onutiative.onukit.activities.voip.viewmodels.StatusViewModel
+import com.onutiative.onukit.databinding.VoipStatusFragmentBinding
+import com.onutiative.onukit.utils.DialogUtils
 import java.util.*
-import org.linphone.R
-import org.linphone.activities.GenericFragment
-import org.linphone.activities.main.viewmodels.DialogViewModel
-import org.linphone.activities.voip.viewmodels.ControlsViewModel
-import org.linphone.activities.voip.viewmodels.StatusViewModel
 import org.linphone.core.Call
 import org.linphone.core.tools.Log
-import org.linphone.databinding.VoipStatusFragmentBinding
-import org.linphone.utils.DialogUtils
 
 class StatusFragment : GenericFragment<VoipStatusFragmentBinding>() {
     private lateinit var viewModel: StatusViewModel

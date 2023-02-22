@@ -32,19 +32,19 @@ import androidx.navigation.findNavController
 import androidx.window.layout.FoldingFeature
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
 import com.onutiative.onukit.LinphoneApplication.Companion.corePreferences
-import org.linphone.R
-import org.linphone.activities.*
-import org.linphone.activities.main.MainActivity
-import org.linphone.activities.voip.viewmodels.CallsViewModel
-import org.linphone.activities.voip.viewmodels.ConferenceViewModel
-import org.linphone.activities.voip.viewmodels.ControlsViewModel
-import org.linphone.activities.voip.viewmodels.StatisticsListViewModel
-import org.linphone.compatibility.Compatibility
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.*
+import com.onutiative.onukit.activities.main.MainActivity
+import com.onutiative.onukit.activities.voip.viewmodels.CallsViewModel
+import com.onutiative.onukit.activities.voip.viewmodels.ConferenceViewModel
+import com.onutiative.onukit.activities.voip.viewmodels.ControlsViewModel
+import com.onutiative.onukit.activities.voip.viewmodels.StatisticsListViewModel
+import com.onutiative.onukit.compatibility.Compatibility
+import com.onutiative.onukit.databinding.VoipActivityBinding
+import com.onutiative.onukit.utils.PermissionHelper
 import org.linphone.core.Call
 import org.linphone.core.tools.Log
-import org.linphone.databinding.VoipActivityBinding
 import org.linphone.mediastream.Version
-import org.linphone.utils.PermissionHelper
 
 class CallActivity : ProximitySensorActivity() {
     private lateinit var binding: VoipActivityBinding

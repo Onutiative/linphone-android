@@ -28,16 +28,16 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import org.linphone.R
-import org.linphone.activities.main.adapters.SelectionListAdapter
-import org.linphone.activities.main.contact.viewmodels.ContactViewModel
-import org.linphone.activities.main.viewmodels.ListTopBarViewModel
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.adapters.SelectionListAdapter
+import com.onutiative.onukit.activities.main.contact.viewmodels.ContactViewModel
+import com.onutiative.onukit.activities.main.viewmodels.ListTopBarViewModel
+import com.onutiative.onukit.databinding.ContactListCellBinding
+import com.onutiative.onukit.databinding.GenericListHeaderBinding
+import com.onutiative.onukit.utils.AppUtils
+import com.onutiative.onukit.utils.Event
+import com.onutiative.onukit.utils.HeaderAdapter
 import org.linphone.core.Friend
-import org.linphone.databinding.ContactListCellBinding
-import org.linphone.databinding.GenericListHeaderBinding
-import org.linphone.utils.AppUtils
-import org.linphone.utils.Event
-import org.linphone.utils.HeaderAdapter
 
 class ContactsListAdapter(
     selectionVM: ListTopBarViewModel,

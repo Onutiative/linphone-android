@@ -35,8 +35,17 @@ import android.webkit.MimeTypeMap
 import androidx.lifecycle.*
 import androidx.loader.app.LoaderManager
 import com.google.firebase.crashlytics.FirebaseCrashlytics
-import com.onutiative.BuildConfig
 import com.onutiative.onukit.LinphoneApplication.Companion.corePreferences
+import com.onutiative.onukit.R
+import com.onutiative.onukit.compatibility.Compatibility
+import com.onutiative.onukit.compatibility.PhoneStateInterface
+import com.onutiative.onukit.contact.ContactLoader
+import com.onutiative.onukit.contact.ContactsManager
+import com.onutiative.onukit.contact.getContactForPhoneNumberOrAddress
+import com.onutiative.onukit.notifications.NotificationsManager
+import com.onutiative.onukit.telecom.TelecomHelper
+import com.onutiative.onukit.utils.*
+import com.onutiative.onukit.utils.Event
 import java.io.File
 import java.math.BigInteger
 import java.nio.charset.StandardCharsets
@@ -50,18 +59,10 @@ import javax.crypto.SecretKey
 import javax.crypto.spec.GCMParameterSpec
 import kotlin.math.abs
 import kotlinx.coroutines.*
-import org.linphone.R
-import org.linphone.compatibility.Compatibility
-import org.linphone.compatibility.PhoneStateInterface
-import org.linphone.contact.ContactLoader
-import org.linphone.contact.ContactsManager
-import org.linphone.contact.getContactForPhoneNumberOrAddress
+import org.linphone.core.*
 import org.linphone.core.tools.Log
 import org.linphone.mediastream.Version
-import org.linphone.notifications.NotificationsManager
-import org.linphone.telecom.TelecomHelper
-import org.linphone.utils.*
-import org.linphone.utils.Event
+import org.linphone.core.BuildConfig
 
 class CoreContext(
     val context: Context,
@@ -92,9 +93,9 @@ class CoreContext(
     var screenHeight: Float = 0f
 
     val appVersion: String by lazy {
-        val appVersion = com.onutiative.BuildConfig.VERSION_NAME
+        val appVersion = BuildConfig.VERSION_NAME
         val appBranch = context.getString(R.string.linphone_app_branch)
-        val appBuildType = com.onutiative.BuildConfig.BUILD_TYPE
+        val appBuildType = BuildConfig.BUILD_TYPE
         "$appVersion ($appBranch, $appBuildType)"
     }
 
@@ -295,9 +296,9 @@ class CoreContext(
 
         Log.i("=========================================")
         Log.i("==== Linphone-android information dump ====")
-        Log.i("VERSION=${com.onutiative.BuildConfig.VERSION_NAME} / ${com.onutiative.BuildConfig.VERSION_CODE}")
-        Log.i("PACKAGE=${com.onutiative.BuildConfig.APPLICATION_ID}")
-        Log.i("BUILD TYPE=${com.onutiative.BuildConfig.BUILD_TYPE}")
+        Log.i("VERSION=${BuildConfig.VERSION_NAME} / ${BuildConfig.VERSION_CODE}")
+        Log.i("PACKAGE=${BuildConfig.APPLICATION_ID}")
+        Log.i("BUILD TYPE=${BuildConfig.BUILD_TYPE}")
         Log.i("=========================================")
 
         if (service != null) {
@@ -476,7 +477,7 @@ class CoreContext(
     private fun computeUserAgent() {
         val deviceName: String = corePreferences.deviceName
         val appName: String = context.resources.getString(R.string.user_agent_app_name)
-        val androidVersion = com.onutiative.BuildConfig.VERSION_NAME
+        val androidVersion = BuildConfig.VERSION_NAME
         val userAgent = "$appName/$androidVersion ($deviceName) LinphoneSDK"
         val sdkVersion = context.getString(R.string.linphone_sdk_version)
         val sdkBranch = context.getString(R.string.linphone_sdk_branch)
@@ -947,7 +948,7 @@ class CoreContext(
         }
 
         Log.i("[Context] Starting IncomingCallActivity")
-        val intent = Intent(context, org.linphone.activities.voip.CallActivity::class.java)
+        val intent = Intent(context, com.onutiative.onukit.activities.voip.CallActivity::class.java)
         // This flag is required to start an Activity from a Service context
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
         context.startActivity(intent)
@@ -960,7 +961,7 @@ class CoreContext(
         }
 
         Log.i("[Context] Starting OutgoingCallActivity")
-        val intent = Intent(context, org.linphone.activities.voip.CallActivity::class.java)
+        val intent = Intent(context, com.onutiative.onukit.activities.voip.CallActivity::class.java)
         // This flag is required to start an Activity from a Service context
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
         context.startActivity(intent)
@@ -973,7 +974,7 @@ class CoreContext(
         }
 
         Log.i("[Context] Starting CallActivity")
-        val intent = Intent(context, org.linphone.activities.voip.CallActivity::class.java)
+        val intent = Intent(context, com.onutiative.onukit.activities.voip.CallActivity::class.java)
         // This flag is required to start an Activity from a Service context
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
         context.startActivity(intent)

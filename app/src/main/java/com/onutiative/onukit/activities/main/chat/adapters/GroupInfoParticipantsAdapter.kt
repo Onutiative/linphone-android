@@ -27,11 +27,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import org.linphone.R
-import org.linphone.activities.main.chat.GroupChatRoomMember
-import org.linphone.activities.main.chat.data.GroupInfoParticipantData
-import org.linphone.databinding.ChatRoomGroupInfoParticipantCellBinding
-import org.linphone.utils.Event
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.chat.GroupChatRoomMember
+import com.onutiative.onukit.activities.main.chat.data.GroupInfoParticipantData
+import com.onutiative.onukit.databinding.ChatRoomGroupInfoParticipantCellBinding
+import com.onutiative.onukit.utils.Event
 
 class GroupInfoParticipantsAdapter(
     private val viewLifecycleOwner: LifecycleOwner,

@@ -26,17 +26,17 @@ import android.provider.ContactsContract
 import androidx.lifecycle.MutableLiveData
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
 import com.onutiative.onukit.LinphoneApplication.Companion.corePreferences
+import com.onutiative.onukit.R
+import com.onutiative.onukit.contact.*
+import com.onutiative.onukit.utils.AppUtils
+import com.onutiative.onukit.utils.ImageUtils
+import com.onutiative.onukit.utils.PermissionHelper
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 import kotlinx.coroutines.CoroutineScope
-import org.linphone.R
-import org.linphone.contact.*
 import org.linphone.core.ChatRoomSecurityLevel
 import org.linphone.core.Friend
 import org.linphone.core.tools.Log
-import org.linphone.utils.AppUtils
-import org.linphone.utils.ImageUtils
-import org.linphone.utils.PermissionHelper
 
 class ContactEditorData(val friend: Friend?) : ContactDataInterface {
     override val contact: MutableLiveData<Friend> = MutableLiveData<Friend>()

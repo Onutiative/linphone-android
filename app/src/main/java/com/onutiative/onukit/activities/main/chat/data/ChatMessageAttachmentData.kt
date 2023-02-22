@@ -20,7 +20,7 @@
 package com.onutiative.onukit.activities.main.chat.data
 
 import android.webkit.MimeTypeMap
-import org.linphone.utils.FileUtils
+import com.onutiative.onukit.utils.FileUtils
 
 class ChatMessageAttachmentData(
     val path: String,

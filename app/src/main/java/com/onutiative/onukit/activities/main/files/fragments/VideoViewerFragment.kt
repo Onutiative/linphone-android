@@ -25,13 +25,13 @@ import android.view.View
 import android.widget.MediaController
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import org.linphone.R
-import org.linphone.activities.main.MainActivity
-import org.linphone.activities.main.files.viewmodels.VideoFileViewModel
-import org.linphone.activities.main.files.viewmodels.VideoFileViewModelFactory
-import org.linphone.compatibility.Compatibility
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.MainActivity
+import com.onutiative.onukit.activities.main.files.viewmodels.VideoFileViewModel
+import com.onutiative.onukit.activities.main.files.viewmodels.VideoFileViewModelFactory
+import com.onutiative.onukit.compatibility.Compatibility
+import com.onutiative.onukit.databinding.FileVideoViewerFragmentBinding
 import org.linphone.core.tools.Log
-import org.linphone.databinding.FileVideoViewerFragmentBinding
 
 class VideoViewerFragment : GenericViewerFragment<FileVideoViewerFragmentBinding>() {
     private lateinit var viewModel: VideoFileViewModel

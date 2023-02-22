@@ -19,9 +19,9 @@
  */
 package com.onutiative.onukit.activities.main.conference.data
 
-import org.linphone.contact.GenericContactData
+import com.onutiative.onukit.contact.GenericContactData
+import com.onutiative.onukit.utils.LinphoneUtils
 import org.linphone.core.Address
-import org.linphone.utils.LinphoneUtils
 
 class ConferenceSchedulingParticipantData(
     private val sipAddress: Address,

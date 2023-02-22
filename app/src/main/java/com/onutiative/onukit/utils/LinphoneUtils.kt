@@ -26,11 +26,12 @@ import android.net.NetworkInfo
 import android.telephony.TelephonyManager.*
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
 import com.onutiative.onukit.LinphoneApplication.Companion.corePreferences
+import com.onutiative.onukit.R
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
-import org.linphone.R
 import org.linphone.core.*
+// import com.onutiative.onukit.core.*
 import org.linphone.core.tools.Log
 
 /**

@@ -25,8 +25,8 @@ import android.graphics.drawable.BitmapDrawable
 import android.text.TextPaint
 import android.util.TypedValue
 import androidx.core.content.ContextCompat
-import org.linphone.R
-import org.linphone.utils.AppUtils
+import com.onutiative.onukit.R
+import com.onutiative.onukit.utils.AppUtils
 
 class ContactAvatarGenerator(private val context: Context) {
     private var textSize: Float

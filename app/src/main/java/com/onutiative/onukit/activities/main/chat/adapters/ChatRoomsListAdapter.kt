@@ -26,13 +26,13 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import org.linphone.R
-import org.linphone.activities.main.adapters.SelectionListAdapter
-import org.linphone.activities.main.chat.data.ChatRoomData
-import org.linphone.activities.main.viewmodels.ListTopBarViewModel
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.adapters.SelectionListAdapter
+import com.onutiative.onukit.activities.main.chat.data.ChatRoomData
+import com.onutiative.onukit.activities.main.viewmodels.ListTopBarViewModel
+import com.onutiative.onukit.databinding.ChatRoomListCellBinding
+import com.onutiative.onukit.utils.Event
 import org.linphone.core.ChatRoom
-import org.linphone.databinding.ChatRoomListCellBinding
-import org.linphone.utils.Event
 
 class ChatRoomsListAdapter(
     selectionVM: ListTopBarViewModel,

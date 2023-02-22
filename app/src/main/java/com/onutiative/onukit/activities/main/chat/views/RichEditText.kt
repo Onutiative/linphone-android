@@ -27,10 +27,10 @@ import androidx.appcompat.widget.AppCompatEditText
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
-import org.linphone.activities.main.chat.receivers.RichContentReceiver
-import org.linphone.activities.main.viewmodels.SharedMainViewModel
+import com.onutiative.onukit.activities.main.chat.receivers.RichContentReceiver
+import com.onutiative.onukit.activities.main.viewmodels.SharedMainViewModel
+import com.onutiative.onukit.utils.Event
 import org.linphone.core.tools.Log
-import org.linphone.utils.Event
 
 /**
  * Allows for image input inside an EditText, usefull for keyboards with gif support for example.

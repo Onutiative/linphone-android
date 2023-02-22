@@ -23,12 +23,12 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import org.linphone.R
-import org.linphone.activities.main.chat.viewmodels.DevicesListViewModel
-import org.linphone.activities.main.chat.viewmodels.DevicesListViewModelFactory
-import org.linphone.activities.main.fragments.SecureFragment
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.chat.viewmodels.DevicesListViewModel
+import com.onutiative.onukit.activities.main.chat.viewmodels.DevicesListViewModelFactory
+import com.onutiative.onukit.activities.main.fragments.SecureFragment
+import com.onutiative.onukit.databinding.ChatRoomDevicesFragmentBinding
 import org.linphone.core.tools.Log
-import org.linphone.databinding.ChatRoomDevicesFragmentBinding
 
 class DevicesFragment : SecureFragment<ChatRoomDevicesFragmentBinding>() {
     private lateinit var listViewModel: DevicesListViewModel

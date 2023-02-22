@@ -30,18 +30,18 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import org.linphone.R
-import org.linphone.activities.main.MainActivity
-import org.linphone.activities.main.conference.adapters.ScheduledConferencesAdapter
-import org.linphone.activities.main.conference.data.ScheduledConferenceData
-import org.linphone.activities.main.conference.viewmodels.ScheduledConferencesViewModel
-import org.linphone.activities.main.fragments.MasterFragment
-import org.linphone.activities.main.viewmodels.DialogViewModel
-import org.linphone.activities.navigateToConferenceScheduling
-import org.linphone.activities.navigateToConferenceWaitingRoom
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.MainActivity
+import com.onutiative.onukit.activities.main.conference.adapters.ScheduledConferencesAdapter
+import com.onutiative.onukit.activities.main.conference.data.ScheduledConferenceData
+import com.onutiative.onukit.activities.main.conference.viewmodels.ScheduledConferencesViewModel
+import com.onutiative.onukit.activities.main.fragments.MasterFragment
+import com.onutiative.onukit.activities.main.viewmodels.DialogViewModel
+import com.onutiative.onukit.activities.navigateToConferenceScheduling
+import com.onutiative.onukit.activities.navigateToConferenceWaitingRoom
+import com.onutiative.onukit.databinding.ConferencesScheduledFragmentBinding
+import com.onutiative.onukit.utils.*
 import org.linphone.core.tools.Log
-import org.linphone.databinding.ConferencesScheduledFragmentBinding
-import org.linphone.utils.*
 
 class ScheduledConferencesFragment : MasterFragment<ConferencesScheduledFragmentBinding, ScheduledConferencesAdapter>() {
     override val dialogConfirmationMessageBeforeRemoval = R.plurals.conference_scheduled_delete_dialog

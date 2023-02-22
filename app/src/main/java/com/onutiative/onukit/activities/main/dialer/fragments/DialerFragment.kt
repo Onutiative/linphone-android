@@ -35,26 +35,26 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.transition.MaterialSharedAxis
-import com.onutiative.BuildConfig
+import org.linphone.core.BuildConfig
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
 import com.onutiative.onukit.LinphoneApplication.Companion.corePreferences
-import org.linphone.R
-import org.linphone.activities.main.MainActivity
-import org.linphone.activities.main.dialer.viewmodels.DialerViewModel
-import org.linphone.activities.main.fragments.SecureFragment
-import org.linphone.activities.main.viewmodels.DialogViewModel
-import org.linphone.activities.navigateToConferenceScheduling
-import org.linphone.activities.navigateToConfigFileViewer
-import org.linphone.activities.navigateToContacts
-import org.linphone.compatibility.Compatibility
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.MainActivity
+import com.onutiative.onukit.activities.main.dialer.viewmodels.DialerViewModel
+import com.onutiative.onukit.activities.main.fragments.SecureFragment
+import com.onutiative.onukit.activities.main.viewmodels.DialogViewModel
+import com.onutiative.onukit.activities.navigateToConferenceScheduling
+import com.onutiative.onukit.activities.navigateToConfigFileViewer
+import com.onutiative.onukit.activities.navigateToContacts
+import com.onutiative.onukit.compatibility.Compatibility
+import com.onutiative.onukit.databinding.DialerFragmentBinding
+import com.onutiative.onukit.telecom.TelecomHelper
+import com.onutiative.onukit.utils.AppUtils
+import com.onutiative.onukit.utils.DialogUtils
+import com.onutiative.onukit.utils.Event
+import com.onutiative.onukit.utils.PermissionHelper
 import org.linphone.core.tools.Log
-import org.linphone.databinding.DialerFragmentBinding
 import org.linphone.mediastream.Version
-import org.linphone.telecom.TelecomHelper
-import org.linphone.utils.AppUtils
-import org.linphone.utils.DialogUtils
-import org.linphone.utils.Event
-import org.linphone.utils.PermissionHelper
 
 class DialerFragment : SecureFragment<DialerFragmentBinding>() {
     private lateinit var viewModel: DialerViewModel
@@ -331,7 +331,7 @@ class DialerFragment : SecureFragment<DialerFragmentBinding>() {
         val currentTimeStamp = System.currentTimeMillis().toInt()
         val interval: Int = corePreferences.checkUpdateAvailableInterval
         if (lastTimestamp == 0 || currentTimeStamp - lastTimestamp >= interval) {
-            val currentVersion = com.onutiative.BuildConfig.VERSION_NAME
+            val currentVersion = BuildConfig.VERSION_NAME
             Log.i("[Dialer] Checking for update using current version [$currentVersion]")
             coreContext.core.checkForUpdate(currentVersion)
             corePreferences.lastUpdateAvailableCheckTimestamp = currentTimeStamp

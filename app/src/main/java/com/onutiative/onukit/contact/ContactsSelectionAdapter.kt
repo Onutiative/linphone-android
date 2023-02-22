@@ -28,12 +28,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
-import org.linphone.R
+import com.onutiative.onukit.R
+import com.onutiative.onukit.databinding.ContactSelectionCellBinding
+import com.onutiative.onukit.utils.Event
 import org.linphone.core.Address
 import org.linphone.core.FriendCapability
 import org.linphone.core.SearchResult
-import org.linphone.databinding.ContactSelectionCellBinding
-import org.linphone.utils.Event
 
 class ContactsSelectionAdapter(
     private val viewLifecycleOwner: LifecycleOwner

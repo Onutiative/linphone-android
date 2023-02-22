@@ -24,10 +24,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
 import com.onutiative.onukit.LinphoneApplication.Companion.corePreferences
-import org.linphone.R
-import org.linphone.activities.main.chat.GroupChatRoomMember
-import org.linphone.activities.main.chat.data.GroupInfoParticipantData
-import org.linphone.activities.main.viewmodels.MessageNotifierViewModel
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.chat.GroupChatRoomMember
+import com.onutiative.onukit.activities.main.chat.data.GroupInfoParticipantData
+import com.onutiative.onukit.activities.main.viewmodels.MessageNotifierViewModel
+import com.onutiative.onukit.core.*
+import com.onutiative.onukit.utils.Event
 import org.linphone.core.*
 import org.linphone.core.tools.Log
 

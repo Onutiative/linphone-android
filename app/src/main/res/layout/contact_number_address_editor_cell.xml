@@ -34,7 +34,7 @@
 
         <ImageView
             android:id="@+id/delete"
-            android:onClick="@{() -> data.remove()}"
+            android:onClick="@={() -> data.remove()}"
             android:contentDescription="@string/content_description_clear_field"
             android:layout_width="30dp"
             android:layout_height="30dp"

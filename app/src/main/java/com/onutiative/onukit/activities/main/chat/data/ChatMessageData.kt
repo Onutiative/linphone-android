@@ -23,15 +23,15 @@ import android.os.CountDownTimer
 import android.text.Spannable
 import android.util.Patterns
 import androidx.lifecycle.MutableLiveData
+import com.onutiative.onukit.R
+import com.onutiative.onukit.contact.GenericContactData
+import com.onutiative.onukit.utils.AppUtils
+import com.onutiative.onukit.utils.PatternClickableSpan
+import com.onutiative.onukit.utils.TimestampUtils
 import java.util.regex.Pattern
-import org.linphone.R
-import org.linphone.contact.GenericContactData
 import org.linphone.core.ChatMessage
 import org.linphone.core.ChatMessageListenerStub
 import org.linphone.core.tools.Log
-import org.linphone.utils.AppUtils
-import org.linphone.utils.PatternClickableSpan
-import org.linphone.utils.TimestampUtils
 
 class ChatMessageData(val chatMessage: ChatMessage) : GenericContactData(chatMessage.fromAddress) {
     private var contentListener: OnContentClickedListener? = null

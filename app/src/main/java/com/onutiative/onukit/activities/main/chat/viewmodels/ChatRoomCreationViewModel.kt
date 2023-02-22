@@ -22,12 +22,13 @@ package com.onutiative.onukit.activities.main.chat.viewmodels
 import androidx.lifecycle.MutableLiveData
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
 import com.onutiative.onukit.LinphoneApplication.Companion.corePreferences
-import org.linphone.R
-import org.linphone.contact.ContactsSelectionViewModel
+import com.onutiative.onukit.R
+import com.onutiative.onukit.contact.ContactsSelectionViewModel
+import com.onutiative.onukit.utils.AppUtils
+import com.onutiative.onukit.utils.Event
+import com.onutiative.onukit.utils.LinphoneUtils
 import org.linphone.core.*
 import org.linphone.core.tools.Log
-import org.linphone.utils.AppUtils
-import org.linphone.utils.LinphoneUtils
 
 class ChatRoomCreationViewModel : ContactsSelectionViewModel() {
     val chatRoomCreatedEvent: MutableLiveData<Event<ChatRoom>> by lazy {

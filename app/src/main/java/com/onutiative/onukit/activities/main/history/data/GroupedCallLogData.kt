@@ -19,7 +19,7 @@
  */
 package com.onutiative.onukit.activities.main.history.data
 
-import org.linphone.activities.main.history.viewmodels.CallLogViewModel
+import com.onutiative.onukit.activities.main.history.viewmodels.CallLogViewModel
 import org.linphone.core.CallLog
 
 class GroupedCallLogData(callLog: CallLog) {

@@ -26,15 +26,15 @@ import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
 import com.onutiative.onukit.LinphoneApplication.Companion.corePreferences
-import org.linphone.R
-import org.linphone.activities.GenericFragment
-import org.linphone.activities.main.conference.viewmodels.ConferenceSchedulingViewModel
-import org.linphone.activities.navigateToSummary
-import org.linphone.contact.ContactsSelectionAdapter
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.GenericFragment
+import com.onutiative.onukit.activities.main.conference.viewmodels.ConferenceSchedulingViewModel
+import com.onutiative.onukit.activities.navigateToSummary
+import com.onutiative.onukit.contact.ContactsSelectionAdapter
+import com.onutiative.onukit.databinding.ConferenceSchedulingParticipantsListFragmentBinding
+import com.onutiative.onukit.utils.AppUtils
+import com.onutiative.onukit.utils.PermissionHelper
 import org.linphone.core.tools.Log
-import org.linphone.databinding.ConferenceSchedulingParticipantsListFragmentBinding
-import org.linphone.utils.AppUtils
-import org.linphone.utils.PermissionHelper
 
 class ConferenceSchedulingParticipantsListFragment : GenericFragment<ConferenceSchedulingParticipantsListFragmentBinding>() {
     private val viewModel: ConferenceSchedulingViewModel by navGraphViewModels(R.id.conference_scheduling_nav_graph)

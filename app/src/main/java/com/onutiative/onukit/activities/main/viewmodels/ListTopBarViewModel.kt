@@ -21,7 +21,7 @@ package com.onutiative.onukit.activities.main.viewmodels
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import org.linphone.utils.Event
+import com.onutiative.onukit.utils.Event
 
 /**
  * This view model is dedicated to the top bar while in edition mode for item(s) selection in list

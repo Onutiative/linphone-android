@@ -62,7 +62,7 @@
                 android:visibility="@{viewModel.hasPresence() ? View.VISIBLE : View.GONE}" />
 
             <CheckBox
-                android:onClick="@{() -> selectionListViewModel.onToggleSelect(position)}"
+                android:onClick="@={() -> selectionListViewModel.onToggleSelect(position)}"
                 android:visibility="@{selectionListViewModel.isEditionEnabled &amp;&amp; viewModel.isNativeContact ? View.VISIBLE : View.GONE, default=gone}"
                 android:checked="@{selectionListViewModel.selectedItems.contains(position)}"
                 android:layout_width="wrap_content"

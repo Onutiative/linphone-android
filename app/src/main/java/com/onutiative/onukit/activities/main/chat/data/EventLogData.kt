@@ -19,7 +19,7 @@
  */
 package com.onutiative.onukit.activities.main.chat.data
 
-import org.linphone.contact.GenericContactData
+import com.onutiative.onukit.contact.GenericContactData
 import org.linphone.core.EventLog
 
 class EventLogData(val eventLog: EventLog) {

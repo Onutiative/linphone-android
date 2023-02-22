@@ -24,15 +24,15 @@ import android.widget.Toast
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
+import com.onutiative.onukit.R
+import com.onutiative.onukit.compatibility.Compatibility
+import com.onutiative.onukit.contact.GenericContactData
+import com.onutiative.onukit.utils.AppUtils
+import com.onutiative.onukit.utils.LinphoneUtils
 import java.util.*
 import kotlinx.coroutines.*
-import org.linphone.R
-import org.linphone.compatibility.Compatibility
-import org.linphone.contact.GenericContactData
 import org.linphone.core.*
 import org.linphone.core.tools.Log
-import org.linphone.utils.AppUtils
-import org.linphone.utils.LinphoneUtils
 
 open class CallData(val call: Call) : GenericContactData(call.remoteAddress) {
     interface CallContextMenuClickListener {

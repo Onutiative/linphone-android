@@ -97,7 +97,7 @@
                 layout="@layout/chat_message_reply"
                 android:visibility="@{chatSendingViewModel.isPendingAnswer ? View.VISIBLE : View.GONE, default=gone}"
                 app:data="@{chatSendingViewModel.pendingChatMessageToReplyTo}"
-                app:cancelClickListener="@{() -> chatSendingViewModel.cancelReply()}" />
+                app:cancelClickListener="@={() -> chatSendingViewModel.cancelReply()}" />
 
             <HorizontalScrollView
                 android:layout_width="match_parent"
@@ -155,7 +155,7 @@
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/content_description_send_message"
                     android:enabled="@{chatSendingViewModel.sendMessageEnabled}"
-                    android:onClick="@{() -> chatSendingViewModel.sendMessage()}"
+                    android:onClick="@={() -> chatSendingViewModel.sendMessage()}"
                     android:padding="10dp"
                     android:src="@drawable/chat_send_message" />
 

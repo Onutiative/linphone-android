@@ -22,10 +22,10 @@ package com.onutiative.onukit.activities.main.conference.viewmodels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
-import org.linphone.activities.main.conference.data.ScheduledConferenceData
+import com.onutiative.onukit.activities.main.conference.data.ScheduledConferenceData
+import com.onutiative.onukit.utils.LinphoneUtils
 import org.linphone.core.*
 import org.linphone.core.tools.Log
-import org.linphone.utils.LinphoneUtils
 
 class ScheduledConferencesViewModel : ViewModel() {
     val conferences = MutableLiveData<ArrayList<ScheduledConferenceData>>()

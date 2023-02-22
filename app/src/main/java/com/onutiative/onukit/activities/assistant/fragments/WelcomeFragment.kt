@@ -29,15 +29,15 @@ import android.text.style.ClickableSpan
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import com.onutiative.onukit.LinphoneApplication.Companion.corePreferences
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.*
+import com.onutiative.onukit.activities.assistant.viewmodels.WelcomeViewModel
+import com.onutiative.onukit.activities.navigateToAccountLogin
+import com.onutiative.onukit.activities.navigateToEmailAccountCreation
+import com.onutiative.onukit.activities.navigateToRemoteProvisioning
+import com.onutiative.onukit.databinding.AssistantWelcomeFragmentBinding
 import java.util.regex.Pattern
-import org.linphone.R
-import org.linphone.activities.*
-import org.linphone.activities.assistant.viewmodels.WelcomeViewModel
-import org.linphone.activities.navigateToAccountLogin
-import org.linphone.activities.navigateToEmailAccountCreation
-import org.linphone.activities.navigateToRemoteProvisioning
 import org.linphone.core.tools.Log
-import org.linphone.databinding.AssistantWelcomeFragmentBinding
 
 class WelcomeFragment : GenericFragment<AssistantWelcomeFragmentBinding>() {
     private lateinit var viewModel: WelcomeViewModel

@@ -37,19 +37,19 @@ import androidx.window.layout.FoldingFeature
 import com.google.android.material.snackbar.Snackbar
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
 import com.onutiative.onukit.LinphoneApplication.Companion.corePreferences
-import org.linphone.R
-import org.linphone.activities.*
-import org.linphone.activities.main.MainActivity
-import org.linphone.activities.voip.ConferenceDisplayMode
-import org.linphone.activities.voip.viewmodels.CallsViewModel
-import org.linphone.activities.voip.viewmodels.ConferenceViewModel
-import org.linphone.activities.voip.viewmodels.ControlsViewModel
-import org.linphone.activities.voip.viewmodels.StatisticsListViewModel
-import org.linphone.activities.voip.views.RoundCornersTextureView
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.*
+import com.onutiative.onukit.activities.main.MainActivity
+import com.onutiative.onukit.activities.voip.ConferenceDisplayMode
+import com.onutiative.onukit.activities.voip.viewmodels.CallsViewModel
+import com.onutiative.onukit.activities.voip.viewmodels.ConferenceViewModel
+import com.onutiative.onukit.activities.voip.viewmodels.ControlsViewModel
+import com.onutiative.onukit.activities.voip.viewmodels.StatisticsListViewModel
+import com.onutiative.onukit.activities.voip.views.RoundCornersTextureView
+import com.onutiative.onukit.databinding.VoipConferenceCallFragmentBinding
 import org.linphone.core.Conference
 import org.linphone.core.StreamType
 import org.linphone.core.tools.Log
-import org.linphone.databinding.VoipConferenceCallFragmentBinding
 
 class ConferenceCallFragment : GenericFragment<VoipConferenceCallFragmentBinding>() {
     private val controlsViewModel: ControlsViewModel by navGraphViewModels(R.id.call_nav_graph)

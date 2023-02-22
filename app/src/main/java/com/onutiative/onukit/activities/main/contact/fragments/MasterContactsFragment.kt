@@ -33,21 +33,21 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.transition.MaterialSharedAxis
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
 import com.onutiative.onukit.LinphoneApplication.Companion.corePreferences
-import org.linphone.R
-import org.linphone.activities.SnackBarActivity
-import org.linphone.activities.clearDisplayedContact
-import org.linphone.activities.main.MainActivity
-import org.linphone.activities.main.contact.adapters.ContactsListAdapter
-import org.linphone.activities.main.contact.viewmodels.ContactsListViewModel
-import org.linphone.activities.main.fragments.MasterFragment
-import org.linphone.activities.main.viewmodels.DialogViewModel
-import org.linphone.activities.navigateToContact
-import org.linphone.activities.navigateToContactEditor
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.SnackBarActivity
+import com.onutiative.onukit.activities.clearDisplayedContact
+import com.onutiative.onukit.activities.main.MainActivity
+import com.onutiative.onukit.activities.main.contact.adapters.ContactsListAdapter
+import com.onutiative.onukit.activities.main.contact.viewmodels.ContactsListViewModel
+import com.onutiative.onukit.activities.main.fragments.MasterFragment
+import com.onutiative.onukit.activities.main.viewmodels.DialogViewModel
+import com.onutiative.onukit.activities.navigateToContact
+import com.onutiative.onukit.activities.navigateToContactEditor
+import com.onutiative.onukit.databinding.ContactMasterFragmentBinding
+import com.onutiative.onukit.utils.*
 import org.linphone.core.Factory
 import org.linphone.core.Friend
 import org.linphone.core.tools.Log
-import org.linphone.databinding.ContactMasterFragmentBinding
-import org.linphone.utils.*
 
 class MasterContactsFragment : MasterFragment<ContactMasterFragmentBinding, ContactsListAdapter>() {
     override val dialogConfirmationMessageBeforeRemoval = R.plurals.contact_delete_dialog

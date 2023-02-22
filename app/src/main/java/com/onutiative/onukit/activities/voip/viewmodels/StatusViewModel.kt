@@ -21,7 +21,9 @@ package com.onutiative.onukit.activities.voip.viewmodels
 
 import androidx.lifecycle.MutableLiveData
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
-import org.linphone.R
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.viewmodels.StatusViewModel
+import com.onutiative.onukit.utils.Event
 import org.linphone.core.*
 
 class StatusViewModel : StatusViewModel() {

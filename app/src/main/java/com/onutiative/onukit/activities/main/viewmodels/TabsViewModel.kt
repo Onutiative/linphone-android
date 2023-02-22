@@ -25,9 +25,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
 import com.onutiative.onukit.LinphoneApplication.Companion.corePreferences
-import org.linphone.R
+import com.onutiative.onukit.R
+import com.onutiative.onukit.utils.AppUtils
 import org.linphone.core.*
-import org.linphone.utils.AppUtils
 
 class TabsViewModel : ViewModel() {
     val unreadMessagesCount = MutableLiveData<Int>()

@@ -21,15 +21,15 @@ package com.onutiative.onukit.activities.main.settings.viewmodels
 
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.MutableLiveData
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.settings.SettingListenerStub
+import com.onutiative.onukit.utils.Event
+import com.onutiative.onukit.utils.PermissionHelper
 import java.lang.NumberFormatException
-import org.linphone.R
-import org.linphone.activities.main.settings.SettingListenerStub
 import org.linphone.core.AudioDevice
 import org.linphone.core.Core
 import org.linphone.core.CoreListenerStub
 import org.linphone.core.EcCalibratorStatus
-import org.linphone.utils.Event
-import org.linphone.utils.PermissionHelper
 
 class AudioSettingsViewModel : GenericSettingsViewModel() {
     val askAudioRecordPermissionForEchoCancellerCalibrationEvent: MutableLiveData<Event<Boolean>> by lazy {

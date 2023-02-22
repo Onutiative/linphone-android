@@ -89,7 +89,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:checked="@{selectionListViewModel.selectedItems.contains(position)}"
-                    android:onClick="@{() -> selectionListViewModel.onToggleSelect(position)}"
+                    android:onClick="@={() -> selectionListViewModel.onToggleSelect(position)}"
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
                     android:visibility="@{selectionListViewModel.isEditionEnabled ? View.VISIBLE : View.GONE, default=gone}" />

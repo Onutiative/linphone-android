@@ -24,7 +24,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.inputmethod.InputMethodManager
 import com.google.android.material.textfield.TextInputEditText
-import org.linphone.activities.main.settings.SettingListener
+import com.onutiative.onukit.activities.main.settings.SettingListener
 
 class SettingTextInputEditText : TextInputEditText {
     constructor(context: Context) : super(context)

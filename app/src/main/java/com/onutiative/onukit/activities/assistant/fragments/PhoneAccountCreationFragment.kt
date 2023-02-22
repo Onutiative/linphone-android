@@ -22,13 +22,13 @@ package com.onutiative.onukit.activities.assistant.fragments
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
-import org.linphone.R
-import org.linphone.activities.assistant.AssistantActivity
-import org.linphone.activities.assistant.viewmodels.PhoneAccountCreationViewModel
-import org.linphone.activities.assistant.viewmodels.PhoneAccountCreationViewModelFactory
-import org.linphone.activities.assistant.viewmodels.SharedAssistantViewModel
-import org.linphone.activities.navigateToPhoneAccountValidation
-import org.linphone.databinding.AssistantPhoneAccountCreationFragmentBinding
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.assistant.AssistantActivity
+import com.onutiative.onukit.activities.assistant.viewmodels.PhoneAccountCreationViewModel
+import com.onutiative.onukit.activities.assistant.viewmodels.PhoneAccountCreationViewModelFactory
+import com.onutiative.onukit.activities.assistant.viewmodels.SharedAssistantViewModel
+import com.onutiative.onukit.activities.navigateToPhoneAccountValidation
+import com.onutiative.onukit.databinding.AssistantPhoneAccountCreationFragmentBinding
 
 class PhoneAccountCreationFragment :
     AbstractPhoneFragment<AssistantPhoneAccountCreationFragmentBinding>() {

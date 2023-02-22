@@ -40,7 +40,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="5dp"
             android:checked="@{selectionListViewModel.selectedItems.contains(position)}"
-            android:onClick="@{() -> selectionListViewModel.onToggleSelect(position)}"
+            android:onClick="@={() -> selectionListViewModel.onToggleSelect(position)}"
             android:visibility="@{selectionListViewModel.isEditionEnabled ? View.VISIBLE : View.GONE, default=gone}" />
 
         <!-- To align with security badge if visible -->

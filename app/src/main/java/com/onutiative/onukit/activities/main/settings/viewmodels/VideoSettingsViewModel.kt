@@ -22,9 +22,9 @@ package com.onutiative.onukit.activities.main.settings.viewmodels
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.MutableLiveData
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.settings.SettingListenerStub
 import java.lang.NumberFormatException
-import org.linphone.R
-import org.linphone.activities.main.settings.SettingListenerStub
 import org.linphone.core.Factory
 import org.linphone.core.tools.Log
 

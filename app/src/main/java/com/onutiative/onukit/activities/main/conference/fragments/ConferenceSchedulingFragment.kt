@@ -29,13 +29,13 @@ import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.timepicker.MaterialTimePicker
 import com.google.android.material.timepicker.TimeFormat
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
-import org.linphone.R
-import org.linphone.activities.GenericFragment
-import org.linphone.activities.main.conference.viewmodels.ConferenceSchedulingViewModel
-import org.linphone.activities.navigateToParticipantsList
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.GenericFragment
+import com.onutiative.onukit.activities.main.conference.viewmodels.ConferenceSchedulingViewModel
+import com.onutiative.onukit.activities.navigateToParticipantsList
+import com.onutiative.onukit.databinding.ConferenceSchedulingFragmentBinding
 import org.linphone.core.Factory
 import org.linphone.core.tools.Log
-import org.linphone.databinding.ConferenceSchedulingFragmentBinding
 
 class ConferenceSchedulingFragment : GenericFragment<ConferenceSchedulingFragmentBinding>() {
     private val viewModel: ConferenceSchedulingViewModel by navGraphViewModels(R.id.conference_scheduling_nav_graph)

@@ -25,12 +25,12 @@ import android.os.Bundle
 import android.provider.Settings
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
-import org.linphone.R
-import org.linphone.activities.main.chat.viewmodels.ChatRoomsListViewModel
-import org.linphone.activities.main.settings.viewmodels.ChatSettingsViewModel
-import org.linphone.databinding.SettingsChatFragmentBinding
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.chat.viewmodels.ChatRoomsListViewModel
+import com.onutiative.onukit.activities.main.settings.viewmodels.ChatSettingsViewModel
+import com.onutiative.onukit.databinding.SettingsChatFragmentBinding
+import com.onutiative.onukit.utils.ShortcutsHelper
 import org.linphone.mediastream.Version
-import org.linphone.utils.ShortcutsHelper
 
 class ChatSettingsFragment : GenericSettingFragment<SettingsChatFragmentBinding>() {
     private lateinit var viewModel: ChatSettingsViewModel

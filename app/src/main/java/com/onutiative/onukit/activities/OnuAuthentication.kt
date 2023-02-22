@@ -11,15 +11,15 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.onutiative.onukit.LinphoneApplication
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.assistant.AssistantActivity
+import com.onutiative.onukit.onuspecific.OnuFunctions
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.OkHttpClient
 import okhttp3.Response
 import okio.IOException
 import org.json.JSONObject
-import org.linphone.R
-import org.linphone.activities.assistant.AssistantActivity
-import org.linphone.onuspecific.OnuFunctions
 
 class OnuAuthentication : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

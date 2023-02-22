@@ -11,8 +11,8 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import org.linphone.R
-import org.linphone.utils.PermissionHelper
+import com.onutiative.onukit.R
+import com.onutiative.onukit.utils.PermissionHelper
 
 class WelcomeScreen : AppCompatActivity() {
 

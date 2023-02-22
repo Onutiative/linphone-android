@@ -21,7 +21,7 @@ package com.onutiative.onukit.activities.voip.viewmodels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import org.linphone.contact.ContactsSelectionViewModel
+import com.onutiative.onukit.contact.ContactsSelectionViewModel
 import org.linphone.core.Address
 import org.linphone.core.Conference
 import org.linphone.core.tools.Log

@@ -21,9 +21,9 @@ package com.onutiative.onukit.activities.main.settings.viewmodels
 
 import androidx.lifecycle.MutableLiveData
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
-import org.linphone.activities.main.settings.SettingListenerStub
-import org.linphone.utils.Event
-import org.linphone.utils.PermissionHelper
+import com.onutiative.onukit.activities.main.settings.SettingListenerStub
+import com.onutiative.onukit.utils.Event
+import com.onutiative.onukit.utils.PermissionHelper
 
 class ContactsSettingsViewModel : GenericSettingsViewModel() {
     val askWriteContactsPermissionForPresenceStorageEvent: MutableLiveData<Event<Boolean>> by lazy {

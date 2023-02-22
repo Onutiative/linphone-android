@@ -25,10 +25,10 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import com.onutiative.onukit.LinphoneApplication.Companion.corePreferences
-import org.linphone.R
-import org.linphone.activities.GenericActivity
-import org.linphone.activities.SnackBarActivity
-import org.linphone.activities.assistant.viewmodels.SharedAssistantViewModel
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.GenericActivity
+import com.onutiative.onukit.activities.SnackBarActivity
+import com.onutiative.onukit.activities.assistant.viewmodels.SharedAssistantViewModel
 
 class AssistantActivity : GenericActivity(), SnackBarActivity {
     private lateinit var sharedViewModel: SharedAssistantViewModel

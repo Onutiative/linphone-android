@@ -23,13 +23,13 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.doOnPreDraw
 import androidx.lifecycle.ViewModelProvider
-import org.linphone.R
-import org.linphone.activities.main.settings.viewmodels.AccountSettingsViewModel
-import org.linphone.activities.main.settings.viewmodels.AccountSettingsViewModelFactory
-import org.linphone.activities.navigateToPhoneLinking
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.settings.viewmodels.AccountSettingsViewModel
+import com.onutiative.onukit.activities.main.settings.viewmodels.AccountSettingsViewModelFactory
+import com.onutiative.onukit.activities.navigateToPhoneLinking
+import com.onutiative.onukit.databinding.SettingsAccountFragmentBinding
+import com.onutiative.onukit.utils.Event
 import org.linphone.core.tools.Log
-import org.linphone.databinding.SettingsAccountFragmentBinding
-import org.linphone.utils.Event
 
 class AccountSettingsFragment : GenericSettingFragment<SettingsAccountFragmentBinding>() {
     private lateinit var viewModel: AccountSettingsViewModel

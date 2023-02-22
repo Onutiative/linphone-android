@@ -24,8 +24,8 @@ import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationManagerCompat
 import com.onutiative.onukit.LinphoneApplication.Companion.corePreferences
-import org.linphone.R
-import org.linphone.compatibility.Compatibility
+import com.onutiative.onukit.R
+import com.onutiative.onukit.compatibility.Compatibility
 import org.linphone.core.tools.Log
 
 class BootReceiver : BroadcastReceiver() {

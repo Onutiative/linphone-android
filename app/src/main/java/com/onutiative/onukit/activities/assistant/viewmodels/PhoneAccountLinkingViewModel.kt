@@ -21,10 +21,10 @@
 package com.onutiative.onukit.activities.assistant.viewmodels
 
 import androidx.lifecycle.*
+import com.onutiative.onukit.utils.Event
 import org.linphone.core.AccountCreator
 import org.linphone.core.AccountCreatorListenerStub
 import org.linphone.core.tools.Log
-import org.linphone.utils.Event
 
 class PhoneAccountLinkingViewModelFactory(private val accountCreator: AccountCreator) :
     ViewModelProvider.NewInstanceFactory() {

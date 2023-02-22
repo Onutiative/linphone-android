@@ -24,15 +24,15 @@ import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import org.linphone.R
-import org.linphone.activities.main.chat.adapters.ImdnAdapter
-import org.linphone.activities.main.chat.viewmodels.ImdnViewModel
-import org.linphone.activities.main.chat.viewmodels.ImdnViewModelFactory
-import org.linphone.activities.main.fragments.SecureFragment
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.chat.adapters.ImdnAdapter
+import com.onutiative.onukit.activities.main.chat.viewmodels.ImdnViewModel
+import com.onutiative.onukit.activities.main.chat.viewmodels.ImdnViewModelFactory
+import com.onutiative.onukit.activities.main.fragments.SecureFragment
+import com.onutiative.onukit.databinding.ChatRoomImdnFragmentBinding
+import com.onutiative.onukit.utils.AppUtils
+import com.onutiative.onukit.utils.RecyclerViewHeaderDecoration
 import org.linphone.core.tools.Log
-import org.linphone.databinding.ChatRoomImdnFragmentBinding
-import org.linphone.utils.AppUtils
-import org.linphone.utils.RecyclerViewHeaderDecoration
 
 class ImdnFragment : SecureFragment<ChatRoomImdnFragmentBinding>() {
     private lateinit var viewModel: ImdnViewModel

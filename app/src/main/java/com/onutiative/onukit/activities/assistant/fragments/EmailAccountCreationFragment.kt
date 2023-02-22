@@ -22,14 +22,14 @@ package com.onutiative.onukit.activities.assistant.fragments
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
-import org.linphone.R
-import org.linphone.activities.GenericFragment
-import org.linphone.activities.assistant.AssistantActivity
-import org.linphone.activities.assistant.viewmodels.EmailAccountCreationViewModel
-import org.linphone.activities.assistant.viewmodels.EmailAccountCreationViewModelFactory
-import org.linphone.activities.assistant.viewmodels.SharedAssistantViewModel
-import org.linphone.activities.navigateToEmailAccountValidation
-import org.linphone.databinding.AssistantEmailAccountCreationFragmentBinding
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.GenericFragment
+import com.onutiative.onukit.activities.assistant.AssistantActivity
+import com.onutiative.onukit.activities.assistant.viewmodels.EmailAccountCreationViewModel
+import com.onutiative.onukit.activities.assistant.viewmodels.EmailAccountCreationViewModelFactory
+import com.onutiative.onukit.activities.assistant.viewmodels.SharedAssistantViewModel
+import com.onutiative.onukit.activities.navigateToEmailAccountValidation
+import com.onutiative.onukit.databinding.AssistantEmailAccountCreationFragmentBinding
 
 class EmailAccountCreationFragment : GenericFragment<AssistantEmailAccountCreationFragmentBinding>() {
     private lateinit var sharedAssistantViewModel: SharedAssistantViewModel

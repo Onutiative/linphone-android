@@ -32,21 +32,21 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.GenericFragment
+import com.onutiative.onukit.activities.main.MainActivity
+import com.onutiative.onukit.activities.main.chat.adapters.ChatMessagesListAdapter
+import com.onutiative.onukit.activities.main.chat.data.ChatMessageData
+import com.onutiative.onukit.activities.main.chat.viewmodels.*
+import com.onutiative.onukit.activities.main.viewmodels.ListTopBarViewModel
+import com.onutiative.onukit.compatibility.Compatibility
+import com.onutiative.onukit.databinding.VoipChatFragmentBinding
+import com.onutiative.onukit.utils.FileUtils
+import com.onutiative.onukit.utils.PermissionHelper
 import kotlinx.coroutines.launch
-import org.linphone.R
-import org.linphone.activities.GenericFragment
-import org.linphone.activities.main.MainActivity
-import org.linphone.activities.main.chat.adapters.ChatMessagesListAdapter
-import org.linphone.activities.main.chat.data.ChatMessageData
-import org.linphone.activities.main.chat.viewmodels.*
-import org.linphone.activities.main.viewmodels.ListTopBarViewModel
-import org.linphone.compatibility.Compatibility
 import org.linphone.core.ChatRoom
 import org.linphone.core.Factory
 import org.linphone.core.tools.Log
-import org.linphone.databinding.VoipChatFragmentBinding
-import org.linphone.utils.FileUtils
-import org.linphone.utils.PermissionHelper
 
 class ChatFragment : GenericFragment<VoipChatFragmentBinding>() {
     private lateinit var adapter: ChatMessagesListAdapter

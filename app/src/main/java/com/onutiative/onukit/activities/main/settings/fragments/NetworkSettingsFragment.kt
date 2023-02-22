@@ -22,9 +22,9 @@ package com.onutiative.onukit.activities.main.settings.fragments
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
-import org.linphone.R
-import org.linphone.activities.main.settings.viewmodels.NetworkSettingsViewModel
-import org.linphone.databinding.SettingsNetworkFragmentBinding
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.settings.viewmodels.NetworkSettingsViewModel
+import com.onutiative.onukit.databinding.SettingsNetworkFragmentBinding
 
 class NetworkSettingsFragment : GenericSettingFragment<SettingsNetworkFragmentBinding>() {
     private lateinit var viewModel: NetworkSettingsViewModel

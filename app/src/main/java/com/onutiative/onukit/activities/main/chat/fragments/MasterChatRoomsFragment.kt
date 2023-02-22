@@ -33,21 +33,21 @@ import androidx.slidingpanelayout.widget.SlidingPaneLayout
 import com.google.android.material.transition.MaterialSharedAxis
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
 import com.onutiative.onukit.LinphoneApplication.Companion.corePreferences
-import org.linphone.R
-import org.linphone.activities.GenericActivity
-import org.linphone.activities.clearDisplayedChatRoom
-import org.linphone.activities.main.MainActivity
-import org.linphone.activities.main.chat.adapters.ChatRoomsListAdapter
-import org.linphone.activities.main.chat.viewmodels.ChatRoomsListViewModel
-import org.linphone.activities.main.fragments.MasterFragment
-import org.linphone.activities.main.viewmodels.DialogViewModel
-import org.linphone.activities.navigateToChatRoom
-import org.linphone.activities.navigateToChatRoomCreation
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.GenericActivity
+import com.onutiative.onukit.activities.clearDisplayedChatRoom
+import com.onutiative.onukit.activities.main.MainActivity
+import com.onutiative.onukit.activities.main.chat.adapters.ChatRoomsListAdapter
+import com.onutiative.onukit.activities.main.chat.viewmodels.ChatRoomsListViewModel
+import com.onutiative.onukit.activities.main.fragments.MasterFragment
+import com.onutiative.onukit.activities.main.viewmodels.DialogViewModel
+import com.onutiative.onukit.activities.navigateToChatRoom
+import com.onutiative.onukit.activities.navigateToChatRoomCreation
+import com.onutiative.onukit.databinding.ChatRoomMasterFragmentBinding
+import com.onutiative.onukit.utils.*
 import org.linphone.core.ChatRoom
 import org.linphone.core.Factory
 import org.linphone.core.tools.Log
-import org.linphone.databinding.ChatRoomMasterFragmentBinding
-import org.linphone.utils.*
 
 class MasterChatRoomsFragment : MasterFragment<ChatRoomMasterFragmentBinding, ChatRoomsListAdapter>() {
     override val dialogConfirmationMessageBeforeRemoval = R.plurals.chat_room_delete_dialog

@@ -23,11 +23,11 @@ package com.onutiative.onukit.activities.assistant.viewmodels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
+import com.onutiative.onukit.utils.Event
 import org.linphone.core.Core
 import org.linphone.core.CoreListenerStub
 import org.linphone.core.EcCalibratorStatus
 import org.linphone.core.tools.Log
-import org.linphone.utils.Event
 
 class EchoCancellerCalibrationViewModel : ViewModel() {
     val echoCalibrationTerminated = MutableLiveData<Event<Boolean>>()

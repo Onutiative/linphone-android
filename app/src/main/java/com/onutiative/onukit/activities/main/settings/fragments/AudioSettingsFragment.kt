@@ -26,14 +26,14 @@ import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProvider
-import com.onutiative.BR
+import com.onutiative.onukit.BR
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
-import org.linphone.R
-import org.linphone.activities.main.settings.SettingListenerStub
-import org.linphone.activities.main.settings.viewmodels.AudioSettingsViewModel
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.settings.SettingListenerStub
+import com.onutiative.onukit.activities.main.settings.viewmodels.AudioSettingsViewModel
+import com.onutiative.onukit.databinding.SettingsAudioFragmentBinding
+import com.onutiative.onukit.utils.PermissionHelper
 import org.linphone.core.tools.Log
-import org.linphone.databinding.SettingsAudioFragmentBinding
-import org.linphone.utils.PermissionHelper
 
 class AudioSettingsFragment : GenericSettingFragment<SettingsAudioFragmentBinding>() {
     private lateinit var viewModel: AudioSettingsViewModel
@@ -98,11 +98,11 @@ class AudioSettingsFragment : GenericSettingFragment<SettingsAudioFragmentBindin
         val list = arrayListOf<ViewDataBinding>()
         for (payload in coreContext.core.audioPayloadTypes) {
             val binding = DataBindingUtil.inflate<ViewDataBinding>(LayoutInflater.from(requireContext()), R.layout.settings_widget_switch, null, false)
-            binding.setVariable(com.onutiative.BR.title, payload.mimeType)
-            binding.setVariable(com.onutiative.BR.subtitle, "${payload.clockRate} Hz")
-            binding.setVariable(com.onutiative.BR.checked, payload.enabled())
+            binding.setVariable(BR.title, payload.mimeType)
+            binding.setVariable(BR.subtitle, "${payload.clockRate} Hz")
+            binding.setVariable(BR.checked, payload.enabled())
             binding.setVariable(
-                com.onutiative.BR.listener,
+                BR.listener,
                 object : SettingListenerStub() {
                     override fun onBoolValueChanged(newValue: Boolean) {
                         payload.enable(newValue)

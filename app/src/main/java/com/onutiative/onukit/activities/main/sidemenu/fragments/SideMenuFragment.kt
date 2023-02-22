@@ -29,22 +29,22 @@ import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.*
+import com.onutiative.onukit.activities.assistant.AssistantActivity
+import com.onutiative.onukit.activities.main.settings.SettingListenerStub
+import com.onutiative.onukit.activities.main.sidemenu.viewmodels.SideMenuViewModel
+import com.onutiative.onukit.activities.navigateToAbout
+import com.onutiative.onukit.activities.navigateToAccountSettings
+import com.onutiative.onukit.activities.navigateToRecordings
+import com.onutiative.onukit.activities.navigateToSettings
+import com.onutiative.onukit.databinding.SideMenuFragmentBinding
+import com.onutiative.onukit.utils.Event
+import com.onutiative.onukit.utils.FileUtils
+import com.onutiative.onukit.utils.PermissionHelper
 import java.io.File
 import kotlinx.coroutines.launch
-import org.linphone.R
-import org.linphone.activities.*
-import org.linphone.activities.assistant.AssistantActivity
-import org.linphone.activities.main.settings.SettingListenerStub
-import org.linphone.activities.main.sidemenu.viewmodels.SideMenuViewModel
-import org.linphone.activities.navigateToAbout
-import org.linphone.activities.navigateToAccountSettings
-import org.linphone.activities.navigateToRecordings
-import org.linphone.activities.navigateToSettings
 import org.linphone.core.tools.Log
-import org.linphone.databinding.SideMenuFragmentBinding
-import org.linphone.utils.Event
-import org.linphone.utils.FileUtils
-import org.linphone.utils.PermissionHelper
 
 class SideMenuFragment : GenericFragment<SideMenuFragmentBinding>() {
     private lateinit var viewModel: SideMenuViewModel

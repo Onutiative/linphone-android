@@ -23,8 +23,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
 import com.onutiative.onukit.LinphoneApplication.Companion.corePreferences
-import org.linphone.activities.main.settings.SettingListenerStub
-import org.linphone.utils.LinphoneUtils
+import com.onutiative.onukit.activities.main.settings.SettingListenerStub
+import com.onutiative.onukit.utils.LinphoneUtils
 
 class SettingsViewModel : ViewModel() {
     private val tunnelAvailable: Boolean = coreContext.core.tunnelAvailable()

@@ -25,23 +25,23 @@ import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.onutiative.onukit.LinphoneApplication.Companion.corePreferences
-import org.linphone.R
-import org.linphone.activities.main.MainActivity
-import org.linphone.activities.main.chat.GroupChatRoomMember
-import org.linphone.activities.main.chat.adapters.GroupInfoParticipantsAdapter
-import org.linphone.activities.main.chat.data.GroupInfoParticipantData
-import org.linphone.activities.main.chat.viewmodels.GroupInfoViewModel
-import org.linphone.activities.main.chat.viewmodels.GroupInfoViewModelFactory
-import org.linphone.activities.main.fragments.SecureFragment
-import org.linphone.activities.main.viewmodels.DialogViewModel
-import org.linphone.activities.navigateToChatRoom
-import org.linphone.activities.navigateToChatRoomCreation
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.MainActivity
+import com.onutiative.onukit.activities.main.chat.GroupChatRoomMember
+import com.onutiative.onukit.activities.main.chat.adapters.GroupInfoParticipantsAdapter
+import com.onutiative.onukit.activities.main.chat.data.GroupInfoParticipantData
+import com.onutiative.onukit.activities.main.chat.viewmodels.GroupInfoViewModel
+import com.onutiative.onukit.activities.main.chat.viewmodels.GroupInfoViewModelFactory
+import com.onutiative.onukit.activities.main.fragments.SecureFragment
+import com.onutiative.onukit.activities.main.viewmodels.DialogViewModel
+import com.onutiative.onukit.activities.navigateToChatRoom
+import com.onutiative.onukit.activities.navigateToChatRoomCreation
+import com.onutiative.onukit.databinding.ChatRoomGroupInfoFragmentBinding
+import com.onutiative.onukit.utils.AppUtils
+import com.onutiative.onukit.utils.DialogUtils
 import org.linphone.core.Address
 import org.linphone.core.ChatRoom
 import org.linphone.core.ChatRoomCapabilities
-import org.linphone.databinding.ChatRoomGroupInfoFragmentBinding
-import org.linphone.utils.AppUtils
-import org.linphone.utils.DialogUtils
 
 class GroupInfoFragment : SecureFragment<ChatRoomGroupInfoFragmentBinding>() {
     private lateinit var viewModel: GroupInfoViewModel

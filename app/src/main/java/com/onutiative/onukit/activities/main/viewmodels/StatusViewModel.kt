@@ -22,8 +22,8 @@ package com.onutiative.onukit.activities.main.viewmodels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
+import com.onutiative.onukit.R
 import java.util.*
-import org.linphone.R
 import org.linphone.core.*
 import org.linphone.core.tools.Log
 

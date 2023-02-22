@@ -23,11 +23,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.media.AudioFocusRequestCompat
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
-import org.linphone.activities.main.recordings.data.RecordingData
+import com.onutiative.onukit.activities.main.recordings.data.RecordingData
+import com.onutiative.onukit.utils.AppUtils
+import com.onutiative.onukit.utils.Event
+import com.onutiative.onukit.utils.FileUtils
 import org.linphone.core.tools.Log
-import org.linphone.utils.AppUtils
-import org.linphone.utils.Event
-import org.linphone.utils.FileUtils
 
 class RecordingsViewModel : ViewModel() {
     val recordingsList = MutableLiveData<ArrayList<RecordingData>>()

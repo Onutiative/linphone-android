@@ -22,7 +22,7 @@ package com.onutiative.onukit.activities.voip.viewmodels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
-import org.linphone.activities.voip.data.CallStatisticsData
+import com.onutiative.onukit.activities.voip.data.CallStatisticsData
 import org.linphone.core.Call
 import org.linphone.core.Core
 import org.linphone.core.CoreListenerStub

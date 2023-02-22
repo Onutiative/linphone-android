@@ -23,10 +23,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
 import com.onutiative.onukit.LinphoneApplication.Companion.corePreferences
-import org.linphone.activities.main.settings.SettingListenerStub
-import org.linphone.activities.main.settings.viewmodels.AccountSettingsViewModel
+import com.onutiative.onukit.activities.main.settings.SettingListenerStub
+import com.onutiative.onukit.activities.main.settings.viewmodels.AccountSettingsViewModel
+import com.onutiative.onukit.utils.LinphoneUtils
 import org.linphone.core.*
-import org.linphone.utils.LinphoneUtils
 
 class SideMenuViewModel : ViewModel() {
     val showAccounts: Boolean = corePreferences.showAccountsInSideMenu

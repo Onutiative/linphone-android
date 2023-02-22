@@ -22,10 +22,10 @@ package com.onutiative.onukit.activities.main.contact.fragments
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.DialogFragment
-import org.linphone.R
-import org.linphone.activities.main.contact.adapters.SyncAccountAdapter
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.contact.adapters.SyncAccountAdapter
+import com.onutiative.onukit.databinding.ContactSyncAccountPickerFragmentBinding
 import org.linphone.core.tools.Log
-import org.linphone.databinding.ContactSyncAccountPickerFragmentBinding
 
 class SyncAccountPickerFragment(private val listener: SyncAccountPickedListener) : DialogFragment() {
     private var _binding: ContactSyncAccountPickerFragmentBinding? = null

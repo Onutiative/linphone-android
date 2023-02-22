@@ -15,7 +15,7 @@
         android:orientation="vertical">
 
         <RelativeLayout
-            android:onClick="@{() -> data.devices.size() == 1 ? data.onClick() : data.toggleExpanded()}"
+            android:onClick="@={() -> data.devices.size() == 1 ? data.onClick() : data.toggleExpanded()}"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginLeft="10dp"

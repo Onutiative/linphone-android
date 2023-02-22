@@ -25,7 +25,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.google.android.material.transition.MaterialSharedAxis
-import org.linphone.R
+import com.onutiative.onukit.R
 
 class EmptyFragment : Fragment() {
     override fun onCreateView(

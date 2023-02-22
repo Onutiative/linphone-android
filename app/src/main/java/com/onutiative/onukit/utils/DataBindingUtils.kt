@@ -40,20 +40,20 @@ import coil.request.CachePolicy
 import coil.request.videoFrameMillis
 import coil.transform.CircleCropTransformation
 import com.google.android.material.switchmaterial.SwitchMaterial
-import com.onutiative.BR
+import com.onutiative.onukit.BR
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
 import com.onutiative.onukit.LinphoneApplication.Companion.corePreferences
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.GenericActivity
+import com.onutiative.onukit.activities.main.settings.SettingListener
+import com.onutiative.onukit.activities.voip.data.ConferenceParticipantDeviceData
+import com.onutiative.onukit.activities.voip.views.ScrollDotsView
+import com.onutiative.onukit.contact.ContactAvatarGenerator
+import com.onutiative.onukit.contact.ContactDataInterface
+import com.onutiative.onukit.contact.getPictureUri
+import com.onutiative.onukit.views.VoiceRecordProgressBar
 import kotlinx.coroutines.*
-import org.linphone.R
-import org.linphone.activities.GenericActivity
-import org.linphone.activities.main.settings.SettingListener
-import org.linphone.activities.voip.data.ConferenceParticipantDeviceData
-import org.linphone.activities.voip.views.ScrollDotsView
-import org.linphone.contact.ContactAvatarGenerator
-import org.linphone.contact.ContactDataInterface
-import org.linphone.contact.getPictureUri
 import org.linphone.core.tools.Log
-import org.linphone.views.VoiceRecordProgressBar
 
 /**
  * This file contains all the data binding necessary for the app
@@ -263,9 +263,9 @@ private fun <T> setEntries(
                 viewGroup,
                 false
             )
-            binding.setVariable(com.onutiative.BR.data, entry)
-            binding.setVariable(com.onutiative.BR.longClickListener, onLongClick)
-            binding.setVariable(com.onutiative.BR.parent, parent)
+            binding.setVariable(BR.data, entry)
+            binding.setVariable(BR.longClickListener, onLongClick)
+            binding.setVariable(BR.parent, parent)
 
             // This is a bit hacky...
             binding.lifecycleOwner = viewGroup.context as GenericActivity

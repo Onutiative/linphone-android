@@ -21,9 +21,9 @@ package com.onutiative.onukit.activities.main.files.viewmodels
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.onutiative.onukit.utils.FileUtils
 import org.linphone.core.Content
 import org.linphone.core.tools.Log
-import org.linphone.utils.FileUtils
 
 open class FileViewerViewModel(val content: Content) : ViewModel() {
     val filePath: String

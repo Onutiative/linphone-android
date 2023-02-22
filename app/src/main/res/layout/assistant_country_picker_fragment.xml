@@ -54,7 +54,7 @@
 
             <ImageView
                 android:id="@+id/clear_field"
-                android:onClick="@{() -> searchCountry.setText(``)}"
+                android:onClick="@={() -> searchCountry.setText(``)}"
                 android:contentDescription="@string/content_description_clear_field"
                 android:layout_width="30dp"
                 android:layout_height="30dp"

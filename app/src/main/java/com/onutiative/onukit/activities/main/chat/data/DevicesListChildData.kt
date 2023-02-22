@@ -20,7 +20,7 @@
 package com.onutiative.onukit.activities.main.chat.data
 
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
-import org.linphone.R
+import com.onutiative.onukit.R
 import org.linphone.core.ChatRoomSecurityLevel
 import org.linphone.core.ParticipantDevice
 

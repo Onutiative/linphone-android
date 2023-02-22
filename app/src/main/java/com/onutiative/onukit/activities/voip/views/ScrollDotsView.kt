@@ -30,11 +30,11 @@ import android.view.View.OnScrollChangeListener
 import android.widget.FrameLayout
 import android.widget.HorizontalScrollView
 import android.widget.ScrollView
+import com.onutiative.onukit.R
+import com.onutiative.onukit.utils.AppUtils
 import kotlin.math.ceil
 import kotlin.math.roundToInt
-import org.linphone.R
 import org.linphone.core.tools.Log
-import org.linphone.utils.AppUtils
 
 class ScrollDotsView : View {
     private var count = 2

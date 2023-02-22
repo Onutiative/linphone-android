@@ -22,8 +22,8 @@ package com.onutiative.onukit.activities.main.chat.data
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
-import org.linphone.R
-import org.linphone.contact.GenericContactData
+import com.onutiative.onukit.R
+import com.onutiative.onukit.contact.GenericContactData
 import org.linphone.core.EventLog
 
 class EventData(private val eventLog: EventLog) : GenericContactData(

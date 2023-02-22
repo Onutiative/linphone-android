@@ -26,16 +26,16 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import org.linphone.R
-import org.linphone.activities.main.fragments.MasterFragment
-import org.linphone.activities.main.recordings.adapters.RecordingsListAdapter
-import org.linphone.activities.main.recordings.data.RecordingData
-import org.linphone.activities.main.recordings.viewmodels.RecordingsViewModel
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.fragments.MasterFragment
+import com.onutiative.onukit.activities.main.recordings.adapters.RecordingsListAdapter
+import com.onutiative.onukit.activities.main.recordings.data.RecordingData
+import com.onutiative.onukit.activities.main.recordings.viewmodels.RecordingsViewModel
+import com.onutiative.onukit.databinding.RecordingsFragmentBinding
+import com.onutiative.onukit.utils.AppUtils
+import com.onutiative.onukit.utils.FileUtils
+import com.onutiative.onukit.utils.RecyclerViewHeaderDecoration
 import org.linphone.core.tools.Log
-import org.linphone.databinding.RecordingsFragmentBinding
-import org.linphone.utils.AppUtils
-import org.linphone.utils.FileUtils
-import org.linphone.utils.RecyclerViewHeaderDecoration
 
 class RecordingsFragment : MasterFragment<RecordingsFragmentBinding, RecordingsListAdapter>() {
     private lateinit var viewModel: RecordingsViewModel

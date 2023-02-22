@@ -71,7 +71,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
-                android:onClick="@{() -> viewModel.fetchAndApply()}"
+                android:onClick="@={() -> viewModel.fetchAndApply()}"
                 android:enabled="@{viewModel.fetchEnabled}"
                 android:text="@string/assistant_fetch_apply"
                 android:background="@drawable/assistant_button"

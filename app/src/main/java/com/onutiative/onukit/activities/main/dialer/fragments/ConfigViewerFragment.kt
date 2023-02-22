@@ -24,11 +24,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
-import org.linphone.R
-import org.linphone.activities.main.dialer.viewmodels.ConfigFileViewModel
-import org.linphone.activities.main.fragments.SecureFragment
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.dialer.viewmodels.ConfigFileViewModel
+import com.onutiative.onukit.activities.main.fragments.SecureFragment
+import com.onutiative.onukit.databinding.FileConfigViewerFragmentBinding
 import org.linphone.core.tools.Log
-import org.linphone.databinding.FileConfigViewerFragmentBinding
 
 class ConfigViewerFragment : SecureFragment<FileConfigViewerFragmentBinding>() {
     private lateinit var viewModel: ConfigFileViewModel

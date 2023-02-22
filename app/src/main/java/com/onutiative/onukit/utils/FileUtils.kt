@@ -30,6 +30,7 @@ import android.provider.OpenableColumns
 import android.webkit.MimeTypeMap
 import androidx.core.content.FileProvider
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
+import com.onutiative.onukit.R
 import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -37,7 +38,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
-import org.linphone.R
 import org.linphone.core.tools.Log
 
 class FileUtils {

@@ -5,9 +5,9 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import org.linphone.R
-import org.linphone.activities.assistant.AssistantActivity
-import org.linphone.utils.PermissionHelper
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.assistant.AssistantActivity
+import com.onutiative.onukit.utils.PermissionHelper
 
 class WelcomeScreen_bak : AppCompatActivity() {
 

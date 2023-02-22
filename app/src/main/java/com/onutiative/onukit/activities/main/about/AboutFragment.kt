@@ -24,10 +24,10 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
-import org.linphone.R
-import org.linphone.activities.main.fragments.SecureFragment
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.fragments.SecureFragment
+import com.onutiative.onukit.databinding.AboutFragmentBinding
 import org.linphone.core.tools.Log
-import org.linphone.databinding.AboutFragmentBinding
 
 class AboutFragment : SecureFragment<AboutFragmentBinding>() {
     private lateinit var viewModel: AboutViewModel

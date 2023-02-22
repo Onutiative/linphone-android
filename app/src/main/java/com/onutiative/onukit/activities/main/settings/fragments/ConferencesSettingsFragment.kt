@@ -22,9 +22,9 @@ package com.onutiative.onukit.activities.main.settings.fragments
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
-import org.linphone.R
-import org.linphone.activities.main.settings.viewmodels.ConferencesSettingsViewModel
-import org.linphone.databinding.SettingsConferencesFragmentBinding
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.settings.viewmodels.ConferencesSettingsViewModel
+import com.onutiative.onukit.databinding.SettingsConferencesFragmentBinding
 
 class ConferencesSettingsFragment : GenericSettingFragment<SettingsConferencesFragmentBinding>() {
     private lateinit var viewModel: ConferencesSettingsViewModel

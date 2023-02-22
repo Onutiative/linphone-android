@@ -20,10 +20,10 @@
 package com.onutiative.onukit.activities.voip.data
 
 import androidx.lifecycle.MutableLiveData
+import com.onutiative.onukit.R
+import com.onutiative.onukit.utils.AppUtils
 import java.text.DecimalFormat
-import org.linphone.R
 import org.linphone.core.*
-import org.linphone.utils.AppUtils
 
 enum class StatType(val nameResource: Int) {
     CAPTURE(R.string.call_stats_capture_filter),

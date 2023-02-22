@@ -37,14 +37,14 @@ import android.view.Window
 import android.view.WindowManager
 import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
+import com.onutiative.onukit.notifications.Notifiable
+import com.onutiative.onukit.notifications.NotificationsManager
+import com.onutiative.onukit.telecom.NativeCallWrapper
 import java.util.*
 import org.linphone.core.Call
 import org.linphone.core.ChatRoom
 import org.linphone.core.Content
 import org.linphone.mediastream.Version
-import org.linphone.notifications.Notifiable
-import org.linphone.notifications.NotificationsManager
-import org.linphone.telecom.NativeCallWrapper
 
 @Suppress("DEPRECATION")
 class Compatibility {

@@ -33,7 +33,7 @@
             android:contentDescription="@null"
             android:src="@drawable/dialer_background" />
 
-        <com.onutiative.onukit.mediastream.video.capture.CaptureTextureView
+        <org.linphone.mediastream.video.capture.CaptureTextureView
             android:id="@+id/video_preview_window"
             android:visibility="@{viewModel.showPreview ? View.VISIBLE : View.GONE, default=gone}"
             android:layout_width="match_parent"
@@ -41,7 +41,7 @@
             android:layout_centerInParent="true"/>
 
         <ImageView
-            android:onClick="@{() -> viewModel.switchCamera()}"
+            android:onClick="@={() -> viewModel.switchCamera()}"
             android:visibility="@{viewModel.showPreview &amp;&amp; viewModel.showSwitchCamera ? View.VISIBLE : View.GONE, default=gone}"
             android:contentDescription="@string/content_description_switch_camera"
             android:layout_alignParentLeft="true"
@@ -71,8 +71,8 @@
 
                 <ImageView
                     android:id="@+id/erase"
-                    android:onClick="@{() -> viewModel.eraseLastChar()}"
-                    android:onLongClick="@{() -> viewModel.eraseAll()}"
+                    android:onClick="@={() -> viewModel.eraseLastChar()}"
+                    android:onLongClick="@={() -> viewModel.eraseAll()}"
                     android:contentDescription="@string/content_description_dialer_erase"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -133,7 +133,7 @@
                     android:src="@drawable/contact_add" />
 
                 <ImageView
-                    android:onClick="@{() -> viewModel.startCall()}"
+                    android:onClick="@={() -> viewModel.startCall()}"
                     android:visibility="@{viewModel.atLeastOneCall ? View.GONE : View.VISIBLE}"
                     android:contentDescription="@string/content_description_start_call"
                     android:layout_width="match_parent"
@@ -144,7 +144,7 @@
                     android:src="@{viewModel.autoInitiateVideoCalls ? @drawable/call_video_start : @drawable/call_audio_start, default=@drawable/call_audio_start}" />
 
                 <ImageView
-                    android:onClick="@{() -> viewModel.startCall()}"
+                    android:onClick="@={() -> viewModel.startCall()}"
                     android:visibility="@{viewModel.atLeastOneCall &amp;&amp; !viewModel.transferVisibility ? View.VISIBLE : View.GONE, default=gone}"
                     android:contentDescription="@string/content_description_add_call"
                     android:layout_width="match_parent"

@@ -23,13 +23,13 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import org.linphone.R
-import org.linphone.activities.main.chat.viewmodels.EphemeralViewModel
-import org.linphone.activities.main.chat.viewmodels.EphemeralViewModelFactory
-import org.linphone.activities.main.fragments.SecureFragment
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.chat.viewmodels.EphemeralViewModel
+import com.onutiative.onukit.activities.main.chat.viewmodels.EphemeralViewModelFactory
+import com.onutiative.onukit.activities.main.fragments.SecureFragment
+import com.onutiative.onukit.databinding.ChatRoomEphemeralFragmentBinding
+import com.onutiative.onukit.utils.Event
 import org.linphone.core.tools.Log
-import org.linphone.databinding.ChatRoomEphemeralFragmentBinding
-import org.linphone.utils.Event
 
 class EphemeralFragment : SecureFragment<ChatRoomEphemeralFragmentBinding>() {
     private lateinit var viewModel: EphemeralViewModel

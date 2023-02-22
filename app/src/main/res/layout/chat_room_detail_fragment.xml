@@ -104,7 +104,7 @@
             </LinearLayout>
 
             <ImageView
-                android:onClick="@{() -> viewModel.startCall()}"
+                android:onClick="@={() -> viewModel.startCall()}"
                 android:contentDescription="@string/content_description_start_call"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -262,7 +262,7 @@
                 android:layout_marginStart="@dimen/chat_message_sending_icons_margin"
                 android:layout_marginEnd="@dimen/chat_message_sending_icons_margin"
                 android:contentDescription="@string/content_description_voice_recording"
-                android:onClick="@{() -> chatSendingViewModel.toggleVoiceRecording()}"
+                android:onClick="@={() -> chatSendingViewModel.toggleVoiceRecording()}"
                 android:onTouch="@{voiceRecordingTouchListener}"
                 android:paddingTop="@dimen/chat_message_sending_icons_margin"
                 android:paddingBottom="@dimen/chat_message_sending_icons_margin"
@@ -304,7 +304,7 @@
                 android:layout_marginEnd="@dimen/chat_message_sending_icons_margin"
                 android:contentDescription="@string/content_description_send_message"
                 android:enabled="@{chatSendingViewModel.sendMessageEnabled &amp;&amp; !chatSendingViewModel.attachingFileInProgress}"
-                android:onClick="@{() -> chatSendingViewModel.sendMessage()}"
+                android:onClick="@={() -> chatSendingViewModel.sendMessage()}"
                 android:paddingTop="@dimen/chat_message_sending_icons_margin"
                 android:paddingBottom="@dimen/chat_message_sending_icons_margin"
                 android:src="@drawable/chat_send_message"

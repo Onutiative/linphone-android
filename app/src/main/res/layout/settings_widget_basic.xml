@@ -22,7 +22,7 @@
     </data>
 
     <RelativeLayout
-        android:onClick="@{() -> listener.onClicked()}"
+        android:onClick="@={() -> listener.onClicked()}"
         android:enabled="@{enabled ?? true}"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

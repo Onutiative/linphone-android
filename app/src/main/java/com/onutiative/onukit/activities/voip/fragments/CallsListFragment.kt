@@ -27,16 +27,16 @@ import android.view.View
 import android.widget.PopupWindow
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.navGraphViewModels
-import com.onutiative.databinding.VoipCallContextMenuBindingImpl
-import org.linphone.R
-import org.linphone.activities.main.MainActivity
-import org.linphone.activities.voip.ConferenceDisplayMode
-import org.linphone.activities.voip.data.CallData
-import org.linphone.activities.voip.viewmodels.CallsViewModel
-import org.linphone.activities.voip.viewmodels.ConferenceViewModel
-import org.linphone.activities.voip.viewmodels.ControlsViewModel
-import org.linphone.databinding.VoipCallsListFragmentBinding
-import org.linphone.utils.AppUtils
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.MainActivity
+import com.onutiative.onukit.activities.voip.ConferenceDisplayMode
+import com.onutiative.onukit.activities.voip.data.CallData
+import com.onutiative.onukit.activities.voip.viewmodels.CallsViewModel
+import com.onutiative.onukit.activities.voip.viewmodels.ConferenceViewModel
+import com.onutiative.onukit.activities.voip.viewmodels.ControlsViewModel
+import com.onutiative.onukit.databinding.VoipCallContextMenuBindingImpl
+import com.onutiative.onukit.databinding.VoipCallsListFragmentBinding
+import com.onutiative.onukit.utils.AppUtils
 
 class CallsListFragment : GenericVideoPreviewFragment<VoipCallsListFragmentBinding>() {
     private val callsViewModel: CallsViewModel by navGraphViewModels(R.id.call_nav_graph)

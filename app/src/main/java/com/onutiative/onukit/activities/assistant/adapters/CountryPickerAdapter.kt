@@ -26,8 +26,8 @@ import android.widget.BaseAdapter
 import android.widget.Filter
 import android.widget.Filterable
 import android.widget.TextView
+import com.onutiative.onukit.R
 import kotlin.collections.ArrayList
-import org.linphone.R
 import org.linphone.core.DialPlan
 import org.linphone.core.Factory
 

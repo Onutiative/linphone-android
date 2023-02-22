@@ -5,7 +5,7 @@
         <import type="android.view.View"/>
         <variable
             name="data"
-            type="com.onutiative.onukit.core.Address" />
+            type="org.linphone.core.Address" />
         <variable
             name="parent"
             type="com.onutiative.onukit.contact.ContactsSelectionViewModel" />
@@ -19,7 +19,7 @@
         android:layout_marginRight="5dp">
 
         <ImageView
-            android:onClick="@{() -> parent.toggleSelectionForAddress(data)}"
+            android:onClick="@={() -> parent.toggleSelectionForAddress(data)}"
             android:contentDescription="@string/content_description_remove_contact_from_selection"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"

@@ -19,9 +19,9 @@
  */
 package com.onutiative.onukit.activities.main.chat.data
 
-import org.linphone.contact.GenericContactData
+import com.onutiative.onukit.contact.GenericContactData
+import com.onutiative.onukit.utils.TimestampUtils
 import org.linphone.core.ParticipantImdnState
-import org.linphone.utils.TimestampUtils
 
 class ImdnParticipantData(val imdnState: ParticipantImdnState) : GenericContactData(imdnState.participant.address) {
     val sipUri: String = imdnState.participant.address.asStringUriOnly()

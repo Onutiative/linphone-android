@@ -24,12 +24,13 @@ import android.animation.ValueAnimator
 import androidx.lifecycle.MutableLiveData
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
 import com.onutiative.onukit.LinphoneApplication.Companion.corePreferences
-import org.linphone.R
-import org.linphone.activities.main.viewmodels.MessageNotifierViewModel
-import org.linphone.activities.voip.ConferenceDisplayMode
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.viewmodels.MessageNotifierViewModel
+import com.onutiative.onukit.activities.voip.ConferenceDisplayMode
+import com.onutiative.onukit.utils.*
+import com.onutiative.onukit.utils.Event
 import org.linphone.core.*
 import org.linphone.core.tools.Log
-import org.linphone.utils.*
 
 class ConferenceWaitingRoomViewModel : MessageNotifierViewModel() {
     val subject = MutableLiveData<String>()

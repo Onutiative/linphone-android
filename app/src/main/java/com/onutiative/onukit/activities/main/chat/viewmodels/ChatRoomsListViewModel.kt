@@ -21,13 +21,14 @@ package com.onutiative.onukit.activities.main.chat.viewmodels
 
 import androidx.lifecycle.MutableLiveData
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
-import org.linphone.R
-import org.linphone.activities.main.viewmodels.MessageNotifierViewModel
-import org.linphone.compatibility.Compatibility
-import org.linphone.contact.ContactsUpdatedListenerStub
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.viewmodels.MessageNotifierViewModel
+import com.onutiative.onukit.compatibility.Compatibility
+import com.onutiative.onukit.contact.ContactsUpdatedListenerStub
+import com.onutiative.onukit.utils.Event
+import com.onutiative.onukit.utils.LinphoneUtils
 import org.linphone.core.*
 import org.linphone.core.tools.Log
-import org.linphone.utils.LinphoneUtils
 
 class ChatRoomsListViewModel : MessageNotifierViewModel() {
     val chatRooms = MutableLiveData<ArrayList<ChatRoom>>()

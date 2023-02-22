@@ -20,10 +20,10 @@
 package com.onutiative.onukit.activities.main.settings.viewmodels
 
 import androidx.lifecycle.MutableLiveData
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.settings.SettingListenerStub
+import com.onutiative.onukit.utils.Event
 import java.lang.NumberFormatException
-import org.linphone.R
-import org.linphone.activities.main.settings.SettingListenerStub
-import org.linphone.utils.Event
 
 class ChatSettingsViewModel : GenericSettingsViewModel() {
     val markAsReadNotifDismissalListener = object : SettingListenerStub() {

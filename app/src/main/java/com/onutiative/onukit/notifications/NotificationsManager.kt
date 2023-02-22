@@ -39,16 +39,17 @@ import androidx.core.graphics.drawable.IconCompat
 import androidx.navigation.NavDeepLinkBuilder
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
 import com.onutiative.onukit.LinphoneApplication.Companion.corePreferences
-import org.linphone.R
-import org.linphone.activities.chat_bubble.ChatBubbleActivity
-import org.linphone.activities.main.MainActivity
-import org.linphone.activities.voip.CallActivity
-import org.linphone.compatibility.Compatibility
-import org.linphone.contact.getPerson
-import org.linphone.contact.getThumbnailUri
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.chat_bubble.ChatBubbleActivity
+import com.onutiative.onukit.activities.main.MainActivity
+import com.onutiative.onukit.activities.voip.CallActivity
+import com.onutiative.onukit.compatibility.Compatibility
+import com.onutiative.onukit.contact.getPerson
+import com.onutiative.onukit.contact.getThumbnailUri
+import com.onutiative.onukit.core.CoreService
+import com.onutiative.onukit.utils.*
 import org.linphone.core.*
 import org.linphone.core.tools.Log
-import org.linphone.utils.*
 
 class Notifiable(val notificationId: Int) {
     val messages: ArrayList<NotifiableMessage> = arrayListOf()
@@ -76,7 +77,7 @@ class NotificationsManager(private val context: Context) {
         const val CHAT_NOTIFICATIONS_GROUP = "CHAT_NOTIF_GROUP"
         const val KEY_TEXT_REPLY = "key_text_reply"
         const val INTENT_NOTIF_ID = "NOTIFICATION_ID"
-        const val INTENT_REPLY_NOTIF_ACTION = "org.linphone.REPLY_ACTION"
+        const val INTENT_REPLY_NOTIF_ACTION = "com.onutiative.onukit.REPLY_ACTION"
         const val INTENT_HANGUP_CALL_NOTIF_ACTION = "org.linphone.HANGUP_CALL_ACTION"
         const val INTENT_ANSWER_CALL_NOTIF_ACTION = "org.linphone.ANSWER_CALL_ACTION"
         const val INTENT_MARK_AS_READ_ACTION = "org.linphone.MARK_AS_READ_ACTION"

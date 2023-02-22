@@ -41,31 +41,32 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.onutiative.databinding.ChatRoomMenuBindingImpl
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
 import com.onutiative.onukit.LinphoneApplication.Companion.corePreferences
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.*
+import com.onutiative.onukit.activities.main.MainActivity
+import com.onutiative.onukit.activities.main.chat.ChatScrollListener
+import com.onutiative.onukit.activities.main.chat.adapters.ChatMessagesListAdapter
+import com.onutiative.onukit.activities.main.chat.data.ChatMessageData
+import com.onutiative.onukit.activities.main.chat.data.EventLogData
+import com.onutiative.onukit.activities.main.chat.viewmodels.*
+import com.onutiative.onukit.activities.main.chat.views.RichEditTextSendListener
+import com.onutiative.onukit.activities.main.fragments.MasterFragment
+import com.onutiative.onukit.activities.main.viewmodels.DialogViewModel
+import com.onutiative.onukit.activities.navigateToContacts
+import com.onutiative.onukit.activities.navigateToImageFileViewer
+import com.onutiative.onukit.activities.navigateToImdn
+import com.onutiative.onukit.compatibility.Compatibility
+import com.onutiative.onukit.databinding.ChatRoomDetailFragmentBinding
+import com.onutiative.onukit.databinding.ChatRoomMenuBindingImpl
+import com.onutiative.onukit.utils.*
+import com.onutiative.onukit.utils.Event
 import java.io.File
 import java.lang.IllegalArgumentException
 import kotlinx.coroutines.*
-import org.linphone.R
-import org.linphone.activities.*
-import org.linphone.activities.main.MainActivity
-import org.linphone.activities.main.chat.ChatScrollListener
-import org.linphone.activities.main.chat.adapters.ChatMessagesListAdapter
-import org.linphone.activities.main.chat.data.ChatMessageData
-import org.linphone.activities.main.chat.data.EventLogData
-import org.linphone.activities.main.chat.viewmodels.*
-import org.linphone.activities.main.chat.views.RichEditTextSendListener
-import org.linphone.activities.main.fragments.MasterFragment
-import org.linphone.activities.main.viewmodels.DialogViewModel
-import org.linphone.activities.navigateToContacts
-import org.linphone.activities.navigateToImageFileViewer
-import org.linphone.activities.navigateToImdn
-import org.linphone.compatibility.Compatibility
 import org.linphone.core.*
 import org.linphone.core.tools.Log
-import org.linphone.databinding.ChatRoomDetailFragmentBinding
-import org.linphone.utils.*
 
 class DetailChatRoomFragment : MasterFragment<ChatRoomDetailFragmentBinding, ChatMessagesListAdapter>() {
     private lateinit var viewModel: ChatRoomViewModel
@@ -930,7 +931,7 @@ class DetailChatRoomFragment : MasterFragment<ChatRoomDetailFragmentBinding, Cha
     }
 
     private fun showPopupMenu(chatRoom: ChatRoom) {
-        val popupView: com.onutiative.databinding.ChatRoomMenuBindingImpl = DataBindingUtil.inflate(
+        val popupView: ChatRoomMenuBindingImpl = DataBindingUtil.inflate(
             LayoutInflater.from(context),
             R.layout.chat_room_menu, null, false
         )

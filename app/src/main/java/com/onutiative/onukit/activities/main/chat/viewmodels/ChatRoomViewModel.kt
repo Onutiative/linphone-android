@@ -27,14 +27,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
 import com.onutiative.onukit.LinphoneApplication.Companion.corePreferences
+import com.onutiative.onukit.R
+import com.onutiative.onukit.contact.ContactDataInterface
+import com.onutiative.onukit.contact.ContactsUpdatedListenerStub
+import com.onutiative.onukit.utils.AppUtils
+import com.onutiative.onukit.utils.LinphoneUtils
 import kotlinx.coroutines.*
-import org.linphone.R
-import org.linphone.contact.ContactDataInterface
-import org.linphone.contact.ContactsUpdatedListenerStub
 import org.linphone.core.*
 import org.linphone.core.tools.Log
-import org.linphone.utils.AppUtils
-import org.linphone.utils.LinphoneUtils
 
 class ChatRoomViewModelFactory(private val chatRoom: ChatRoom) :
     ViewModelProvider.NewInstanceFactory() {

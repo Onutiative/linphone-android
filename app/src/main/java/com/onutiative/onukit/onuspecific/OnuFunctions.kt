@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import com.onutiative.onukit.LinphoneApplication
+import com.onutiative.onukit.activities.main.MainActivity
 import java.io.File
 import java.nio.charset.StandardCharsets
 import java.util.*
@@ -22,7 +23,6 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.asRequestBody
 import okio.IOException
 import org.json.JSONObject
-import org.linphone.activities.main.MainActivity
 
 open class OnuFunctions {
 

@@ -24,11 +24,11 @@ import android.view.View
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.navGraphViewModels
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
-import org.linphone.R
-import org.linphone.activities.voip.ConferenceDisplayMode
-import org.linphone.activities.voip.viewmodels.ConferenceViewModel
-import org.linphone.activities.voip.viewmodels.ControlsViewModel
-import org.linphone.databinding.VoipConferenceLayoutFragmentBinding
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.voip.ConferenceDisplayMode
+import com.onutiative.onukit.activities.voip.viewmodels.ConferenceViewModel
+import com.onutiative.onukit.activities.voip.viewmodels.ControlsViewModel
+import com.onutiative.onukit.databinding.VoipConferenceLayoutFragmentBinding
 
 class ConferenceLayoutFragment : GenericVideoPreviewFragment<VoipConferenceLayoutFragmentBinding>() {
     private val conferenceViewModel: ConferenceViewModel by navGraphViewModels(R.id.call_nav_graph)

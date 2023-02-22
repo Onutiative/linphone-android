@@ -22,11 +22,11 @@ package com.onutiative.onukit.activities.assistant.viewmodels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.onutiative.onukit.utils.Event
 import org.linphone.core.AccountCreator
 import org.linphone.core.AccountCreatorListenerStub
 import org.linphone.core.ProxyConfig
 import org.linphone.core.tools.Log
-import org.linphone.utils.Event
 
 class PhoneAccountValidationViewModelFactory(private val accountCreator: AccountCreator) :
     ViewModelProvider.NewInstanceFactory() {

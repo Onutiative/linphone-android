@@ -23,11 +23,11 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
+import com.onutiative.onukit.utils.Event
 import org.linphone.core.ConfiguringState
 import org.linphone.core.Core
 import org.linphone.core.CoreListenerStub
 import org.linphone.core.tools.Log
-import org.linphone.utils.Event
 
 class RemoteProvisioningViewModel : ViewModel() {
     val urlToFetch = MutableLiveData<String>()

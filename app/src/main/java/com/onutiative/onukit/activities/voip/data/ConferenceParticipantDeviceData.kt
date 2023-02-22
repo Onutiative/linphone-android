@@ -24,7 +24,7 @@ import android.view.TextureView
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
-import org.linphone.contact.GenericContactData
+import com.onutiative.onukit.contact.GenericContactData
 import org.linphone.core.*
 import org.linphone.core.tools.Log
 

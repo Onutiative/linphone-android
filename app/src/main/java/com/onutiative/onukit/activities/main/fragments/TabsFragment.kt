@@ -26,15 +26,15 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.findNavController
 import com.onutiative.onukit.LinphoneApplication.Companion.corePreferences
-import org.linphone.R
-import org.linphone.activities.GenericFragment
-import org.linphone.activities.main.viewmodels.TabsViewModel
-import org.linphone.activities.navigateToCallHistory
-import org.linphone.activities.navigateToChatRooms
-import org.linphone.activities.navigateToContacts
-import org.linphone.activities.navigateToDialer
-import org.linphone.databinding.TabsFragmentBinding
-import org.linphone.utils.Event
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.GenericFragment
+import com.onutiative.onukit.activities.main.viewmodels.TabsViewModel
+import com.onutiative.onukit.activities.navigateToCallHistory
+import com.onutiative.onukit.activities.navigateToChatRooms
+import com.onutiative.onukit.activities.navigateToContacts
+import com.onutiative.onukit.activities.navigateToDialer
+import com.onutiative.onukit.databinding.TabsFragmentBinding
+import com.onutiative.onukit.utils.Event
 
 class TabsFragment : GenericFragment<TabsFragmentBinding>(), NavController.OnDestinationChangedListener {
     private lateinit var viewModel: TabsViewModel

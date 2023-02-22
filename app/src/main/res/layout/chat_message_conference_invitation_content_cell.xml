@@ -113,7 +113,7 @@
                 android:layout_marginEnd="10dp"
                 android:layout_toStartOf="@id/join_conference"
                 android:contentDescription="@string/content_description_share_ics"
-                android:onClick="@{() -> data.openFile()}"
+                android:onClick="@={() -> data.openFile()}"
                 android:src="@drawable/icon_share" />
 
             <TextView
@@ -127,7 +127,7 @@
                 android:layout_marginTop="10dp"
                 android:background="@drawable/button_green_background"
                 android:enabled="@{data.isOutgoing || !data.isConferenceCancelled}"
-                android:onClick="@{() -> data.callConferenceAddress()}"
+                android:onClick="@={() -> data.callConferenceAddress()}"
                 android:paddingLeft="20dp"
                 android:paddingTop="8dp"
                 android:paddingRight="20dp"

@@ -28,15 +28,15 @@ import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
 import com.onutiative.onukit.LinphoneApplication.Companion.corePreferences
-import org.linphone.R
-import org.linphone.contact.getThumbnailUri
+import com.onutiative.onukit.R
+import com.onutiative.onukit.contact.getThumbnailUri
+import com.onutiative.onukit.notifications.Notifiable
+import com.onutiative.onukit.notifications.NotificationsManager
+import com.onutiative.onukit.utils.ImageUtils
+import com.onutiative.onukit.utils.LinphoneUtils
 import org.linphone.core.Call
 import org.linphone.core.Friend
 import org.linphone.core.tools.Log
-import org.linphone.notifications.Notifiable
-import org.linphone.notifications.NotificationsManager
-import org.linphone.utils.ImageUtils
-import org.linphone.utils.LinphoneUtils
 
 @TargetApi(26)
 class XiaomiCompatibility {

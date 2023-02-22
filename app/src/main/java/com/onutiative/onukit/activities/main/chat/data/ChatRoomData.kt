@@ -25,17 +25,17 @@ import android.text.style.StyleSpan
 import androidx.lifecycle.MutableLiveData
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
 import com.onutiative.onukit.LinphoneApplication.Companion.corePreferences
+import com.onutiative.onukit.R
+import com.onutiative.onukit.contact.ContactDataInterface
+import com.onutiative.onukit.utils.AppUtils
+import com.onutiative.onukit.utils.LinphoneUtils
+import com.onutiative.onukit.utils.TimestampUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.linphone.R
-import org.linphone.contact.ContactDataInterface
 import org.linphone.core.*
 import org.linphone.core.tools.Log
-import org.linphone.utils.AppUtils
-import org.linphone.utils.LinphoneUtils
-import org.linphone.utils.TimestampUtils
 
 class ChatRoomData(private val chatRoom: ChatRoom) : ContactDataInterface {
     override val contact: MutableLiveData<Friend> = MutableLiveData<Friend>()

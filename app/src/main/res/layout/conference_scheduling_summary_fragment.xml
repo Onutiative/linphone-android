@@ -298,7 +298,7 @@
             </androidx.core.widget.NestedScrollView>
 
             <TextView
-                android:onClick="@{() -> viewModel.createConference()}"
+                android:onClick="@={() -> viewModel.createConference()}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="20dp"

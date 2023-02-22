@@ -21,10 +21,11 @@ package com.onutiative.onukit.activities.assistant.viewmodels
 
 import androidx.lifecycle.*
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
-import org.linphone.R
+import com.onutiative.onukit.R
+import com.onutiative.onukit.utils.Event
+import com.onutiative.onukit.utils.PhoneNumberUtils
 import org.linphone.core.*
 import org.linphone.core.tools.Log
-import org.linphone.utils.PhoneNumberUtils
 
 class AccountLoginViewModelFactory(private val accountCreator: AccountCreator) :
     ViewModelProvider.NewInstanceFactory() {

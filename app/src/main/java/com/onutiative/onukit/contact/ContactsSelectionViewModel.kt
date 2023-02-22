@@ -23,8 +23,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
 import com.onutiative.onukit.LinphoneApplication.Companion.corePreferences
+import com.onutiative.onukit.activities.main.viewmodels.MessageNotifierViewModel
+import com.onutiative.onukit.utils.Event
 import kotlinx.coroutines.*
-import org.linphone.activities.main.viewmodels.MessageNotifierViewModel
 import org.linphone.core.*
 import org.linphone.core.tools.Log
 

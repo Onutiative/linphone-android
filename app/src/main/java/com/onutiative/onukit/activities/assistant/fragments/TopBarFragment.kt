@@ -21,9 +21,9 @@ package com.onutiative.onukit.activities.assistant.fragments
 
 import android.os.Bundle
 import android.view.View
-import org.linphone.R
-import org.linphone.activities.GenericFragment
-import org.linphone.databinding.AssistantTopBarFragmentBinding
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.GenericFragment
+import com.onutiative.onukit.databinding.AssistantTopBarFragmentBinding
 
 class TopBarFragment : GenericFragment<AssistantTopBarFragmentBinding>() {
     override fun getLayoutId(): Int = R.layout.assistant_top_bar_fragment

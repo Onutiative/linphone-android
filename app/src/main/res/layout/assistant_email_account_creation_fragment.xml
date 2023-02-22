@@ -144,7 +144,7 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
-                    android:onClick="@{() -> viewModel.create()}"
+                    android:onClick="@={() -> viewModel.create()}"
                     android:enabled="@{viewModel.createEnabled, default=false}"
                     android:text="@string/assistant_create_account"
                     android:background="@drawable/assistant_button"

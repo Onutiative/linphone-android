@@ -28,21 +28,21 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.GenericActivity
+import com.onutiative.onukit.activities.main.MainActivity
+import com.onutiative.onukit.activities.main.chat.adapters.ChatMessagesListAdapter
+import com.onutiative.onukit.activities.main.chat.viewmodels.*
+import com.onutiative.onukit.activities.main.viewmodels.ListTopBarViewModel
+import com.onutiative.onukit.databinding.ChatBubbleActivityBinding
+import com.onutiative.onukit.utils.FileUtils
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.linphone.R
-import org.linphone.activities.GenericActivity
-import org.linphone.activities.main.MainActivity
-import org.linphone.activities.main.chat.adapters.ChatMessagesListAdapter
-import org.linphone.activities.main.chat.viewmodels.*
-import org.linphone.activities.main.viewmodels.ListTopBarViewModel
 import org.linphone.core.ChatRoom
 import org.linphone.core.ChatRoomListenerStub
 import org.linphone.core.EventLog
 import org.linphone.core.Factory
 import org.linphone.core.tools.Log
-import org.linphone.databinding.ChatBubbleActivityBinding
-import org.linphone.utils.FileUtils
 
 class ChatBubbleActivity : GenericActivity() {
     private lateinit var binding: ChatBubbleActivityBinding

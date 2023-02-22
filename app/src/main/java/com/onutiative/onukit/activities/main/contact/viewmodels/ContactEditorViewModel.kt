@@ -29,16 +29,16 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
 import com.onutiative.onukit.LinphoneApplication.Companion.corePreferences
+import com.onutiative.onukit.activities.main.contact.data.NumberOrAddressEditorData
+import com.onutiative.onukit.contact.*
+import com.onutiative.onukit.utils.ImageUtils
+import com.onutiative.onukit.utils.PermissionHelper
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 import kotlinx.coroutines.CoroutineScope
-import org.linphone.activities.main.contact.data.NumberOrAddressEditorData
-import org.linphone.contact.*
 import org.linphone.core.ChatRoomSecurityLevel
 import org.linphone.core.Friend
 import org.linphone.core.tools.Log
-import org.linphone.utils.ImageUtils
-import org.linphone.utils.PermissionHelper
 
 class ContactEditorViewModelFactory(private val friend: Friend?) :
     ViewModelProvider.NewInstanceFactory() {

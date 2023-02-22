@@ -23,12 +23,12 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
-import org.linphone.R
-import org.linphone.activities.GenericFragment
-import org.linphone.activities.main.viewmodels.StatusViewModel
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.GenericFragment
+import com.onutiative.onukit.activities.main.viewmodels.StatusViewModel
+import com.onutiative.onukit.databinding.StatusFragmentBinding
+import com.onutiative.onukit.utils.Event
 import org.linphone.core.tools.Log
-import org.linphone.databinding.StatusFragmentBinding
-import org.linphone.utils.Event
 
 class StatusFragment : GenericFragment<StatusFragmentBinding>() {
     private lateinit var viewModel: StatusViewModel

@@ -90,7 +90,7 @@
                 android:contentDescription="@string/cancel"/>
 
             <ImageView
-                android:onClick="@{() -> conferenceViewModel.addCallsToConference()}"
+                android:onClick="@={() -> conferenceViewModel.addCallsToConference()}"
                 android:enabled="@{callsViewModel.callsData.size() >= 2 &amp;&amp; conferenceViewModel.isMeAdmin}"
                 android:visibility="@{conferenceViewModel.conferenceExists ? View.VISIBLE : View.GONE, default=gone}"
                 android:layout_width="@dimen/voip_floating_button_size"
@@ -101,7 +101,7 @@
                 android:contentDescription="@string/cancel"/>
 
             <ImageView
-                android:onClick="@{() -> callsViewModel.mergeCallsIntoConference()}"
+                android:onClick="@={() -> callsViewModel.mergeCallsIntoConference()}"
                 android:enabled="@{callsViewModel.callsData.size() >= 2}"
                 android:visibility="@{conferenceViewModel.conferenceExists ? View.GONE : View.VISIBLE}"
                 android:layout_width="@dimen/voip_floating_button_size"
@@ -132,7 +132,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:contentDescription="@string/content_description_switch_camera"
-            android:onClick="@{() -> controlsViewModel.switchCamera()}"
+            android:onClick="@={() -> controlsViewModel.switchCamera()}"
             android:padding="10dp"
             android:src="@drawable/icon_call_camera_switch"
             android:visibility="@{controlsViewModel.isSwitchCameraAvailable &amp;&amp; !controlsViewModel.pipMode ? View.VISIBLE : View.GONE, default=gone}"

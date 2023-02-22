@@ -36,14 +36,14 @@ import androidx.core.graphics.drawable.IconCompat
 import androidx.lifecycle.MutableLiveData
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
 import com.onutiative.onukit.LinphoneApplication.Companion.corePreferences
+import com.onutiative.onukit.R
+import com.onutiative.onukit.utils.ImageUtils
+import com.onutiative.onukit.utils.LinphoneUtils
+import com.onutiative.onukit.utils.PermissionHelper
 import java.io.IOException
 import kotlinx.coroutines.*
-import org.linphone.R
 import org.linphone.core.*
 import org.linphone.core.tools.Log
-import org.linphone.utils.ImageUtils
-import org.linphone.utils.LinphoneUtils
-import org.linphone.utils.PermissionHelper
 
 interface ContactsUpdatedListener {
     fun onContactsUpdated()

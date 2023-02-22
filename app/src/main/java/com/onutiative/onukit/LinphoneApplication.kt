@@ -30,6 +30,9 @@ import coil.decode.SvgDecoder
 import coil.decode.VideoFrameDecoder
 import coil.disk.DiskCache
 import coil.memory.MemoryCache
+import com.onutiative.onukit.core.CoreContext
+import com.onutiative.onukit.core.CorePreferences
+import com.onutiative.onukit.core.CoreService
 import org.linphone.core.*
 import org.linphone.core.tools.Log
 import org.linphone.mediastream.Version
@@ -62,7 +65,7 @@ class LinphoneApplication : Application(), ImageLoaderFactory {
             val config = Factory.instance().createConfigWithFactory(corePreferences.configPath, corePreferences.factoryConfigPath)
             corePreferences.config = config
 
-            val appName = context.getString(org.linphone.R.string.app_name)
+            val appName = context.getString(R.string.app_name)
             Factory.instance().setLoggerDomain(appName)
             Factory.instance().enableLogcatLogs(corePreferences.logcatLogsOutput)
             if (corePreferences.debugLogs) {
@@ -100,7 +103,7 @@ class LinphoneApplication : Application(), ImageLoaderFactory {
 
     override fun onCreate() {
         super.onCreate()
-        val appName = getString(org.linphone.R.string.app_name)
+        val appName = getString(R.string.app_name)
         android.util.Log.i("[$appName]", "Application is being created")
         createConfig(applicationContext)
         Log.i("[Application] Created")

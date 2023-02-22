@@ -42,12 +42,12 @@ import android.view.Window
 import android.view.WindowManager
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
-import org.linphone.R
+import com.onutiative.onukit.R
+import com.onutiative.onukit.utils.AppUtils
+import com.onutiative.onukit.utils.FileUtils
+import com.onutiative.onukit.utils.PermissionHelper
 import org.linphone.core.Content
 import org.linphone.core.tools.Log
-import org.linphone.utils.AppUtils
-import org.linphone.utils.FileUtils
-import org.linphone.utils.PermissionHelper
 
 class Api23Compatibility {
     companion object {

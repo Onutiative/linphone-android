@@ -77,7 +77,7 @@
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onCheckedChanged="@{() -> viewModel.applyFilter()}"
+                android:onCheckedChanged="@={() -> viewModel.applyFilter()}"
                 android:checked="@={viewModel.showTerminated, default=false}"
                 android:text="@string/conference_scheduled_terminated_filter" />
 
@@ -85,7 +85,7 @@
                 style="@style/Widget.MaterialComponents.Chip.Choice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onCheckedChanged="@{() -> viewModel.applyFilter()}"
+                android:onCheckedChanged="@={() -> viewModel.applyFilter()}"
                 android:checked="@={!viewModel.showTerminated, default=true}"
                 android:text="@string/conference_scheduled_future_filter" />
 

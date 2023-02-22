@@ -31,15 +31,15 @@ import android.telecom.PhoneAccountHandle
 import android.telecom.TelecomManager
 import android.telecom.TelecomManager.*
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
+import com.onutiative.onukit.R
+import com.onutiative.onukit.utils.LinphoneUtils
+import com.onutiative.onukit.utils.PermissionHelper
+import com.onutiative.onukit.utils.SingletonHolder
 import kotlin.Exception
-import org.linphone.R
 import org.linphone.core.Call
 import org.linphone.core.Core
 import org.linphone.core.CoreListenerStub
 import org.linphone.core.tools.Log
-import org.linphone.utils.LinphoneUtils
-import org.linphone.utils.PermissionHelper
-import org.linphone.utils.SingletonHolder
 
 @TargetApi(29)
 class TelecomHelper private constructor(context: Context) {

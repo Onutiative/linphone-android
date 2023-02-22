@@ -20,8 +20,8 @@
 package com.onutiative.onukit.activities.main.settings.viewmodels
 
 import androidx.lifecycle.MutableLiveData
-import org.linphone.R
-import org.linphone.activities.main.settings.SettingListenerStub
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.settings.SettingListenerStub
 import org.linphone.core.ConferenceLayout
 
 class ConferencesSettingsViewModel : GenericSettingsViewModel() {

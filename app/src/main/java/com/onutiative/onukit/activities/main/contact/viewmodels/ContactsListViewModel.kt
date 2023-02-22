@@ -26,9 +26,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
 import com.onutiative.onukit.LinphoneApplication.Companion.corePreferences
+import com.onutiative.onukit.contact.ContactsUpdatedListenerStub
+import com.onutiative.onukit.utils.Event
 import java.util.*
 import kotlinx.coroutines.*
-import org.linphone.contact.ContactsUpdatedListenerStub
 import org.linphone.core.*
 import org.linphone.core.tools.Log
 

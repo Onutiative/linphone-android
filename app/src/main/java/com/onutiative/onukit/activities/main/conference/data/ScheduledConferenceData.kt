@@ -21,13 +21,13 @@ package com.onutiative.onukit.activities.main.conference.data
 
 import androidx.lifecycle.MutableLiveData
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
+import com.onutiative.onukit.R
+import com.onutiative.onukit.utils.LinphoneUtils
+import com.onutiative.onukit.utils.TimestampUtils
 import java.util.concurrent.TimeUnit
-import org.linphone.R
 import org.linphone.core.ConferenceInfo
 import org.linphone.core.ConferenceInfo.State
 import org.linphone.core.tools.Log
-import org.linphone.utils.LinphoneUtils
-import org.linphone.utils.TimestampUtils
 
 class ScheduledConferenceData(val conferenceInfo: ConferenceInfo, private val isFinished: Boolean) {
     val expanded = MutableLiveData<Boolean>()

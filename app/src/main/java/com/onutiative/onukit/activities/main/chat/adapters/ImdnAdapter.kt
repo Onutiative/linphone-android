@@ -28,12 +28,12 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import org.linphone.R
-import org.linphone.activities.main.chat.data.ImdnParticipantData
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.chat.data.ImdnParticipantData
+import com.onutiative.onukit.databinding.ChatRoomImdnParticipantCellBinding
+import com.onutiative.onukit.databinding.ImdnListHeaderBinding
+import com.onutiative.onukit.utils.HeaderAdapter
 import org.linphone.core.ChatMessage
-import org.linphone.databinding.ChatRoomImdnParticipantCellBinding
-import org.linphone.databinding.ImdnListHeaderBinding
-import org.linphone.utils.HeaderAdapter
 
 class ImdnAdapter(
     private val viewLifecycleOwner: LifecycleOwner

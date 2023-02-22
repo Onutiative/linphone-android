@@ -46,22 +46,22 @@ import coil.imageLoader
 import com.google.android.material.snackbar.Snackbar
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
 import com.onutiative.onukit.LinphoneApplication.Companion.corePreferences
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.*
+import com.onutiative.onukit.activities.main.viewmodels.CallOverlayViewModel
+import com.onutiative.onukit.activities.main.viewmodels.SharedMainViewModel
+import com.onutiative.onukit.activities.navigateToDialer
+import com.onutiative.onukit.compatibility.Compatibility
+import com.onutiative.onukit.contact.ContactsUpdatedListenerStub
+import com.onutiative.onukit.core.CorePreferences
+import com.onutiative.onukit.databinding.MainActivityBinding
+import com.onutiative.onukit.utils.*
 import java.io.UnsupportedEncodingException
 import java.net.URLDecoder
 import kotlin.math.abs
 import kotlinx.android.synthetic.main.onu_login_activity.*
 import kotlinx.coroutines.*
-import org.linphone.R
-import org.linphone.activities.*
-import org.linphone.activities.main.viewmodels.CallOverlayViewModel
-import org.linphone.activities.main.viewmodels.SharedMainViewModel
-import org.linphone.activities.navigateToDialer
-import org.linphone.compatibility.Compatibility
-import org.linphone.contact.ContactsUpdatedListenerStub
-import org.linphone.core.CorePreferences
 import org.linphone.core.tools.Log
-import org.linphone.databinding.MainActivityBinding
-import org.linphone.utils.*
 
 class MainActivity : GenericActivity(), SnackBarActivity, NavController.OnDestinationChangedListener {
     private lateinit var binding: MainActivityBinding
@@ -355,7 +355,7 @@ class MainActivity : GenericActivity(), SnackBarActivity, NavController.OnDestin
                 val call = core.currentCall ?: core.calls.firstOrNull()
                 if (call != null) {
                     Log.i("[Main Activity] Launcher clicked while there is at least one active call, go to CallActivity")
-                    val callIntent = Intent(this, org.linphone.activities.voip.CallActivity::class.java)
+                    val callIntent = Intent(this, com.onutiative.onukit.activities.voip.CallActivity::class.java)
                     callIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
                     startActivity(callIntent)
                 }

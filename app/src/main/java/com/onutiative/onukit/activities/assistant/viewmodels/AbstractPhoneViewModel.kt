@@ -24,11 +24,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
-import org.linphone.activities.assistant.fragments.CountryPickerFragment
+import com.onutiative.onukit.activities.assistant.fragments.CountryPickerFragment
+import com.onutiative.onukit.utils.PhoneNumberUtils
 import org.linphone.core.AccountCreator
 import org.linphone.core.DialPlan
 import org.linphone.core.tools.Log
-import org.linphone.utils.PhoneNumberUtils
 
 abstract class AbstractPhoneViewModel(val accountCreator: AccountCreator) :
     ViewModel(),

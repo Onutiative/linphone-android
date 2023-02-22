@@ -20,10 +20,10 @@
 package com.onutiative.onukit.activities.voip.data
 
 import androidx.lifecycle.MutableLiveData
-import org.linphone.contact.GenericContactData
+import com.onutiative.onukit.contact.GenericContactData
+import com.onutiative.onukit.utils.LinphoneUtils
 import org.linphone.core.*
 import org.linphone.core.tools.Log
-import org.linphone.utils.LinphoneUtils
 
 class ConferenceParticipantData(
     val conference: Conference,

@@ -22,11 +22,11 @@ package com.onutiative.onukit.activities.main.settings.fragments
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
-import org.linphone.R
-import org.linphone.activities.main.settings.viewmodels.LdapSettingsViewModel
-import org.linphone.activities.main.settings.viewmodels.LdapSettingsViewModelFactory
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.settings.viewmodels.LdapSettingsViewModel
+import com.onutiative.onukit.activities.main.settings.viewmodels.LdapSettingsViewModelFactory
+import com.onutiative.onukit.databinding.SettingsLdapFragmentBinding
 import org.linphone.core.tools.Log
-import org.linphone.databinding.SettingsLdapFragmentBinding
 
 class LdapSettingsFragment : GenericSettingFragment<SettingsLdapFragmentBinding>() {
     private lateinit var viewModel: LdapSettingsViewModel

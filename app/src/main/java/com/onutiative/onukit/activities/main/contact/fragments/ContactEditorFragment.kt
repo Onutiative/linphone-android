@@ -30,19 +30,19 @@ import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
 import com.onutiative.onukit.LinphoneApplication.Companion.corePreferences
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.GenericFragment
+import com.onutiative.onukit.activities.main.MainActivity
+import com.onutiative.onukit.activities.main.contact.data.ContactEditorData
+import com.onutiative.onukit.activities.main.contact.data.NumberOrAddressEditorData
+import com.onutiative.onukit.activities.main.contact.viewmodels.*
+import com.onutiative.onukit.activities.navigateToContact
+import com.onutiative.onukit.databinding.ContactEditorFragmentBinding
+import com.onutiative.onukit.utils.FileUtils
+import com.onutiative.onukit.utils.PermissionHelper
 import java.io.File
 import kotlinx.coroutines.launch
-import org.linphone.R
-import org.linphone.activities.GenericFragment
-import org.linphone.activities.main.MainActivity
-import org.linphone.activities.main.contact.data.ContactEditorData
-import org.linphone.activities.main.contact.data.NumberOrAddressEditorData
-import org.linphone.activities.main.contact.viewmodels.*
-import org.linphone.activities.navigateToContact
 import org.linphone.core.tools.Log
-import org.linphone.databinding.ContactEditorFragmentBinding
-import org.linphone.utils.FileUtils
-import org.linphone.utils.PermissionHelper
 
 class ContactEditorFragment :
     GenericFragment<ContactEditorFragmentBinding>(),

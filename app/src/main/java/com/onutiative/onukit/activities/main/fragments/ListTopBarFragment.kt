@@ -22,11 +22,11 @@ package com.onutiative.onukit.activities.main.fragments
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
-import org.linphone.R
-import org.linphone.activities.GenericFragment
-import org.linphone.activities.main.viewmodels.ListTopBarViewModel
-import org.linphone.databinding.ListEditTopBarFragmentBinding
-import org.linphone.utils.Event
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.GenericFragment
+import com.onutiative.onukit.activities.main.viewmodels.ListTopBarViewModel
+import com.onutiative.onukit.databinding.ListEditTopBarFragmentBinding
+import com.onutiative.onukit.utils.Event
 
 class ListTopBarFragment : GenericFragment<ListEditTopBarFragmentBinding>() {
     private lateinit var viewModel: ListTopBarViewModel

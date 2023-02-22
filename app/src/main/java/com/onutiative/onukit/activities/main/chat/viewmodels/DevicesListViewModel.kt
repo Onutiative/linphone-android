@@ -22,7 +22,7 @@ package com.onutiative.onukit.activities.main.chat.viewmodels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import org.linphone.activities.main.chat.data.DevicesListGroupData
+import com.onutiative.onukit.activities.main.chat.data.DevicesListGroupData
 import org.linphone.core.ChatRoom
 import org.linphone.core.ChatRoomListenerStub
 import org.linphone.core.EventLog

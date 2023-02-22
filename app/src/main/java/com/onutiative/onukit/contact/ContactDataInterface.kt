@@ -22,12 +22,12 @@ package com.onutiative.onukit.contact
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
+import com.onutiative.onukit.activities.main.viewmodels.MessageNotifierViewModel
+import com.onutiative.onukit.utils.LinphoneUtils
 import kotlinx.coroutines.CoroutineScope
-import org.linphone.activities.main.viewmodels.MessageNotifierViewModel
 import org.linphone.core.Address
 import org.linphone.core.ChatRoomSecurityLevel
 import org.linphone.core.Friend
-import org.linphone.utils.LinphoneUtils
 
 interface ContactDataInterface {
     val contact: MutableLiveData<Friend>

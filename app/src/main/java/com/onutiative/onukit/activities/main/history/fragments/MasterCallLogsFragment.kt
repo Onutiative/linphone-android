@@ -32,23 +32,23 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.transition.MaterialSharedAxis
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
 import com.onutiative.onukit.LinphoneApplication.Companion.corePreferences
-import org.linphone.R
-import org.linphone.activities.*
-import org.linphone.activities.clearDisplayedCallHistory
-import org.linphone.activities.main.MainActivity
-import org.linphone.activities.main.fragments.MasterFragment
-import org.linphone.activities.main.history.adapters.CallLogsListAdapter
-import org.linphone.activities.main.history.data.GroupedCallLogData
-import org.linphone.activities.main.history.viewmodels.CallLogsListViewModel
-import org.linphone.activities.main.viewmodels.DialogViewModel
-import org.linphone.activities.main.viewmodels.TabsViewModel
-import org.linphone.activities.navigateToCallHistory
-import org.linphone.activities.navigateToConferenceCallHistory
-import org.linphone.activities.navigateToDialer
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.*
+import com.onutiative.onukit.activities.clearDisplayedCallHistory
+import com.onutiative.onukit.activities.main.MainActivity
+import com.onutiative.onukit.activities.main.fragments.MasterFragment
+import com.onutiative.onukit.activities.main.history.adapters.CallLogsListAdapter
+import com.onutiative.onukit.activities.main.history.data.GroupedCallLogData
+import com.onutiative.onukit.activities.main.history.viewmodels.CallLogsListViewModel
+import com.onutiative.onukit.activities.main.viewmodels.DialogViewModel
+import com.onutiative.onukit.activities.main.viewmodels.TabsViewModel
+import com.onutiative.onukit.activities.navigateToCallHistory
+import com.onutiative.onukit.activities.navigateToConferenceCallHistory
+import com.onutiative.onukit.activities.navigateToDialer
+import com.onutiative.onukit.databinding.HistoryMasterFragmentBinding
+import com.onutiative.onukit.utils.*
 import org.linphone.core.ConferenceInfo
 import org.linphone.core.tools.Log
-import org.linphone.databinding.HistoryMasterFragmentBinding
-import org.linphone.utils.*
 
 class MasterCallLogsFragment : MasterFragment<HistoryMasterFragmentBinding, CallLogsListAdapter>() {
     override val dialogConfirmationMessageBeforeRemoval = R.plurals.history_delete_dialog

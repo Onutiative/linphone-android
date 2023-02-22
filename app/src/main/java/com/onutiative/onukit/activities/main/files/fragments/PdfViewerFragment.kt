@@ -23,12 +23,12 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import org.linphone.R
-import org.linphone.activities.main.files.adapters.PdfPagesListAdapter
-import org.linphone.activities.main.files.viewmodels.PdfFileViewModel
-import org.linphone.activities.main.files.viewmodels.PdfFileViewModelFactory
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.files.adapters.PdfPagesListAdapter
+import com.onutiative.onukit.activities.main.files.viewmodels.PdfFileViewModel
+import com.onutiative.onukit.activities.main.files.viewmodels.PdfFileViewModelFactory
+import com.onutiative.onukit.databinding.FilePdfViewerFragmentBinding
 import org.linphone.core.tools.Log
-import org.linphone.databinding.FilePdfViewerFragmentBinding
 
 class PdfViewerFragment : GenericViewerFragment<FilePdfViewerFragmentBinding>() {
     private lateinit var viewModel: PdfFileViewModel

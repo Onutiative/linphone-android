@@ -20,9 +20,9 @@
 package com.onutiative.onukit.activities.main.settings.viewmodels
 
 import androidx.lifecycle.MutableLiveData
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.settings.SettingListenerStub
 import java.lang.NumberFormatException
-import org.linphone.R
-import org.linphone.activities.main.settings.SettingListenerStub
 import org.linphone.core.Factory
 import org.linphone.core.Tunnel
 import org.linphone.core.TunnelConfig

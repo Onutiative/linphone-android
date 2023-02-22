@@ -22,7 +22,7 @@ package com.onutiative.onukit.activities.main.adapters
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import org.linphone.activities.main.viewmodels.ListTopBarViewModel
+import com.onutiative.onukit.activities.main.viewmodels.ListTopBarViewModel
 
 abstract class SelectionListAdapter<T, VH : RecyclerView.ViewHolder>(
     selectionVM: ListTopBarViewModel,

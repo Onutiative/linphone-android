@@ -27,14 +27,14 @@ import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
-import org.linphone.R
-import org.linphone.activities.main.MainActivity
-import org.linphone.activities.main.settings.viewmodels.AdvancedSettingsViewModel
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.MainActivity
+import com.onutiative.onukit.activities.main.settings.viewmodels.AdvancedSettingsViewModel
+import com.onutiative.onukit.databinding.SettingsAdvancedFragmentBinding
+import com.onutiative.onukit.utils.AppUtils
+import com.onutiative.onukit.utils.PowerManagerUtils
 import org.linphone.core.tools.Log
 import org.linphone.core.tools.compatibility.DeviceUtils
-import org.linphone.databinding.SettingsAdvancedFragmentBinding
-import org.linphone.utils.AppUtils
-import org.linphone.utils.PowerManagerUtils
 
 class AdvancedSettingsFragment : GenericSettingFragment<SettingsAdvancedFragmentBinding>() {
     private lateinit var viewModel: AdvancedSettingsViewModel

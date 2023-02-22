@@ -26,12 +26,13 @@ import android.widget.EditText
 import androidx.lifecycle.MutableLiveData
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
 import com.onutiative.onukit.LinphoneApplication.Companion.corePreferences
-import org.linphone.activities.main.dialer.NumpadDigitListener
-import org.linphone.activities.main.viewmodels.LogsUploadViewModel
-import org.linphone.compatibility.Compatibility
+import com.onutiative.onukit.activities.main.dialer.NumpadDigitListener
+import com.onutiative.onukit.activities.main.viewmodels.LogsUploadViewModel
+import com.onutiative.onukit.compatibility.Compatibility
+import com.onutiative.onukit.utils.Event
+import com.onutiative.onukit.utils.LinphoneUtils
 import org.linphone.core.*
 import org.linphone.core.tools.Log
-import org.linphone.utils.LinphoneUtils
 
 class DialerViewModel : LogsUploadViewModel() {
     val enteredUri = MutableLiveData<String>()
@@ -208,9 +209,9 @@ class DialerViewModel : LogsUploadViewModel() {
         return if (addressToCall.isNotEmpty()) {
             onMessageToNotifyEvent.value = Event(
                 if (coreContext.transferCallTo(addressToCall)) {
-                    org.linphone.R.string.dialer_transfer_succeded
+                    com.onutiative.onukit.R.string.dialer_transfer_succeded
                 } else {
-                    org.linphone.R.string.dialer_transfer_failed
+                    com.onutiative.onukit.R.string.dialer_transfer_failed
                 }
             )
             eraseAll()

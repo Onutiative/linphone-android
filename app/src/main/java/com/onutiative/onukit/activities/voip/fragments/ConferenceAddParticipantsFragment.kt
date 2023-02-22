@@ -27,16 +27,16 @@ import androidx.navigation.navGraphViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.onutiative.onukit.LinphoneApplication
 import com.onutiative.onukit.LinphoneApplication.Companion.corePreferences
-import org.linphone.R
-import org.linphone.activities.GenericFragment
-import org.linphone.activities.voip.viewmodels.ConferenceParticipantsViewModel
-import org.linphone.activities.voip.viewmodels.ConferenceParticipantsViewModelFactory
-import org.linphone.activities.voip.viewmodels.ConferenceViewModel
-import org.linphone.contact.ContactsSelectionAdapter
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.GenericFragment
+import com.onutiative.onukit.activities.voip.viewmodels.ConferenceParticipantsViewModel
+import com.onutiative.onukit.activities.voip.viewmodels.ConferenceParticipantsViewModelFactory
+import com.onutiative.onukit.activities.voip.viewmodels.ConferenceViewModel
+import com.onutiative.onukit.contact.ContactsSelectionAdapter
+import com.onutiative.onukit.databinding.VoipConferenceParticipantsAddFragmentBinding
+import com.onutiative.onukit.utils.AppUtils
+import com.onutiative.onukit.utils.PermissionHelper
 import org.linphone.core.tools.Log
-import org.linphone.databinding.VoipConferenceParticipantsAddFragmentBinding
-import org.linphone.utils.AppUtils
-import org.linphone.utils.PermissionHelper
 
 class ConferenceAddParticipantsFragment : GenericFragment<VoipConferenceParticipantsAddFragmentBinding>() {
     private val conferenceViewModel: ConferenceViewModel by navGraphViewModels(R.id.call_nav_graph)

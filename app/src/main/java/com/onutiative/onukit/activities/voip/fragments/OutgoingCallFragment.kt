@@ -25,11 +25,11 @@ import android.view.View
 import android.widget.Chronometer
 import androidx.navigation.navGraphViewModels
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
-import org.linphone.R
-import org.linphone.activities.navigateToActiveCall
-import org.linphone.activities.voip.viewmodels.CallsViewModel
-import org.linphone.activities.voip.viewmodels.ControlsViewModel
-import org.linphone.databinding.VoipCallOutgoingFragmentBinding
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.navigateToActiveCall
+import com.onutiative.onukit.activities.voip.viewmodels.CallsViewModel
+import com.onutiative.onukit.activities.voip.viewmodels.ControlsViewModel
+import com.onutiative.onukit.databinding.VoipCallOutgoingFragmentBinding
 
 class OutgoingCallFragment : GenericVideoPreviewFragment<VoipCallOutgoingFragmentBinding>() {
     private val controlsViewModel: ControlsViewModel by navGraphViewModels(R.id.call_nav_graph)

@@ -27,7 +27,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import android.util.AttributeSet
 import android.view.View
-import org.linphone.R
+import com.onutiative.onukit.R
 
 class VoiceRecordProgressBar : View {
     companion object {

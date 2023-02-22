@@ -20,8 +20,8 @@
 package com.onutiative.onukit.activities.main.settings.viewmodels
 
 import androidx.lifecycle.MutableLiveData
+import com.onutiative.onukit.activities.main.settings.SettingListenerStub
 import java.lang.NumberFormatException
-import org.linphone.activities.main.settings.SettingListenerStub
 
 class NetworkSettingsViewModel : GenericSettingsViewModel() {
     val wifiOnlyListener = object : SettingListenerStub() {

@@ -87,7 +87,7 @@
             android:background="@drawable/button_toggle_background"
             android:contentDescription="@string/content_description_pause_call"
             android:enabled="@{!conferenceViewModel.conferenceCreationPending}"
-            android:onClick="@{() -> conferenceViewModel.pauseConference()}"
+            android:onClick="@={() -> conferenceViewModel.pauseConference()}"
             android:padding="5dp"
             android:selected="@{conferenceViewModel.isConferenceLocallyPaused}"
             android:src="@drawable/icon_pause"
@@ -102,7 +102,7 @@
             android:layout_marginEnd="10dp"
             android:background="@drawable/button_toggle_background"
             android:contentDescription="@string/content_description_toggle_recording"
-            android:onClick="@{() -> conferenceViewModel.toggleRecording()}"
+            android:onClick="@={() -> conferenceViewModel.toggleRecording()}"
             android:padding="7dp"
             android:selected="@{conferenceViewModel.isRecording}"
             android:src="@drawable/icon_call_record"
@@ -130,7 +130,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toTopOf="@id/hinge_bottom"
-            android:onClick="@{() -> controlsViewModel.toggleFullScreen()}"
+            android:onClick="@={() -> controlsViewModel.toggleFullScreen()}"
             app:entries="@{conferenceViewModel.conferenceParticipantDevices}"
             app:layout="@{@layout/voip_conference_participant_remote_grid}" />
 

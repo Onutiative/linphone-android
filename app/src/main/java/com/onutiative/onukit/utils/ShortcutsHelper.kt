@@ -31,9 +31,9 @@ import androidx.core.content.pm.ShortcutInfoCompat
 import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.core.graphics.drawable.IconCompat
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
+import com.onutiative.onukit.activities.main.MainActivity
+import com.onutiative.onukit.contact.getPerson
 import kotlin.math.min
-import org.linphone.activities.main.MainActivity
-import org.linphone.contact.getPerson
 import org.linphone.core.Address
 import org.linphone.core.ChatRoom
 import org.linphone.core.ChatRoomCapabilities

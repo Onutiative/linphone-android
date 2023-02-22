@@ -27,18 +27,18 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.slidingpanelayout.widget.SlidingPaneLayout
 import com.google.android.material.transition.MaterialSharedAxis
 import com.onutiative.onukit.LinphoneApplication.Companion.corePreferences
-import org.linphone.R
-import org.linphone.activities.*
-import org.linphone.activities.main.fragments.MasterFragment
-import org.linphone.activities.main.fragments.SecureFragment
-import org.linphone.activities.main.settings.SettingListenerStub
-import org.linphone.activities.main.settings.viewmodels.SettingsViewModel
-import org.linphone.activities.navigateToAccountSettings
-import org.linphone.activities.navigateToAudioSettings
-import org.linphone.activities.navigateToTunnelSettings
-import org.linphone.activities.navigateToVideoSettings
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.*
+import com.onutiative.onukit.activities.main.fragments.MasterFragment
+import com.onutiative.onukit.activities.main.fragments.SecureFragment
+import com.onutiative.onukit.activities.main.settings.SettingListenerStub
+import com.onutiative.onukit.activities.main.settings.viewmodels.SettingsViewModel
+import com.onutiative.onukit.activities.navigateToAccountSettings
+import com.onutiative.onukit.activities.navigateToAudioSettings
+import com.onutiative.onukit.activities.navigateToTunnelSettings
+import com.onutiative.onukit.activities.navigateToVideoSettings
+import com.onutiative.onukit.databinding.SettingsFragmentBinding
 import org.linphone.core.tools.Log
-import org.linphone.databinding.SettingsFragmentBinding
 
 class SettingsFragment : SecureFragment<SettingsFragmentBinding>() {
     private lateinit var viewModel: SettingsViewModel

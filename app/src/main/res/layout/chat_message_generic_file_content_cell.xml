@@ -33,7 +33,7 @@
             android:drawablePadding="5dp"
             android:ellipsize="middle"
             android:gravity="center"
-            android:onClick="@{() -> data.openFile()}"
+            android:onClick="@={() -> data.openFile()}"
             android:onLongClick="@{longClickListener}"
             android:singleLine="true"
             android:text="@{data.fileName, default=`test.pdf`}"

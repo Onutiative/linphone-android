@@ -24,13 +24,13 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import org.linphone.R
-import org.linphone.activities.main.MainActivity
-import org.linphone.activities.main.files.viewmodels.ImageFileViewModel
-import org.linphone.activities.main.files.viewmodels.ImageFileViewModelFactory
-import org.linphone.compatibility.Compatibility
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.MainActivity
+import com.onutiative.onukit.activities.main.files.viewmodels.ImageFileViewModel
+import com.onutiative.onukit.activities.main.files.viewmodels.ImageFileViewModelFactory
+import com.onutiative.onukit.compatibility.Compatibility
+import com.onutiative.onukit.databinding.FileImageViewerFragmentBinding
 import org.linphone.core.tools.Log
-import org.linphone.databinding.FileImageViewerFragmentBinding
 
 class ImageViewerFragment : GenericViewerFragment<FileImageViewerFragmentBinding>() {
     private lateinit var viewModel: ImageFileViewModel

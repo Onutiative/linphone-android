@@ -35,13 +35,13 @@ import android.view.View
 import android.view.contentcapture.ContentCaptureContext
 import android.view.contentcapture.ContentCaptureSession
 import androidx.core.app.NotificationManagerCompat
-import org.linphone.R
+import com.onutiative.onukit.R
+import com.onutiative.onukit.utils.AppUtils
+import com.onutiative.onukit.utils.FileUtils
+import com.onutiative.onukit.utils.LinphoneUtils
 import org.linphone.core.ChatRoom
 import org.linphone.core.Content
 import org.linphone.core.tools.Log
-import org.linphone.utils.AppUtils
-import org.linphone.utils.FileUtils
-import org.linphone.utils.LinphoneUtils
 
 @TargetApi(29)
 class Api29Compatibility {

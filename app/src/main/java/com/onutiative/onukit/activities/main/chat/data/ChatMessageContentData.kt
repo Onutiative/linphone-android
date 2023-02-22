@@ -28,6 +28,11 @@ import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.media.AudioFocusRequestCompat
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
+import com.onutiative.onukit.R
+import com.onutiative.onukit.utils.AppUtils
+import com.onutiative.onukit.utils.AudioRouteUtils
+import com.onutiative.onukit.utils.FileUtils
+import com.onutiative.onukit.utils.TimestampUtils
 import java.io.BufferedReader
 import java.io.FileReader
 import java.lang.StringBuilder
@@ -38,13 +43,8 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import org.linphone.R
 import org.linphone.core.*
 import org.linphone.core.tools.Log
-import org.linphone.utils.AppUtils
-import org.linphone.utils.AudioRouteUtils
-import org.linphone.utils.FileUtils
-import org.linphone.utils.TimestampUtils
 
 class ChatMessageContentData(
     private val chatMessage: ChatMessage,

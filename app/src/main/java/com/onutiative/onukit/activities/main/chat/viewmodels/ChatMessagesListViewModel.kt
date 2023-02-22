@@ -22,13 +22,14 @@ package com.onutiative.onukit.activities.main.chat.viewmodels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.onutiative.onukit.activities.main.chat.data.EventLogData
+import com.onutiative.onukit.utils.Event
+import com.onutiative.onukit.utils.LinphoneUtils
+import com.onutiative.onukit.utils.PermissionHelper
 import java.util.*
 import kotlin.math.max
-import org.linphone.activities.main.chat.data.EventLogData
 import org.linphone.core.*
 import org.linphone.core.tools.Log
-import org.linphone.utils.LinphoneUtils
-import org.linphone.utils.PermissionHelper
 
 class ChatMessagesListViewModelFactory(private val chatRoom: ChatRoom) :
     ViewModelProvider.NewInstanceFactory() {

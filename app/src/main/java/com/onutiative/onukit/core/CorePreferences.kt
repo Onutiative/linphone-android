@@ -24,11 +24,13 @@ import android.content.SharedPreferences
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
+import com.onutiative.onukit.compatibility.Compatibility
+import org.linphone.core.BuildConfig
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.security.KeyStoreException
-import org.linphone.compatibility.Compatibility
+import org.linphone.core.Config
 import org.linphone.core.tools.Log
 
 class CorePreferences constructor(private val context: Context) {
@@ -102,7 +104,7 @@ class CorePreferences constructor(private val context: Context) {
     /* App settings */
 
     var debugLogs: Boolean
-        get() = config.getBool("app", "debug", com.onutiative.BuildConfig.DEBUG)
+        get() = config.getBool("app", "debug", BuildConfig.DEBUG)
         set(value) {
             config.setBool("app", "debug", value)
         }
@@ -648,11 +650,11 @@ class CorePreferences constructor(private val context: Context) {
         val outFile = File(to)
         if (outFile.exists()) {
             if (!overrideIfExists) {
-                android.util.Log.i(context.getString(org.linphone.R.string.app_name), "[Preferences] File $to already exists")
+                android.util.Log.i(context.getString(com.onutiative.onukit.R.string.app_name), "[Preferences] File $to already exists")
                 return
             }
         }
-        android.util.Log.i(context.getString(org.linphone.R.string.app_name), "[Preferences] Overriding $to by $from asset")
+        android.util.Log.i(context.getString(com.onutiative.onukit.R.string.app_name), "[Preferences] Overriding $to by $from asset")
 
         val outStream = FileOutputStream(outFile)
         val inFile = context.assets.open(from)
@@ -674,7 +676,7 @@ class CorePreferences constructor(private val context: Context) {
         val outFile = File(to)
         if (inFile.exists()) {
             if (outFile.exists() && !overrideIfExists) {
-                android.util.Log.w(context.getString(org.linphone.R.string.app_name), "[Preferences] Can't move [$from] to [$to], destination file already exists")
+                android.util.Log.w(context.getString(com.onutiative.onukit.R.string.app_name), "[Preferences] Can't move [$from] to [$to], destination file already exists")
             } else {
                 val inStream = FileInputStream(inFile)
                 val outStream = FileOutputStream(outFile)
@@ -690,10 +692,10 @@ class CorePreferences constructor(private val context: Context) {
                 outStream.close()
 
                 inFile.delete()
-                android.util.Log.i(context.getString(org.linphone.R.string.app_name), "[Preferences] Successfully moved [$from] to [$to]")
+                android.util.Log.i(context.getString(com.onutiative.onukit.R.string.app_name), "[Preferences] Successfully moved [$from] to [$to]")
             }
         } else {
-            android.util.Log.w(context.getString(org.linphone.R.string.app_name), "[Preferences] Can't move [$from] to [$to], source file doesn't exists")
+            android.util.Log.w(context.getString(com.onutiative.onukit.R.string.app_name), "[Preferences] Can't move [$from] to [$to], source file doesn't exists")
         }
     }
 }

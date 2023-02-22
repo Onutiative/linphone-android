@@ -25,15 +25,15 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
-import org.linphone.R
-import org.linphone.activities.GenericFragment
-import org.linphone.activities.main.MainActivity
-import org.linphone.activities.main.conference.viewmodels.ConferenceWaitingRoomViewModel
-import org.linphone.compatibility.Compatibility
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.GenericFragment
+import com.onutiative.onukit.activities.main.MainActivity
+import com.onutiative.onukit.activities.main.conference.viewmodels.ConferenceWaitingRoomViewModel
+import com.onutiative.onukit.compatibility.Compatibility
+import com.onutiative.onukit.databinding.ConferenceWaitingRoomFragmentBinding
+import com.onutiative.onukit.utils.PermissionHelper
 import org.linphone.core.tools.Log
-import org.linphone.databinding.ConferenceWaitingRoomFragmentBinding
 import org.linphone.mediastream.Version
-import org.linphone.utils.PermissionHelper
 
 class ConferenceWaitingRoomFragment : GenericFragment<ConferenceWaitingRoomFragmentBinding>() {
     private lateinit var viewModel: ConferenceWaitingRoomViewModel

@@ -80,7 +80,7 @@
             android:background="@drawable/button_toggle_background"
             android:contentDescription="@string/content_description_pause_call"
             android:enabled="@{!conferenceViewModel.conferenceCreationPending}"
-            android:onClick="@{() -> conferenceViewModel.pauseConference()}"
+            android:onClick="@={() -> conferenceViewModel.pauseConference()}"
             android:padding="5dp"
             android:selected="@{conferenceViewModel.isConferenceLocallyPaused}"
             android:src="@drawable/icon_pause"
@@ -95,7 +95,7 @@
             android:layout_marginEnd="10dp"
             android:background="@drawable/button_toggle_background"
             android:contentDescription="@string/content_description_toggle_recording"
-            android:onClick="@{() -> conferenceViewModel.toggleRecording()}"
+            android:onClick="@={() -> conferenceViewModel.toggleRecording()}"
             android:padding="7dp"
             android:selected="@{conferenceViewModel.isRecording}"
             android:src="@drawable/icon_call_record"
@@ -172,7 +172,7 @@
             app:layout_constraintBottom_toBottomOf="@id/hinge_bottom"
             android:layout_marginTop="@{controlsViewModel.fullScreenMode ? @dimen/margin_0dp : @dimen/voip_active_speaker_top_margin, default=@dimen/voip_active_speaker_top_margin}"
             android:background="@{!conferenceViewModel.speakingParticipant.isInConference ? @drawable/shape_remote_paused_background : @drawable/shape_remote_background, default=@drawable/shape_remote_background}"
-            android:onClick="@{() -> controlsViewModel.toggleFullScreen()}"/>
+            android:onClick="@={() -> controlsViewModel.toggleFullScreen()}"/>
 
         <ImageView
             android:id="@+id/speaking_participant_avatar"
@@ -259,7 +259,7 @@
             app:layout_constraintBottom_toBottomOf="@id/hinge_bottom"
             android:layout_marginTop="@{controlsViewModel.fullScreenMode  ? @dimen/margin_0dp : @dimen/voip_active_speaker_top_margin, default=@dimen/voip_active_speaker_top_margin}"
             android:background="@drawable/shape_me_background"
-            android:onClick="@{() -> controlsViewModel.toggleFullScreen()}"/>
+            android:onClick="@={() -> controlsViewModel.toggleFullScreen()}"/>
 
         <ImageView
             android:id="@+id/local_participant_avatar"
@@ -309,7 +309,7 @@
             android:layout_margin="@{conferenceViewModel.twoOrMoreParticipants ? @dimen/margin_0dp : @dimen/voip_active_speaker_top_margin, default=@dimen/voip_active_speaker_top_margin}"
             android:padding="10dp"
             android:contentDescription="@string/content_description_switch_camera"
-            android:onClick="@{() -> controlsViewModel.switchCamera()}"
+            android:onClick="@={() -> controlsViewModel.switchCamera()}"
             android:src="@drawable/icon_call_camera_switch"
             android:visibility="@{controlsViewModel.isSwitchCameraAvailable &amp;&amp; !controlsViewModel.pipMode ? View.VISIBLE : View.GONE}"
             app:layout_constraintEnd_toEndOf="@id/local_participant_background"

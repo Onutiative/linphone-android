@@ -20,11 +20,11 @@
 package com.onutiative.onukit.activities.main.chat.data
 
 import androidx.lifecycle.MutableLiveData
-import org.linphone.R
-import org.linphone.activities.main.chat.GroupChatRoomMember
-import org.linphone.contact.GenericContactData
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.chat.GroupChatRoomMember
+import com.onutiative.onukit.contact.GenericContactData
+import com.onutiative.onukit.utils.LinphoneUtils
 import org.linphone.core.ChatRoomSecurityLevel
-import org.linphone.utils.LinphoneUtils
 
 class GroupInfoParticipantData(val participant: GroupChatRoomMember) : GenericContactData(participant.address) {
     val sipUri: String get() = LinphoneUtils.getDisplayableAddress(participant.address)

@@ -22,8 +22,8 @@ package com.onutiative.onukit.utils
 import android.content.Context
 import android.graphics.*
 import android.net.Uri
+import com.onutiative.onukit.compatibility.Compatibility
 import java.io.FileNotFoundException
-import org.linphone.compatibility.Compatibility
 import org.linphone.core.tools.Log
 
 class ImageUtils {

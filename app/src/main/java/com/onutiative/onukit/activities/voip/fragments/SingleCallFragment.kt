@@ -30,19 +30,19 @@ import androidx.navigation.navGraphViewModels
 import androidx.window.layout.FoldingFeature
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
 import com.onutiative.onukit.LinphoneApplication.Companion.corePreferences
-import org.linphone.R
-import org.linphone.activities.*
-import org.linphone.activities.main.MainActivity
-import org.linphone.activities.main.viewmodels.DialogViewModel
-import org.linphone.activities.voip.viewmodels.CallsViewModel
-import org.linphone.activities.voip.viewmodels.ConferenceViewModel
-import org.linphone.activities.voip.viewmodels.ControlsViewModel
-import org.linphone.activities.voip.viewmodels.StatisticsListViewModel
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.*
+import com.onutiative.onukit.activities.main.MainActivity
+import com.onutiative.onukit.activities.main.viewmodels.DialogViewModel
+import com.onutiative.onukit.activities.voip.viewmodels.CallsViewModel
+import com.onutiative.onukit.activities.voip.viewmodels.ConferenceViewModel
+import com.onutiative.onukit.activities.voip.viewmodels.ControlsViewModel
+import com.onutiative.onukit.activities.voip.viewmodels.StatisticsListViewModel
+import com.onutiative.onukit.databinding.VoipSingleCallFragmentBinding
+import com.onutiative.onukit.utils.AppUtils
+import com.onutiative.onukit.utils.DialogUtils
 import org.linphone.core.*
 import org.linphone.core.tools.Log
-import org.linphone.databinding.VoipSingleCallFragmentBinding
-import org.linphone.utils.AppUtils
-import org.linphone.utils.DialogUtils
 
 class SingleCallFragment : GenericVideoPreviewFragment<VoipSingleCallFragmentBinding>() {
     private val controlsViewModel: ControlsViewModel by navGraphViewModels(R.id.call_nav_graph)

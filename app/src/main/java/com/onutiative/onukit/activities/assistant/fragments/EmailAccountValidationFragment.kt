@@ -24,12 +24,12 @@ import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
 import com.onutiative.onukit.LinphoneApplication.Companion.corePreferences
-import org.linphone.R
-import org.linphone.activities.GenericFragment
-import org.linphone.activities.assistant.AssistantActivity
-import org.linphone.activities.assistant.viewmodels.*
-import org.linphone.activities.navigateToAccountLinking
-import org.linphone.databinding.AssistantEmailAccountValidationFragmentBinding
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.GenericFragment
+import com.onutiative.onukit.activities.assistant.AssistantActivity
+import com.onutiative.onukit.activities.assistant.viewmodels.*
+import com.onutiative.onukit.activities.navigateToAccountLinking
+import com.onutiative.onukit.databinding.AssistantEmailAccountValidationFragmentBinding
 
 class EmailAccountValidationFragment : GenericFragment<AssistantEmailAccountValidationFragmentBinding>() {
     private lateinit var sharedAssistantViewModel: SharedAssistantViewModel

@@ -23,13 +23,13 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
-import org.linphone.R
-import org.linphone.activities.SnackBarActivity
-import org.linphone.activities.assistant.viewmodels.*
-import org.linphone.activities.navigateToEchoCancellerCalibration
-import org.linphone.activities.navigateToPhoneAccountValidation
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.SnackBarActivity
+import com.onutiative.onukit.activities.assistant.viewmodels.*
+import com.onutiative.onukit.activities.navigateToEchoCancellerCalibration
+import com.onutiative.onukit.activities.navigateToPhoneAccountValidation
+import com.onutiative.onukit.databinding.AssistantPhoneAccountLinkingFragmentBinding
 import org.linphone.core.tools.Log
-import org.linphone.databinding.AssistantPhoneAccountLinkingFragmentBinding
 
 class PhoneAccountLinkingFragment : AbstractPhoneFragment<AssistantPhoneAccountLinkingFragmentBinding>() {
     private lateinit var sharedAssistantViewModel: SharedAssistantViewModel

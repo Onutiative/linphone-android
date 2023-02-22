@@ -23,19 +23,19 @@ import android.os.Bundle
 import android.view.View
 import android.webkit.MimeTypeMap
 import androidx.lifecycle.lifecycleScope
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.GenericFragment
+import com.onutiative.onukit.activities.SnackBarActivity
+import com.onutiative.onukit.compatibility.Compatibility
+import com.onutiative.onukit.databinding.FileViewerTopBarFragmentBinding
+import com.onutiative.onukit.utils.FileUtils
+import com.onutiative.onukit.utils.PermissionHelper
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.linphone.R
-import org.linphone.activities.GenericFragment
-import org.linphone.activities.SnackBarActivity
-import org.linphone.compatibility.Compatibility
 import org.linphone.core.Content
 import org.linphone.core.tools.Log
-import org.linphone.databinding.FileViewerTopBarFragmentBinding
-import org.linphone.utils.FileUtils
-import org.linphone.utils.PermissionHelper
 
 class TopBarFragment : GenericFragment<FileViewerTopBarFragmentBinding>() {
     private var content: Content? = null

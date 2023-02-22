@@ -21,7 +21,7 @@ package com.onutiative.onukit.activities.main.viewmodels
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import org.linphone.utils.Event
+import com.onutiative.onukit.utils.Event
 
 /* Helper for view models to notify user of a massage through a Snackbar */
 abstract class MessageNotifierViewModel : ViewModel() {

@@ -67,7 +67,7 @@
                 android:layout_height="wrap_content"/>
 
             <TextView
-                android:onClick="@{() -> viewModel.finish()}"
+                android:onClick="@={() -> viewModel.finish()}"
                 android:text="@string/assistant_finish"
                 android:background="@drawable/assistant_button"
                 android:textColor="@drawable/assistant_button_text_color"

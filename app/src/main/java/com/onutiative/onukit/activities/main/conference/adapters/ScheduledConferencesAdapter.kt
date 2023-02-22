@@ -28,15 +28,15 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import org.linphone.R
-import org.linphone.activities.main.adapters.SelectionListAdapter
-import org.linphone.activities.main.conference.data.ScheduledConferenceData
-import org.linphone.activities.main.viewmodels.ListTopBarViewModel
-import org.linphone.databinding.ConferenceScheduleCellBinding
-import org.linphone.databinding.ConferenceScheduleListHeaderBinding
-import org.linphone.utils.Event
-import org.linphone.utils.HeaderAdapter
-import org.linphone.utils.TimestampUtils
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.adapters.SelectionListAdapter
+import com.onutiative.onukit.activities.main.conference.data.ScheduledConferenceData
+import com.onutiative.onukit.activities.main.viewmodels.ListTopBarViewModel
+import com.onutiative.onukit.databinding.ConferenceScheduleCellBinding
+import com.onutiative.onukit.databinding.ConferenceScheduleListHeaderBinding
+import com.onutiative.onukit.utils.Event
+import com.onutiative.onukit.utils.HeaderAdapter
+import com.onutiative.onukit.utils.TimestampUtils
 
 class ScheduledConferencesAdapter(
     selectionVM: ListTopBarViewModel,

@@ -22,13 +22,13 @@ package com.onutiative.onukit.activities.main.conference.fragments
 import android.os.Bundle
 import android.view.View
 import androidx.navigation.navGraphViewModels
-import org.linphone.R
-import org.linphone.activities.GenericFragment
-import org.linphone.activities.main.MainActivity
-import org.linphone.activities.main.conference.viewmodels.ConferenceSchedulingViewModel
-import org.linphone.activities.navigateToDialer
-import org.linphone.activities.navigateToScheduledConferences
-import org.linphone.databinding.ConferenceSchedulingSummaryFragmentBinding
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.GenericFragment
+import com.onutiative.onukit.activities.main.MainActivity
+import com.onutiative.onukit.activities.main.conference.viewmodels.ConferenceSchedulingViewModel
+import com.onutiative.onukit.activities.navigateToDialer
+import com.onutiative.onukit.activities.navigateToScheduledConferences
+import com.onutiative.onukit.databinding.ConferenceSchedulingSummaryFragmentBinding
 
 class ConferenceSchedulingSummaryFragment : GenericFragment<ConferenceSchedulingSummaryFragmentBinding>() {
     private val viewModel: ConferenceSchedulingViewModel by navGraphViewModels(R.id.conference_scheduling_nav_graph)

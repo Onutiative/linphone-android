@@ -22,17 +22,18 @@ package com.onutiative.onukit.activities.main.history.viewmodels
 import androidx.lifecycle.MutableLiveData
 import com.onutiative.onukit.LinphoneApplication.Companion.coreContext
 import com.onutiative.onukit.LinphoneApplication.Companion.corePreferences
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.conference.data.ConferenceSchedulingParticipantData
+import com.onutiative.onukit.contact.GenericContactViewModel
+import com.onutiative.onukit.utils.AppUtils
+import com.onutiative.onukit.utils.Event
+import com.onutiative.onukit.utils.LinphoneUtils
+import com.onutiative.onukit.utils.TimestampUtils
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
-import org.linphone.R
-import org.linphone.activities.main.conference.data.ConferenceSchedulingParticipantData
-import org.linphone.contact.GenericContactViewModel
 import org.linphone.core.*
 import org.linphone.core.tools.Log
-import org.linphone.utils.AppUtils
-import org.linphone.utils.LinphoneUtils
-import org.linphone.utils.TimestampUtils
 
 class CallLogViewModel(val callLog: CallLog, private val isRelated: Boolean = false) : GenericContactViewModel(callLog.remoteAddress) {
     val peerSipUri: String by lazy {

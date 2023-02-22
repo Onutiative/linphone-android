@@ -28,11 +28,11 @@ import androidx.core.view.ViewCompat
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.lifecycleScope
 import com.onutiative.onukit.LinphoneApplication.Companion.corePreferences
+import com.onutiative.onukit.activities.GenericFragment
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.linphone.activities.GenericFragment
 import org.linphone.core.tools.Log
 
 abstract class SecureFragment<T : ViewDataBinding> : GenericFragment<T>() {

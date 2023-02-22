@@ -22,7 +22,7 @@ package com.onutiative.onukit.activities.main.settings.fragments
 import android.os.Bundle
 import android.view.View
 import androidx.databinding.ViewDataBinding
-import org.linphone.activities.GenericFragment
+import com.onutiative.onukit.activities.GenericFragment
 
 abstract class GenericSettingFragment<T : ViewDataBinding> : GenericFragment<T>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

@@ -23,11 +23,11 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import org.linphone.R
-import org.linphone.activities.main.files.viewmodels.TextFileViewModel
-import org.linphone.activities.main.files.viewmodels.TextFileViewModelFactory
+import com.onutiative.onukit.R
+import com.onutiative.onukit.activities.main.files.viewmodels.TextFileViewModel
+import com.onutiative.onukit.activities.main.files.viewmodels.TextFileViewModelFactory
+import com.onutiative.onukit.databinding.FileTextViewerFragmentBinding
 import org.linphone.core.tools.Log
-import org.linphone.databinding.FileTextViewerFragmentBinding
 
 class TextViewerFragment : GenericViewerFragment<FileTextViewerFragmentBinding>() {
     private lateinit var viewModel: TextFileViewModel
