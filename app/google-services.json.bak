@@ -1,0 +1,73 @@
+{
+  "project_info": {
+    "project_number": "710819726531",
+    "firebase_url": "https://onuserver-89800.firebaseio.com",
+    "project_id": "onuserver-89800",
+    "storage_bucket": "onuserver-89800.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:710819726531:android:ab7c9a0b0aab0c36",
+        "android_client_info": {
+          "package_name": "com.onutiative.onukit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "710819726531-nstgrsrsklin4a9s3v60hrdvs2ug5mn2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwaWqkEtcgBtCWDgXykf5ntKGRrxBdfgA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+        "client_info": {
+          "mobilesdk_app_id": "1:710819726531:android:ab7c9a0b0aab0c36",
+          "android_client_info": {
+            "package_name": "com.onutiative.onukit.debug"
+          }
+        },
+        "oauth_client": [
+          {
+            "client_id": "710819726531-nstgrsrsklin4a9s3v60hrdvs2ug5mn2.apps.googleusercontent.com",
+            "client_type": 3
+          }
+        ],
+        "api_key": [
+          {
+            "current_key": "AIzaSyCwaWqkEtcgBtCWDgXykf5ntKGRrxBdfgA"
+          }
+        ],
+        "services": {
+          "analytics_service": {
+            "status": 1
+          },
+          "appinvite_service": {
+            "status": 1,
+            "other_platform_oauth_client": []
+          },
+          "ads_service": {
+            "status": 2
+          }
+        }
+      }
+  ],
+  "configuration_version": "1"
+}
