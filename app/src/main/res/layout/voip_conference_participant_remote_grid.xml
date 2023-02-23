@@ -8,7 +8,7 @@
 
         <variable
             name="data"
-            type="com.onutiative.onukit.activities.voip.data.ConferenceParticipantDeviceData" />
+            type="org.linphone.activities.voip.data.ConferenceParticipantDeviceData" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -42,7 +42,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_max="@dimen/voip_contact_avatar_max_size" />
 
-        <com.onutiative.onukit.activities.voip.views.RoundCornersTextureView
+        <org.linphone.activities.voip.views.RoundCornersTextureView
             android:id="@+id/participant_video_surface"
             participantTextureView="@{data}"
             android:layout_width="0dp"
@@ -99,7 +99,7 @@
             android:layout_margin="5dp"
             android:padding="10dp"
             android:contentDescription="@string/content_description_switch_camera"
-            android:onClick="@={() -> data.switchCamera()}"
+            android:onClick="@{() -> data.switchCamera()}"
             android:src="@drawable/icon_call_camera_switch"
             android:visibility="@{data.videoEnabled &amp;&amp; data.isSwitchCameraAvailable() &amp;&amp; data.isInConference ? View.VISIBLE : View.GONE, default=gone}"
             app:layout_constraintEnd_toEndOf="parent"

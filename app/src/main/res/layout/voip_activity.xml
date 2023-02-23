@@ -7,7 +7,7 @@
         <import type="android.view.View" />
         <variable
             name="controlsViewModel"
-            type="com.onutiative.onukit.activities.voip.viewmodels.ControlsViewModel" />
+            type="org.linphone.activities.voip.viewmodels.ControlsViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,7 +18,7 @@
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/status_fragment"
             android:visibility="@{controlsViewModel.fullScreenMode || controlsViewModel.pipMode ? View.GONE : View.VISIBLE}"
-            android:name="com.onutiative.onukit.activities.voip.fragments.StatusFragment"
+            android:name="org.linphone.activities.voip.fragments.StatusFragment"
             android:layout_width="match_parent"
             android:layout_height="@dimen/status_fragment_size"
             app:layout_constraintTop_toTopOf="parent"

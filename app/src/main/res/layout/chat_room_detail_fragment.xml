@@ -34,13 +34,13 @@
             type="android.view.View.OnClickListener"/>
         <variable
             name="viewModel"
-            type="com.onutiative.onukit.activities.main.chat.viewmodels.ChatRoomViewModel" />
+            type="org.linphone.activities.main.chat.viewmodels.ChatRoomViewModel" />
         <variable
             name="chatSendingViewModel"
-            type="com.onutiative.onukit.activities.main.chat.viewmodels.ChatMessageSendingViewModel" />
+            type="org.linphone.activities.main.chat.viewmodels.ChatMessageSendingViewModel" />
         <variable
             name="sharedMainViewModel"
-            type="com.onutiative.onukit.activities.main.viewmodels.SharedMainViewModel" />
+            type="org.linphone.activities.main.viewmodels.SharedMainViewModel" />
     </data>
 
     <RelativeLayout
@@ -76,7 +76,7 @@
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp">
 
-                <com.onutiative.onukit.views.MarqueeTextView
+                <org.linphone.views.MarqueeTextView
                     android:onClick="@{titleClickListener}"
                     android:text="@{viewModel.oneToOneChatRoom ? (viewModel.contact.name ?? viewModel.displayName) : viewModel.subject, default=`Lorem Ipsum Dolor Sit Amet`}"
                     style="@style/toolbar_small_title_font"
@@ -84,7 +84,7 @@
                     android:layout_height="wrap_content"
                     android:singleLine="true" />
 
-                <com.onutiative.onukit.views.MarqueeTextView
+                <org.linphone.views.MarqueeTextView
                     android:text="@{viewModel.participants, default=`John Doe`}"
                     android:visibility="@{viewModel.oneToOneChatRoom ? View.GONE : View.VISIBLE}"
                     style="@style/toolbar_small_title_font"
@@ -92,7 +92,7 @@
                     android:layout_height="wrap_content"
                     android:singleLine="true" />
 
-                <com.onutiative.onukit.views.MarqueeTextView
+                <org.linphone.views.MarqueeTextView
                     android:id="@+id/sip_uri"
                     android:text="@{viewModel.peerSipUri, default=`sip:john.doe@sip.linphone.org`}"
                     android:visibility="gone"
@@ -104,7 +104,7 @@
             </LinearLayout>
 
             <ImageView
-                android:onClick="@={() -> viewModel.startCall()}"
+                android:onClick="@{() -> viewModel.startCall()}"
                 android:contentDescription="@string/content_description_start_call"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -142,7 +142,7 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/list_edit_top_bar_fragment"
-            android:name="com.onutiative.onukit.activities.main.fragments.ListTopBarFragment"
+            android:name="org.linphone.activities.main.fragments.ListTopBarFragment"
             android:layout_width="match_parent"
             android:layout_height="@dimen/main_activity_top_bar_size"
             android:layout_alignTop="@id/top_bar"
@@ -262,7 +262,7 @@
                 android:layout_marginStart="@dimen/chat_message_sending_icons_margin"
                 android:layout_marginEnd="@dimen/chat_message_sending_icons_margin"
                 android:contentDescription="@string/content_description_voice_recording"
-                android:onClick="@={() -> chatSendingViewModel.toggleVoiceRecording()}"
+                android:onClick="@{() -> chatSendingViewModel.toggleVoiceRecording()}"
                 android:onTouch="@{voiceRecordingTouchListener}"
                 android:paddingTop="@dimen/chat_message_sending_icons_margin"
                 android:paddingBottom="@dimen/chat_message_sending_icons_margin"
@@ -272,7 +272,7 @@
                 app:layout_constraintStart_toEndOf="@id/attach_file"
                 app:layout_constraintTop_toTopOf="@id/message" />
 
-            <com.onutiative.onukit.activities.main.chat.views.RichEditText
+            <org.linphone.activities.main.chat.views.RichEditText
                 android:id="@+id/message"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -304,7 +304,7 @@
                 android:layout_marginEnd="@dimen/chat_message_sending_icons_margin"
                 android:contentDescription="@string/content_description_send_message"
                 android:enabled="@{chatSendingViewModel.sendMessageEnabled &amp;&amp; !chatSendingViewModel.attachingFileInProgress}"
-                android:onClick="@={() -> chatSendingViewModel.sendMessage()}"
+                android:onClick="@{() -> chatSendingViewModel.sendMessage()}"
                 android:paddingTop="@dimen/chat_message_sending_icons_margin"
                 android:paddingBottom="@dimen/chat_message_sending_icons_margin"
                 android:src="@drawable/chat_send_message"

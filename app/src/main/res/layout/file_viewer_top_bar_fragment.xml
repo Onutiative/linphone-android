@@ -26,7 +26,7 @@
             android:padding="18dp"
             android:src="@drawable/back" />
 
-        <com.onutiative.onukit.views.MarqueeTextView
+        <org.linphone.views.MarqueeTextView
             android:id="@+id/file_name"
             android:layout_width="0dp"
             android:layout_height="match_parent"

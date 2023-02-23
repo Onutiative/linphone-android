@@ -31,7 +31,7 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/tabs_fragment"
-        android:name="com.onutiative.onukit.activities.main.fragments.TabsFragment"
+        android:name="org.linphone.activities.main.fragments.TabsFragment"
         android:layout_width="@dimen/main_activity_tabs_fragment_size"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"

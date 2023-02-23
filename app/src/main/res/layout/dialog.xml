@@ -6,7 +6,7 @@
         <import type="android.view.View"/>
         <variable
             name="viewModel"
-            type="com.onutiative.onukit.activities.main.viewmodels.DialogViewModel" />
+            type="org.linphone.activities.main.viewmodels.DialogViewModel" />
     </data>
 
     <LinearLayout
@@ -76,7 +76,7 @@
             app:justifyContent="center">
 
             <TextView
-                android:onClick="@={() -> viewModel.onCancelClicked()}"
+                android:onClick="@{() -> viewModel.onCancelClicked()}"
                 style="@style/dialog_cancel_button_font"
                 android:layout_width="137dp"
                 android:layout_height="wrap_content"
@@ -89,7 +89,7 @@
                 android:visibility="@{viewModel.showCancel ? View.VISIBLE : View.GONE}" />
 
             <TextView
-                android:onClick="@={() -> viewModel.onDeleteClicked()}"
+                android:onClick="@{() -> viewModel.onDeleteClicked()}"
                 style="@style/dialog_action_button_font"
                 android:layout_width="137dp"
                 android:layout_height="wrap_content"
@@ -103,7 +103,7 @@
                 android:visibility="@{viewModel.showDelete ? View.VISIBLE : View.GONE}" />
 
             <TextView
-                android:onClick="@={() -> viewModel.onOkClicked()}"
+                android:onClick="@{() -> viewModel.onOkClicked()}"
                 style="@style/dialog_action_button_font"
                 android:layout_width="137dp"
                 android:layout_height="wrap_content"

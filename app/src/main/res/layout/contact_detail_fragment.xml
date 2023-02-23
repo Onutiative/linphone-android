@@ -13,10 +13,10 @@
             type="android.view.View.OnClickListener"/>
         <variable
             name="viewModel"
-            type="com.onutiative.onukit.activities.main.contact.viewmodels.ContactViewModel" />
+            type="org.linphone.activities.main.contact.viewmodels.ContactViewModel" />
         <variable
             name="sharedMainViewModel"
-            type="com.onutiative.onukit.activities.main.viewmodels.SharedMainViewModel" />
+            type="org.linphone.activities.main.viewmodels.SharedMainViewModel" />
     </data>
 
     <RelativeLayout
@@ -99,7 +99,7 @@
                     android:gravity="center_horizontal"
                     android:layout_gravity="center" />
 
-                <com.onutiative.onukit.views.MarqueeTextView
+                <org.linphone.views.MarqueeTextView
                     android:visibility="@{viewModel.displayOrganization ? View.VISIBLE : View.GONE}"
                     android:text="@{viewModel.contact.organization}"
                     style="@style/contact_organization_font"

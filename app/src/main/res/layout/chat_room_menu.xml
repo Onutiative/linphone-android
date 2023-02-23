@@ -66,9 +66,9 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="@dimen/chat_room_popup_item_height"
-            android:visibility="@={addToContactsHidden ? View.GONE : View.VISIBLE}"
+            android:visibility="@{addToContactsHidden ? View.GONE : View.VISIBLE}"
             android:background="@drawable/menu_background"
-            android:onClick="@={addToContactsListener}"
+            android:onClick="@{addToContactsListener}"
             style="@style/popup_item_font"
             android:text="@string/chat_message_context_menu_add_to_contacts"
             app:drawableRightCompat="@drawable/chat_room_menu_add_contact" />
@@ -76,9 +76,9 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="@dimen/chat_room_popup_item_height"
-            android:visibility="@={goToContactHidden ? View.GONE : View.VISIBLE}"
+            android:visibility="@{goToContactHidden ? View.GONE : View.VISIBLE}"
             android:background="@drawable/menu_background"
-            android:onClick="@={goToContactListener}"
+            android:onClick="@{goToContactListener}"
             style="@style/popup_item_font"
             android:text="@string/chat_room_context_menu_go_to_contact"
             app:drawableRightCompat="@drawable/chat_room_menu_view_contact" />
@@ -86,9 +86,9 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="@dimen/chat_room_popup_item_height"
-            android:visibility="@={groupInfoHidden ? View.GONE : View.VISIBLE}"
+            android:visibility="@{groupInfoHidden ? View.GONE : View.VISIBLE}"
             android:background="@drawable/menu_background"
-            android:onClick="@={groupInfoListener}"
+            android:onClick="@{groupInfoListener}"
             style="@style/popup_item_font"
             android:text="@string/chat_room_context_menu_group_info"
             app:drawableRightCompat="@drawable/chat_room_menu_group_info" />
@@ -96,9 +96,9 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="@dimen/chat_room_popup_item_height"
-            android:visibility="@={devicesHidden ? View.GONE : View.VISIBLE}"
+            android:visibility="@{devicesHidden ? View.GONE : View.VISIBLE}"
             android:background="@drawable/menu_background"
-            android:onClick="@={devicesListener}"
+            android:onClick="@{devicesListener}"
             style="@style/popup_item_font"
             android:text="@string/chat_room_context_menu_participants_devices"
             app:drawableRightCompat="@drawable/chat_room_menu_devices" />
@@ -106,9 +106,9 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="@dimen/chat_room_popup_item_height"
-            android:visibility="@={ephemeralHidden ? View.GONE : View.VISIBLE}"
+            android:visibility="@{ephemeralHidden ? View.GONE : View.VISIBLE}"
             android:background="@drawable/menu_background"
-            android:onClick="@={ephemeralListener}"
+            android:onClick="@{ephemeralListener}"
             style="@style/popup_item_font"
             android:text="@string/chat_message_context_menu_ephemeral_messages"
             app:drawableRightCompat="@drawable/chat_room_menu_ephemeral" />
@@ -116,9 +116,9 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="@dimen/chat_room_popup_item_height"
-            android:visibility="@={meetingHidden ? View.GONE : View.VISIBLE}"
+            android:visibility="@{meetingHidden ? View.GONE : View.VISIBLE}"
             android:background="@drawable/menu_background"
-            android:onClick="@={meetingListener}"
+            android:onClick="@{meetingListener}"
             style="@style/popup_item_font"
             android:text="@string/conference_schedule_title"
             app:drawableRightCompat="@drawable/chat_room_menu_meeting" />
@@ -127,8 +127,8 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/chat_room_popup_item_height"
             android:background="@drawable/menu_background"
-            android:visibility="@={muteHidden ? View.GONE : View.VISIBLE}"
-            android:onClick="@={muteListener}"
+            android:visibility="@{muteHidden ? View.GONE : View.VISIBLE}"
+            android:onClick="@{muteListener}"
             style="@style/popup_item_font"
             android:text="@string/chat_message_context_menu_turn_off_notifications"
             app:drawableRightCompat="@drawable/chat_room_menu_mute_notifications" />
@@ -137,8 +137,8 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/chat_room_popup_item_height"
             android:background="@drawable/menu_background"
-            android:visibility="@={unmuteHidden ? View.GONE : View.VISIBLE}"
-            android:onClick="@={unmuteListener}"
+            android:visibility="@{unmuteHidden ? View.GONE : View.VISIBLE}"
+            android:onClick="@{unmuteListener}"
             style="@style/popup_item_font"
             android:text="@string/chat_message_context_menu_turn_on_notifications"
             app:drawableRightCompat="@drawable/chat_room_menu_unmute_notifications" />
@@ -147,7 +147,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/chat_room_popup_item_height"
             android:background="@drawable/menu_background"
-            android:onClick="@={editionModeListener}"
+            android:onClick="@{editionModeListener}"
             style="@style/popup_item_font"
             android:text="@string/chat_message_context_menu_delete_messages"
             app:drawableRightCompat="@drawable/chat_room_menu_delete" />

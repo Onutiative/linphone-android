@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/masterChatRoomsFragment"
-        android:name="com.onutiative.onukit.activities.main.chat.fragments.MasterChatRoomsFragment"
+        android:name="org.linphone.activities.main.chat.fragments.MasterChatRoomsFragment"
         android:label="MasterChatRoomsFragment"
         tools:layout="@layout/chat_room_master_fragment" >
         <action
@@ -38,7 +38,7 @@
         app:destination="@id/masterChatRoomsFragment" />
     <fragment
         android:id="@+id/masterContactsFragment"
-        android:name="com.onutiative.onukit.activities.main.contact.fragments.MasterContactsFragment"
+        android:name="org.linphone.activities.main.contact.fragments.MasterContactsFragment"
         android:label="MasterContactsFragment"
         tools:layout="@layout/contact_master_fragment" >
         <action
@@ -65,7 +65,7 @@
         app:destination="@id/masterContactsFragment" />
     <fragment
         android:id="@+id/masterCallLogsFragment"
-        android:name="com.onutiative.onukit.activities.main.history.fragments.MasterCallLogsFragment"
+        android:name="org.linphone.activities.main.history.fragments.MasterCallLogsFragment"
         android:label="MasterCallLogsFragment"
         tools:layout="@layout/history_master_fragment" >
         <action
@@ -83,7 +83,7 @@
         app:destination="@id/masterCallLogsFragment"/>
     <fragment
         android:id="@+id/dialerFragment"
-        android:name="com.onutiative.onukit.activities.main.dialer.fragments.DialerFragment"
+        android:name="org.linphone.activities.main.dialer.fragments.DialerFragment"
         android:label="DialerFragment"
         tools:layout="@layout/dialer_fragment" >
         <action
@@ -105,7 +105,7 @@
         app:destination="@id/dialerFragment" />
     <fragment
         android:id="@+id/aboutFragment"
-        android:name="com.onutiative.onukit.activities.main.about.AboutFragment"
+        android:name="org.linphone.activities.main.about.AboutFragment"
         tools:layout="@layout/about_fragment"
         android:label="AboutFragment" />
     <action
@@ -113,7 +113,7 @@
         app:destination="@id/aboutFragment" />
     <fragment
         android:id="@+id/recordingsFragment"
-        android:name="com.onutiative.onukit.activities.main.recordings.fragments.RecordingsFragment"
+        android:name="org.linphone.activities.main.recordings.fragments.RecordingsFragment"
         tools:layout="@layout/recordings_fragment"
         android:label="RecordingsFragment" />
     <action
@@ -121,7 +121,7 @@
         app:destination="@id/recordingsFragment" />
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.onutiative.onukit.activities.main.settings.fragments.SettingsFragment"
+        android:name="org.linphone.activities.main.settings.fragments.SettingsFragment"
         tools:layout="@layout/settings_fragment"
         android:label="SettingsFragment" >
         <deepLink
@@ -134,42 +134,42 @@
 
     <fragment
         android:id="@+id/textViewerFragment"
-        android:name="com.onutiative.onukit.activities.main.files.fragments.TextViewerFragment"
+        android:name="org.linphone.activities.main.files.fragments.TextViewerFragment"
         android:label="TextViewerFragment" />
     <action
         android:id="@+id/action_global_textViewerFragment"
         app:destination="@id/textViewerFragment" />
     <fragment
         android:id="@+id/pdfViewerFragment"
-        android:name="com.onutiative.onukit.activities.main.files.fragments.PdfViewerFragment"
+        android:name="org.linphone.activities.main.files.fragments.PdfViewerFragment"
         android:label="PdfViewerFragment" />
     <action
         android:id="@+id/action_global_pdfViewerFragment"
         app:destination="@id/pdfViewerFragment" />
     <fragment
         android:id="@+id/imageViewerFragment"
-        android:name="com.onutiative.onukit.activities.main.files.fragments.ImageViewerFragment"
+        android:name="org.linphone.activities.main.files.fragments.ImageViewerFragment"
         android:label="ImageViewerFragment" />
     <action
         android:id="@+id/action_global_imageViewerFragment"
         app:destination="@id/imageViewerFragment"/>
     <fragment
         android:id="@+id/videoViewerFragment"
-        android:name="com.onutiative.onukit.activities.main.files.fragments.VideoViewerFragment"
+        android:name="org.linphone.activities.main.files.fragments.VideoViewerFragment"
         android:label="VideoViewerFragment" />
     <action
         android:id="@+id/action_global_videoViewerFragment"
         app:destination="@id/videoViewerFragment"/>
     <fragment
         android:id="@+id/audioViewerFragment"
-        android:name="com.onutiative.onukit.activities.main.files.fragments.AudioViewerFragment"
+        android:name="org.linphone.activities.main.files.fragments.AudioViewerFragment"
         android:label="AudioViewerFragment" />
     <action
         android:id="@+id/action_global_audioViewerFragment"
         app:destination="@id/audioViewerFragment"/>
     <fragment
         android:id="@+id/configViewerFragment"
-        android:name="com.onutiative.onukit.activities.main.dialer.fragments.ConfigViewerFragment"
+        android:name="org.linphone.activities.main.dialer.fragments.ConfigViewerFragment"
         android:label="ConfigViewerFragment" />
     <action
         android:id="@+id/action_global_configViewerFragment"
@@ -183,11 +183,11 @@
         app:startDestination="@id/conferenceSchedulingFragment">
         <fragment
             android:id="@+id/conferenceSchedulingSummaryFragment"
-            android:name="com.onutiative.onukit.activities.main.conference.fragments.ConferenceSchedulingSummaryFragment"
+            android:name="org.linphone.activities.main.conference.fragments.ConferenceSchedulingSummaryFragment"
             android:label="ConferenceSchedulingSummaryFragment" />
         <fragment
             android:id="@+id/conferenceSchedulingFragment"
-            android:name="com.onutiative.onukit.activities.main.conference.fragments.ConferenceSchedulingFragment"
+            android:name="org.linphone.activities.main.conference.fragments.ConferenceSchedulingFragment"
             android:label="ConferenceSchedulingFragment">
             <action
                 android:id="@+id/action_conferenceSchedulingFragment_to_conferenceSchedulingParticipantsListFragment"
@@ -195,7 +195,7 @@
         </fragment>
         <fragment
             android:id="@+id/conferenceSchedulingParticipantsListFragment"
-            android:name="com.onutiative.onukit.activities.main.conference.fragments.ConferenceSchedulingParticipantsListFragment"
+            android:name="org.linphone.activities.main.conference.fragments.ConferenceSchedulingParticipantsListFragment"
             android:label="ConferenceSchedulingParticipantsListFragment">
             <action
                 android:id="@+id/action_conferenceSchedulingParticipantsListFragment_to_conferenceSchedulingSummaryFragment"
@@ -205,7 +205,7 @@
 
     <fragment
         android:id="@+id/conferenceWaitingRoomFragment"
-        android:name="com.onutiative.onukit.activities.main.conference.fragments.ConferenceWaitingRoomFragment"
+        android:name="org.linphone.activities.main.conference.fragments.ConferenceWaitingRoomFragment"
         tools:layout="@layout/conference_waiting_room_fragment"
         android:label="ConferenceWaitingRoomFragment" />
     <action
@@ -214,7 +214,7 @@
 
     <fragment
         android:id="@+id/scheduledConferencesFragment"
-        android:name="com.onutiative.onukit.activities.main.conference.fragments.ScheduledConferencesFragment"
+        android:name="org.linphone.activities.main.conference.fragments.ScheduledConferencesFragment"
         tools:layout="@layout/conferences_scheduled_fragment"
         android:label="ScheduledConferencesFragment" />
     <action

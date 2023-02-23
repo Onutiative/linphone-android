@@ -7,7 +7,7 @@
         <import type="android.view.View"/>
         <variable
             name="viewModel"
-            type="com.onutiative.onukit.activities.assistant.viewmodels.PhoneAccountValidationViewModel" />
+            type="org.linphone.activities.assistant.viewmodels.PhoneAccountValidationViewModel" />
     </data>
 
     <RelativeLayout
@@ -16,7 +16,7 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/top_bar_fragment"
-            android:name="com.onutiative.onukit.activities.assistant.fragments.TopBarFragment"
+            android:name="org.linphone.activities.assistant.fragments.TopBarFragment"
             android:layout_width="match_parent"
             android:layout_height="@dimen/main_activity_top_bar_size"
             android:layout_alignParentTop="true"
@@ -104,7 +104,7 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
-                android:onClick="@={() -> viewModel.finish()}"
+                android:onClick="@{() -> viewModel.finish()}"
                 android:text="@string/assistant_finish"
                 android:enabled="@{viewModel.code.length() > 0, default=false}"
                 android:background="@drawable/assistant_button"

@@ -8,7 +8,7 @@
         <import type="android.text.InputType"/>
         <variable
             name="viewModel"
-            type="com.onutiative.onukit.activities.main.settings.viewmodels.SettingsViewModel" />
+            type="org.linphone.activities.main.settings.viewmodels.SettingsViewModel" />
     </data>
 
     <androidx.slidingpanelayout.widget.SlidingPaneLayout

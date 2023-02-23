@@ -13,7 +13,7 @@
             type="android.view.View.OnClickListener"/>
         <variable
             name="viewModel"
-            type="com.onutiative.onukit.activities.assistant.viewmodels.PhoneAccountLinkingViewModel" />
+            type="org.linphone.activities.assistant.viewmodels.PhoneAccountLinkingViewModel" />
     </data>
 
     <RelativeLayout
@@ -22,7 +22,7 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/top_bar_fragment"
-            android:name="com.onutiative.onukit.activities.assistant.fragments.TopBarFragment"
+            android:name="org.linphone.activities.assistant.fragments.TopBarFragment"
             android:layout_width="match_parent"
             android:layout_height="@dimen/main_activity_top_bar_size"
             android:layout_alignParentTop="true"
@@ -157,7 +157,7 @@
                 </RelativeLayout>
 
                 <TextView
-                    android:onClick="@={() -> viewModel.link()}"
+                    android:onClick="@{() -> viewModel.link()}"
                     android:enabled="@{viewModel.linkEnabled, default=false}"
                     android:text="@string/assistant_link_account"
                     android:background="@drawable/assistant_button"
@@ -171,7 +171,7 @@
 
                 <TextView
                     android:visibility="@{viewModel.allowSkip ? View.VISIBLE : View.GONE}"
-                    android:onClick="@={() -> viewModel.skip()}"
+                    android:onClick="@{() -> viewModel.skip()}"
                     style="@style/standard_small_text_font"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

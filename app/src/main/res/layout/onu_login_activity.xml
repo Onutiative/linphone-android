@@ -7,7 +7,7 @@
 <data>
         <variable
             name="OnuAuthentication"
-            type="com.onutiative.onukit.activities.OnuAuthentication" />
+            type="org.linphone.activities.OnuAuthentication" />
     </data>
 
 <LinearLayout

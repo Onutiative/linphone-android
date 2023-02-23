@@ -8,11 +8,11 @@
 
         <variable
             name="callsViewModel"
-            type="com.onutiative.onukit.activities.voip.viewmodels.CallsViewModel" />
+            type="org.linphone.activities.voip.viewmodels.CallsViewModel" />
 
         <variable
             name="controlsViewModel"
-            type="com.onutiative.onukit.activities.voip.viewmodels.ControlsViewModel" />
+            type="org.linphone.activities.voip.viewmodels.ControlsViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -128,7 +128,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintWidth_max="@dimen/voip_buttons_max_width" />
 
-        <com.onutiative.onukit.activities.voip.views.RoundCornersTextureView
+        <org.linphone.activities.voip.views.RoundCornersTextureView
             android:id="@+id/local_preview_video_surface"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -147,7 +147,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:contentDescription="@string/content_description_switch_camera"
-            android:onClick="@={() -> controlsViewModel.switchCamera()}"
+            android:onClick="@{() -> controlsViewModel.switchCamera()}"
             android:padding="10dp"
             android:src="@drawable/icon_call_camera_switch"
             android:visibility="@{controlsViewModel.isSwitchCameraAvailable &amp;&amp; !controlsViewModel.pipMode ? View.VISIBLE : View.GONE, default=gone}"

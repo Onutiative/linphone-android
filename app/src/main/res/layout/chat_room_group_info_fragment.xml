@@ -15,7 +15,7 @@
             type="android.view.View.OnClickListener"/>
         <variable
             name="viewModel"
-            type="com.onutiative.onukit.activities.main.chat.viewmodels.GroupInfoViewModel" />
+            type="org.linphone.activities.main.chat.viewmodels.GroupInfoViewModel" />
     </data>
 
     <RelativeLayout

@@ -5,7 +5,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.onutiative.onukit.activities.assistant.viewmodels.EchoCancellerCalibrationViewModel" />
+            type="org.linphone.activities.assistant.viewmodels.EchoCancellerCalibrationViewModel" />
     </data>
 
     <RelativeLayout
@@ -14,7 +14,7 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/top_bar_fragment"
-            android:name="com.onutiative.onukit.activities.assistant.fragments.TopBarFragment"
+            android:name="org.linphone.activities.assistant.fragments.TopBarFragment"
             android:layout_width="match_parent"
             android:layout_height="@dimen/main_activity_top_bar_size"
             android:layout_alignParentTop="true"

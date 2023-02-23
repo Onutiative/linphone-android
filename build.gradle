@@ -9,6 +9,7 @@ buildscript {
         maven {
             url "https://www.jitpack.io"
         } // for com.github.chrisbanes:PhotoView
+        mavenCentral()  // Maven Central repository
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.4.1'
@@ -16,6 +17,16 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.21"
         classpath "org.jlleitschuh.gradle:ktlint-gradle:10.1.0"
         classpath 'com.google.firebase:firebase-crashlytics-gradle:2.9.2'
+    }
+
+    allprojects {
+        repositories {
+            // Make sure that you have the following two repositories
+            google()  // Google's Maven repository
+
+            mavenCentral()  // Maven Central repository
+
+        }
     }
 }
 

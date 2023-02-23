@@ -6,7 +6,7 @@
         <import type="android.view.View" />
         <variable
             name="data"
-            type="com.onutiative.onukit.activities.voip.data.CallData" />
+            type="org.linphone.activities.voip.data.CallData" />
         <variable
             name="inflatedVisibility"
             type="Integer" />
@@ -32,7 +32,7 @@
             android:layout_marginTop="5dp"
             android:background="@drawable/shape_orange_circle"
             android:contentDescription="@null"
-            android:onClick="@={() -> data.resume()}"
+            android:onClick="@{() -> data.resume()}"
             android:padding="40dp"
             android:src="@drawable/voip_conference_play_big"
             app:layout_constraintBottom_toTopOf="@id/paused_title"

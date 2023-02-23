@@ -5,7 +5,7 @@
         <import type="android.view.View" />
         <variable
             name="data"
-            type="com.onutiative.onukit.activities.voip.data.CallData" />
+            type="org.linphone.activities.voip.data.CallData" />
     </data>
 
     <LinearLayout
@@ -129,7 +129,7 @@
 
             <ImageView
                 android:id="@+id/context_menu"
-                android:onClick="@={() -> data.showContextMenu(contextMenu)}"
+                android:onClick="@{() -> data.showContextMenu(contextMenu)}"
                 android:layout_width="wrap_content"
                 android:layout_height="60dp"
                 android:layout_gravity="center_vertical"

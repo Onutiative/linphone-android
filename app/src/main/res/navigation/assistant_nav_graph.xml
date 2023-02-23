@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/welcomeFragment"
-        android:name="com.onutiative.onukit.activities.assistant.fragments.WelcomeFragment"
+        android:name="org.linphone.activities.assistant.fragments.WelcomeFragment"
         tools:layout="@layout/assistant_welcome_fragment"
         android:label="WelcomeFragment" >
         <action
@@ -27,7 +27,7 @@
     </fragment>
     <fragment
         android:id="@+id/accountLoginFragment"
-        android:name="com.onutiative.onukit.activities.assistant.fragments.AccountLoginFragment"
+        android:name="org.linphone.activities.assistant.fragments.AccountLoginFragment"
         tools:layout="@layout/assistant_account_login_fragment"
         android:label="AccountLoginFragment" >
         <action
@@ -39,7 +39,7 @@
     </fragment>
     <fragment
         android:id="@+id/genericAccountWarningFragment"
-        android:name="com.onutiative.onukit.activities.assistant.fragments.GenericAccountWarningFragment"
+        android:name="org.linphone.activities.assistant.fragments.GenericAccountWarningFragment"
         tools:layout="@layout/assistant_generic_account_warning_fragment"
         android:label="GenericAccountWarningFragment" >
         <action
@@ -48,7 +48,7 @@
     </fragment>
     <fragment
         android:id="@+id/genericAccountLoginFragment"
-        android:name="com.onutiative.onukit.activities.assistant.fragments.GenericAccountLoginFragment"
+        android:name="org.linphone.activities.assistant.fragments.GenericAccountLoginFragment"
         tools:layout="@layout/assistant_generic_account_login_fragment"
         android:label="GenericAccountLoginFragment" >
         <action
@@ -57,7 +57,7 @@
     </fragment>
     <fragment
         android:id="@+id/remoteProvisioningFragment"
-        android:name="com.onutiative.onukit.activities.assistant.fragments.RemoteProvisioningFragment"
+        android:name="org.linphone.activities.assistant.fragments.RemoteProvisioningFragment"
         tools:layout="@layout/assistant_remote_provisioning_fragment"
         android:label="RemoteProvisioningFragment" >
         <action
@@ -69,7 +69,7 @@
     </fragment>
     <fragment
         android:id="@+id/emailAccountCreationFragment"
-        android:name="com.onutiative.onukit.activities.assistant.fragments.EmailAccountCreationFragment"
+        android:name="org.linphone.activities.assistant.fragments.EmailAccountCreationFragment"
         tools:layout="@layout/assistant_email_account_creation_fragment"
         android:label="EmailAccountCreationFragment" >
         <action
@@ -78,7 +78,7 @@
     </fragment>
     <fragment
         android:id="@+id/emailAccountValidationFragment"
-        android:name="com.onutiative.onukit.activities.assistant.fragments.EmailAccountValidationFragment"
+        android:name="org.linphone.activities.assistant.fragments.EmailAccountValidationFragment"
         tools:layout="@layout/assistant_email_account_validation_fragment"
         android:label="EmailAccountValidationFragment" >
         <action
@@ -87,7 +87,7 @@
     </fragment>
     <fragment
         android:id="@+id/phoneAccountCreationFragment"
-        android:name="com.onutiative.onukit.activities.assistant.fragments.PhoneAccountCreationFragment"
+        android:name="org.linphone.activities.assistant.fragments.PhoneAccountCreationFragment"
         tools:layout="@layout/assistant_phone_account_creation_fragment"
         android:label="PhoneAccountCreationFragment" >
         <action
@@ -96,7 +96,7 @@
     </fragment>
     <fragment
         android:id="@+id/phoneAccountValidationFragment"
-        android:name="com.onutiative.onukit.activities.assistant.fragments.PhoneAccountValidationFragment"
+        android:name="org.linphone.activities.assistant.fragments.PhoneAccountValidationFragment"
         tools:layout="@layout/assistant_phone_account_validation_fragment"
         android:label="PhoneAccountValidationFragment" >
         <action
@@ -117,18 +117,18 @@
     </fragment>
     <fragment
         android:id="@+id/qrCodeFragment"
-        android:name="com.onutiative.onukit.activities.assistant.fragments.QrCodeFragment"
+        android:name="org.linphone.activities.assistant.fragments.QrCodeFragment"
         tools:layout="@layout/assistant_qr_code_fragment"
         android:label="QrCodeFragment" />
     <fragment
         android:id="@+id/echoCancellerCalibrationFragment"
-        android:name="com.onutiative.onukit.activities.assistant.fragments.EchoCancellerCalibrationFragment"
+        android:name="org.linphone.activities.assistant.fragments.EchoCancellerCalibrationFragment"
         tools:layout="@layout/assistant_echo_canceller_calibration_fragment"
         android:label="EchoCancellerCalibrationFragment" />
     <fragment
         android:id="@+id/phoneAccountLinkingFragment"
         tools:layout="@layout/assistant_phone_account_linking_fragment"
-        android:name="com.onutiative.onukit.activities.assistant.fragments.PhoneAccountLinkingFragment"
+        android:name="org.linphone.activities.assistant.fragments.PhoneAccountLinkingFragment"
         android:label="PhoneAccountLinkingFragment" >
         <argument
             android:name="Username"

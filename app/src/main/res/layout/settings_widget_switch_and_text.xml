@@ -28,7 +28,7 @@
             type="Boolean" />
         <variable
             name="listener"
-            type="com.onutiative.onukit.activities.main.settings.SettingListener" />
+            type="org.linphone.activities.main.settings.SettingListener" />
     </data>
 
     <RelativeLayout
@@ -106,7 +106,7 @@
                 android:text="@{defaultValue}"
                 android:imeOptions="actionDone"
                 android:inputType="@{InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS}"
-                onValueChanged="@={() -> listener.onTextValueChanged(settingsInput.getText().toString())}"
+                onValueChanged="@{() -> listener.onTextValueChanged(settingsInput.getText().toString())}"
                 android:maxLines="1"
                 android:background="@color/transparent_color"
                 android:layout_width="match_parent"

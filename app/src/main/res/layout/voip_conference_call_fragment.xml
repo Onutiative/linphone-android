@@ -7,25 +7,25 @@
 
         <import type="android.view.View" />
 
-        <import type="com.onutiative.onukit.activities.voip.ConferenceDisplayMode" />
+        <import type="org.linphone.activities.voip.ConferenceDisplayMode" />
 
         <import type="com.google.android.flexbox.FlexDirection" />
 
         <variable
             name="controlsViewModel"
-            type="com.onutiative.onukit.activities.voip.viewmodels.ControlsViewModel" />
+            type="org.linphone.activities.voip.viewmodels.ControlsViewModel" />
 
         <variable
             name="callsViewModel"
-            type="com.onutiative.onukit.activities.voip.viewmodels.CallsViewModel" />
+            type="org.linphone.activities.voip.viewmodels.CallsViewModel" />
 
         <variable
             name="conferenceViewModel"
-            type="com.onutiative.onukit.activities.voip.viewmodels.ConferenceViewModel" />
+            type="org.linphone.activities.voip.viewmodels.ConferenceViewModel" />
 
         <variable
             name="statsViewModel"
-            type="com.onutiative.onukit.activities.voip.viewmodels.StatisticsListViewModel" />
+            type="org.linphone.activities.voip.viewmodels.StatisticsListViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -124,7 +124,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/voip_translucent_popup_background"
-                android:onClick="@={() -> controlsViewModel.hideExtraButtons(false)}"
+                android:onClick="@{() -> controlsViewModel.hideExtraButtons(false)}"
                 android:visibility="@{controlsViewModel.showExtras ? View.VISIBLE : View.GONE, default=gone}" />
 
             <include

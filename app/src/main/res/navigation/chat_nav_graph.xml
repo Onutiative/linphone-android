@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/emptyChatFragment"
-        android:name="com.onutiative.onukit.activities.main.fragments.EmptyFragment"
+        android:name="org.linphone.activities.main.fragments.EmptyFragment"
         tools:layout="@layout/empty_fragment"
         android:label="EmptyChatFragment"  />
 
@@ -16,7 +16,7 @@
 
     <fragment
         android:id="@+id/detailChatRoomFragment"
-        android:name="com.onutiative.onukit.activities.main.chat.fragments.DetailChatRoomFragment"
+        android:name="org.linphone.activities.main.chat.fragments.DetailChatRoomFragment"
         tools:layout="@layout/chat_room_detail_fragment"
         android:label="DetailChatRoomFragment">
         <action
@@ -39,7 +39,7 @@
 
     <fragment
         android:id="@+id/chatRoomCreationFragment"
-        android:name="com.onutiative.onukit.activities.main.chat.fragments.ChatRoomCreationFragment"
+        android:name="org.linphone.activities.main.chat.fragments.ChatRoomCreationFragment"
         tools:layout="@layout/chat_room_creation_fragment"
         android:label="ChatRoomCreationFragment">
         <argument
@@ -60,13 +60,13 @@
 
     <fragment
         android:id="@+id/devicesFragment"
-        android:name="com.onutiative.onukit.activities.main.chat.fragments.DevicesFragment"
+        android:name="org.linphone.activities.main.chat.fragments.DevicesFragment"
         tools:layout="@layout/chat_room_devices_fragment"
         android:label="DevicesFragment" />
 
     <fragment
         android:id="@+id/groupInfoFragment"
-        android:name="com.onutiative.onukit.activities.main.chat.fragments.GroupInfoFragment"
+        android:name="org.linphone.activities.main.chat.fragments.GroupInfoFragment"
         tools:layout="@layout/chat_room_group_info_fragment"
         android:label="GroupInfoFragment">
         <action
@@ -79,7 +79,7 @@
 
     <fragment
         android:id="@+id/imdnFragment"
-        android:name="com.onutiative.onukit.activities.main.chat.fragments.ImdnFragment"
+        android:name="org.linphone.activities.main.chat.fragments.ImdnFragment"
         tools:layout="@layout/chat_room_imdn_fragment"
         android:label="ImdnFragment">
         <argument
@@ -89,7 +89,7 @@
 
     <fragment
         android:id="@+id/ephemeralFragment"
-        android:name="com.onutiative.onukit.activities.main.chat.fragments.EphemeralFragment"
+        android:name="org.linphone.activities.main.chat.fragments.EphemeralFragment"
         tools:layout="@layout/chat_room_ephemeral_fragment"
         android:label="EphemeralFragment" />
 

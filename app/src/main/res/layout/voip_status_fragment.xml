@@ -8,7 +8,7 @@
             type="android.view.View.OnClickListener"/>
         <variable
             name="viewModel"
-            type="com.onutiative.onukit.activities.voip.viewmodels.StatusViewModel" />
+            type="org.linphone.activities.voip.viewmodels.StatusViewModel" />
     </data>
 
     <RelativeLayout
@@ -19,7 +19,7 @@
 
         <ImageView
             android:id="@+id/stats_button"
-            android:onClick="@={() -> viewModel.showCallStats()}"
+            android:onClick="@{() -> viewModel.showCallStats()}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
@@ -55,7 +55,7 @@
             android:paddingEnd="5dp" />
 
         <ImageView
-            android:onClick="@={() -> viewModel.showZrtpDialog()}"
+            android:onClick="@{() -> viewModel.showZrtpDialog()}"
             android:visibility="@{viewModel.encryptionIconVisible ? View.VISIBLE : View.GONE, default=gone}"
             android:src="@{viewModel.encryptionIcon, default=@drawable/security_ko}"
             android:contentDescription="@{viewModel.encryptionContentDescription}"

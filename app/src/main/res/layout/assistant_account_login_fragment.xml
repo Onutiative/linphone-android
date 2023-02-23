@@ -17,7 +17,7 @@
             type="android.view.View.OnClickListener"/>
         <variable
             name="viewModel"
-            type="com.onutiative.onukit.activities.assistant.viewmodels.AccountLoginViewModel" />
+            type="org.linphone.activities.assistant.viewmodels.AccountLoginViewModel" />
     </data>
 
     <RelativeLayout
@@ -26,7 +26,7 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/top_bar_fragment"
-            android:name="com.onutiative.onukit.activities.assistant.fragments.TopBarFragment"
+            android:name="org.linphone.activities.assistant.fragments.TopBarFragment"
             android:layout_width="match_parent"
             android:layout_height="@dimen/main_activity_top_bar_size"
             android:layout_alignParentTop="true"
@@ -255,7 +255,7 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <TextView
-                    android:onClick="@={() -> viewModel.login()}"
+                    android:onClick="@{() -> viewModel.login()}"
                     android:enabled="@{viewModel.loginEnabled, default=false}"
                     android:text="@string/assistant_login"
                     android:background="@drawable/assistant_button"

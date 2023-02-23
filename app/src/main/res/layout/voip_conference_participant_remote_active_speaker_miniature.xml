@@ -8,7 +8,7 @@
 
         <variable
             name="data"
-            type="com.onutiative.onukit.activities.voip.data.ConferenceParticipantDeviceData" />
+            type="org.linphone.activities.voip.data.ConferenceParticipantDeviceData" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -33,7 +33,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <com.onutiative.onukit.activities.voip.views.RoundCornersTextureView
+        <org.linphone.activities.voip.views.RoundCornersTextureView
             android:id="@+id/participant_video_surface"
             participantTextureView="@{data}"
             android:layout_width="0dp"

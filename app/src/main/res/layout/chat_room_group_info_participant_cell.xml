@@ -9,7 +9,7 @@
             type="android.view.View.OnClickListener"/>
         <variable
             name="data"
-            type="com.onutiative.onukit.activities.main.chat.data.GroupInfoParticipantData" />
+            type="org.linphone.activities.main.chat.data.GroupInfoParticipantData" />
         <variable
             name="isEncrypted"
             type="Boolean" />
@@ -82,7 +82,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="20dp"
-                android:onClick="@={() -> data.unSetAdmin()}"
+                android:onClick="@{() -> data.unSetAdmin()}"
                 android:visibility="@{data.admin ? View.VISIBLE : View.GONE}">
 
                 <ImageView
@@ -110,7 +110,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="20dp"
-                android:onClick="@={() -> data.setAdmin()}"
+                android:onClick="@{() -> data.setAdmin()}"
                 android:visibility="@{data.admin ? View.GONE : View.VISIBLE}">
 
                 <ImageView
@@ -143,14 +143,14 @@
             android:layout_toRightOf="@id/avatar"
             android:orientation="vertical">
 
-            <com.onutiative.onukit.views.MarqueeTextView
+            <org.linphone.views.MarqueeTextView
                 android:text="@{data.contact.name ?? data.displayName}"
                 style="@style/contact_name_list_cell_font"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:singleLine="true" />
 
-            <com.onutiative.onukit.views.MarqueeTextView
+            <org.linphone.views.MarqueeTextView
                 android:text="@{data.sipUri}"
                 android:id="@+id/sipUri"
                 style="@style/sip_uri_small_font"

@@ -11,7 +11,7 @@
             type="android.view.View.OnClickListener"/>
         <variable
             name="viewModel"
-            type="com.onutiative.onukit.activities.main.viewmodels.StatusViewModel" />
+            type="org.linphone.activities.main.viewmodels.StatusViewModel" />
     </data>
 
     <RelativeLayout

@@ -19,7 +19,7 @@
             type="android.view.View.OnClickListener"/>
         <variable
             name="viewModel"
-            type="com.onutiative.onukit.activities.main.viewmodels.TabsViewModel" />
+            type="org.linphone.activities.main.viewmodels.TabsViewModel" />
     </data>
 
     <androidx.constraintlayout.motion.widget.MotionLayout

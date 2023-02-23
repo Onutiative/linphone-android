@@ -9,7 +9,7 @@
             type="android.view.View.OnClickListener"/>
         <variable
             name="viewModel"
-            type="com.onutiative.onukit.activities.main.conference.viewmodels.ConferenceSchedulingViewModel" />
+            type="org.linphone.activities.main.conference.viewmodels.ConferenceSchedulingViewModel" />
     </data>
 
     <LinearLayout
@@ -78,7 +78,7 @@
                 android:layout_alignTop="@id/searchBar"
                 android:layout_alignRight="@id/searchBar"
                 android:layout_alignBottom="@id/searchBar"
-                android:onClick="@={() -> viewModel.clearFilter()}"
+                android:onClick="@{() -> viewModel.clearFilter()}"
                 android:src="@drawable/field_clean" />
 
         </RelativeLayout>

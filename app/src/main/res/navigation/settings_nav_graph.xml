@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/emptySettingsFragment"
-        android:name="com.onutiative.onukit.activities.main.fragments.EmptyFragment"
+        android:name="org.linphone.activities.main.fragments.EmptyFragment"
         tools:layout="@layout/empty_fragment"
         android:label="EmptySettingsFragment" />
 
@@ -16,7 +16,7 @@
 
     <fragment
         android:id="@+id/accountSettingsFragment"
-        android:name="com.onutiative.onukit.activities.main.settings.fragments.AccountSettingsFragment"
+        android:name="org.linphone.activities.main.settings.fragments.AccountSettingsFragment"
         tools:layout="@layout/settings_account_fragment"
         android:label="AccountSettingsFragment" >
         <argument
@@ -28,27 +28,27 @@
     </fragment>
     <fragment
         android:id="@+id/advancedSettingsFragment"
-        android:name="com.onutiative.onukit.activities.main.settings.fragments.AdvancedSettingsFragment"
+        android:name="org.linphone.activities.main.settings.fragments.AdvancedSettingsFragment"
         tools:layout="@layout/settings_advanced_fragment"
         android:label="AdvancedSettingsFragment" />
     <fragment
         android:id="@+id/audioSettingsFragment"
-        android:name="com.onutiative.onukit.activities.main.settings.fragments.AudioSettingsFragment"
+        android:name="org.linphone.activities.main.settings.fragments.AudioSettingsFragment"
         tools:layout="@layout/settings_audio_fragment"
         android:label="AudioSettingsFragment" />
     <fragment
         android:id="@+id/callSettingsFragment"
-        android:name="com.onutiative.onukit.activities.main.settings.fragments.CallSettingsFragment"
+        android:name="org.linphone.activities.main.settings.fragments.CallSettingsFragment"
         tools:layout="@layout/settings_call_fragment"
         android:label="CallSettingsFragment" />
     <fragment
         android:id="@+id/chatSettingsFragment"
-        android:name="com.onutiative.onukit.activities.main.settings.fragments.ChatSettingsFragment"
+        android:name="org.linphone.activities.main.settings.fragments.ChatSettingsFragment"
         tools:layout="@layout/settings_chat_fragment"
         android:label="ChatSettingsFragment" />
     <fragment
         android:id="@+id/contactsSettingsFragment"
-        android:name="com.onutiative.onukit.activities.main.settings.fragments.ContactsSettingsFragment"
+        android:name="org.linphone.activities.main.settings.fragments.ContactsSettingsFragment"
         tools:layout="@layout/settings_contacts_fragment"
         android:label="ContactsSettingsFragment" >
         <action
@@ -57,17 +57,17 @@
     </fragment>
     <fragment
         android:id="@+id/networkSettingsFragment"
-        android:name="com.onutiative.onukit.activities.main.settings.fragments.NetworkSettingsFragment"
+        android:name="org.linphone.activities.main.settings.fragments.NetworkSettingsFragment"
         tools:layout="@layout/settings_network_fragment"
         android:label="NetworkSettingsFragment" />
     <fragment
         android:id="@+id/videoSettingsFragment"
-        android:name="com.onutiative.onukit.activities.main.settings.fragments.VideoSettingsFragment"
+        android:name="org.linphone.activities.main.settings.fragments.VideoSettingsFragment"
         tools:layout="@layout/settings_video_fragment"
         android:label="VideoSettingsFragment" />
     <fragment
         android:id="@+id/tunnelSettingsFragment"
-        android:name="com.onutiative.onukit.activities.main.settings.fragments.TunnelSettingsFragment"
+        android:name="org.linphone.activities.main.settings.fragments.TunnelSettingsFragment"
         tools:layout="@layout/settings_tunnel_fragment"
         android:label="TunnelSettingsFragment" />
     <action
@@ -103,7 +103,7 @@
     <fragment
         android:id="@+id/phoneAccountLinkingFragment"
         tools:layout="@layout/assistant_phone_account_linking_fragment"
-        android:name="com.onutiative.onukit.activities.assistant.fragments.PhoneAccountLinkingFragment"
+        android:name="org.linphone.activities.assistant.fragments.PhoneAccountLinkingFragment"
         android:label="PhoneAccountLinkingFragment" >
         <action
             android:id="@+id/action_phoneAccountLinkingFragment_to_phoneAccountValidationFragment"
@@ -123,7 +123,7 @@
     <fragment
         android:id="@+id/phoneAccountValidationFragment"
         tools:layout="@layout/assistant_phone_account_validation_fragment"
-        android:name="com.onutiative.onukit.activities.assistant.fragments.PhoneAccountValidationFragment"
+        android:name="org.linphone.activities.assistant.fragments.PhoneAccountValidationFragment"
         android:label="PhoneAccountValidationFragment" >
         <action
             android:id="@+id/action_phoneAccountValidationFragment_to_accountSettingsFragment"
@@ -143,12 +143,12 @@
     </fragment>
     <fragment
         android:id="@+id/ldapSettingsFragment"
-        android:name="com.onutiative.onukit.activities.main.settings.fragments.LdapSettingsFragment"
+        android:name="org.linphone.activities.main.settings.fragments.LdapSettingsFragment"
         tools:layout="@layout/settings_ldap_fragment"
         android:label="LdapSettingsFragment" />
     <fragment
         android:id="@+id/conferencesSettingsFragment"
         tools:layout="@layout/settings_conferences_fragment"
-        android:name="com.onutiative.onukit.activities.main.settings.fragments.ConferencesSettingsFragment"
+        android:name="org.linphone.activities.main.settings.fragments.ConferencesSettingsFragment"
         android:label="ConferencesSettingsFragment" />
 </navigation>

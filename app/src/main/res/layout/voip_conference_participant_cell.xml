@@ -5,7 +5,7 @@
         <import type="android.view.View"/>
         <variable
             name="data"
-            type="com.onutiative.onukit.activities.voip.data.ConferenceParticipantData" />
+            type="org.linphone.activities.voip.data.ConferenceParticipantData" />
     </data>
 
     <RelativeLayout
@@ -28,7 +28,7 @@
 
         <ImageView
             android:id="@+id/delete"
-            android:onClick="@={() -> data.removeParticipantFromConference()}"
+            android:onClick="@{() -> data.removeParticipantFromConference()}"
             android:visibility="@{data.isMeAdmin ? View.VISIBLE : View.INVISIBLE}"
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -49,7 +49,7 @@
 
             <LinearLayout
                 android:id="@+id/isAdminLayout"
-                android:onClick="@={() -> data.unsetAdmin()}"
+                android:onClick="@{() -> data.unsetAdmin()}"
                 android:visibility="@{data.isAdmin ? View.VISIBLE : View.GONE, default=gone}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -77,7 +77,7 @@
 
             <LinearLayout
                 android:id="@+id/isNotAdminLayout"
-                android:onClick="@={() -> data.setAdmin()}"
+                android:onClick="@{() -> data.setAdmin()}"
                 android:visibility="@{(data.isAdmin || !data.isMeAdmin) ? View.GONE : View.VISIBLE}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -113,14 +113,14 @@
             android:layout_toEndOf="@id/avatar"
             android:orientation="vertical">
 
-            <com.onutiative.onukit.views.MarqueeTextView
+            <org.linphone.views.MarqueeTextView
                 style="@style/contact_name_list_cell_font"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:text="@{data.contact.name ?? data.displayName, default=`Bilbo Baggins`}" />
 
-            <com.onutiative.onukit.views.MarqueeTextView
+            <org.linphone.views.MarqueeTextView
                 android:id="@+id/sipUri"
                 style="@style/sip_uri_small_font"
                 android:layout_width="wrap_content"

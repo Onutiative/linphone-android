@@ -9,7 +9,7 @@
         <import type="org.linphone.core.TransportType"/>
         <variable
             name="viewModel"
-            type="com.onutiative.onukit.activities.assistant.viewmodels.GenericLoginViewModel" />
+            type="org.linphone.activities.assistant.viewmodels.GenericLoginViewModel" />
     </data>
 
     <RelativeLayout
@@ -18,7 +18,7 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/top_bar_fragment"
-            android:name="com.onutiative.onukit.activities.assistant.fragments.TopBarFragment"
+            android:name="org.linphone.activities.assistant.fragments.TopBarFragment"
             android:layout_width="match_parent"
             android:layout_height="@dimen/main_activity_top_bar_size"
             android:layout_alignParentTop="true"
@@ -177,7 +177,7 @@
 
                     <com.google.android.material.radiobutton.MaterialRadioButton
                         android:checked="@{viewModel.transport == TransportType.Udp}"
-                        android:onClick="@={() -> viewModel.setTransport(TransportType.Udp)}"
+                        android:onClick="@{() -> viewModel.setTransport(TransportType.Udp)}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
@@ -186,7 +186,7 @@
 
                     <com.google.android.material.radiobutton.MaterialRadioButton
                         android:checked="@{viewModel.transport == TransportType.Tcp}"
-                        android:onClick="@={() -> viewModel.setTransport(TransportType.Tcp)}"
+                        android:onClick="@{() -> viewModel.setTransport(TransportType.Tcp)}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
@@ -195,7 +195,7 @@
 
                     <com.google.android.material.radiobutton.MaterialRadioButton
                         android:checked="@{viewModel.transport == TransportType.Tls}"
-                        android:onClick="@={() -> viewModel.setTransport(TransportType.Tls)}"
+                        android:onClick="@{() -> viewModel.setTransport(TransportType.Tls)}"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="5dp"
@@ -205,7 +205,7 @@
                 </RadioGroup>
 
                 <TextView
-                    android:onClick="@={() -> viewModel.createProxyConfig()}"
+                    android:onClick="@{() -> viewModel.createProxyConfig()}"
                     android:enabled="@{viewModel.loginEnabled, default=false}"
                     android:text="@string/assistant_login"
                     android:background="@drawable/assistant_button"

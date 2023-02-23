@@ -11,10 +11,10 @@
             type="android.view.View.OnClickListener" />
         <variable
             name="data"
-            type="com.onutiative.onukit.activities.main.chat.data.EventData" />
+            type="org.linphone.activities.main.chat.data.EventData" />
         <variable
             name="selectionListViewModel"
-            type="com.onutiative.onukit.activities.main.viewmodels.ListTopBarViewModel" />
+            type="org.linphone.activities.main.viewmodels.ListTopBarViewModel" />
     </data>
 
     <RelativeLayout
@@ -25,7 +25,7 @@
 
         <CheckBox
             android:id="@+id/select"
-            android:onClick="@={() -> selectionListViewModel.onToggleSelect(position)}"
+            android:onClick="@{() -> selectionListViewModel.onToggleSelect(position)}"
             android:visibility="@{selectionListViewModel.isEditionEnabled ? View.VISIBLE : View.GONE}"
             android:checked="@{selectionListViewModel.selectedItems.contains(position)}"
             android:layout_width="wrap_content"

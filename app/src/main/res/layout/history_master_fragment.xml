@@ -5,13 +5,13 @@
 
     <data>
         <import type="android.view.View"/>
-        <import type="com.onutiative.onukit.activities.main.history.viewmodels.CallLogsFilter"/>
+        <import type="org.linphone.activities.main.history.viewmodels.CallLogsFilter"/>
         <variable
             name="editClickListener"
             type="android.view.View.OnClickListener"/>
         <variable
             name="viewModel"
-            type="com.onutiative.onukit.activities.main.history.viewmodels.CallLogsListViewModel" />
+            type="org.linphone.activities.main.history.viewmodels.CallLogsListViewModel" />
     </data>
 
     <androidx.slidingpanelayout.widget.SlidingPaneLayout
@@ -43,7 +43,7 @@
                         android:background="?attr/button_background_drawable"
                         android:contentDescription="@string/content_description_show_all_calls"
                         android:enabled="@{viewModel.filter != CallLogsFilter.ALL}"
-                        android:onClick="@={() -> viewModel.showAllCallLogs()}"
+                        android:onClick="@{() -> viewModel.showAllCallLogs()}"
                         android:padding="15dp"
                         android:src="@drawable/history_all" />
 
@@ -68,7 +68,7 @@
                         android:contentDescription="@string/content_description_show_missed_calls"
                         android:enabled="@{viewModel.filter != CallLogsFilter.MISSED}"
                         android:gravity="center"
-                        android:onClick="@={() -> viewModel.showOnlyMissedCallLogs()}"
+                        android:onClick="@{() -> viewModel.showOnlyMissedCallLogs()}"
                         android:padding="15dp"
                         android:src="@drawable/history_missed" />
 
@@ -94,7 +94,7 @@
                         android:contentDescription="@string/content_description_show_missed_calls"
                         android:enabled="@{viewModel.filter != CallLogsFilter.CONFERENCE}"
                         android:gravity="center"
-                        android:onClick="@={() -> viewModel.showOnlyConferenceCallLogs()}"
+                        android:onClick="@{() -> viewModel.showOnlyConferenceCallLogs()}"
                         android:padding="8dp"
                         android:src="@drawable/icon_video_conf_new" />
 
@@ -127,7 +127,7 @@
 
             <androidx.fragment.app.FragmentContainerView
                 android:id="@+id/list_edit_top_bar_fragment"
-                android:name="com.onutiative.onukit.activities.main.fragments.ListTopBarFragment"
+                android:name="org.linphone.activities.main.fragments.ListTopBarFragment"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/main_activity_top_bar_size"
                 android:layout_alignTop="@id/top_bar"

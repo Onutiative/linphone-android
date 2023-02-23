@@ -7,7 +7,7 @@
         <import type="android.view.View" />
         <variable
             name="viewModel"
-            type="com.onutiative.onukit.activities.main.conference.viewmodels.ConferenceSchedulingViewModel" />
+            type="org.linphone.activities.main.conference.viewmodels.ConferenceSchedulingViewModel" />
     </data>
 
     <RelativeLayout
@@ -298,7 +298,7 @@
             </androidx.core.widget.NestedScrollView>
 
             <TextView
-                android:onClick="@={() -> viewModel.createConference()}"
+                android:onClick="@{() -> viewModel.createConference()}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="20dp"

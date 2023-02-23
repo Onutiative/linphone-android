@@ -6,10 +6,10 @@
         <import type="android.view.View" />
         <variable
             name="statsViewModel"
-            type="com.onutiative.onukit.activities.voip.viewmodels.StatisticsListViewModel" />
+            type="org.linphone.activities.voip.viewmodels.StatisticsListViewModel" />
         <variable
             name="controlsViewModel"
-            type="com.onutiative.onukit.activities.voip.viewmodels.ControlsViewModel" />
+            type="org.linphone.activities.voip.viewmodels.ControlsViewModel" />
         <variable
             name="inflatedVisibility"
             type="Integer" />
@@ -43,7 +43,7 @@
             android:layout_height="40dp"
             android:layout_margin="10dp"
             android:contentDescription="@string/content_description_hide_statistics"
-            android:onClick="@={() -> controlsViewModel.hideCallStats()}"
+            android:onClick="@{() -> controlsViewModel.hideCallStats()}"
             android:src="@drawable/icon_cancel_alt"
             app:layout_constraintEnd_toEndOf="@id/background"
             app:layout_constraintTop_toTopOf="@id/background" />

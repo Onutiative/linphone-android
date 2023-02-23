@@ -27,7 +27,7 @@
             type="android.view.View.OnClickListener"/>
         <variable
             name="viewModel"
-            type="com.onutiative.onukit.activities.main.sidemenu.viewmodels.SideMenuViewModel" />
+            type="org.linphone.activities.main.sidemenu.viewmodels.SideMenuViewModel" />
     </data>
 
     <RelativeLayout
@@ -38,7 +38,7 @@
 
         <RelativeLayout
             android:id="@+id/main_account"
-            android:onClick="@={() -> viewModel.defaultAccountViewModel.accountsSettingsListener.onAccountClicked(viewModel.defaultAccountViewModel.identity)}"
+            android:onClick="@{() -> viewModel.defaultAccountViewModel.accountsSettingsListener.onAccountClicked(viewModel.defaultAccountViewModel.identity)}"
             android:enabled="@{viewModel.defaultAccountFound}"
             android:visibility="@{viewModel.showAccounts ? View.VISIBLE : View.GONE}"
             android:layout_width="match_parent"

@@ -28,10 +28,10 @@
             type="Integer" />
         <variable
             name="selectionListViewModel"
-            type="com.onutiative.onukit.activities.main.viewmodels.ListTopBarViewModel" />
+            type="org.linphone.activities.main.viewmodels.ListTopBarViewModel" />
         <variable
             name="data"
-            type="com.onutiative.onukit.activities.main.conference.data.ScheduledConferenceData" />
+            type="org.linphone.activities.main.conference.data.ScheduledConferenceData" />
     </data>
 
     <LinearLayout
@@ -89,7 +89,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:checked="@{selectionListViewModel.selectedItems.contains(position)}"
-                    android:onClick="@={() -> selectionListViewModel.onToggleSelect(position)}"
+                    android:onClick="@{() -> selectionListViewModel.onToggleSelect(position)}"
                     android:paddingLeft="5dp"
                     android:paddingRight="5dp"
                     android:visibility="@{selectionListViewModel.isEditionEnabled ? View.VISIBLE : View.GONE, default=gone}" />

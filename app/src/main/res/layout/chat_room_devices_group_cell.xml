@@ -6,7 +6,7 @@
         <import type="android.view.View"/>
         <variable
             name="data"
-            type="com.onutiative.onukit.activities.main.chat.data.DevicesListGroupData" />
+            type="org.linphone.activities.main.chat.data.DevicesListGroupData" />
     </data>
 
     <LinearLayout
@@ -15,7 +15,7 @@
         android:orientation="vertical">
 
         <RelativeLayout
-            android:onClick="@={() -> data.devices.size() == 1 ? data.onClick() : data.toggleExpanded()}"
+            android:onClick="@{() -> data.devices.size() == 1 ? data.onClick() : data.toggleExpanded()}"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginLeft="10dp"
@@ -60,14 +60,14 @@
                 android:paddingBottom="5dp"
                 android:orientation="vertical">
 
-                <com.onutiative.onukit.views.MarqueeTextView
+                <org.linphone.views.MarqueeTextView
                     android:text="@{data.contact.name ?? data.displayName}"
                     style="@style/contact_name_list_cell_font"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:singleLine="true" />
 
-                <com.onutiative.onukit.views.MarqueeTextView
+                <org.linphone.views.MarqueeTextView
                     android:text="@{data.sipUri}"
                     style="@style/sip_uri_small_font"
                     android:layout_width="wrap_content"

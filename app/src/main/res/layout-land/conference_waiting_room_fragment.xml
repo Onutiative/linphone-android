@@ -6,11 +6,11 @@
 
         <import type="android.view.View" />
 
-        <import type="com.onutiative.onukit.activities.voip.ConferenceDisplayMode" />
+        <import type="org.linphone.activities.voip.ConferenceDisplayMode" />
 
         <variable
             name="viewModel"
-            type="com.onutiative.onukit.activities.main.conference.viewmodels.ConferenceWaitingRoomViewModel" />
+            type="org.linphone.activities.main.conference.viewmodels.ConferenceWaitingRoomViewModel" />
     </data>
 
     <RelativeLayout
@@ -24,7 +24,7 @@
             android:background="@drawable/shape_remote_video_background"
             android:visibility="@{viewModel.isVideoEnabled ? View.VISIBLE : View.GONE, default=gone}">
 
-            <com.onutiative.onukit.activities.voip.views.RoundCornersTextureView
+            <org.linphone.activities.voip.views.RoundCornersTextureView
                 android:id="@+id/local_preview_video_surface"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
@@ -42,7 +42,7 @@
                 android:layout_margin="5dp"
                 android:contentDescription="@string/content_description_switch_camera"
                 android:enabled="@{!viewModel.joinInProgress}"
-                android:onClick="@={() -> viewModel.switchCamera()}"
+                android:onClick="@{() -> viewModel.switchCamera()}"
                 android:padding="10dp"
                 android:src="@drawable/icon_call_camera_switch"
                 android:visibility="@{viewModel.isSwitchCameraAvailable ? View.VISIBLE : View.GONE}"
@@ -88,7 +88,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_rect_gray_button"
                 android:gravity="center"
-                android:onClick="@={() -> viewModel.cancel()}"
+                android:onClick="@{() -> viewModel.cancel()}"
                 android:paddingLeft="20dp"
                 android:paddingTop="8dp"
                 android:paddingRight="20dp"
@@ -112,7 +112,7 @@
                 android:background="@drawable/button_orange_background"
                 android:enabled="@{!viewModel.joinInProgress}"
                 android:gravity="center"
-                android:onClick="@={() -> viewModel.start()}"
+                android:onClick="@{() -> viewModel.start()}"
                 android:paddingLeft="20dp"
                 android:paddingTop="8dp"
                 android:paddingRight="20dp"
@@ -142,7 +142,7 @@
                 android:layout_margin="5dp"
                 android:background="@drawable/button_toggle_background_reverse"
                 android:contentDescription="@string/content_description_use_bluetooth_headset"
-                android:onClick="@={() -> viewModel.setBluetoothAudioRoute()}"
+                android:onClick="@{() -> viewModel.setBluetoothAudioRoute()}"
                 android:selected="@{viewModel.isBluetoothHeadsetSelected}"
                 android:src="@drawable/icon_bluetooth" />
 
@@ -152,7 +152,7 @@
                 android:layout_margin="5dp"
                 android:background="@drawable/button_toggle_background_reverse"
                 android:contentDescription="@string/content_description_use_earpiece"
-                android:onClick="@={() -> viewModel.setEarpieceAudioRoute()}"
+                android:onClick="@{() -> viewModel.setEarpieceAudioRoute()}"
                 android:selected="@{!viewModel.isSpeakerSelected &amp;&amp; !viewModel.isBluetoothHeadsetSelected}"
                 android:src="@drawable/icon_earpiece" />
 
@@ -162,7 +162,7 @@
                 android:layout_margin="5dp"
                 android:background="@drawable/button_toggle_background_reverse"
                 android:contentDescription="@string/content_description_use_speaker"
-                android:onClick="@={() -> viewModel.setSpeakerAudioRoute()}"
+                android:onClick="@{() -> viewModel.setSpeakerAudioRoute()}"
                 android:selected="@{viewModel.isSpeakerSelected}"
                 android:src="@drawable/icon_speaker" />
 
@@ -185,7 +185,7 @@
                 android:layout_margin="5dp"
                 android:background="@drawable/button_toggle_background_reverse"
                 android:contentDescription="@string/conference_display_mode_mosaic"
-                android:onClick="@={() -> viewModel.setMosaicLayout()}"
+                android:onClick="@{() -> viewModel.setMosaicLayout()}"
                 android:padding="10dp"
                 android:selected="@{viewModel.selectedLayout == ConferenceDisplayMode.GRID}"
                 android:src="@drawable/icon_conference_layout_grid"
@@ -197,7 +197,7 @@
                 android:layout_margin="5dp"
                 android:background="@drawable/button_toggle_background_reverse"
                 android:contentDescription="@string/conference_display_mode_active_speaker"
-                android:onClick="@={() -> viewModel.setActiveSpeakerLayout()}"
+                android:onClick="@{() -> viewModel.setActiveSpeakerLayout()}"
                 android:padding="10dp"
                 android:selected="@{viewModel.selectedLayout == ConferenceDisplayMode.ACTIVE_SPEAKER}"
                 android:src="@drawable/icon_conference_layout_active_speaker"
@@ -209,7 +209,7 @@
                 android:layout_margin="5dp"
                 android:background="@drawable/button_toggle_background_reverse"
                 android:contentDescription="@string/conference_display_mode_audio_only"
-                android:onClick="@={() -> viewModel.setAudioOnlyLayout()}"
+                android:onClick="@{() -> viewModel.setAudioOnlyLayout()}"
                 android:padding="10dp"
                 android:selected="@{viewModel.selectedLayout == ConferenceDisplayMode.AUDIO_ONLY}"
                 android:src="@drawable/icon_conference_layout_audio_only"
@@ -231,7 +231,7 @@
                 android:background="@drawable/button_background_reverse"
                 android:contentDescription="@{viewModel.isMicrophoneMuted ? @string/content_description_disable_mic_mute : @string/content_description_enable_mic_mute}"
                 android:enabled="@{!viewModel.joinInProgress}"
-                android:onClick="@={() -> viewModel.toggleMuteMicrophone()}"
+                android:onClick="@{() -> viewModel.toggleMuteMicrophone()}"
                 android:padding="5dp"
                 android:selected="@{viewModel.isMicrophoneMuted}"
                 android:src="@drawable/icon_toggle_mic"
@@ -254,7 +254,7 @@
                     android:background="@drawable/button_background_reverse"
                     android:contentDescription="@{viewModel.isSpeakerSelected ? @string/content_description_disable_speaker : @string/content_description_enable_speaker}"
                     android:enabled="@{!viewModel.joinInProgress}"
-                    android:onClick="@={() -> viewModel.toggleSpeaker()}"
+                    android:onClick="@{() -> viewModel.toggleSpeaker()}"
                     android:padding="5dp"
                     android:selected="@{viewModel.isSpeakerSelected}"
                     android:src="@drawable/icon_toggle_speaker"
@@ -266,7 +266,7 @@
                     android:background="@drawable/button_toggle_background_reverse"
                     android:contentDescription="@string/content_description_toggle_audio_menu"
                     android:enabled="@{!viewModel.joinInProgress}"
-                    android:onClick="@={() -> viewModel.toggleAudioRoutesMenu()}"
+                    android:onClick="@{() -> viewModel.toggleAudioRoutesMenu()}"
                     android:padding="5dp"
                     android:selected="@{viewModel.audioRoutesSelected}"
                     android:src="@drawable/icon_audio_routes"
@@ -281,7 +281,7 @@
                 android:background="@drawable/button_background_reverse"
                 android:contentDescription="@{viewModel.isVideoEnabled ? @string/content_description_disable_video : @string/content_description_enable_video}"
                 android:enabled="@{!viewModel.joinInProgress &amp;&amp; viewModel.isVideoAvailable &amp;&amp; !viewModel.isLowBandwidth}"
-                android:onClick="@={() -> viewModel.toggleVideo()}"
+                android:onClick="@{() -> viewModel.toggleVideo()}"
                 android:padding="5dp"
                 android:selected="@{viewModel.isVideoEnabled}"
                 android:src="@drawable/icon_toggle_camera"
@@ -296,7 +296,7 @@
                 android:background="@drawable/button_toggle_background_reverse"
                 android:contentDescription="@string/content_description_toggle_layout_menu"
                 android:enabled="@{!viewModel.joinInProgress &amp;&amp; !viewModel.isLowBandwidth}"
-                android:onClick="@={() -> viewModel.toggleLayoutMenu()}"
+                android:onClick="@{() -> viewModel.toggleLayoutMenu()}"
                 android:padding="10dp"
                 android:selected="@{viewModel.layoutMenuSelected}"
                 android:src="@{viewModel.selectedLayout == ConferenceDisplayMode.ACTIVE_SPEAKER ? @drawable/icon_conference_layout_active_speaker : viewModel.selectedLayout == ConferenceDisplayMode.AUDIO_ONLY ? @drawable/icon_conference_layout_audio_only : @drawable/icon_conference_layout_grid, default=@drawable/icon_conference_layout_grid}"

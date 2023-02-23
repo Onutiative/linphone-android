@@ -7,7 +7,7 @@
         <import type="android.view.View"/>
         <variable
             name="viewModel"
-            type="com.onutiative.onukit.activities.assistant.viewmodels.EmailAccountValidationViewModel" />
+            type="org.linphone.activities.assistant.viewmodels.EmailAccountValidationViewModel" />
     </data>
 
     <RelativeLayout
@@ -16,7 +16,7 @@
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/top_bar_fragment"
-            android:name="com.onutiative.onukit.activities.assistant.fragments.TopBarFragment"
+            android:name="org.linphone.activities.assistant.fragments.TopBarFragment"
             android:layout_width="match_parent"
             android:layout_height="@dimen/main_activity_top_bar_size"
             android:layout_alignParentTop="true"
@@ -67,7 +67,7 @@
                 android:layout_height="wrap_content"/>
 
             <TextView
-                android:onClick="@={() -> viewModel.finish()}"
+                android:onClick="@{() -> viewModel.finish()}"
                 android:text="@string/assistant_finish"
                 android:background="@drawable/assistant_button"
                 android:textColor="@drawable/assistant_button_text_color"

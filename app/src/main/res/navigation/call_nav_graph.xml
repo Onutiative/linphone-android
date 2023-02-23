@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/singleCallFragment"
-        android:name="com.onutiative.onukit.activities.voip.fragments.SingleCallFragment"
+        android:name="org.linphone.activities.voip.fragments.SingleCallFragment"
         tools:layout="@layout/voip_single_call_fragment"
         android:label="SingleCallFragment" >
         <action
@@ -29,7 +29,7 @@
 
     <fragment
         android:id="@+id/conferenceCallFragment"
-        android:name="com.onutiative.onukit.activities.voip.fragments.ConferenceCallFragment"
+        android:name="org.linphone.activities.voip.fragments.ConferenceCallFragment"
         tools:layout="@layout/voip_conference_call_fragment"
         android:label="ConferenceCallFragment" >
         <action
@@ -52,13 +52,13 @@
 
     <fragment
         android:id="@+id/callsListFragment"
-        android:name="com.onutiative.onukit.activities.voip.fragments.CallsListFragment"
+        android:name="org.linphone.activities.voip.fragments.CallsListFragment"
         tools:layout="@layout/voip_calls_list_fragment"
         android:label="CallsListFragment" />
 
     <fragment
         android:id="@+id/conferenceParticipantsFragment"
-        android:name="com.onutiative.onukit.activities.voip.fragments.ConferenceParticipantsFragment"
+        android:name="org.linphone.activities.voip.fragments.ConferenceParticipantsFragment"
         tools:layout="@layout/voip_conference_participants_fragment"
         android:label="ConferenceParticipantsFragment" >
         <action
@@ -68,7 +68,7 @@
 
     <fragment
         android:id="@+id/chatFragment"
-        android:name="com.onutiative.onukit.activities.voip.fragments.ChatFragment"
+        android:name="org.linphone.activities.voip.fragments.ChatFragment"
         tools:layout="@layout/voip_chat_fragment"
         android:label="ChatFragment" >
         <argument
@@ -83,7 +83,7 @@
 
     <fragment
         android:id="@+id/outgoingCallFragment"
-        android:name="com.onutiative.onukit.activities.voip.fragments.OutgoingCallFragment"
+        android:name="org.linphone.activities.voip.fragments.OutgoingCallFragment"
         tools:layout="@layout/voip_call_outgoing_fragment"
         android:label="OutgoingCallFragment" />
 
@@ -92,7 +92,7 @@
 
     <fragment
         android:id="@+id/incomingCallFragment"
-        android:name="com.onutiative.onukit.activities.voip.fragments.IncomingCallFragment"
+        android:name="org.linphone.activities.voip.fragments.IncomingCallFragment"
         tools:layout="@layout/voip_call_incoming_fragment"
         android:label="IncomingCallFragment" />
 
@@ -101,13 +101,13 @@
 
     <fragment
         android:id="@+id/conferenceLayoutFragment"
-        android:name="com.onutiative.onukit.activities.voip.fragments.ConferenceLayoutFragment"
+        android:name="org.linphone.activities.voip.fragments.ConferenceLayoutFragment"
         tools:layout="@layout/voip_conference_layout_fragment"
         android:label="ConferenceLayoutFragment" />
 
     <fragment
         android:id="@+id/conferenceAddParticipantsFragment"
-        android:name="com.onutiative.onukit.activities.voip.fragments.ConferenceAddParticipantsFragment"
+        android:name="org.linphone.activities.voip.fragments.ConferenceAddParticipantsFragment"
         tools:layout="@layout/voip_conference_participants_add_fragment"
         android:label="ConferenceAddParticipantsFragment" >
         <action

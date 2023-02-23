@@ -8,10 +8,10 @@
         <import type="android.text.InputType"/>
         <variable
             name="viewModel"
-            type="com.onutiative.onukit.activities.main.settings.viewmodels.AccountSettingsViewModel"/>
+            type="org.linphone.activities.main.settings.viewmodels.AccountSettingsViewModel"/>
         <variable
             name="sharedMainViewModel"
-            type="com.onutiative.onukit.activities.main.viewmodels.SharedMainViewModel" />
+            type="org.linphone.activities.main.viewmodels.SharedMainViewModel" />
     </data>
 
     <RelativeLayout

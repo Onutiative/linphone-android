@@ -6,7 +6,7 @@
 
         <import type="android.view.View" />
 
-        <import type="com.onutiative.onukit.activities.voip.ConferenceDisplayMode" />
+        <import type="org.linphone.activities.voip.ConferenceDisplayMode" />
 
         <variable
             name="cancelClickListener"
@@ -18,11 +18,11 @@
 
         <variable
             name="conferenceViewModel"
-            type="com.onutiative.onukit.activities.voip.viewmodels.ConferenceViewModel" />
+            type="org.linphone.activities.voip.viewmodels.ConferenceViewModel" />
 
         <variable
             name="controlsViewModel"
-            type="com.onutiative.onukit.activities.voip.viewmodels.ControlsViewModel" />
+            type="org.linphone.activities.voip.viewmodels.ControlsViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -79,7 +79,7 @@
                     android:drawableEnd="@drawable/icon_conference_layout_grid"
                     android:drawableTint="?attr/voipDrawableColor"
                     android:enabled="@{conferenceViewModel.conferenceParticipantDevices.size() > conferenceViewModel.maxParticipantsForMosaicLayout ? false : true}"
-                    android:onClickListener="@={() -> conferenceViewModel.changeLayout(ConferenceDisplayMode.GRID, false)}"
+                    android:onClickListener="@{() -> conferenceViewModel.changeLayout(ConferenceDisplayMode.GRID, false)}"
                     android:text="@string/conference_display_mode_mosaic" />
 
                 <View
@@ -97,7 +97,7 @@
                     android:checked="@{conferenceViewModel.conferenceDisplayMode == ConferenceDisplayMode.ACTIVE_SPEAKER}"
                     android:drawableEnd="@drawable/icon_conference_layout_active_speaker"
                     android:drawableTint="?attr/voipDrawableColor"
-                    android:onClickListener="@={() -> conferenceViewModel.changeLayout(ConferenceDisplayMode.ACTIVE_SPEAKER, false)}"
+                    android:onClickListener="@{() -> conferenceViewModel.changeLayout(ConferenceDisplayMode.ACTIVE_SPEAKER, false)}"
                     android:text="@string/conference_display_mode_active_speaker" />
 
                 <View
@@ -115,7 +115,7 @@
                     android:checked="@{conferenceViewModel.conferenceDisplayMode == ConferenceDisplayMode.AUDIO_ONLY}"
                     android:drawableEnd="@drawable/icon_conference_layout_audio_only"
                     android:drawableTint="?attr/voipDrawableColor"
-                    android:onClickListener="@={() -> conferenceViewModel.changeLayout(ConferenceDisplayMode.AUDIO_ONLY, false)}"
+                    android:onClickListener="@{() -> conferenceViewModel.changeLayout(ConferenceDisplayMode.AUDIO_ONLY, false)}"
                     android:text="@string/conference_display_mode_audio_only" />
 
                 <View
@@ -127,7 +127,7 @@
 
         </androidx.core.widget.NestedScrollView>
 
-        <com.onutiative.onukit.activities.voip.views.RoundCornersTextureView
+        <org.linphone.activities.voip.views.RoundCornersTextureView
             android:id="@+id/local_preview_video_surface"
             android:layout_width="0dp"
             android:layout_height="0dp"
@@ -146,7 +146,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:contentDescription="@string/content_description_switch_camera"
-            android:onClick="@={() -> controlsViewModel.switchCamera()}"
+            android:onClick="@{() -> controlsViewModel.switchCamera()}"
             android:padding="10dp"
             android:src="@drawable/icon_call_camera_switch"
             android:visibility="@{controlsViewModel.isSwitchCameraAvailable &amp;&amp; !controlsViewModel.pipMode ? View.VISIBLE : View.GONE, default=gone}"
