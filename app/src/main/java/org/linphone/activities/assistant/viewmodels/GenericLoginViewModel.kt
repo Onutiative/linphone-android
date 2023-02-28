@@ -19,25 +19,13 @@
  */
 package org.linphone.activities.assistant.viewmodels
 
-import android.content.Context
-import android.os.Handler
-import android.os.Looper
-import android.util.Base64
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import okhttp3.Call
-import okhttp3.Callback
-import okhttp3.OkHttpClient
-import okhttp3.Response
-import okio.IOException
-import org.json.JSONObject
 import org.linphone.LinphoneApplication.Companion.coreContext
 import org.linphone.core.*
-import org.linphone.onuspecific.OnuFunctions.UserActivation
 import org.linphone.utils.Event
 
 class GenericLoginViewModelFactory(private val accountCreator: AccountCreator) :
@@ -148,105 +136,105 @@ class GenericLoginViewModel(private val accountCreator: AccountCreator) : ViewMo
         leaveAssistantEvent.value = Event(true)
     }
 
-    fun checkOnukitCredentials() {
-        waitForServerAnswer.value = true
-        val userActivation = UserActivation(
-            onukit_username?.value, onukit_password?.value
-        )
-
-        val request = userActivation.performActivation()
-        val client = OkHttpClient()
-
-        client.newCall(request).enqueue(object : Callback {
-            override fun onFailure(call: okhttp3.Call, e: IOException) {
-                // Handle failure
-                Log.d("OnuFunctions", "onFailure - Failed to activate user: $e")
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                val requestBody = response.body
-
-                // log status code
-                Log.d("OnuFunctions", "Response code: ${response.code}")
-
-                // check status code
-                if (response.code != 200) {
-                    // Show a toast message
-                    Log.d("OnuFunctions", "response.code != 200 | Failed to activate user")
-                    Toast.makeText(coreContext.context, "Server error! ${response.code}", Toast.LENGTH_SHORT).show()
-                }
-
-                // Handle response
-                if (response.isSuccessful) {
-                    Handler(Looper.getMainLooper()).post {
-                        // check when client is done, then set waitForServerAnswer's value to false
-                        waitForServerAnswer.value = false
-                    }
-
-                    try {
-                        // load the json data
-                        val json = JSONObject(requestBody?.string())
-
-                        // [REMEMBER] - Leave this commented out
-                        // https://stackoverflow.com/a/40709867
-                        // "you can only receive the body string once"
-                        // Log.d("OnuFunctions", "Response body: ${requestBody.string()}")
-
-                        // get the status and reason from json data
-                        val status = json.getString("status")
-                        val reason = json.getString("reason")
-
-                        Log.d("OnuFunctions", "status: $status")
-                        Log.d("OnuFunctions", "reason: $reason")
-
-                        // show in a toast message
-                        if (status.toInt() > 4000) {
-                            Handler(Looper.getMainLooper()).post {
-                                Toast.makeText(coreContext.context, reason, Toast.LENGTH_SHORT).show()
-                            }
-                            return
-                        } else {
-                            // The request was successful
-                            // Log.d("OnuFunctions", "User activated successfully")
-
-                            val sharedPreferences = coreContext.context.getSharedPreferences("onukit_creds", Context.MODE_PRIVATE)
-                            val editor = sharedPreferences.edit()
-                            // save username in base64
-                            editor.putString("username", Base64.encodeToString(onukit_username.value?.toByteArray(), Base64.DEFAULT))
-                            editor.putString("password", Base64.encodeToString(onukit_password.value?.toByteArray(), Base64.DEFAULT))
-                            editor.apply()
-
-                            Log.d("OnuFunctions", "Saved username and password in SharedPreferences")
-                            Log.d("OnuFunctions", "inputted username: ${onukit_username.value}")
-                            Log.d("OnuFunctions", "inputted password: ${onukit_password.value}")
-                            Log.d("OnuFunctions", "base64 username: ${Base64.encodeToString(onukit_username.value?.toByteArray(), Base64.DEFAULT)}")
-                            Log.d("OnuFunctions", "base64 password: ${Base64.encodeToString(onukit_password.value?.toByteArray(), Base64.DEFAULT)}")
-                            Log.d("OnuFunctions", "saved username: ${sharedPreferences.getString("username", "")}")
-                            Log.d("OnuFunctions", "saved password: ${sharedPreferences.getString("password", "")}")
-
-                            Handler(Looper.getMainLooper()).post {
-                                Toast.makeText(coreContext.context, reason, Toast.LENGTH_SHORT).show()
-                                createProxyConfig()
-                            }
-                        }
-                    } catch (e: Exception) {
-                        Log.d("OnuFunctions", "Exception: $e")
-                        // log the exception line number
-                        e.printStackTrace()
-                        Handler(Looper.getMainLooper()).post {
-                            Toast.makeText(coreContext.context, "Exception: $e", Toast.LENGTH_SHORT).show()
-                        }
-                    }
-                } else {
-                    // The request failed
-                    Log.d("OnuFunctions", "response.isSuccessful == false | Failed to activate user")
-                    Handler(Looper.getMainLooper()).post {
-                        Toast.makeText(coreContext.context, "Request Error! Try Again!", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
-        })
-    }
+//    fun checkOnukitCredentials() {
+//        waitForServerAnswer.value = true
+//        val userActivation = UserActivation(
+//            onukit_username?.value, onukit_password?.value
+//        )
+//
+//        val request = userActivation.performActivation()
+//        val client = OkHttpClient()
+//
+//        client.newCall(request).enqueue(object : Callback {
+//            override fun onFailure(call: okhttp3.Call, e: IOException) {
+//                // Handle failure
+//                Log.d("OnuFunctions", "onFailure - Failed to activate user: $e")
+//            }
+//
+//            override fun onResponse(call: Call, response: Response) {
+//                val requestBody = response.body
+//
+//                // log status code
+//                Log.d("OnuFunctions", "Response code: ${response.code}")
+//
+//                // check status code
+//                if (response.code != 200) {
+//                    // Show a toast message
+//                    Log.d("OnuFunctions", "response.code != 200 | Failed to activate user")
+//                    Toast.makeText(coreContext.context, "Server error! ${response.code}", Toast.LENGTH_SHORT).show()
+//                }
+//
+//                // Handle response
+//                if (response.isSuccessful) {
+//                    Handler(Looper.getMainLooper()).post {
+//                        // check when client is done, then set waitForServerAnswer's value to false
+//                        waitForServerAnswer.value = false
+//                    }
+//
+//                    try {
+//                        // load the json data
+//                        val json = JSONObject(requestBody?.string())
+//
+//                        // [REMEMBER] - Leave this commented out
+//                        // https://stackoverflow.com/a/40709867
+//                        // "you can only receive the body string once"
+//                        // Log.d("OnuFunctions", "Response body: ${requestBody.string()}")
+//
+//                        // get the status and reason from json data
+//                        val status = json.getString("status")
+//                        val reason = json.getString("reason")
+//
+//                        Log.d("OnuFunctions", "status: $status")
+//                        Log.d("OnuFunctions", "reason: $reason")
+//
+//                        // show in a toast message
+//                        if (status.toInt() > 4000) {
+//                            Handler(Looper.getMainLooper()).post {
+//                                Toast.makeText(coreContext.context, reason, Toast.LENGTH_SHORT).show()
+//                            }
+//                            return
+//                        } else {
+//                            // The request was successful
+//                            // Log.d("OnuFunctions", "User activated successfully")
+//
+//                            val sharedPreferences = coreContext.context.getSharedPreferences("onukit_creds", Context.MODE_PRIVATE)
+//                            val editor = sharedPreferences.edit()
+//                            // save username in base64
+//                            editor.putString("username", Base64.encodeToString(onukit_username.value?.toByteArray(), Base64.DEFAULT))
+//                            editor.putString("password", Base64.encodeToString(onukit_password.value?.toByteArray(), Base64.DEFAULT))
+//                            editor.apply()
+//
+//                            Log.d("OnuFunctions", "Saved username and password in SharedPreferences")
+//                            Log.d("OnuFunctions", "inputted username: ${onukit_username.value}")
+//                            Log.d("OnuFunctions", "inputted password: ${onukit_password.value}")
+//                            Log.d("OnuFunctions", "base64 username: ${Base64.encodeToString(onukit_username.value?.toByteArray(), Base64.DEFAULT)}")
+//                            Log.d("OnuFunctions", "base64 password: ${Base64.encodeToString(onukit_password.value?.toByteArray(), Base64.DEFAULT)}")
+//                            Log.d("OnuFunctions", "saved username: ${sharedPreferences.getString("username", "")}")
+//                            Log.d("OnuFunctions", "saved password: ${sharedPreferences.getString("password", "")}")
+//
+//                            Handler(Looper.getMainLooper()).post {
+//                                Toast.makeText(coreContext.context, reason, Toast.LENGTH_SHORT).show()
+//                                createProxyConfig()
+//                            }
+//                        }
+//                    } catch (e: Exception) {
+//                        Log.d("OnuFunctions", "Exception: $e")
+//                        // log the exception line number
+//                        e.printStackTrace()
+//                        Handler(Looper.getMainLooper()).post {
+//                            Toast.makeText(coreContext.context, "Exception: $e", Toast.LENGTH_SHORT).show()
+//                        }
+//                    }
+//                } else {
+//                    // The request failed
+//                    Log.d("OnuFunctions", "response.isSuccessful == false | Failed to activate user")
+//                    Handler(Looper.getMainLooper()).post {
+//                        Toast.makeText(coreContext.context, "Request Error! Try Again!", Toast.LENGTH_SHORT).show()
+//                    }
+//                }
+//            }
+//        })
+//    }
 
     fun createProxyConfig() {
         waitForServerAnswer.value = true

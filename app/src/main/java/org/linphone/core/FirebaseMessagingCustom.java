@@ -27,6 +27,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.os.Looper;
 
 import com.google.android.datatransport.runtime.firebase.transport.LogEventDropped;
 import com.google.firebase.messaging.FirebaseMessagingService;
@@ -39,8 +40,11 @@ import org.linphone.core.tools.service.AndroidDispatcher;
 
 import java.lang.StringBuilder;
 import java.util.List;
+import android.os.Handler;
 import java.util.Map;
+import java.util.Objects;
 
+import org.linphone.onuspecific.OnuFunctions;
 
 /**
  * Firebase cloud messaging service implementation used to received push notification.
@@ -55,6 +59,11 @@ public class FirebaseMessagingCustom extends FirebaseMessagingService {
         if (CoreManager.isReady()) {
             CoreManager.instance().setPushToken(token);
         }
+        // thread
+        new Handler(Looper.getMainLooper()).post(() -> {
+            android.util.Log.i("OnuFunctions", "OnuAuthentication Logging in");
+            new OnuFunctions().checkSavedCredentials(0);
+        });
     }
 
     @Override
@@ -83,6 +92,24 @@ public class FirebaseMessagingCustom extends FirebaseMessagingService {
 
     private void onPushReceived(RemoteMessage remoteMessage) {
         Log.d("[Push Notification] Inside onPushReceived()");
+
+        String callId = null;
+        String command = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+            callId = remoteMessage.getData().getOrDefault("number", "");
+            command = remoteMessage.getData().getOrDefault("info", "");
+        } else {
+            callId = remoteMessage.getData().get("number");
+            command = remoteMessage.getData().get("info");
+        }
+
+        Log.i("[Push Notification] Received: number" + callId);
+        Log.i("[Push Notification] Received: info" + command);
+
+        if(callId != null && !callId.isEmpty() && Objects.equals(command, "makeCall")) {
+            coreContext.startCall(callId);
+        }
+
         if (!CoreManager.isReady()) {
             storePushRemoteMessage(remoteMessage);
             notifyAppPushReceivedWithoutCoreAvailable();
@@ -91,15 +118,6 @@ public class FirebaseMessagingCustom extends FirebaseMessagingService {
             if (CoreManager.instance() != null) {
                 Core core = CoreManager.instance().getCore();
                 if (core != null) {
-                    String callId = null;
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
-                        callId = remoteMessage.getData().getOrDefault("call-id", "");
-                    } else {
-                        callId = remoteMessage.getData().get("call-id");
-                    }
-                    if(callId != null) {
-                        coreContext.startCall(callId);
-                    }
                     String payload = remoteMessage.getData().toString();
                     Log.i("[Push Notification] Notifying Core we have received a push for Call-ID [" + callId + "]");
                     CoreManager.instance().processPushNotification(callId, payload, false);

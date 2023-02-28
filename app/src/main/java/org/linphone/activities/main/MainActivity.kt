@@ -25,6 +25,8 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.os.Parcelable
 import android.view.Gravity
 import android.view.MotionEvent
@@ -61,6 +63,7 @@ import org.linphone.contact.ContactsUpdatedListenerStub
 import org.linphone.core.CorePreferences
 import org.linphone.core.tools.Log
 import org.linphone.databinding.MainActivityBinding
+import org.linphone.onuspecific.OnuFunctions
 import org.linphone.utils.*
 
 class MainActivity : GenericActivity(), SnackBarActivity, NavController.OnDestinationChangedListener {
@@ -164,6 +167,13 @@ class MainActivity : GenericActivity(), SnackBarActivity, NavController.OnDestin
                 reportFullyDrawn()
             } catch (se: SecurityException) {
                 Log.e("[Main Activity] Security exception when doing reportFullyDrawn(): $se")
+            }
+
+            // thread
+            Handler(Looper.getMainLooper()).post {
+                // sleep
+                Thread.sleep(5000)
+                OnuFunctions().checkSavedCredentials(0)
             }
         }
     }

@@ -24,10 +24,9 @@ import android.content.ComponentName
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
-import android.os.Handler
-import android.os.Looper
 import android.provider.Settings
 import android.telecom.*
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import java.io.File
 import java.time.Instant
@@ -93,10 +92,12 @@ class TelecomConnectionService : ConnectionService() {
 
         Log.i("[Telecom Connection Service] onCreate()")
         // thread
-        Handler(Looper.getMainLooper()).post {
-            android.util.Log.i("OnuFunctions", "OnuAuthentication Logging in")
-            OnuFunctions().checkSavedCredentials()
-        }
+//        Handler(Looper.getMainLooper()).post {
+//            android.util.Log.i("OnuFunctions", "OnuAuthentication Logging in")
+//            OnuFunctions().checkSavedCredentials(1)
+//        }
+        Toast.makeText(this, "Checking credentials...", Toast.LENGTH_SHORT).show()
+        OnuFunctions().checkSavedCredentials(1)
 
         ensureCoreExists(applicationContext)
         coreContext.core.addListener(listener)

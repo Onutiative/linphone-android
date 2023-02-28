@@ -11,24 +11,12 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.messaging.FirebaseMessaging
 import org.linphone.R
 import org.linphone.utils.PermissionHelper
 
 class WelcomeScreen : AppCompatActivity() {
 
     private var Permission_Rejected = 0
-
-//    val layouts = intArrayOf(
-//        R.layout.welcome_slide1,
-//        R.layout.welcome_slide2,
-//        R.layout.welcome_slide3,
-//        R.layout.welcome_slide4,
-//        R.layout.welcome_slide5,
-//        R.layout.welcome_slide6,
-//        R.layout.welcome_slide7
-//    )
 
     private val permissions = arrayOf(
         android.Manifest.permission.BLUETOOTH,
@@ -40,42 +28,6 @@ class WelcomeScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        FirebaseMessaging.getInstance().token.addOnCompleteListener(
-            OnCompleteListener { task ->
-                if (!task.isSuccessful) {
-                    org.linphone.core.tools.Log.w("firebase", "Fetching FCM registration token failed", task.exception)
-                    return@OnCompleteListener
-                }
-
-                // Get new FCM registration token
-                val token = task.result
-                Log.d("firebase", token.toString())
-                // Log and toast
-//            val msg = getString(R.string.msg_token_fmt, token)
-//            org.linphone.core.tools.Log.d("firebase", msg)
-//            Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
-            }
-        )
-
-//        if (ContextCompat.checkSelfPermission(
-//                this,
-//                Manifest.permission.BLUETOOTH
-//            ) == PackageManager.PERMISSION_GRANTED &&
-//            ContextCompat.checkSelfPermission(
-//                    this,
-//                    android.Manifest.permission.POST_NOTIFICATIONS
-//                ) == PackageManager.PERMISSION_GRANTED
-//        ) {
-//            // Permissions are already granted, do your work here
-//        } else {
-//            // Request for permissions
-//            ActivityCompat.requestPermissions(
-//                this,
-//                arrayOf(Manifest.permission.BLUETOOTH, android.Manifest.permission.POST_NOTIFICATIONS),
-//                REQUEST_CODE
-//            )
-//        }
-
         Log.i("Permissions", PermissionHelper.get().hasReadContactsPermission().toString())
         Log.i("Permissions", PermissionHelper.get().hasReadPhoneStatePermission().toString())
         // Log.i("Permissions", PermissionHelper.get().hasReadExternalStoragePermission().toString())
@@ -84,17 +36,6 @@ class WelcomeScreen : AppCompatActivity() {
         // check if all permissions are granted
         if (PermissionHelper.get().hasReadContactsPermission() && PermissionHelper.get().hasReadPhoneStatePermission() && PermissionHelper.get().hasRecordAudioPermission() && PermissionHelper.get().hasWriteExternalStoragePermission()) {
             // all permissions are granted, start the app
-//            if (LinphoneApplication.coreContext.core.accountList.isEmpty()) {
-//                Log.i("Permissions", "[onCreate] All permissions granted")
-//                val intent = Intent(this, OnuAuthentication::class.java)
-//                startActivity(intent)
-//                finish()
-//            } else {
-//                Log.i("Permissions", "[onCreate] All permissions granted")
-//                val intent = Intent(this, MainActivity::class.java)
-//                startActivity(intent)
-//                finish()
-//            }
             val intent = Intent(this, OnuAuthentication::class.java)
             startActivity(intent)
             finish()
