@@ -376,34 +376,35 @@ class TelecomConnectionService : ConnectionService() {
         // recordingFilePath = recordingFilePath.replace("/storage/emulated/0/", "/sdcard/")
 
         Log.i("[Telecom Connection Service] [OnuFunctions] recordingFilePath $recordingFilePath")
-        Thread {
-            // sleep for 5 second to make sure the recording file is ready
-            Thread.sleep(5000)
-            // check if recording file exists
-            if (!File(recordingFilePath).exists()) {
-                Log.e("[OnuFunctions] Recording file does not exist")
-                return@Thread
-            }
+        Log.i("[OnuFunctions] Recording file recordingFilePath $recordingFilePath")
 
-            try {
-                // get the trxId from recordingFile name in like `2023-02-01 23:19:28` to `20230201231928` format
-                val trxId = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSS").format(Instant.ofEpochMilli(call.callLog.startDate * 1000L).atZone(ZoneId.systemDefault()))
-                val file = File(recordingFilePath)
-                val callType = call.callLog.dir.toString()
-                val callRecordService = OnuFunctions.CallRecordSender()
-                Log.i("[OnuFunctions] Call record request: $trxId, $file, $callType")
-                val response = callRecordService.send(
-                    trxId,
-                    file,
-                    callType,
-                )
-                println(response)
-                Log.d("[OnuFunctions] Call record response: $response")
-            } catch (e: Exception) {
-                e.printStackTrace()
-                Log.e("[OnuFunctions] Call record error: $e")
-            }
-        }.start()
+        // check if recording file exists
+        if (!File(recordingFilePath).exists()) {
+            Log.e("[OnuFunctions] Recording file does not exist")
+        } else {
+
+            // get the trxId from recordingFile name in like `2023-02-01 23:19:28` to `20230201231928` format
+            val trxId = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSS").format(Instant.ofEpochMilli(call.callLog.startDate * 1000L).atZone(ZoneId.systemDefault()))
+            val file = File(recordingFilePath)
+            val callType = call.callLog.dir.toString()
+            val callRecordService = OnuFunctions.CallRecordSender()
+            Log.i("[OnuFunctions] Call record request: $trxId, $file, $callType")
+
+            Thread {
+                try {
+                    val response = callRecordService.send(
+                        trxId,
+                        file,
+                        callType,
+                    )
+                    println(response)
+                    Log.i("[OnuFunctions] Call record response: $response")
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    Log.i("[OnuFunctions] Call record error: $e")
+                }
+            }.start()
+        }
 
         TelecomHelper.get().connections.remove(connection)
         val reason = call.reason
