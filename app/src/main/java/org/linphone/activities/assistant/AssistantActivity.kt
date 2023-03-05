@@ -20,10 +20,13 @@
 package org.linphone.activities.assistant
 
 import android.os.Bundle
+import android.util.Log
+import androidx.activity.addCallback
 import androidx.annotation.StringRes
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
+import org.linphone.LinphoneApplication
 import org.linphone.LinphoneApplication.Companion.corePreferences
 import org.linphone.R
 import org.linphone.activities.GenericActivity
@@ -36,6 +39,16 @@ class AssistantActivity : GenericActivity(), SnackBarActivity {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val callback = this.onBackPressedDispatcher.addCallback(this) {
+            if (LinphoneApplication.coreContext.core.accountList.isEmpty()) {
+                Log.i("OnuFunctions", "Back button pressed, killing app, 2 lines")
+                finishAffinity()
+                System.exit(0)
+            } else {
+                finish()
+            }
+        }
 
         setContentView(R.layout.assistant_activity)
 
@@ -65,6 +78,16 @@ class AssistantActivity : GenericActivity(), SnackBarActivity {
                 listener()
             }
             .show()
+    }
+
+    override fun onBackPressed() {
+        if (LinphoneApplication.coreContext.core.accountList.isEmpty()) {
+            Log.i("OnuFunctions", "Back button pressed, killing app, 2 lines")
+            finishAffinity()
+            System.exit(0)
+        } else {
+            finish()
+        }
     }
 
     override fun showSnackBar(message: String) {

@@ -259,7 +259,13 @@ class GenericLoginViewModel(private val accountCreator: AccountCreator) : ViewMo
         }
 
         Log.i("[Assistant] [Generic Login]", "[Assistant] [Generic Login] Proxy config created")
-        OnuFunctions.RestartApp().start()
+        // thread
+        object : Thread() {
+            override fun run() {
+                sleep(1000)
+                OnuFunctions.RestartApp().start()
+            }
+        }.start()
     }
 
     private fun isLoginButtonEnabled(): Boolean {

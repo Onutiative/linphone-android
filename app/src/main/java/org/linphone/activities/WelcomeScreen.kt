@@ -1,5 +1,6 @@
 package org.linphone.activities
 
+import android.Manifest
 import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -10,8 +11,10 @@ import android.provider.Settings
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import org.linphone.R
+import org.linphone.mediastream.Version
 import org.linphone.utils.PermissionHelper
 
 class WelcomeScreen : AppCompatActivity() {
@@ -28,10 +31,27 @@ class WelcomeScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        Log.i("Permissions", PermissionHelper.get().hasReadContactsPermission().toString())
-        Log.i("Permissions", PermissionHelper.get().hasReadPhoneStatePermission().toString())
-        // Log.i("Permissions", PermissionHelper.get().hasReadExternalStoragePermission().toString())
-        Log.i("Permissions", PermissionHelper.get().hasRecordAudioPermission().toString())
+//        Log.i("Permissions", PermissionHelper.get().hasReadContactsPermission().toString())
+//        Log.i("Permissions", PermissionHelper.get().hasReadPhoneStatePermission().toString())
+//        // Log.i("Permissions", PermissionHelper.get().hasReadExternalStoragePermission().toString())
+//        Log.i("Permissions", PermissionHelper.get().hasRecordAudioPermission().toString())
+
+        if (!PermissionHelper.get().hasPostNotificationsPermission()) {
+            if (Version.sdkAboveOrEqual(Version.API33_ANDROID_13_TIRAMISU)) {
+                requestPermissions(
+                    arrayOf(
+                        Manifest.permission.POST_NOTIFICATIONS
+                    ),
+                    REQUEST_CODE
+                )
+            }
+        }
+
+        val callback = this.onBackPressedDispatcher.addCallback(this) {
+            Log.i("OnuFunctions", "Back button pressed, killing app, 2 lines")
+            finishAffinity()
+            System.exit(0)
+        }
 
         // check if all permissions are granted
         if (PermissionHelper.get().hasReadContactsPermission() && PermissionHelper.get().hasReadPhoneStatePermission() && PermissionHelper.get().hasRecordAudioPermission() && PermissionHelper.get().hasWriteExternalStoragePermission()) {
@@ -142,11 +162,12 @@ class WelcomeScreen : AppCompatActivity() {
         }
     }
 
-//    override fun onBackPressed() {
-//        super.onBackPressed();
-//        // kill the app
-//        android.os.Process.killProcess(android.os.Process.myPid())
-//    }
+    override fun onBackPressed() {
+        Log.d("OnuFunctions", "WelcomeScreen onBackPressed, killing app")
+        Toast.makeText(this, "Closing...", Toast.LENGTH_SHORT).show()
+        finishAffinity()
+        System.exit(0)
+    }
 
     override fun onDestroy() {
         super.onDestroy()

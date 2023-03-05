@@ -1,9 +1,7 @@
 package org.linphone.onuspecific
 
 import android.Manifest
-import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Handler
@@ -17,6 +15,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
+import com.jakewharton.processphoenix.ProcessPhoenix
 import java.io.File
 import java.nio.charset.StandardCharsets
 import java.util.*
@@ -29,7 +28,6 @@ import org.linphone.LinphoneApplication
 import org.linphone.activities.main.MainActivity
 
 open class OnuFunctions {
-
     private fun String.toBase64(): String {
         return String(
             android.util.Base64.encode(this.toByteArray(), android.util.Base64.DEFAULT),
@@ -66,6 +64,24 @@ open class OnuFunctions {
 
         // return as dictionary
         return mapOf("username" to username, "password" to password)
+    }
+
+    class GetSavedCredentials {
+        fun get(): Map<String, String?> {
+            val gg = OnuFunctions().getUserCredentials()
+            var username = gg["username"]
+            var password = gg["password"]
+            return mapOf("username" to username, "password" to password)
+        }
+
+        fun getUserName(): String? {
+            Log.i("OnuFunctions", "getUserName: " + OnuFunctions().getUserCredentials()["username"])
+            return OnuFunctions().getUserCredentials()["username"]
+        }
+
+        fun getPassword(): String? {
+            return OnuFunctions().getUserCredentials()["password"]
+        }
     }
 
     public fun getPhoneNumber(): String? {
@@ -508,17 +524,7 @@ open class OnuFunctions {
 //        }
 
         fun start() {
-            Thread {
-                Thread.sleep(1500)
-                val intent = Intent(LinphoneApplication.coreContext.context, MainActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                LinphoneApplication.coreContext.context.startActivity(intent)
-                if (LinphoneApplication.coreContext.context is Activity) {
-                    (LinphoneApplication.coreContext.context as Activity).finish()
-                }
-                // Runtime.getRuntime().exit(0)
-                // finishAffinity()
-            }.start()
+            ProcessPhoenix.triggerRebirth(LinphoneApplication.coreContext.context)
         }
     }
 

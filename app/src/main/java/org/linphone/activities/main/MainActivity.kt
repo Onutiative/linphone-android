@@ -25,12 +25,11 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.os.Parcelable
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
+import android.widget.TextView
 import androidx.annotation.StringRes
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.ViewCompat
@@ -57,7 +56,6 @@ import org.linphone.R
 import org.linphone.activities.*
 import org.linphone.activities.main.viewmodels.CallOverlayViewModel
 import org.linphone.activities.main.viewmodels.SharedMainViewModel
-import org.linphone.activities.navigateToDialer
 import org.linphone.compatibility.Compatibility
 import org.linphone.contact.ContactsUpdatedListenerStub
 import org.linphone.core.CorePreferences
@@ -70,6 +68,7 @@ class MainActivity : GenericActivity(), SnackBarActivity, NavController.OnDestin
     private lateinit var binding: MainActivityBinding
     private lateinit var sharedViewModel: SharedMainViewModel
     private lateinit var callOverlayViewModel: CallOverlayViewModel
+    private var account_exists = true
 
     private val listener = object : ContactsUpdatedListenerStub() {
         override fun onContactsUpdated() {
@@ -118,6 +117,17 @@ class MainActivity : GenericActivity(), SnackBarActivity, NavController.OnDestin
         // Must be done before the setContentView
         installSplashScreen()
 
+        if (coreContext.core.accountList.isEmpty()) {
+            account_exists = false
+//            if (corePreferences.firstStart) {
+//                // startActivity(Intent(this, AssistantActivity::class.java))
+//                startActivity(Intent(this, WelcomeScreen::class.java))
+//            } else {
+//                startActivity(Intent(this, AssistantActivity::class.java))
+//            }
+            startActivity(Intent(this, WelcomeScreen::class.java))
+        }
+
         binding = DataBindingUtil.setContentView(this, R.layout.main_activity)
         binding.lifecycleOwner = this
 
@@ -147,16 +157,6 @@ class MainActivity : GenericActivity(), SnackBarActivity, NavController.OnDestin
             }
         }
 
-        if (coreContext.core.accountList.isEmpty()) {
-//            if (corePreferences.firstStart) {
-//                // startActivity(Intent(this, AssistantActivity::class.java))
-//                startActivity(Intent(this, WelcomeScreen::class.java))
-//            } else {
-//                startActivity(Intent(this, AssistantActivity::class.java))
-//            }
-            startActivity(Intent(this, WelcomeScreen::class.java))
-        }
-
         tabsFragment = findViewById(R.id.tabs_fragment)
         statusFragment = findViewById(R.id.status_fragment)
 
@@ -165,16 +165,22 @@ class MainActivity : GenericActivity(), SnackBarActivity, NavController.OnDestin
 
             try {
                 reportFullyDrawn()
+                // change id display_user_name textview value
+                Log.i("[Main Activity]", " Displaying user name on sidebar...")
+                val display_user_name = findViewById<TextView>(R.id.display_user_name)
+                display_user_name.text = OnuFunctions().getUserCredentials()["username"]
             } catch (se: SecurityException) {
                 Log.e("[Main Activity] Security exception when doing reportFullyDrawn(): $se")
             }
 
             // thread
-            Handler(Looper.getMainLooper()).post {
-                // sleep
-                Thread.sleep(5000)
-                OnuFunctions().checkSavedCredentials(0)
-            }
+            object : Thread() {
+                override fun run() {
+                    Log.i("[OnuFunctions] Checking credentials in new thread...")
+                    sleep(5000)
+                    OnuFunctions().checkSavedCredentials(0)
+                }
+            }.start()
         }
     }
 

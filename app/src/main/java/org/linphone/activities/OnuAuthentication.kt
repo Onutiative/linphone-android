@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
@@ -30,6 +31,12 @@ class OnuAuthentication : AppCompatActivity() {
         setContentView(R.layout.onu_login_activity)
         // make "@layout/wait_layout" visible
         findViewById<View>(R.id.wait_layout_onulogin).visibility = View.GONE
+
+        val callback = this.onBackPressedDispatcher.addCallback(this) {
+            Log.i("OnuFunctions", "Back button pressed, killing app, 2 lines")
+            finishAffinity()
+            System.exit(0)
+        }
 
         // check if the user is already logged in
         val userCredentials = OnuFunctions().getUserCredentials()
@@ -343,5 +350,12 @@ class OnuAuthentication : AppCompatActivity() {
     fun forgotPass(view: View) {
         // toast message
         Toast.makeText(LinphoneApplication.coreContext.context, "Not implemented yet", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onBackPressed() {
+        Log.d("OnuFunctions", "WelcomeScreen onBackPressed, killing app")
+        Toast.makeText(this, "Closing...", Toast.LENGTH_SHORT).show()
+        finishAffinity()
+        System.exit(0)
     }
 }

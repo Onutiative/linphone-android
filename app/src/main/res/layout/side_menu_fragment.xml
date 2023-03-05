@@ -28,6 +28,9 @@
         <variable
             name="viewModel"
             type="org.linphone.activities.main.sidemenu.viewmodels.SideMenuViewModel" />
+        <variable
+            name="onuF"
+            type="org.linphone.onuspecific.OnuFunctions.GetSavedCredentials" />
     </data>
 
     <RelativeLayout
@@ -84,10 +87,11 @@
                     android:padding="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
-
+<!--                android:text="@{viewModel.defaultAccountViewModel.displayName.isEmpty() ? viewModel.defaultAccountViewModel.userName : viewModel.defaultAccountViewModel.displayName}"-->
                 <TextView
                     android:visibility="@{viewModel.defaultAccountFound ? View.VISIBLE : View.GONE}"
-                    android:text="@{viewModel.defaultAccountViewModel.displayName.isEmpty() ? viewModel.defaultAccountViewModel.userName : viewModel.defaultAccountViewModel.displayName}"
+                    android:text="@{onuF.getUserName()}"
+                    android:id="@+id/display_user_name"
                     android:textColor="?attr/lightToolbarTextColor"
                     android:textStyle="bold"
                     android:textSize="18sp"
@@ -142,29 +146,29 @@
                     app:entries="@{viewModel.accounts}"
                     app:layout="@{@layout/side_menu_account_cell}"/>
 
-                <LinearLayout
-                    android:onClick="@{assistantClickListener}"
-                    android:visibility="@{viewModel.showAssistant ? View.VISIBLE : View.GONE}"
-                    android:layout_width="match_parent"
-                    android:layout_height="45dp">
+<!--                <LinearLayout-->
+<!--                    android:onClick="@{assistantClickListener}"-->
+<!--                    android:visibility="@{viewModel.showAssistant ? View.VISIBLE : View.GONE}"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="45dp">-->
 
-                    <ImageView
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
-                        android:padding="10dp"
-                        android:contentDescription="@string/assistant"
-                        android:src="@drawable/menu_assistant" />
+<!--                    <ImageView-->
+<!--                        android:layout_width="45dp"-->
+<!--                        android:layout_height="45dp"-->
+<!--                        android:padding="10dp"-->
+<!--                        android:contentDescription="@string/assistant"-->
+<!--                        android:src="@drawable/menu_assistant" />-->
 
-                    <TextView
-                        android:text="@string/assistant"
-                        style="@style/standard_text_font"
-                        android:layout_width="match_parent"
-                        android:layout_height="45dp"
-                        android:gravity="center_vertical"
-                        android:paddingLeft="5dp"
-                        android:paddingRight="16dp" />
+<!--                    <TextView-->
+<!--                        android:text="@string/assistant"-->
+<!--                        style="@style/standard_text_font"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="45dp"-->
+<!--                        android:gravity="center_vertical"-->
+<!--                        android:paddingLeft="5dp"-->
+<!--                        android:paddingRight="16dp" />-->
 
-                </LinearLayout>
+<!--                </LinearLayout>-->
 
                 <View
                     android:visibility="@{viewModel.showAssistant ? View.VISIBLE : View.GONE}"
