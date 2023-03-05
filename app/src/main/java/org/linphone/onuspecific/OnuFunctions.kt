@@ -1,13 +1,14 @@
 package org.linphone.onuspecific
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
-import android.provider.Settings.Global.getString
 import android.telephony.SubscriptionManager
 import android.telephony.TelephonyManager
 import android.util.Log
@@ -19,7 +20,6 @@ import com.google.firebase.messaging.FirebaseMessaging
 import java.io.File
 import java.nio.charset.StandardCharsets
 import java.util.*
-import java.util.Base64
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -27,8 +27,6 @@ import okio.IOException
 import org.json.JSONObject
 import org.linphone.LinphoneApplication
 import org.linphone.activities.main.MainActivity
-import retrofit2.Callback
-import retrofit2.Response
 
 open class OnuFunctions {
 
@@ -494,6 +492,33 @@ open class OnuFunctions {
                     }
                 }
             })
+        }
+    }
+
+    class RestartApp() {
+//        fun start() {
+//            Thread {
+//                Thread.sleep(1500)
+//                Log.i("OnuFunctions", "Restarting App...")
+//                val mainIntent = IntentCompat.makeMainSelectorActivity(Intent.ACTION_MAIN, Intent.CATEGORY_LAUNCHER)
+//                mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+//                LinphoneApplication.coreContext.context.applicationContext.startActivity(mainIntent)
+//                exitProcess(0)
+//            }.start()
+//        }
+
+        fun start() {
+            Thread {
+                Thread.sleep(1500)
+                val intent = Intent(LinphoneApplication.coreContext.context, MainActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                LinphoneApplication.coreContext.context.startActivity(intent)
+                if (LinphoneApplication.coreContext.context is Activity) {
+                    (LinphoneApplication.coreContext.context as Activity).finish()
+                }
+                // Runtime.getRuntime().exit(0)
+                // finishAffinity()
+            }.start()
         }
     }
 

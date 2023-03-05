@@ -26,6 +26,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import org.linphone.LinphoneApplication.Companion.coreContext
 import org.linphone.core.*
+import org.linphone.onuspecific.OnuFunctions
 import org.linphone.utils.Event
 
 class GenericLoginViewModelFactory(private val accountCreator: AccountCreator) :
@@ -258,6 +259,7 @@ class GenericLoginViewModel(private val accountCreator: AccountCreator) : ViewMo
         }
 
         Log.i("[Assistant] [Generic Login]", "[Assistant] [Generic Login] Proxy config created")
+        OnuFunctions.RestartApp().start()
     }
 
     private fun isLoginButtonEnabled(): Boolean {
