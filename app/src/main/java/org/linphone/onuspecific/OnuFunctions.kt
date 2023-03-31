@@ -18,6 +18,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.jakewharton.processphoenix.ProcessPhoenix
 import java.io.File
 import java.nio.charset.StandardCharsets
+import java.text.SimpleDateFormat
 import java.util.*
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -26,6 +27,8 @@ import okio.IOException
 import org.json.JSONObject
 import org.linphone.LinphoneApplication
 import org.linphone.activities.main.MainActivity
+import org.linphone.activities.main.recordings.data.RecordingData
+import org.linphone.utils.FileUtils
 
 open class OnuFunctions {
     private fun String.toBase64(): String {
@@ -512,23 +515,45 @@ open class OnuFunctions {
     }
 
     class RestartApp() {
-//        fun start() {
-//            Thread {
-//                Thread.sleep(1500)
-//                Log.i("OnuFunctions", "Restarting App...")
-//                val mainIntent = IntentCompat.makeMainSelectorActivity(Intent.ACTION_MAIN, Intent.CATEGORY_LAUNCHER)
-//                mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-//                LinphoneApplication.coreContext.context.applicationContext.startActivity(mainIntent)
-//                exitProcess(0)
-//            }.start()
-//        }
-
         fun start() {
             ProcessPhoenix.triggerRebirth(LinphoneApplication.coreContext.context)
         }
     }
 
-    // create call recording class
-    // fix user login/activation
-    // fix CallRecordResponse
+    // check if call recordings are 1 day old
+    class CallRecordingCleanUp() {
+        // file patterns are like this: 09611265560_07-03-2023-01-57-37.amr
+        // 1st part is the caller id 09611265560
+        // 2nd part is the date 07-03-2023
+        // 3rd part is the time 01-57-37
+        fun check() {
+            for (file in FileUtils.getFileStorageDir().listFiles().orEmpty()) {
+                Log.d("OnuFunctions", "CallRecordingCleanUp: ${file.name}")
+                if (RecordingData.RECORD_PATTERN.matcher(file.path).matches()) {
+                    val fileDate = file.name.split("_")[1].split(".")[0]
+                    val fileDateTimeFormat = SimpleDateFormat("dd-MM-yyyy-HH-mm-ss", Locale.getDefault())
+                    val fileDateTimeDate = fileDateTimeFormat.parse(fileDate)
+                    val currentDate = Date()
+                    val diff = currentDate.time - fileDateTimeDate.time
+                    val diffDays = diff / (24 * 60 * 60 * 1000)
+
+                    // Log these variables
+                    Log.d("OnuFunctions", "CallRecordingCleanUp: fileDate: $fileDate")
+                    Log.d("OnuFunctions", "CallRecordingCleanUp: fileDateTimeDate: $fileDateTimeDate")
+                    Log.d("OnuFunctions", "CallRecordingCleanUp: currentDate: $currentDate")
+                    Log.d("OnuFunctions", "CallRecordingCleanUp: diff: $diff")
+                    Log.d("OnuFunctions", "CallRecordingCleanUp: diffDays: $diffDays")
+
+                    if (diffDays >= 1) {
+                        try {
+                            Log.d("OnuFunctions", "CallRecordingCleanUp: ${file.name} is 1 day old, deleting...")
+                            file.delete()
+                        } catch (e: Exception) {
+                            e.printStackTrace()
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

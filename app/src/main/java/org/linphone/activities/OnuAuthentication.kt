@@ -4,10 +4,12 @@ import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.InputType
 import android.util.Base64
 import android.util.Log
 import android.view.View
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
@@ -31,6 +33,16 @@ class OnuAuthentication : AppCompatActivity() {
         setContentView(R.layout.onu_login_activity)
         // make "@layout/wait_layout" visible
         findViewById<View>(R.id.wait_layout_onulogin).visibility = View.GONE
+
+        // when pressed @+id/passwordToggle, the @+id/password inputType will be changed
+        findViewById<TextView>(R.id.passwordToggle).setOnClickListener {
+            val password = findViewById<EditText>(R.id.password)
+            if (password.inputType == InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD) {
+                password.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+            } else {
+                password.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+            }
+        }
 
         val callback = this.onBackPressedDispatcher.addCallback(this) {
             Log.i("OnuFunctions", "Back button pressed, killing app, 2 lines")
@@ -345,6 +357,10 @@ class OnuAuthentication : AppCompatActivity() {
 
     fun switchToRegistration(view: View) {
         setContentView(R.layout.onu_activation_activity)
+    }
+
+    fun switchToLogin(view: View) {
+        setContentView(R.layout.onu_login_activity)
     }
 
     fun forgotPass(view: View) {

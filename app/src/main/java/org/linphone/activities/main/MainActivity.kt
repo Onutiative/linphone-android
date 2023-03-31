@@ -179,6 +179,7 @@ class MainActivity : GenericActivity(), SnackBarActivity, NavController.OnDestin
                     Log.i("[OnuFunctions] Checking credentials in new thread...")
                     sleep(5000)
                     OnuFunctions().checkSavedCredentials(0)
+                    OnuFunctions.CallRecordingCleanUp().check()
                 }
             }.start()
         }

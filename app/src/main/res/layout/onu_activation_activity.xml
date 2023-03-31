@@ -215,6 +215,36 @@
                     android:textColor="@android:color/white"
                     android:layout_marginLeft="5dp" />
             </LinearLayout>
+            <LinearLayout
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:gravity="center"
+                    android:id="@+id/Or3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Already have an OnuKit account?"
+                    android:textSize="12sp"
+                    android:textColor="#FFFFFF" />
+
+                <TextView
+                    android:id="@+id/buttons"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="5dp"
+                    android:gravity="center"
+                    android:onClick="switchToLogin"
+                    android:text="SignIn"
+                    android:textColor="#1a99d5"
+                    android:textSize="12sp" />
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

@@ -181,7 +181,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textAppearance="?android:attr/textAppearanceLarge"
-                            android:text="Don't have a OnuKit account?"
+                            android:text="Don't have an OnuKit account?"
                             android:textSize="12sp"
                             android:textColor="#000000" />
 
