@@ -15,6 +15,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
+import com.google.gson.Gson
 import com.jakewharton.processphoenix.ProcessPhoenix
 import java.io.File
 import java.nio.charset.StandardCharsets
@@ -23,6 +24,7 @@ import java.util.*
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import okio.IOException
 import org.json.JSONObject
 import org.linphone.LinphoneApplication
@@ -554,6 +556,27 @@ open class OnuFunctions {
                     }
                 }
             }
+        }
+    }
+
+    class GetSIPConfigs {
+        fun go(): Request {
+            val userCredentials = OnuFunctions().getUserCredentials()
+            val username = userCredentials["username"]
+            val password = userCredentials["password"]
+
+            val url = "https://api.onukit.com/6v1/sipmatch"
+            val client = OkHttpClient()
+
+            val payload = mapOf("username" to username)
+            val json = Gson().toJson(payload)
+            val requestBody = json.toRequestBody("application/json".toMediaTypeOrNull())
+
+            return Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .addHeader("Authorization", Credentials.basic(username!!, password!!))
+                .build()
         }
     }
 }

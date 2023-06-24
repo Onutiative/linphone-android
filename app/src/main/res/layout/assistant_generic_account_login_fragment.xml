@@ -217,6 +217,29 @@
                     android:layout_margin="10dp"
                     android:padding="10dp"/>
 
+                <View style="@style/divider"
+                    android:layout_marginVertical="20dp"/>
+
+                <TextView
+                    android:text="OR"
+                    android:textColor="@color/white_color"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"/>
+
+                <TextView
+                    android:onClick="@{() -> viewModel.loadSIPConfigFromServer()}"
+                    android:text="@string/assistant_load_from_sip"
+                    android:background="@drawable/assistant_button"
+                    android:textColor="@drawable/assistant_button_text_color"
+                    style="@style/button_font"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:padding="10dp"/>
+
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>

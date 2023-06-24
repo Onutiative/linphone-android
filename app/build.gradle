@@ -5,8 +5,8 @@ plugins {
     id 'org.jlleitschuh.gradle.ktlint'
 }
 
-def appVersionName = "0.1.1"
-def appVersionCode = 00011
+def appVersionName = "0.2.1"
+def appVersionCode = 00021
 
 static def getPackageName() {
     return "com.onutiative.onukit"
@@ -24,7 +24,7 @@ if (crashlyticsEnabled) {
     apply plugin: 'com.google.firebase.crashlytics'
 }
 
-apply plugin: "kotlin-android-extensions"
+// apply plugin: "kotlin-android-extensions"
 
 def gitBranch = new ByteArrayOutputStream()
 task getGitVersion() {
@@ -95,7 +95,7 @@ android {
 
     applicationVariants.all { variant ->
         variant.outputs.all {
-            outputFileName = "linphone-android-${variant.buildType.name}-${project.version}.apk"
+            outputFileName = "onukit-${variant.buildType.name}-${project.version}.apk"
         }
 
         var enableFirebaseService = "false"
@@ -134,8 +134,9 @@ android {
     buildTypes {
         release {
             minifyEnabled true
+            shrinkResources true
             signingConfig signingConfigs.release
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 
             resValue "string", "linphone_app_branch", gitBranch.toString().trim()
             resValue "string", "sync_account_type", getPackageName() + ".sync"
@@ -204,6 +205,9 @@ dependencies {
     implementation "androidx.security:security-crypto-ktx:1.1.0-alpha03"
     implementation "androidx.window:window:1.0.0"
     implementation 'com.jakewharton:process-phoenix:2.1.2'
+    implementation 'com.skyfishjy.ripplebackground:library:1.0.1'
+
+    implementation 'com.github.ybq:Android-SpinKit:1.2.0'
 
     implementation platform('com.google.firebase:firebase-bom:31.2.2')
     implementation 'com.google.firebase:firebase-analytics-ktx'

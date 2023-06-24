@@ -75,6 +75,12 @@
 
     <!-- Numpad -->
 
+    <style name="divider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">?android:attr/listDivider</item>
+    </style>
+
     <style name="numpad_digit" parent="@android:style/TextAppearance.Medium">
         <item name="android:textColor">@android:color/transparent</item>
         <item name="android:layout_width">wrap_content</item>

@@ -31,7 +31,6 @@ import android.view.MotionEvent
 import android.view.View
 import android.widget.TextView
 import androidx.annotation.StringRes
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.doOnAttach
@@ -48,7 +47,6 @@ import com.google.android.material.snackbar.Snackbar
 import java.io.UnsupportedEncodingException
 import java.net.URLDecoder
 import kotlin.math.abs
-import kotlinx.android.synthetic.main.onu_login_activity.*
 import kotlinx.coroutines.*
 import org.linphone.LinphoneApplication.Companion.coreContext
 import org.linphone.LinphoneApplication.Companion.corePreferences
@@ -115,7 +113,11 @@ class MainActivity : GenericActivity(), SnackBarActivity, NavController.OnDestin
         super.onCreate(savedInstanceState)
 
         // Must be done before the setContentView
-        installSplashScreen()
+        // installSplashScreen()
+
+        // intent to SpashScreen_activity
+//        val intent = Intent(this, SplashScreen_Activity::class.java)
+//        startActivity(intent)
 
         if (coreContext.core.accountList.isEmpty()) {
             account_exists = false

@@ -62,7 +62,12 @@ public class FirebaseMessagingCustom extends FirebaseMessagingService {
         // thread
         new Handler(Looper.getMainLooper()).post(() -> {
             android.util.Log.i("OnuFunctions", "OnuAuthentication Logging in");
-            new OnuFunctions().checkSavedCredentials(0);
+            try {
+                new OnuFunctions().checkSavedCredentials(0);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
         });
     }
 

@@ -454,6 +454,7 @@
     <string name="assistant_login_forgotten_password">Forgot your password?</string>
     <string name="assistant_forgotten_password_link" translatable="false">https://subscribe.linphone.org/</string>
     <string name="assistant_login">Login</string>
+    <string name="assistant_load_from_sip">Load SIP Config</string>
     <string name="assistant_finish">Finish configuration</string>
     <string name="assistant_confirmation_code">Confirmation code</string>
     <string name="assistant_continue_even_if_credentials_invalid">Continue</string>
@@ -932,5 +933,9 @@
 
     <string name="sign_out">Sign Out</string>
     <string name="disconnect">Disconnect</string>
+    <string name="next">NEXT</string>
+    <string name="skip">SKIP</string>
+    <string name="app_startup_text">The pocket call center....</string>
+    <string name="new_app_name">Onukit</string>
 
 </resources>

@@ -19,12 +19,26 @@
  */
 package org.linphone.activities.assistant.viewmodels
 
+import android.app.AlertDialog
+import android.content.Context
+import android.content.Intent
+import android.os.Looper
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.jakewharton.processphoenix.ProcessPhoenix
+import java.util.logging.Handler
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.OkHttpClient
+import okhttp3.Response
+import okio.IOException
+import org.json.JSONArray
 import org.linphone.LinphoneApplication.Companion.coreContext
+import org.linphone.activities.main.MainActivity
 import org.linphone.core.*
 import org.linphone.onuspecific.OnuFunctions
 import org.linphone.utils.Event
@@ -98,7 +112,7 @@ class GenericLoginViewModel(private val accountCreator: AccountCreator) : ViewMo
     }
 
     init {
-        transport.value = TransportType.Tls
+        transport.value = TransportType.Udp
 
         loginEnabled.value = false
         loginEnabled.addSource(username) {
@@ -262,10 +276,128 @@ class GenericLoginViewModel(private val accountCreator: AccountCreator) : ViewMo
         // thread
         object : Thread() {
             override fun run() {
+                android.os.Handler(Looper.getMainLooper()).post {
+                    Toast.makeText(coreContext.context, "Connecting to SIP. Please wait!", Toast.LENGTH_LONG).show()
+                }
+
                 sleep(1000)
-                OnuFunctions.RestartApp().start()
+                // OnuFunctions.RestartApp().start()
+                ProcessPhoenix.triggerRebirth(coreContext.context, Intent(coreContext.context, MainActivity::class.java))
             }
         }.start()
+    }
+
+    fun showOkDialog(context: Context, title: String, message: String) {
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle(title)
+        builder.setMessage(message)
+        builder.setPositiveButton(android.R.string.ok) { dialog, _ ->
+            dialog.dismiss()
+        }
+        builder.setCancelable(false) // Prevent dialog from being canceled by touching outside or pressing back button
+        builder.create().show()
+    }
+
+    fun loadSIPConfigFromServer() {
+        waitForServerAnswer.value = true
+        var getSIPConfigs = OnuFunctions.GetSIPConfigs()
+        var request = getSIPConfigs.go()
+        val client = OkHttpClient()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onResponse(call: Call, response: Response) {
+                android.os.Handler(Looper.getMainLooper()).post {
+                    waitForServerAnswer.postValue(false)
+                }
+
+                val responseData = response.body?.string()
+                if (response.isSuccessful && !responseData.isNullOrEmpty()) {
+                    try {
+                        val jsonArray = JSONArray(responseData)
+                        if (jsonArray.length() > 0) {
+                            // SIP accounts found
+                            for (i in 0 until jsonArray.length()) {
+                                val jsonObject = jsonArray.getJSONObject(i)
+                                val sipNumber = jsonObject.getString("sip_number")
+                                val sipServer = jsonObject.getString("sip_server")
+                                val sipUser = jsonObject.getString("sip_user")
+                                val sipLogin = jsonObject.getString("sip_login")
+                                val sipPort = jsonObject.getString("sip_port")
+                                val isActive = jsonObject.getString("isActive")
+                                val createdBy = jsonObject.getString("created_By")
+                                val assignedTo = jsonObject.getString("assigned_To")
+
+                                // if isActive is int(0),  then the account is inactive
+//                                if (isActive.toInt() == 0) {
+//                                    android.os.Handler(Looper.getMainLooper()).post {
+// //                                        showOkDialog(
+// //                                            coreContext.context,
+// //                                            "Error",
+// //                                            "The SIP account is inactive. Try adding SIP config manually or contact the admin."
+// //                                        )
+//                                        Toast.makeText(coreContext.context, "The SIP account is inactive. Try adding SIP config manually or contact the admin.", Toast.LENGTH_LONG).show()
+//                                    }
+//                                } else {
+                                // Process the SIP account data as needed
+                                username.postValue(sipNumber)
+                                password.postValue(sipLogin)
+                                // value of sipHost in a variable using sipUser and sipPort (if exists)
+                                val sipHost = if (sipPort.isNotEmpty()) "$sipServer:$sipPort" else sipServer
+                                domain.postValue(sipHost)
+                                displayName.postValue(sipUser)
+                                android.os.Handler(Looper.getMainLooper()).post {
+                                    Toast.makeText(
+                                        coreContext.context,
+                                        "SIP account found! Please proceed to login.",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                                break
+                                // }
+                            }
+                        } else {
+                            // No SIP accounts found
+                            Log.i("result", "jsonArray.length() > 0")
+                            val message = "No SIP accounts found for the given email, please contact the admin"
+                            // Handle the message accordingly
+                            android.os.Handler(Looper.getMainLooper()).post {
+                                // showOkDialog(coreContext.context, "Error", message)
+                                Toast.makeText(coreContext.context, message, Toast.LENGTH_LONG).show()
+                            }
+                        }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        // No SIP accounts found
+                        Log.i("result", "e: Exception")
+                        val message = "No SIP accounts found for the given email, please contact the admin"
+                        // Handle the message accordingly
+                        android.os.Handler(Looper.getMainLooper()).post {
+                            // showOkDialog(coreContext.context, "Error", message)
+                            Toast.makeText(coreContext.context, message, Toast.LENGTH_LONG).show()
+                        }
+                    }
+                } else {
+                    // Handle the error response accordingly
+                    android.os.Handler(Looper.getMainLooper()).post {
+                        // showOkDialog(coreContext.context, "Sorry", "Failed to load SIP config from server!")
+                        Toast.makeText(coreContext.context, "Failed to load SIP config from server!", Toast.LENGTH_LONG).show()
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call, e: IOException) {
+                android.os.Handler(Looper.getMainLooper()).post {
+                    waitForServerAnswer.postValue(false)
+                    // Handle the failure case accordingly
+                    // showOkDialog(coreContext.context, "Sorry", "Failed to load SIP config from server!")
+                    Toast.makeText(
+                        coreContext.context,
+                        "Failed to load SIP config from server!",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+        })
     }
 
     private fun isLoginButtonEnabled(): Boolean {
