@@ -937,5 +937,7 @@
     <string name="skip">SKIP</string>
     <string name="app_startup_text">The pocket call center....</string>
     <string name="new_app_name">Onukit</string>
+    <string name="overlay_permission_toast">Please allow app overlay permission to continue</string>
+    <string name="overlay_permission_message">Please accept app overlay permission.</string>
 
 </resources>

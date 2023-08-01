@@ -254,8 +254,13 @@ class OnuAuthentication : AppCompatActivity() {
                     return@OnCompleteListener
                 }
 
+                var fcmToken = ""
                 // Get new FCM registration token
-                val fcmToken = task.result
+                fcmToken = if (!task.isSuccessful) {
+                    task.result
+                } else {
+                    task.result
+                }
 
                 val request = OnuFunctions.UserActivation(onukit_username, onukit_password, mobile_number, fcmToken).performActivation()
                 val client = OkHttpClient()

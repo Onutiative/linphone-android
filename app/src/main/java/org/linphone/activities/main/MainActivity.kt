@@ -19,17 +19,23 @@
  */
 package org.linphone.activities.main
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.ComponentCallbacks2
 import android.content.Intent
 import android.content.res.Configuration
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
+import android.os.PowerManager
+import android.provider.Settings
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
 import android.widget.TextView
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -87,6 +93,7 @@ class MainActivity : GenericActivity(), SnackBarActivity, NavController.OnDestin
     private var initPosX = 0f
     private var initPosY = 0f
     private var overlay: View? = null
+    private var hasNotificationPermissionGranted = false
 
     private val componentCallbacks = object : ComponentCallbacks2 {
         override fun onConfigurationChanged(newConfig: Configuration) { }
@@ -139,6 +146,9 @@ class MainActivity : GenericActivity(), SnackBarActivity, NavController.OnDestin
         callOverlayViewModel = ViewModelProvider(this)[CallOverlayViewModel::class.java]
         binding.callOverlayViewModel = callOverlayViewModel
 
+        notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        showBatteryOptimizationDialog()
+
         sharedViewModel.toggleDrawerEvent.observe(
             this
         ) {
@@ -184,6 +194,72 @@ class MainActivity : GenericActivity(), SnackBarActivity, NavController.OnDestin
                     OnuFunctions.CallRecordingCleanUp().check()
                 }
             }.start()
+        }
+    }
+
+    private val notificationPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+        hasNotificationPermissionGranted = isGranted
+        if (isGranted) {
+            // do nothing
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
+                    showNotificationPermissionRationale()
+                } else {
+                    showSettingDialog()
+                }
+            }
+        }
+    }
+
+    private fun showSettingDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("Notification Permission")
+            .setMessage("Notification permission is required, Please allow notification permission from settings")
+            .setPositiveButton("Ok") { _, _ ->
+                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                intent.data = Uri.fromParts("package", packageName, null)
+                startActivity(intent)
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+
+    private fun showNotificationPermissionRationale() {
+        AlertDialog.Builder(this)
+            .setTitle("Alert")
+            .setMessage("Notification permission is required to show notifications")
+            .setPositiveButton("Ok") { _, _ ->
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                }
+            }
+            .setNegativeButton("Cancel", null)
+            .show()
+    }
+
+    private fun showBatteryOptimizationDialog() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val packageName = packageName
+            val pm = getSystemService(POWER_SERVICE) as PowerManager
+            if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+                val builder = AlertDialog.Builder(this)
+                builder.setTitle("Battery Optimization")
+                    .setMessage("Battery optimization is needed to receive calls consistently. Please tap Allow when prompted.")
+                    .setPositiveButton("OK") { _, _ -> // Launch the battery optimization settings
+                        val intent =
+                            Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS)
+                        intent.data = Uri.parse("package:$packageName")
+                        startActivity(intent)
+                    }
+                    .setNegativeButton(
+                        "Cancel"
+                    ) { dialog, _ -> // User clicked "Cancel," do nothing or handle as required
+                        dialog.dismiss()
+                    }
+                    .setCancelable(false)
+                    .show()
+            }
         }
     }
 

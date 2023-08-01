@@ -1,12 +1,20 @@
 package org.linphone.activities
 
+import android.Manifest
+import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
+import android.view.View
+import android.widget.Toast
+import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
 import org.linphone.R
-import org.linphone.activities.assistant.AssistantActivity
+import org.linphone.mediastream.Version
 import org.linphone.utils.PermissionHelper
 
 class WelcomeScreen_bak : AppCompatActivity() {
@@ -14,76 +22,239 @@ class WelcomeScreen_bak : AppCompatActivity() {
     private var Permission_Rejected = 0
 
     private val permissions = arrayOf(
-        android.Manifest.permission.READ_CONTACTS,
-        android.Manifest.permission.WRITE_CONTACTS,
-        android.Manifest.permission.READ_PHONE_STATE,
-        android.Manifest.permission.READ_EXTERNAL_STORAGE,
-        android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-        android.Manifest.permission.CAMERA,
-        android.Manifest.permission.RECORD_AUDIO,
         android.Manifest.permission.BLUETOOTH,
         android.Manifest.permission.POST_NOTIFICATIONS
     )
+
     private val REQUEST_CODE = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.welcome_slide1)
 
-        // Log permissions.all { PermissionHelper.get().hasPermission(it) })
-        Log.i("Permissions", permissions.all { PermissionHelper.get().hasPermission(it) }.toString())
+//        Log.i("Permissions", PermissionHelper.get().hasReadContactsPermission().toString())
+//        Log.i("Permissions", PermissionHelper.get().hasReadPhoneStatePermission().toString())
+//        // Log.i("Permissions", PermissionHelper.get().hasReadExternalStoragePermission().toString())
+//        Log.i("Permissions", PermissionHelper.get().hasRecordAudioPermission().toString())
+
+        if (!PermissionHelper.get().hasPostNotificationsPermission()) {
+            if (Version.sdkAboveOrEqual(Version.API33_ANDROID_13_TIRAMISU)) {
+                requestPermissions(
+                    arrayOf(
+                        Manifest.permission.POST_NOTIFICATIONS
+                    ),
+                    REQUEST_CODE
+                )
+            }
+        }
+
+        val callback = this.onBackPressedDispatcher.addCallback(this) {
+            Log.i("OnuFunctions", "Back button pressed, killing app, 2 lines")
+            finishAffinity()
+            System.exit(0)
+        }
 
         // check if all permissions are granted
-        if (PermissionHelper.get().hasReadContactsPermission() && PermissionHelper.get().hasWriteContactsPermission() && PermissionHelper.get().hasReadPhoneStatePermission() && PermissionHelper.get().hasReadExternalStoragePermission() && PermissionHelper.get().hasWriteExternalStoragePermission() && PermissionHelper.get().hasCameraPermission() && PermissionHelper.get().hasRecordAudioPermission() && PermissionHelper.get().hasBluetoothConnectPermission() && PermissionHelper.get().hasPostNotificationsPermission()) {
+        if (PermissionHelper.get().hasReadContactsPermission() && PermissionHelper.get().hasReadPhoneStatePermission() && PermissionHelper.get().hasRecordAudioPermission() && PermissionHelper.get().hasWriteExternalStoragePermission()) {
             // all permissions are granted, start the app
-            Log.i("Permissions", "[onCreate] All permissions granted")
-//            val intent = Intent(this, MainActivity::class.java)
-//            startActivity(intent)
-//            finish()
-            setContentView(R.layout.welcome_slide2)
+            val intent = Intent(this, OnuAuthentication::class.java)
+            startActivity(intent)
+            finish()
         } else {
             // some or all permissions are denied
             // request permissions
             Log.i("Permissions", "[onCreate] Requesting permissions")
-            requestPermissions(permissions, REQUEST_CODE)
+            // requestPermissions(permissions, REQUEST_CODE)
+            setContentView(R.layout.welcome_slide1)
         }
-    }
-
-    override fun onBackPressed() {
-        finish()
     }
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
-        permissions: Array<out String>,
+        permissions: Array<String>,
         grantResults: IntArray
     ) {
-        Log.i("Permissions", "[onRequestPermissionsResult] Request code: $requestCode")
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
         if (requestCode == REQUEST_CODE) {
-            if (grantResults.all { it == PackageManager.PERMISSION_GRANTED }) {
-                // all permissions are granted, start the app
-                Log.i("Permissions", "[onRequestPermissionsResult] All permissions granted")
-//                val intent = Intent(this, AssistantActivity::class.java)
-//                startActivity(intent)
-//                finish()
-                setContentView(R.layout.welcome_slide2)
-            } else {
-                Permission_Rejected += 1
-                if (Permission_Rejected < 3) {
-                    // some or all permissions are denied, restart the activity
-                    Log.i("Permissions", "[onRequestPermissionsResult] Some or all permissions denied")
-                    val intent = Intent(this, WelcomeScreen_bak::class.java)
-                    startActivity(intent)
-                } else {
-                    // some or all permissions are denied, restart the activity
-                    Log.i("Permissions", "[onRequestPermissionsResult] Some or all permissions denied")
-                    val intent = Intent(this, AssistantActivity::class.java)
-                    startActivity(intent)
+            var allPermissionsGranted = true
+
+            for (i in permissions.indices) {
+                val permission = permissions[i]
+                val grantResult = grantResults[i]
+
+                if (permissions[0] == android.Manifest.permission.BLUETOOTH || permissions[0] == android.Manifest.permission.POST_NOTIFICATIONS) {
+                    return
+                }
+
+                if (grantResult == PackageManager.PERMISSION_DENIED) {
+                    allPermissionsGranted = false
+
+                    if (shouldShowRequestPermissionRationale(permission)) {
+                        // User denied the permission request, but did not select "never ask again"
+                        if (permissions[0] == android.Manifest.permission.SYSTEM_ALERT_WINDOW) {
+                            // show a toast
+                            Toast.makeText(this, "Please enable overlay permission", Toast.LENGTH_LONG).show()
+                            val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION)
+                            intent.data = Uri.fromParts("package", packageName, null)
+                            startActivity(intent)
+                            break
+                        }
+
+                        AlertDialog.Builder(this)
+                            .setTitle(R.string.permission_needed_title)
+                            .setMessage(R.string.permission_needed_message)
+                            .setPositiveButton(R.string.retry) { _, _ ->
+                                requestPermissions(arrayOf(permission), REQUEST_CODE)
+                            }
+                            .setNegativeButton(R.string.cancel) { _, _ ->
+                                Permission_Rejected += 1
+                            }
+                            .show()
+                    } else {
+                        // User denied the permission request and selected "never ask again"
+                        if (permissions.contains(android.Manifest.permission.SYSTEM_ALERT_WINDOW)) {
+                            AlertDialog.Builder(this)
+                                .setTitle(R.string.permission_needed_title)
+                                .setMessage(R.string.permission_needed_message)
+                                .setPositiveButton(R.string.go_to_settings) { _, _ ->
+                                    val intent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION)
+                                    intent.data = Uri.fromParts("package", packageName, null)
+                                    startActivity(intent)
+                                }
+                                .setNegativeButton(R.string.cancel) { _, _ ->
+                                    Permission_Rejected += 1
+                                }
+                                .show()
+                        } else {
+                            AlertDialog.Builder(this)
+                                .setTitle(R.string.permission_needed_title)
+                                .setMessage(R.string.permission_needed_message)
+                                .setPositiveButton(R.string.go_to_settings) { _, _ ->
+                                    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                                    intent.data = Uri.fromParts("package", packageName, null)
+                                    startActivity(intent)
+                                }
+                                .setNegativeButton(R.string.cancel) { _, _ ->
+                                    Permission_Rejected += 1
+                                }
+                                .show()
+                        }
+                    }
                 }
             }
+
+            // check which permission is granted
+            if (permissions[0] == android.Manifest.permission.READ_PHONE_STATE) {
+                setContentView(R.layout.welcome_slide3)
+            } else if (permissions[0] == android.Manifest.permission.READ_SMS) {
+                setContentView(R.layout.welcome_slide4)
+            } else if (permissions[0] == android.Manifest.permission.READ_CONTACTS) {
+                setContentView(R.layout.welcome_slide5)
+            } else if (permissions[0] == android.Manifest.permission.RECORD_AUDIO) {
+                setContentView(R.layout.welcome_slide6)
+            } else if (permissions[0] == android.Manifest.permission.WRITE_EXTERNAL_STORAGE || allPermissionsGranted) {
+                setContentView(R.layout.welcome_slide7)
+            } else if (permissions[0] == android.Manifest.permission.SYSTEM_ALERT_WINDOW || allPermissionsGranted) {
+                // start MainActivity
+                startActivity(Intent(this, OnuAuthentication::class.java))
+                finish()
+            }
+        }
+    }
+
+    override fun onBackPressed() {
+        Log.d("OnuFunctions", "WelcomeScreen onBackPressed, killing app")
+        Toast.makeText(this, "Closing...", Toast.LENGTH_SHORT).show()
+        finishAffinity()
+        System.exit(0)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        // android.os.Process.killProcess(android.os.Process.myPid())
+    }
+
+    // welcome_slide1
+    fun acceptPrivacyPolicy(view: View) {
+        setContentView(R.layout.welcome_slide2)
+    }
+
+    // welcome_slide2
+    fun acceptCallPermission(view: View) {
+        // show call permission android.Manifest.permission.READ_PHONE_STATE and android.Manifest.permission.RECORD_AUDIO
+        // check first if call permissions are granted
+        if (PermissionHelper.get().hasReadPhoneStatePermission()) {
+            setContentView(R.layout.welcome_slide3)
         } else {
-            Log.i("Permissions", "[onRequestPermissionsResult] Request code not recognized")
-            super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+            requestPermissions(arrayOf(android.Manifest.permission.READ_PHONE_STATE), REQUEST_CODE)
+        }
+    }
+
+    // welcome_slide3
+    fun acceptSMSPermission(view: View) {
+        // check if sms permission is granted
+        if (checkSelfPermission(android.Manifest.permission.READ_SMS) == PackageManager.PERMISSION_GRANTED) {
+            setContentView(R.layout.welcome_slide4)
+        } else {
+            // show SMS permission android.Manifest.permission.READ_SMS
+            requestPermissions(arrayOf(android.Manifest.permission.READ_SMS), REQUEST_CODE)
+        }
+    }
+
+    fun checkContactPermission(view: View) {
+        // check if contact permission is granted
+        if (PermissionHelper.get().hasReadContactsPermission()) {
+            setContentView(R.layout.welcome_slide5)
+        } else {
+            // show contact permission android.Manifest.permission.READ_CONTACTS
+            requestPermissions(arrayOf(android.Manifest.permission.READ_CONTACTS), REQUEST_CODE)
+        }
+    }
+
+    fun checkMicrophonePermission(view: View) {
+        // check if microphone permission is granted
+        if (PermissionHelper.get().hasRecordAudioPermission()) {
+            setContentView(R.layout.welcome_slide6)
+        } else {
+            // show microphone permission android.Manifest.permission.RECORD_AUDIO
+            requestPermissions(arrayOf(android.Manifest.permission.RECORD_AUDIO), REQUEST_CODE)
+        }
+    }
+
+    fun checkStoragePermission(view: View) {
+        Log.d("checkStoragePermission", "checkStoragePermission")
+        // check if storage permission is granted
+        Log.d("checkStoragePermission", "checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED: " + (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED))
+        Log.d("checkStoragePermission", "checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED: " + (checkSelfPermission(android.Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED))
+        if (PermissionHelper.get().hasWriteExternalStoragePermission()) {
+            setContentView(R.layout.welcome_slide7)
+        } else {
+            // show storage permission android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+            requestPermissions(arrayOf(android.Manifest.permission.WRITE_EXTERNAL_STORAGE), REQUEST_CODE)
+        }
+    }
+
+    fun checkPopUpPermission(view: View) {
+        Log.d("checkPopUpPermission", "checkPopUpPermission")
+        // check if pop up permission is granted
+        Log.d("checkPopUpPermission", "checkSelfPermission(android.Manifest.permission.SYSTEM_ALERT_WINDOW) == PackageManager.PERMISSION_GRANTED: " + (checkSelfPermission(android.Manifest.permission.SYSTEM_ALERT_WINDOW) == PackageManager.PERMISSION_GRANTED))
+        Log.d("checkPopUpPermission", "Settings.canDrawOverlays(this): " + (Settings.canDrawOverlays(this)))
+
+        if (checkSelfPermission(android.Manifest.permission.SYSTEM_ALERT_WINDOW) == PackageManager.PERMISSION_GRANTED || Settings.canDrawOverlays(this)) {
+            // open main activity
+            Log.i("Permission", "Pop up permission granted, Opening main activity")
+            val intent = Intent(this, OnuAuthentication::class.java)
+            startActivity(intent)
+            finish()
+        } else {
+            // show pop up permission android.Manifest.permission.SYSTEM_ALERT_WINDOW
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                // Show alert dialog to the user saying a separate permission is needed
+                // Launch the settings activity if the user prefers
+                Toast.makeText(this, "Please enable overlay permission", Toast.LENGTH_LONG).show()
+                val myIntent = Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION)
+                startActivity(myIntent)
+            }
         }
     }
 }
