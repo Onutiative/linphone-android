@@ -20,6 +20,9 @@
             name="aboutClickListener"
             type="android.view.View.OnClickListener"/>
         <variable
+            name="onuFunctions"
+            type="org.linphone.onuspecific.OnuFunctions"/>
+        <variable
             name="conferencesClickListener"
             type="android.view.View.OnClickListener"/>
         <variable
@@ -31,6 +34,10 @@
         <variable
             name="onuF"
             type="org.linphone.onuspecific.OnuFunctions.GetSavedCredentials" />
+
+        <variable
+            name="mainActivity"
+            type="org.linphone.activities.main.MainActivity" />
     </data>
 
     <RelativeLayout
@@ -295,6 +302,34 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="?dividerColor" />
+
+<!--                <LinearLayout-->
+<!--                    android:onClick="@{() -> mainActivity.show_dontKillMyApp()}"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="45dp">-->
+
+<!--                    <ImageView-->
+<!--                        android:layout_width="45dp"-->
+<!--                        android:layout_height="45dp"-->
+<!--                        android:padding="10dp"-->
+<!--                        android:contentDescription="@string/autostart_request"-->
+<!--                        android:src="@drawable/menu_about" />-->
+
+<!--                    <TextView-->
+<!--                        android:text="@string/autostart_request"-->
+<!--                        style="@style/standard_text_font"-->
+<!--                        android:layout_width="match_parent"-->
+<!--                        android:layout_height="45dp"-->
+<!--                        android:gravity="center_vertical"-->
+<!--                        android:paddingLeft="5dp"-->
+<!--                        android:paddingRight="16dp" />-->
+
+<!--                </LinearLayout>-->
+
+<!--                <View-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="1dp"-->
+<!--                    android:background="?dividerColor" />-->
 
             </LinearLayout>
 

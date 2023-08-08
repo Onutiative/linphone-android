@@ -1,8 +1,12 @@
 package org.linphone.onuspecific
 
 import android.Manifest
+import android.app.AlertDialog
+import android.content.ActivityNotFoundException
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
@@ -17,6 +21,7 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.gson.Gson
 import com.jakewharton.processphoenix.ProcessPhoenix
+import com.judemanutd.autostarter.AutoStartPermissionHelper
 import java.io.File
 import java.nio.charset.StandardCharsets
 import java.text.SimpleDateFormat
@@ -577,6 +582,225 @@ open class OnuFunctions {
                 .post(requestBody)
                 .addHeader("Authorization", Credentials.basic(username!!, password!!))
                 .build()
+        }
+    }
+
+    class dontKillMyApp(
+        private val context: Context = LinphoneApplication.coreContext.context,
+    ) {
+        var isAutoStartPermissionAvailable = false
+        fun run() {
+            Log.d("OnuFunctions", "dontKillMyApp: Running...")
+            Log.d("OnuFunctions", "dontKillMyApp: ${AutoStartPermissionHelper.getInstance().isAutoStartPermissionAvailable(context, true)}")
+//            if (AutoStartPermissionHelper.getInstance().isAutoStartPermissionAvailable(context, true) && !Build.BRAND.equals("samsung", ignoreCase = true)) {
+//                AutoStartPermissionHelper.getInstance().getAutoStartPermission(context)
+//                isAutoStartPermissionAvailable = true
+//                Log.d("OnuFunctions", "AutoStartPermissionHelper: AutoStartPermission is available")
+//            }
+//            else {
+//                try {
+//                    AppKillerManager.doActionPowerSaving(context)
+//                    Log.d("OnuFunctions", "AppKillerManager: PowerSaving is available")
+//                } catch (e: Exception) {
+//                    e.printStackTrace()
+//                }
+//
+//                try {
+//                    AppKillerManager.doActionAutoStart(context)
+//                    Log.d("OnuFunctions", "AppKillerManager: AutoStart is available")
+//                } catch (e: Exception) {
+//                    e.printStackTrace()
+//                }
+//
+//                try {
+//                    AppKillerManager.doActionNotification(context)
+//                    Log.d("OnuFunctions", "AppKillerManager: Notification is available")
+//                } catch (e: Exception) {
+//                    e.printStackTrace()
+//                }
+//            }
+//
+//            if (!isAutoStartPermissionAvailable) {
+//                try {
+//                    AppWhitelist.settingForAutoStart(context)
+//                    Log.d("OnuFunctions", "AppWhitelist: AutoStart is available")
+//                } catch (e: Exception) {
+//                    e.printStackTrace()
+//                }
+//
+//                try {
+//                    AppWhitelist.settingForBatterySaver(context)
+//                    Log.d("OnuFunctions", "AppWhitelist: BatterySaver is available")
+//                } catch (e: Exception) {
+//                    e.printStackTrace()
+//                }
+//
+//                try {
+//                    AppWhitelist.settingForMemoryAcceleration(context)
+//                    Log.d("OnuFunctions", "AppWhitelist: MemoryAcceleration is available")
+//                } catch (e: Exception) {
+//                    e.printStackTrace()
+//                }
+//
+//                try {
+//                    AppWhitelist.settingForNotification(context)
+//                    Log.d("OnuFunctions", "AppWhitelist: Notification is available")
+//                } catch (e: Exception) {
+//                    e.printStackTrace()
+//                }
+//            }
+
+            // check if the brand is realme, tecno or infinix
+//            Log.i("OnuFunctions", "AutoStartPermissionHelper: Build.BRAND: ${Build.BRAND}")
+//            if (!isAutoStartPermissionAvailable) {
+//                try {
+//                    val intent = Intent()
+//                    intent.component = ComponentName(
+//                        "com.oplus.battery",
+//                        "com.oplus.powermanager.fuelgaue.PowerControlActivity"
+//                    )
+//                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+//                    try {
+//                        context.startActivity(intent)
+//                        isAutoStartPermissionAvailable = true
+//                    } catch (e: ActivityNotFoundException) {
+//                        e.printStackTrace()
+//                        try {
+//                            val intent = Intent()
+//                            intent.component = ComponentName(
+//                                "com.coloros.safecenter",
+//                                "com.coloros.safecenter.permission.startup.StartupAppListActivity"
+//                            )
+//                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+//                            context.startActivity(intent)
+//                            isAutoStartPermissionAvailable = true
+//                        } catch (ex: Exception) {
+//                            ex.printStackTrace()
+//                            try {
+//                                val intent = Intent()
+//                                intent.component = ComponentName("com.transsion.phonemaster", "com.cyin.himgr.autostart.AutoStartActivity")
+//                                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+//                                try {
+//                                    context.startActivity(intent)
+//                                    isAutoStartPermissionAvailable = true
+//                                } catch (e: ActivityNotFoundException) {
+//                                    e.printStackTrace()
+//                                }
+//                            } catch (e: Exception) {
+//                                e.printStackTrace()
+//                            }
+//                        }
+//                    }
+//                } catch (e: Exception) {
+//                    e.printStackTrace()
+//                }
+//            }
+
+            Log.d("OnuFunctions", "AutoStartPermissionHelper: isAutoStartPermissionAvailable: $isAutoStartPermissionAvailable")
+//            if (!isAutoStartPermissionAvailable) {
+//                // show a dialog box to request user to enable auto start permission, show button for the apps battery usage and show extra button to redirect to dontkillmyapp.com
+//                val builder = AlertDialog.Builder(context)
+//                builder.setTitle("Enable More Background Permission")
+//                builder.setMessage("Please enable Allow auto launch and Allow background activity for this app to work properly! You can find these options in the app info page of this app.")
+//                builder.setCancelable(false)
+//                // show a button to redirect app's battery usage
+//                builder.setPositiveButton("Enable") { _, _ ->
+//                    val packageName = context.packageName
+//                    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+//                    intent.data = Uri.parse("package:$packageName")
+//                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+//                    try {
+//                        context.startActivity(intent)
+//                        Toast.makeText(context, "Find Allow auto launch and Allow background activity!", Toast.LENGTH_LONG).show()
+//                    } catch (e: ActivityNotFoundException) {
+//                        e.printStackTrace()
+//                        // show a dialog box to tell user to open the app info and enable Allow auto launch, Allow background activity etc
+//                        val innerBuilder = AlertDialog.Builder(context)
+//                        innerBuilder.setTitle("Enable More Background Permission")
+//                        innerBuilder.setMessage("Please enable Allow auto launch and Allow background activity for this app to work properly! You can find these options in the app info page of this app.")
+//                        // add just an ok button
+//                        innerBuilder.setPositiveButton("OK") { dialog, _ ->
+//                            dialog.dismiss()
+//                        }
+//                        innerBuilder.show()
+//                    }
+//                }
+// //                builder.setNegativeButton("Cancel") { dialog, _ ->
+// //                    dialog.dismiss()
+// //                }
+// //                builder.setNeutralButton("Help") { _, _ ->
+// //                    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://dontkillmyapp.com/"))
+// //                    context.startActivity(browserIntent)
+// //                }
+//
+//                builder.setNeutralButton("Help", null)
+//
+//                builder.show()
+//            }
+            // Log.d("OnuFunctions", "AutoStartPermissionHelper: isAutoStartPermissionAvailable: $isAutoStartPermissionAvailable")
+
+            if (!isAutoStartPermissionAvailable) {
+                with(AlertDialog.Builder(context)) {
+                    setTitle("Enable Background Permission")
+                    setMessage("Please enable Allow auto launch and Allow background activity for this app to work properly! You can find these options in the app info page of this app, usually under Battery Usage.")
+                    setCancelable(false)
+                    setPositiveButton("Go Ahead", null)
+                    setNeutralButton("Help", null)
+                    create().apply {
+                        setOnShowListener {
+                            getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+                                if (AutoStartPermissionHelper.getInstance().isAutoStartPermissionAvailable(context, true) && !Build.BRAND.equals("samsung", ignoreCase = true)) {
+                                    AutoStartPermissionHelper.getInstance().getAutoStartPermission(context)
+                                    isAutoStartPermissionAvailable = true
+                                    Log.d("OnuFunctions", "AutoStartPermissionHelper: AutoStartPermission is available")
+                                } else {
+                                    Log.d("OnuFunctions", "AutoStartPermissionHelper: AutoStartPermission is not available")
+                                    val packageName = context.packageName
+                                    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                                    intent.data = Uri.parse("package:$packageName")
+                                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                                    try {
+                                        context.startActivity(intent)
+                                        Toast.makeText(context, "Find Allow auto launch and Allow background activity!", Toast.LENGTH_LONG).show()
+                                    } catch (e: ActivityNotFoundException) {
+                                        e.printStackTrace()
+                                        // show a dialog box to tell user to open the app info and enable Allow auto launch, Allow background activity etc
+                                        val innerBuilder = AlertDialog.Builder(context)
+                                        innerBuilder.setTitle("Enable More Background Permission")
+                                        innerBuilder.setMessage("Please enable Allow auto launch and Allow background activity for this app to work properly! You can find these options in the app info page of this app, usually under Battery Usage.")
+                                        // add just an ok button
+                                        innerBuilder.setPositiveButton("OK") { dialog, _ ->
+                                            dialog.dismiss()
+                                        }
+                                        innerBuilder.show()
+                                    }
+                                }
+
+                                dismiss()
+                            }
+
+                            getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener {
+                                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://dontkillmyapp.com/"))
+                                context.startActivity(browserIntent)
+                            }
+                        }
+                    }
+                }.show()
+            }
+        }
+
+        fun checkIfDontKillMyAppRan(): Boolean {
+            val sharedPreferences =
+                context.getSharedPreferences("dontKillMyApp", Context.MODE_PRIVATE)
+
+            return sharedPreferences.getBoolean("dontKillMyApp_Ran", false)
+        }
+
+        fun setDontKillMyAppRan() {
+            val sharedPreferences = context.getSharedPreferences("dontKillMyApp", Context.MODE_PRIVATE)
+            val editor = sharedPreferences.edit()
+            editor.putBoolean("dontKillMyApp_Ran", true)
+            editor.apply()
         }
     }
 }

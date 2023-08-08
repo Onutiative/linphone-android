@@ -3,6 +3,7 @@
 buildscript {
     repositories {
         google()
+        google()
         maven {
             url "https://plugins.gradle.org/m2/"
         }
@@ -12,7 +13,7 @@ buildscript {
         mavenCentral()  // Maven Central repository
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.2.1'
+        classpath 'com.android.tools.build:gradle:7.3.0'
         classpath 'com.google.gms:google-services:4.3.13'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.21"
         classpath "org.jlleitschuh.gradle:ktlint-gradle:10.1.0"

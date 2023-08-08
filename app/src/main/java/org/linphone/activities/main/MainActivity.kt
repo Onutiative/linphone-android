@@ -112,6 +112,13 @@ class MainActivity : GenericActivity(), SnackBarActivity, NavController.OnDestin
         sharedViewModel.layoutChangedEvent.value = Event(true)
     }
 
+    fun show_dontKillMyApp() {
+        Log.i("[OnuFunctions] dontKillMyApp_Ran")
+        var intent = Intent(coreContext.context, WelcomeScreen::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        coreContext.context.startActivity(intent)
+    }
+
     private var shouldTabsBeVisibleDependingOnDestination = true
     private var shouldTabsBeVisibleDueToOrientationAndKeyboard = true
 
@@ -148,6 +155,11 @@ class MainActivity : GenericActivity(), SnackBarActivity, NavController.OnDestin
 
         notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
         showBatteryOptimizationDialog()
+        Log.i("[OnuFunctions] dontKillMyApp_Ran: " + OnuFunctions.dontKillMyApp(this).checkIfDontKillMyAppRan())
+//        if (!OnuFunctions.dontKillMyApp(this).checkIfDontKillMyAppRan()) {
+//            OnuFunctions.dontKillMyApp(this).run()
+//            OnuFunctions.dontKillMyApp(this).setDontKillMyAppRan()
+//        }
 
         sharedViewModel.toggleDrawerEvent.observe(
             this
