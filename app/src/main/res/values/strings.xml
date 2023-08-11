@@ -940,4 +940,9 @@
     <string name="overlay_permission_toast">Please allow app overlay permission to continue</string>
     <string name="overlay_permission_message">Please accept app overlay permission.</string>
 
+    <!-- From Legacy App -->
+    <string name="version_name">OnuKit V6.4</string>
+    <string name="no_internet">No Internet Connection</string>
+    <string name="account_policy_text">Sorry!\n        \\nYou can not login or sign up without phone state or call permission.\n        \\n\\nOnuKit uses your phone identification number to identify your multiple device for routing your call and SMS from www.user.onukit.com user panel. Please allow this permission.</string>
+
 </resources>

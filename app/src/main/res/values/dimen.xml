@@ -82,4 +82,8 @@
     <dimen name="mute_mic_grid_margin">10dp</dimen>
     <dimen name="chat_message_sending_icons_size">35dp</dimen>
     <dimen name="chat_message_sending_icons_margin">5dp</dimen>
+
+    <dimen name="nav_header_vertical_spacing">16dp</dimen>
+
+
 </resources>
