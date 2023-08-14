@@ -10,9 +10,9 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.onutiative.onukit.MVP.Implementation.model.ServerRequest.TaskConversion;
-import com.onutiative.onukit.MVP.Implementation.model.TaskDataClasses.TaskPullDataSet.TaskList;
-import com.onutiative.onukit.R;
+import org.linphone.onu_legacy.MVP.Implementation.model.ServerRequest.TaskConversion;
+import org.linphone.onu_legacy.MVP.Implementation.model.TaskDataClasses.TaskPullDataSet.TaskList;
+import org.linphone.R;
 
 import java.util.List;
 

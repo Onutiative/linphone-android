@@ -11,10 +11,10 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.onutiative.onukit.Activities.DashBoard_Activity;
-import com.onutiative.onukit.Activities.PopupTaskActivity;
-import com.onutiative.onukit.MVP.Implementation.model.TaskDataClasses.TaskPullDataSet.TaskList;
-import com.onutiative.onukit.R;
+import org.linphone.onu_legacy.Activities.Activities.DashBoard_Activity;
+import org.linphone.onu_legacy.Activities.Activities.PopupTaskActivity;
+import org.linphone.onu_legacy.MVP.Implementation.model.TaskDataClasses.TaskPullDataSet.TaskList;
+import org.linphone.R;
 
 import java.util.Collections;
 import java.util.List;

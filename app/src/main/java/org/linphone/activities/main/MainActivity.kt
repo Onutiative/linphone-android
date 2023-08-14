@@ -65,6 +65,7 @@ import org.linphone.contact.ContactsUpdatedListenerStub
 import org.linphone.core.CorePreferences
 import org.linphone.core.tools.Log
 import org.linphone.databinding.MainActivityBinding
+import org.linphone.onu_legacy.Activities.Activities.RuntimePermissionActivity
 import org.linphone.onuspecific.OnuFunctions
 import org.linphone.utils.*
 
@@ -134,7 +135,7 @@ class MainActivity : GenericActivity(), SnackBarActivity, NavController.OnDestin
 //            } else {
 //                startActivity(Intent(this, AssistantActivity::class.java))
 //            }
-            startActivity(Intent(this, WelcomeScreen::class.java))
+            startActivity(Intent(this, RuntimePermissionActivity::class.java))
         }
 
         binding = DataBindingUtil.setContentView(this, R.layout.main_activity)
@@ -147,7 +148,7 @@ class MainActivity : GenericActivity(), SnackBarActivity, NavController.OnDestin
         binding.callOverlayViewModel = callOverlayViewModel
 
         notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
-        showBatteryOptimizationDialog()
+        // showBatteryOptimizationDialog()
 
         sharedViewModel.toggleDrawerEvent.observe(
             this

@@ -7,9 +7,10 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.onutiative.onukit.Activities.DashBoard_Activity;
-import com.onutiative.onukit.Activities.LoginActivity;
-import com.onutiative.onukit.Services.RecordJobService;
+
+import org.linphone.onu_legacy.Activities.Activities.DashBoard_Activity;
+import org.linphone.onu_legacy.Activities.Activities.LoginActivity;
+import org.linphone.onu_legacy.Services.RecordJobService;
 
 import static android.content.Context.MODE_PRIVATE;
 

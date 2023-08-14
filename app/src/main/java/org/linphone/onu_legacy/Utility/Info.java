@@ -11,8 +11,8 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.onutiative.onukit.Database.Contact;
-import com.onutiative.onukit.Database.Database;
+import org.linphone.onu_legacy.Database.Contact;
+import org.linphone.onu_legacy.Database.Database;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

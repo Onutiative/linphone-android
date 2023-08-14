@@ -4,11 +4,11 @@ import android.content.Context;
 import android.util.Log;
 
 import com.google.android.gms.common.util.ArrayUtils;
-import com.onutiative.onukit.Database.Contact;
-import com.onutiative.onukit.Database.Database;
-import com.onutiative.onukit.MVP.Implementation.model.ServerRequest.TaskPullRepository;
-import com.onutiative.onukit.MVP.Implementation.model.TaskDataClasses.TaskPullDataSet.PullTaskRequestBody;
-import com.onutiative.onukit.MVP.Implementation.model.TaskDataClasses.TaskPullDataSet.TaskList;
+import org.linphone.onu_legacy.Database.Contact;
+import org.linphone.onu_legacy.Database.Database;
+import org.linphone.onu_legacy.MVP.Implementation.model.ServerRequest.TaskPullRepository;
+import org.linphone.onu_legacy.MVP.Implementation.model.TaskDataClasses.TaskPullDataSet.PullTaskRequestBody;
+import org.linphone.onu_legacy.MVP.Implementation.model.TaskDataClasses.TaskPullDataSet.TaskList;
 
 import java.util.Arrays;
 import java.util.Collections;

@@ -29,9 +29,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.onutiative.onukit.Database.Contact;
-import com.onutiative.onukit.Database.Database;
-import com.onutiative.onukit.R;
+import org.linphone.onu_legacy.Database.Contact;
+import org.linphone.onu_legacy.Database.Database;
+import org.linphone.R;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -230,9 +230,25 @@ public class SmsToAll_Activity extends AppCompatActivity {
                 if (cur.getCount() > 0) {
                     while (cur.moveToNext())
                     {
-                        String id = cur.getString(cur.getColumnIndex(ContactsContract.Contacts._ID));
-                        String name = cur.getString(cur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-                        if (Integer.parseInt(cur.getString(cur.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0)
+                        String id = null;
+                        int columnIndex = cur.getColumnIndex(ContactsContract.Contacts._ID);
+                        if (columnIndex >= 0) {
+                            id = cur.getString(columnIndex);
+                        }
+
+                        String name = null;
+                        columnIndex = cur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME);
+                        if (columnIndex >= 0) {
+                            name = cur.getString(columnIndex);
+                        }
+
+                        String hasPhone = null;
+                        columnIndex = cur.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER);
+                        if (columnIndex >= 0) {
+                            hasPhone = cur.getString(columnIndex);
+                        }
+
+                        if (hasPhone.equalsIgnoreCase("1"))
                         {
                             Cursor pCur = cr.query(
                                     ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
@@ -241,8 +257,12 @@ public class SmsToAll_Activity extends AppCompatActivity {
                                     new String[]{id}, null);
                             while (pCur.moveToNext())
                             {
+                                String phoneNo = null;
+                                columnIndex = pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+                                if (columnIndex >= 0) {
+                                    phoneNo = pCur.getString(columnIndex);
+                                }
 
-                                String phoneNo = pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
                                 if(phoneNo.length() > 10) {
                                     Log.i("CList", "c:" + name + " Phone No: " + phoneNo);
                                     numbercount++;
@@ -336,9 +356,25 @@ public class SmsToAll_Activity extends AppCompatActivity {
                 if (cur.getCount() > 0) {
                     while (cur.moveToNext())
                     {
-                        String id = cur.getString(cur.getColumnIndex(ContactsContract.Contacts._ID));
-                        String name = cur.getString(cur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-                        if (Integer.parseInt(cur.getString(cur.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0)
+                        String id = null;
+                        int columnIndex = cur.getColumnIndex(ContactsContract.Contacts._ID);
+                        if (columnIndex >= 0) {
+                            id = cur.getString(columnIndex);
+                        }
+
+                        String name = null;
+                        columnIndex = cur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME);
+                        if (columnIndex >= 0) {
+                            name = cur.getString(columnIndex);
+                        }
+
+                        String hasPhone = null;
+                        columnIndex = cur.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER);
+                        if (columnIndex >= 0) {
+                            hasPhone = cur.getString(columnIndex);
+                        }
+
+                        if (hasPhone.equalsIgnoreCase("1"))
                         {
                             Cursor pCur = cr.query(
                                     ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
@@ -348,7 +384,11 @@ public class SmsToAll_Activity extends AppCompatActivity {
                             while (pCur.moveToNext())
                             {
 
-                                String phoneNo = pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                                String phoneNo = null;
+                                columnIndex = pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+                                if (columnIndex >= 0) {
+                                    phoneNo = pCur.getString(columnIndex);
+                                }
                                 if(phoneNo.length() > 10)
                                 {
                                     JSONObject jsonParam = new JSONObject();
@@ -443,9 +483,25 @@ public class SmsToAll_Activity extends AppCompatActivity {
         if (cur.getCount() > 0) {
             while (cur.moveToNext())
             {
-                String id = cur.getString(cur.getColumnIndex(ContactsContract.Contacts._ID));
-                String name = cur.getString(cur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-                if (Integer.parseInt(cur.getString(cur.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0)
+                String id = null;
+                int columnIndex = cur.getColumnIndex(ContactsContract.Contacts._ID);
+                if (columnIndex >= 0) {
+                    id = cur.getString(columnIndex);
+                }
+
+                String name = null;
+                columnIndex = cur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME);
+                if (columnIndex >= 0) {
+                    name = cur.getString(columnIndex);
+                }
+
+                String hasPhone = null;
+                columnIndex = cur.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER);
+                if (columnIndex >= 0) {
+                    hasPhone = cur.getString(columnIndex);
+                }
+
+                if (hasPhone.equalsIgnoreCase("1"))
                 {
                     Cursor pCur = cr.query(
                             ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
@@ -454,7 +510,11 @@ public class SmsToAll_Activity extends AppCompatActivity {
                             new String[]{id}, null);
                     while (pCur.moveToNext())
                     {
-                        String phoneNo = pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                        String phoneNo = null;
+                        columnIndex = pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+                        if (columnIndex >= 0) {
+                            phoneNo = pCur.getString(columnIndex);
+                        }
                         Log.i("CList","Name:"+ name +" Phone No: " +phoneNo);
                     }
                     pCur.close();
@@ -493,18 +553,17 @@ public class SmsToAll_Activity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case PERMISSION_REQUEST_CODE:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                {
-                    Snackbar.make(view,"Permission Granted, Now you can access contacts data.",Snackbar.LENGTH_LONG).show();
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Snackbar.make(view, "Permission Granted, Now you can access contacts data.", Snackbar.LENGTH_LONG).show();
                     progressBar = ProgressDialog.show(SmsToAll_Activity.this, "Contacts", "Loading...");
                     progressBar.setCancelable(true);
                     new HttpEditInfo(SmsToAll_Activity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
-                } else
-                {
-                    Snackbar.make(view,"Permission Denied, You cannot access contacts data.",Snackbar.LENGTH_LONG).show();
+                } else {
+                    Snackbar.make(view, "Permission Denied, You cannot access contacts data.", Snackbar.LENGTH_LONG).show();
 
                 }
                 break;

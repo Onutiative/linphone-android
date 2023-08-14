@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_web_views"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="org.linphone.onu_legacy.WebViews.WebViews">
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@android:color/background_light">
+
+        <ImageButton
+            android:layout_width="38dp"
+            android:layout_height="40dp"
+            android:id="@+id/homebtn"
+            android:background="@drawable/home"
+            android:layout_marginLeft="10dp"
+            android:layout_gravity="center" />
+
+        <TextView
+            android:text="OnuKit"
+            android:layout_width="294dp"
+            android:layout_height="match_parent"
+            android:id="@+id/textView27"
+            android:layout_weight="0.20"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="@android:color/holo_blue_dark" />
+    </LinearLayout>
+
+    <WebView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/webs"
+        android:layout_below="@+id/linearLayout"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+</RelativeLayout>

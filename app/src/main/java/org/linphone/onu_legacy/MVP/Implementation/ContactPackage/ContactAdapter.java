@@ -17,11 +17,11 @@ import android.widget.Filterable;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
-import com.onutiative.onukit.MVP.Implementation.model.ServerRequest.TaskConversion;
-import com.onutiative.onukit.MVP.Implementation.SmsSendPackage.SmsActivity;
-import com.onutiative.onukit.MVP.Implementation.model.ContactDataClasses.ContactDetails;
-import com.onutiative.onukit.R;
-import com.onutiative.onukit.Utility.Helper;
+import org.linphone.onu_legacy.MVP.Implementation.model.ServerRequest.TaskConversion;
+import org.linphone.onu_legacy.MVP.Implementation.SmsSendPackage.SmsActivity;
+import org.linphone.onu_legacy.MVP.Implementation.model.ContactDataClasses.ContactDetails;
+import org.linphone.R;
+import org.linphone.onu_legacy.Utility.Helper;
 
 import java.io.Serializable;
 import java.util.ArrayList;

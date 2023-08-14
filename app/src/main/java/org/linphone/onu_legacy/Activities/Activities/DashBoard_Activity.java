@@ -58,38 +58,42 @@ import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
+//import com.google.android.gms.ads.AdRequest;
+//import com.google.android.gms.ads.AdView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
-import com.onutiative.onukit.AsyncTasking.CheckOnline;
-import com.onutiative.onukit.AsyncTasking.FetchPermissions;
-import com.onutiative.onukit.AsyncTasking.PullServerSms;
-import com.onutiative.onukit.Database.Contact;
-import com.onutiative.onukit.Database.Database;
-import com.onutiative.onukit.MVP.Implementation.ContactPackage.ContactActivity;
-import com.onutiative.onukit.MVP.Implementation.PostedSMSPAckage.Posted_Inbox_Activity;
-import com.onutiative.onukit.MVP.Implementation.SmsSendPackage.SmsActivity;
-import com.onutiative.onukit.MVP.Implementation.TaskPackage.TaskShowActivity;
-import com.onutiative.onukit.MVP.Implementation.model.ContactDataClasses.ContactSummaryPullDataSet.ContactSummaryData;
-import com.onutiative.onukit.MVP.Implementation.model.ContactDataClasses.ContactSummaryPullDataSet.ContactSummeryGroup;
-import com.onutiative.onukit.MVP.Implementation.model.ContactDataClasses.ContactSyncDataSet.Address;
-import com.onutiative.onukit.MVP.Implementation.model.ContactDataClasses.ContactSyncDataSet.Contacts;
-import com.onutiative.onukit.MVP.Implementation.model.ContactDataClasses.ContactSyncDataSet.Profession;
-import com.onutiative.onukit.MVP.Implementation.model.ContactDataClasses.ContactSyncDataSet.Profile;
-import com.onutiative.onukit.MVP.Implementation.model.ContactDataClasses.ContactSyncDataSet.Relation;
-import com.onutiative.onukit.MVP.Implementation.model.ContactDataClasses.ContactSyncDataSet.VirtualContact;
-import com.onutiative.onukit.MVP.Implementation.model.ServerRequest.ContactSummaryPullRepository;
-import com.onutiative.onukit.MVP.Implementation.model.ServerRequest.ContactSyncRepository;
-import com.onutiative.onukit.MVP.Implementation.model.ServerRequest.TaskSummaryPullRepository;
-import com.onutiative.onukit.MVP.Implementation.model.TaskDataClasses.TaskPullDataSet.TaskSummaryData;
-import com.onutiative.onukit.R;
-import com.onutiative.onukit.Services.BackgroundService;
-import com.onutiative.onukit.Utility.Constants;
-import com.onutiative.onukit.Utility.Helper;
-import com.onutiative.onukit.Utility.Info;
-import com.onutiative.onukit.Utility.SharedPrefManager;
-import com.onutiative.onukit.WebViews.WebViews;
+
+import org.linphone.R;
+import org.linphone.onu_legacy.Activities.CallLog_Activity;
+import org.linphone.onu_legacy.Activities.OutgoingSent_Activity;
+import org.linphone.onu_legacy.Activities.PopupCallListActivity;
+import org.linphone.onu_legacy.AsyncTasking.CheckOnline;
+import org.linphone.onu_legacy.AsyncTasking.FetchPermissions;
+import org.linphone.onu_legacy.AsyncTasking.PullServerSms;
+import org.linphone.onu_legacy.Database.Contact;
+import org.linphone.onu_legacy.Database.Database;
+import org.linphone.onu_legacy.MVP.Implementation.ContactPackage.ContactActivity;
+import org.linphone.onu_legacy.MVP.Implementation.PostedSMSPAckage.Posted_Inbox_Activity;
+import org.linphone.onu_legacy.MVP.Implementation.SmsSendPackage.SmsActivity;
+import org.linphone.onu_legacy.MVP.Implementation.TaskPackage.TaskShowActivity;
+import org.linphone.onu_legacy.MVP.Implementation.model.ContactDataClasses.ContactSummaryPullDataSet.ContactSummaryData;
+import org.linphone.onu_legacy.MVP.Implementation.model.ContactDataClasses.ContactSummaryPullDataSet.ContactSummeryGroup;
+import org.linphone.onu_legacy.MVP.Implementation.model.ContactDataClasses.ContactSyncDataSet.Address;
+import org.linphone.onu_legacy.MVP.Implementation.model.ContactDataClasses.ContactSyncDataSet.Contacts;
+import org.linphone.onu_legacy.MVP.Implementation.model.ContactDataClasses.ContactSyncDataSet.Profession;
+import org.linphone.onu_legacy.MVP.Implementation.model.ContactDataClasses.ContactSyncDataSet.Profile;
+import org.linphone.onu_legacy.MVP.Implementation.model.ContactDataClasses.ContactSyncDataSet.Relation;
+import org.linphone.onu_legacy.MVP.Implementation.model.ContactDataClasses.ContactSyncDataSet.VirtualContact;
+import org.linphone.onu_legacy.MVP.Implementation.model.ServerRequest.ContactSummaryPullRepository;
+import org.linphone.onu_legacy.MVP.Implementation.model.ServerRequest.ContactSyncRepository;
+import org.linphone.onu_legacy.MVP.Implementation.model.ServerRequest.TaskSummaryPullRepository;
+import org.linphone.onu_legacy.MVP.Implementation.model.TaskDataClasses.TaskPullDataSet.TaskSummaryData;
+import org.linphone.onu_legacy.Services.BackgroundService;
+import org.linphone.onu_legacy.Utility.Constants;
+import org.linphone.onu_legacy.Utility.Helper;
+import org.linphone.onu_legacy.Utility.Info;
+import org.linphone.onu_legacy.Utility.SharedPrefManager;
+import org.linphone.onu_legacy.WebViews.WebViews;
 import com.timqi.sectorprogressview.SectorProgressView;
 
 import java.util.ArrayList;
@@ -121,8 +125,8 @@ public class DashBoard_Activity extends AppCompatActivity
     private TextView appEdition, email, SmsinSuccess, SmsinFailed, SmsinPending, SmsOutSuccess, SmsOutFailed, SmsOutPending,
             CallinSuccess, CallOutSuccess, pendingTaskSubmission, totalTask, pendingTask, totalContact, clientContacts;
     private ImageView callInQuota, callOutQuota, smsInQuota, smsOutQuota;
-    private AdView mAdView;
-    private AdRequest adRequest;
+//    private AdView mAdView;
+//    private AdRequest adRequest;
     private HashMap<String, String> url_maps;
     private ImageView refreshBtn;
     private ImageView inSms, inCall, outCall, outSms;
@@ -717,23 +721,31 @@ public class DashBoard_Activity extends AppCompatActivity
                 Log.i("CList", "3");
                 if (cur.getCount() > 0) {
                     while (cur.moveToNext()) {
-                        String id = cur.getString(cur.getColumnIndex(ContactsContract.Contacts._ID));
-                        String name = cur.getString(cur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-                        if (Integer.parseInt(cur.getString(cur.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0) {
+                        int idColumnIndex = cur.getColumnIndex(ContactsContract.Contacts._ID);
+                        String id = idColumnIndex >= 0 ? cur.getString(idColumnIndex) : "";
+                        int nameColumnIndex = cur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME);
+                        String name = nameColumnIndex >= 0 ? cur.getString(nameColumnIndex) : "";
+                        int hasPhoneNumberColumnIndex = cur.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER);
+                        if (hasPhoneNumberColumnIndex >= 0 && Integer.parseInt(cur.getString(hasPhoneNumberColumnIndex)) > 0) {
                             Cursor pCur = cr.query(
                                     ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
                                     null,
                                     ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
-                                    new String[]{id}, null);
-                            while (pCur.moveToNext()) {
+                                    new String[]{id},
+                                    null);
 
-                                String phoneNo = pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                                if (phoneNo.length() > 10) {
-                                    Log.i("CList", "ID:" + id + "  c:" + name + " Phone No: " + phoneNo + " Email: " + email);
+                            int phoneColumnIndex = pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+                            if (phoneColumnIndex >= 0) {
+                                while (pCur.moveToNext()) {
+                                    String phoneNo = pCur.getString(phoneColumnIndex);
+                                    if (phoneNo != null && phoneNo.length() > 10) {
+                                        Log.i("CList", "ID:" + id + "  c:" + name + " Phone No: " + phoneNo + " Email: " + email);
+                                    }
                                 }
                             }
                             pCur.close();
                         }
+
                     }
                     set_app_url();
                 } else {
@@ -775,9 +787,12 @@ public class DashBoard_Activity extends AppCompatActivity
                 List<Contacts> contactsList = new ArrayList<>();
                 int counter=0;
                 while (cur.moveToNext()) {
-                    String id = cur.getString(cur.getColumnIndex(ContactsContract.Contacts._ID));
-                    String name = cur.getString(cur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-                    if (Integer.parseInt(cur.getString(cur.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0) {
+                    int idColumnIndex = cur.getColumnIndex(ContactsContract.Contacts._ID);
+                    String id = idColumnIndex >= 0 ? cur.getString(idColumnIndex) : "";
+                    int nameColumnIndex = cur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME);
+                    String name = nameColumnIndex >= 0 ? cur.getString(nameColumnIndex) : "";
+                    int hasPhoneNumberColumnIndex = cur.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER);
+                    if (hasPhoneNumberColumnIndex >= 0 && Integer.parseInt(cur.getString(hasPhoneNumberColumnIndex)) > 0) {
                         Cursor pCur = cr.query(
                                 ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
                                 null,
@@ -785,11 +800,15 @@ public class DashBoard_Activity extends AppCompatActivity
                                 new String[]{id}, null);
                         List<VirtualContact>virtualContactList=new ArrayList<>();
                         while (pCur.moveToNext()) {
-                            String phoneNo = pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                            Log.i(TAG,"Name: "+name+"; Phone No.: "+phoneNo);
-                            VirtualContact virtualContact=new VirtualContact(phoneNo,"1");
-                            virtualContactList.add(virtualContact);
+                            int phoneColumnIndex = pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
+                            if (phoneColumnIndex >= 0) {
+                                String phoneNo = pCur.getString(phoneColumnIndex);
+                                Log.i(TAG, "Name: " + name + "; Phone No.: " + phoneNo);
+                                VirtualContact virtualContact = new VirtualContact(phoneNo, "1");
+                                virtualContactList.add(virtualContact);
+                            }
                         }
+
                         pCur.close();
                         //Profile profile, Address address, VirtualContact virtualContact, Relation relation, Profession profession
                         Profile profile=new Profile(name,"","","","",helper.getTime(),userId,
@@ -1027,9 +1046,9 @@ public class DashBoard_Activity extends AppCompatActivity
 
         db.deleteAdmin("receiver", "jhorotek");
         db.addAdminNumber(new Contact("receiver", "on", "jhorotek"));
-        mAdView = (AdView) findViewById(R.id.adView);
-        adRequest = new AdRequest.Builder().build();
-        mAdView.loadAd(adRequest);
+//        mAdView = (AdView) findViewById(R.id.adView);
+//        adRequest = new AdRequest.Builder().build();
+//        mAdView.loadAd(adRequest);
         GetSliderImage();
         appEdition = (TextView) header.findViewById(R.id.edition);
         email = (TextView) header.findViewById(R.id.textView);

@@ -29,11 +29,11 @@ import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
-import com.onutiative.onukit.Adapters.PagerAdapter;
-import com.onutiative.onukit.Database.Task;
-import com.onutiative.onukit.Fragments.TaskFormFragment;
-import com.onutiative.onukit.Fragments.TaskListFragment;
-import com.onutiative.onukit.R;
+import org.linphone.onu_legacy.Adapters.PagerAdapter;
+import org.linphone.onu_legacy.Database.Task;
+import org.linphone.onu_legacy.Fragments.TaskFormFragment;
+import org.linphone.onu_legacy.Fragments.TaskListFragment;
+import org.linphone.R;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import fr.ganfra.materialspinner.MaterialSpinner;

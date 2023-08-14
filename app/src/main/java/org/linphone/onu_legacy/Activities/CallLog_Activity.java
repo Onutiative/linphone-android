@@ -16,12 +16,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
-import com.onutiative.onukit.Adapters.CallLogAdapter;
-import com.onutiative.onukit.Database.Contact;
-import com.onutiative.onukit.Database.Database;
-import com.onutiative.onukit.Database.Fruit;
-import com.onutiative.onukit.R;
-import com.onutiative.onukit.WebViews.WebViews;
+
+import org.linphone.onu_legacy.Activities.Activities.DashBoard_Activity;
+import org.linphone.onu_legacy.Adapters.CallLogAdapter;
+import org.linphone.onu_legacy.Database.Contact;
+import org.linphone.onu_legacy.Database.Database;
+import org.linphone.onu_legacy.Database.Fruit;
+import org.linphone.R;
+import org.linphone.onu_legacy.WebViews.WebViews;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +75,7 @@ public class CallLog_Activity extends AppCompatActivity implements
         sentSmsToHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(CallLog_Activity.this,DashBoard_Activity.class);
+                Intent intent = new Intent(CallLog_Activity.this, DashBoard_Activity.class);
                 startActivity(intent);
             }
         });

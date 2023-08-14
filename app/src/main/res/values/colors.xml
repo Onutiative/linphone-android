@@ -118,4 +118,9 @@
         <item>@color/dot_dark_screen6</item>
         <item>@color/dot_dark_screen7</item>
     </array>
+
+    <color name="statusBarColor">#000000</color>
+    <color name="transBack">#AE00AEF0</color>
+    <color name="dark_blue">#4285F4</color>
+
 </resources>

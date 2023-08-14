@@ -14,13 +14,13 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.ybq.android.spinkit.style.ThreeBounce;
-import com.onutiative.onukit.AsyncTasking.CheckOnline;
-import com.onutiative.onukit.AsyncTasking.FetchImage;
-import com.onutiative.onukit.Database.Contact;
-import com.onutiative.onukit.Database.Database;
-import com.onutiative.onukit.R;
-import com.onutiative.onukit.Utility.Info;
-import com.onutiative.onukit.Utility.SharedPrefManager;
+import org.linphone.onu_legacy.AsyncTasking.CheckOnline;
+import org.linphone.onu_legacy.AsyncTasking.FetchImage;
+import org.linphone.onu_legacy.Database.Contact;
+import org.linphone.onu_legacy.Database.Database;
+import org.linphone.R;
+import org.linphone.onu_legacy.Utility.Info;
+import org.linphone.onu_legacy.Utility.SharedPrefManager;
 import com.skyfishjy.library.RippleBackground;
 
 import java.util.List;

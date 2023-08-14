@@ -28,11 +28,11 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import com.onutiative.onukit.Activities.DashBoard_Activity;
-import com.onutiative.onukit.MVP.Implementation.ContactPackage.ContactActivity;
-import com.onutiative.onukit.MVP.Implementation.model.ContactDataClasses.ContactDetails;
-import com.onutiative.onukit.MVP.Implementation.model.ServerRequest.PushScheduledSMS;
-import com.onutiative.onukit.R;
+import org.linphone.onu_legacy.Activities.Activities.DashBoard_Activity;
+import org.linphone.onu_legacy.MVP.Implementation.ContactPackage.ContactActivity;
+import org.linphone.onu_legacy.MVP.Implementation.model.ContactDataClasses.ContactDetails;
+import org.linphone.onu_legacy.MVP.Implementation.model.ServerRequest.PushScheduledSMS;
+import org.linphone.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

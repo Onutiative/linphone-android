@@ -4,8 +4,10 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.onutiative.onukit.MVP.Implementation.model.ContactDataClasses.ContactSyncDataSet.ContactObject;
-import com.onutiative.onukit.MVP.Implementation.model.ContactDataClasses.ContactSyncDataSet.Contacts;
+import org.linphone.onu_legacy.MVP.Implementation.model.ContactDataClasses.ContactSyncDataSet.ContactObject;
+import org.linphone.onu_legacy.MVP.Implementation.model.ContactDataClasses.ContactSyncDataSet.Contacts;
+
+import org.linphone.onu_legacy.MVP.Implementation.model.ContactDataClasses.ContactSyncDataSet.Contacts;
 
 import java.io.IOException;
 import java.util.List;

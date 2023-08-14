@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".onu_legacy.MVP.Implementation.ContactPackage.ContactActivity"
+    android:orientation="vertical">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/contactToolBar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        style="@style/HeaderBar"
+        android:elevation="4dp">
+        <androidx.cardview.widget.CardView
+            android:id="@+id/contactHomeBTN"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="left"
+            android:layout_marginRight="5dp"
+            android:theme="@style/AppTheme.PopupOverlay">
+            <ImageView
+                android:visibility="gone"
+                android:background="#fff"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:padding="2dp"
+                android:id="@+id/homeBTN"
+                android:clickable="true"
+                app:srcCompat="@drawable/home"/>
+        </androidx.cardview.widget.CardView>
+    </androidx.appcompat.widget.Toolbar>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/contactRecyclerList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical"
+            android:background="#B5EEECEC"
+            android:layout_above="@+id/doneTextBTN">
+
+        </androidx.recyclerview.widget.RecyclerView>
+        <TextView
+            android:id="@+id/doneTextBTN"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:layout_alignParentBottom="true"
+            android:text="DONE"
+            android:textColor="#fff"
+            android:textAlignment="center"
+            android:background="@color/OnuKit_color"
+            android:textSize="18sp"/>
+    </RelativeLayout>
+
+
+
+</LinearLayout>

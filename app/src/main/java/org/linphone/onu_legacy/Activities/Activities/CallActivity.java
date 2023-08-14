@@ -20,7 +20,8 @@ import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
-import com.onutiative.onukit.R;
+
+import org.linphone.R;
 
 public class CallActivity extends AppCompatActivity {
 

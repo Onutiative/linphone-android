@@ -12,7 +12,7 @@
     android:layout_height="match_parent"
     android:background="#f5f9fb"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.onutiative.onukit.Activities.DashBoardActivity"
+    tools:context="org.linphone.onu_legacy.Activities.DashBoardActivity"
     tools:showIn="@layout/app_bar_new_main">
     <com.daimajia.slider.library.SliderLayout
         android:id="@+id/slider"

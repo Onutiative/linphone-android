@@ -8,12 +8,14 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.ProgressDialog
 import android.content.BroadcastReceiver
+import android.content.ContentResolver
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.database.Cursor
 import android.graphics.Color
 import android.graphics.drawable.AnimationDrawable
 import android.net.ConnectivityManager
@@ -59,7 +61,11 @@ import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.timqi.sectorprogressview.SectorProgressView
 import org.linphone.R
+import org.linphone.onu_legacy.Activities.Activities.AboutActivity
 import org.linphone.onu_legacy.Activities.Activities.LoginActivity
+import org.linphone.onu_legacy.Activities.Activities.PrivacyPolicy_Activity
+import org.linphone.onu_legacy.Activities.Activities.RecentInbox_Activity
+import org.linphone.onu_legacy.Activities.Activities.Setting_Activity
 import org.linphone.onu_legacy.AsyncTasking.CheckOnline
 import org.linphone.onu_legacy.AsyncTasking.FetchPermissions
 import org.linphone.onu_legacy.AsyncTasking.PullServerSms
@@ -84,14 +90,12 @@ import org.linphone.onu_legacy.MVP.Implementation.model.TaskDataClasses.TaskPull
 import org.linphone.onu_legacy.Services.BackgroundService
 import org.linphone.onu_legacy.Utility.Constants
 import org.linphone.onu_legacy.Utility.Helper
-import org.linphone.onu_legacy.Utility.SharedPrefManager
 import org.linphone.onu_legacy.Utility.Info
-import org.linphone.onu_legacy.Activities.Activities.AboutActivity
-import org.linphone.onu_legacy.Activities.Activities.Setting_Activity
+import org.linphone.onu_legacy.Utility.SharedPrefManager
 import org.linphone.onu_legacy.WebViews.WebViews
 
 // <!--used in 6v3-->
-abstract class Dashboard_Activity() :
+class Dashboard_Activity_bak() :
     AppCompatActivity(),
     NavigationView.OnNavigationItemSelectedListener,
     View.OnClickListener,
@@ -410,8 +414,8 @@ abstract class Dashboard_Activity() :
                 imei =
                     Settings.Secure.getString(context!!.contentResolver, Settings.Secure.ANDROID_ID)
                 Log.i(TAG, "Permission Result: IME $imei")
-                db.deleteAdmin("did", "jhorotek")
-                db.addAdminNumber(Contact("did", imei, "jhorotek"))
+                db?.deleteAdmin("did", "jhorotek")
+                db?.addAdminNumber(Contact("did", imei, "jhorotek"))
             }
         }
         if (requestCode == 304 && grantResults.size > 0) {
@@ -470,7 +474,8 @@ abstract class Dashboard_Activity() :
                         progressBar?.setCancelable(true)
                         progressBar?.show()
                         // getPhoneContactAndSyncProcess();
-                        SendNumber(context as Activity).execute()
+                        //getPhoneContactAndSyncProcess();
+                        this.SendNumber(this).execute()
                         prefEditor!!.putBoolean("contactDialog", false)
                         prefEditor!!.commit()
                     } else {
@@ -570,9 +575,9 @@ abstract class Dashboard_Activity() :
                 val notificationManager =
                     applicationContext.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
                 notificationManager.cancel(1245)
-                sharedPrefManager.logoutUser()
+                sharedPrefManager?.logoutUser()
                 // After clearing the shared preferances I'm setting the value false for not showing the RuntimePermissionActivity.
-                sharedPrefManager.setPermissionSlideStatus(false)
+                sharedPrefManager?.setPermissionSlideStatus(false)
             }
             alertDialog.setNegativeButton(
                 "NO"
@@ -646,35 +651,35 @@ abstract class Dashboard_Activity() :
     //
     //        alertDialog.show();
     //    }
-    fun getUpdateDashboard(taskSummaryData: TaskSummaryData) {
+        override fun getUpdateDashboard(taskSummaryData: TaskSummaryData) {
 
 //        Log.i(TAG,"Total: "+taskSummaryData.getTotalTask());
 //        Log.i(TAG,"Pending: "+taskSummaryData.getPendingTask());
-        val total: Int = taskSummaryData.getTotalTask().toInt()
-        val pending: Int = taskSummaryData.getPendingTask().toInt()
+        val total: Int = taskSummaryData.totalTask.toInt()
+        val pending: Int = taskSummaryData.pendingTask.toInt()
         totalTask = findViewById<TextView>(R.id.totalTask)
         pendingTask = findViewById<TextView>(R.id.pendingTask)
         var parcent = 100f
         try {
-            parcent = parcent - pending * 100 / total
+            parcent -= pending * 100 / total
         } catch (e: Exception) {
         }
-        totalTask.setText(taskSummaryData.getTotalTask())
-        pendingTask.setText(taskSummaryData.getPendingTask())
+        totalTask?.text = taskSummaryData.totalTask
+        pendingTask?.text = taskSummaryData.pendingTask
         taskProgressView = findViewById(R.id.taskProgressView)
-        taskProgressView.setValue(parcent)
+        taskProgressView?.setValue(parcent)
     }
 
     fun getContactSummeryDashboardUpdate(summaryData: ContactSummaryData) {
-        Log.i(TAG, "Total contact: " + summaryData.getTotalContact())
-        val total: Int = summaryData.getTotalContact().toInt()
+        Log.i(TAG, "Total contact: " + summaryData.totalContact)
+        val total: Int = summaryData.totalContact.toInt()
         var client = 0
         var parcent = 0f
-        for (group: ContactSummeryGroup in summaryData.getGroup()) {
-            if (group.getGroupName().equals("Clients")) {
-                client = group.getNumberOfContact().toInt()
-                Log.i(TAG, "Total clients: " + group.getGroupName())
-                Log.i(TAG, "Total clients: " + group.getNumberOfContact())
+        for (group: ContactSummeryGroup in summaryData.group) {
+            if (group.groupName.equals("Clients")) {
+                client = group.numberOfContact.toInt()
+                Log.i(TAG, "Total clients: " + group.groupName)
+                Log.i(TAG, "Total clients: " + group.numberOfContact)
             }
         }
         try {
@@ -685,8 +690,8 @@ abstract class Dashboard_Activity() :
         totalContact = findViewById<TextView>(R.id.totalContact)
         clientContacts = findViewById<TextView>(R.id.clientContacts)
         contactCircleProgressView = findViewById(R.id.contactCircleProgressView)
-        totalContact?.setText(total.toString())
-        clientContacts?.setText(client.toString())
+        totalContact?.text = total.toString()
+        clientContacts?.text = client.toString()
         contactCircleProgressView?.setValue(parcent)
     }
 
@@ -764,143 +769,143 @@ abstract class Dashboard_Activity() :
         }
     }
 
-    abstract inner class SendNumber(var context: Context) :
-        AsyncTask<Void?, Void?, String?>() {
-        var dialog: ProgressDialog? = null
+    class SendNumber(private val context: Context) : AsyncTask<Void, Void, String>() {
+        private val TAG = "SendNumber"
+        private val progressBar: ProgressDialog = ProgressDialog(context)
+
         override fun onPreExecute() {
             super.onPreExecute()
-            // dialog = ProgressDialog.show(context, "Wait", "Please wait");
+            // progressBar = ProgressDialog.show(context, "Wait", "Please wait")
         }
 
-        override fun onPostExecute(result: String?) {
-            if (progressBar!!.isShowing) {
+        override fun onPostExecute(result: String) {
+            if (progressBar.isShowing) {
                 Log.i(TAG, "Progress dismiss")
-                progressBar!!.dismiss()
+                progressBar.dismiss()
             }
         }
 
-        protected override fun doInBackground(vararg params: Void?): String? { // HTTP
-            adminInfo
-            val cr = contentResolver
-            val cur = cr.query(
-                ContactsContract.Contacts.CONTENT_URI,
-                null, null, null, null
-            )
-            progressBar!!.setMessage("Total " + cur!!.count + " contacts sending...")
-            if (cur.count > 0) {
-                val contactsList: MutableList<Contacts> = ArrayList<Contacts>()
-                val counter = 0
+        override fun doInBackground(vararg params: Void): String? {
+            getAdminInfo()
+            val cr: ContentResolver = context.contentResolver
+            val cur: Cursor? = cr.query(ContactsContract.Contacts.CONTENT_URI, null, null, null, null)
+            progressBar.setMessage("Total " + cur?.count + " contacts sending...")
+
+            if (cur != null && cur.count > 0) {
+                val contactsList: MutableList<Contacts?> = ArrayList()
+                var counter = 0
+
                 while (cur.moveToNext()) {
-                    val idIndex = cur.getColumnIndex(ContactsContract.Contacts._ID)
-                    val id = cur.getString(idIndex)?.takeIf { idIndex >= 0 } ?: continue
-                    val nameIndex = cur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)
-                    val name = cur.getString(nameIndex)?.takeIf { nameIndex >= 0 } ?: continue
-                    val hasPhoneNumberIndex =
+                    val idColumnIndex = cur.getColumnIndex(ContactsContract.Contacts._ID)
+                    val id: String = if (idColumnIndex >= 0) cur.getString(idColumnIndex) else ""
+                    val nameColumnIndex = cur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME)
+                    val name: String =
+                        if (nameColumnIndex >= 0) cur.getString(nameColumnIndex) else ""
+                    val hasPhoneNumberColumnIndex =
                         cur.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER)
-                    if (hasPhoneNumberIndex >= 0 && (cur.getString(hasPhoneNumberIndex))
-                        .toInt() > 0
-                    ) {
-                        val pCur = cr.query(
+                    val hasPhoneNumber: String =
+                        if (hasPhoneNumberColumnIndex >= 0) cur.getString(hasPhoneNumberColumnIndex) else ""
+
+                    if (hasPhoneNumber.toInt() > 0) {
+                        val pCur: Cursor? = cr.query(
                             ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
                             null,
                             ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
                             arrayOf(id),
                             null
                         )
-                        val virtualContactList: MutableList<VirtualContact> =
-                            ArrayList<VirtualContact>()
-                        while (pCur!!.moveToNext()) {
-                            val phoneNoIndex =
+
+                        val virtualContactList: MutableList<VirtualContact> = ArrayList()
+
+                        while (pCur?.moveToNext() == true) {
+                            val phoneNoColumnIndex =
                                 pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
-                            val phoneNo = pCur.getString(phoneNoIndex)
+                            val phoneNo: String =
+                                if (phoneNoColumnIndex >= 0) pCur.getString(phoneNoColumnIndex) else ""
                             Log.i(TAG, "Name: $name; Phone No.: $phoneNo")
                             val virtualContact = VirtualContact(phoneNo, "1")
                             virtualContactList.add(virtualContact)
                         }
-                        pCur.close()
-                        // Profile profile, Address address, VirtualContact virtualContact, Relation relation, Profession profession
+                        pCur?.close()
+
+                        val helper = Helper(context)
+                        val userId = null
+                        val parentID = "0"
                         val profile = Profile(
-                            name, "", "", "", "", helper?.getTime() ?: "", userId,
+                            name, "", "", "", "", helper.getTime(), userId,
                             helper.getTime(), userId, "1", "", "0", parentID, "0"
                         )
                         val address = Address("", "", "", "", "", "", "", "", "", "")
                         val relation = Relation("", "")
                         val profession = Profession("", "", "")
-                        val contacts =
-                            Contacts(profile, address, virtualContactList, relation, profession)
+                        val contacts = Contacts(profile, address, virtualContactList, relation, profession)
                         contactsList.add(contacts)
                     }
                 }
-                val contactSyncRepository = ContactSyncRepository(
-                    context,
-                    "https://api.onukit.com/contact/0v1/",
-                    uname,
-                    upass,
-                    userId
-                )
+                cur.close()
+
+                val uname = null
+                val upass = null
+                val userId = null
+                val contactSyncRepository = ContactSyncRepository(context, "https://api.onukit.com/contact/0v1/", uname, upass, userId)
                 contactSyncRepository.postContacts(contactsList)
-                if (progressBar!!.isShowing) {
+                if (progressBar.isShowing) {
                     Log.i(TAG, "Progress dismiss")
-                    progressBar!!.dismiss()
+                    progressBar.dismiss()
                 }
+
             } else {
                 Log.i(TAG, "No contact exist!!!")
-                if (progressBar!!.isShowing) {
+                if (progressBar.isShowing) {
                     Log.i(TAG, "Progress dismiss")
-                    progressBar!!.dismiss()
+                    progressBar.dismiss()
                 }
             }
             return null
         }
     }
 
-    fun set_app_url() {
-        val db = Database(this@DashBoard_Activity)
-        val contacts: List<Contact> = db.getAdminNumber()
-        for (cn: Contact in contacts) {
-            if (cn.getName().equals("Custom_url")) {
-                if (!cn.getPhone_number().equals("")) url =
-                    cn.getPhone_number() + "/contactManagement"
-                urlForEdition = cn.getPhone_number() + "/getAppType"
+    open fun set_app_url() {
+        val db = Database(this)
+        val contacts = db.adminNumber
+        for (cn in contacts) {
+            if (cn.name.equals("Custom_url")) {
+                if (!cn.phone_number.equals("")) url = cn.phone_number + "/contactManagement"
+                urlForEdition = cn.phone_number + "/getAppType"
                 Log.e("From Dashboard ", "Url For Edition $urlForEdition")
-                // url = "http://api.onukit.com/6v0/contactManagement";
-            } else if (cn.getName().equals("email")) {
-                uname = cn.getPhone_number()
-            } else if (cn.getName().equals("password")) {
-                upass = cn.getPhone_number()
-            } else if (cn.getName().equals("user_id")) {
-                userId = cn.getPhone_number()
+                //url = "http://api.onukit.com/6v0/contactManagement";
+            } else if (cn.name.equals("email")) {
+                uname = cn.phone_number
+            } else if (cn.name.equals("password")) {
+                upass = cn.phone_number
+            } else if (cn.name.equals("user_id")) {
+                userId = cn.phone_number
             }
         }
     }
 
-    val adminInfo: Unit
-        get() {
-            val db = Database(this@DashBoard_Activity)
-            val contacts: List<Contact> = db.getAdminNumber()
-            for (cn: Contact in contacts) {
-                if (cn.getName().equals("email")) {
-                    uname = cn.getPhone_number()
-                } else if (cn.getName().equals("password")) {
-                    upass = cn.getPhone_number()
-                } else if (cn.getName().equals("user_id")) {
-                    userId = cn.getPhone_number()
-                } else if (cn.getName().equals("parent_id")) {
-                    parentID = cn.getPhone_number()
-                }
+    open fun getAdminInfo() {
+        val db = Database(this)
+        val contacts = db.adminNumber
+        for (cn in contacts) {
+            if (cn.name.equals("email")) {
+                uname = cn.phone_number
+            } else if (cn.name.equals("password")) {
+                upass = cn.phone_number
+            } else if (cn.name.equals("user_id")) {
+                userId = cn.phone_number
+            } else if (cn.name.equals("parent_id")) {
+                parentID = cn.phone_number
             }
         }
+    }
 
     private fun checkPermission(): Boolean {
         val result = ContextCompat.checkSelfPermission(
-            this@DashBoard_Activity,
+            this,
             Manifest.permission.READ_CONTACTS
         )
-        return if (result == PackageManager.PERMISSION_GRANTED) {
-            true
-        } else {
-            false
-        }
+        return result == PackageManager.PERMISSION_GRANTED
     }
 
     private fun requestPermission() {
@@ -936,11 +941,11 @@ abstract class Dashboard_Activity() :
      * All Custom functions*********************
      */
     private fun Recent_sms() {
-        if (db.checklock("lockrecent")) {
-            val alertDialog = android.app.AlertDialog.Builder(this@DashBoard_Activity)
+        if (db?.checklock("lockrecent") == true) {
+            val alertDialog = android.app.AlertDialog.Builder(this)
             alertDialog.setTitle("Recent sms")
             alertDialog.setMessage("Enter Password:")
-            val input = EditText(this@DashBoard_Activity)
+            val input = EditText(this)
             input.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
             val lp = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
@@ -953,14 +958,14 @@ abstract class Dashboard_Activity() :
                 "UNLOCK"
             ) { dialog, which ->
                 val pass = input.text.toString()
-                val db = Database(this@DashBoard_Activity)
+                val db = Database(this)
                 if (db.password(pass)) {
-                    val i = Intent(this@DashBoard_Activity, RecentInbox_Activity::class.java)
+                    val i = Intent(this, RecentInbox_Activity::class.java)
                     i.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                     startActivity(i)
                     dialog.cancel()
                 } else {
-                    Toast.makeText(this@DashBoard_Activity, "Invalid Password", Toast.LENGTH_LONG)
+                    Toast.makeText(this, "Invalid Password", Toast.LENGTH_LONG)
                         .show()
                 }
             }
@@ -970,7 +975,7 @@ abstract class Dashboard_Activity() :
             alertDialog.show()
         } else {
             Log.i(TAG, "Clicked")
-            val i = Intent(this@DashBoard_Activity, RecentInbox_Activity::class.java)
+            val i = Intent(this, RecentInbox_Activity::class.java)
             i.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             startActivity(i)
         }
@@ -1014,12 +1019,12 @@ abstract class Dashboard_Activity() :
         refreshBtn = toolbar.findViewById<ImageView>(R.id.refreshbtn)
         //        infoBtn = (ImageButton) findViewById(R.id.infoButton);
         indicator = toolbar.findViewById<ImageView>(R.id.indicator)
-        adminInfo
+        getAdminInfo()
         taskSummaryPullRepository =
             TaskSummaryPullRepository(context, "https://api.onukit.com/6v4/", uname, upass)
-        taskSummaryPullRepository.pullTaskSummary()
+        taskSummaryPullRepository?.pullTaskSummary()
         contactSummaryPullRepository = ContactSummaryPullRepository(context)
-        contactSummaryPullRepository.pullContactSummary()
+        contactSummaryPullRepository?.pullContactSummary()
         inSms = findViewById<View>(R.id.incomingsms) as ImageView
         outSms = findViewById<View>(R.id.outgoingsms) as ImageView
         inCall = findViewById<View>(R.id.incomingcall) as ImageView
@@ -1039,9 +1044,9 @@ abstract class Dashboard_Activity() :
         //
 //        clientContacts=findViewById(R.id.clientContacts);
 //        totalContact=findViewById(R.id.totalContact);
-        refreshBtn.setOnClickListener(this)
+        refreshBtn?.setOnClickListener(this)
         //        infoBtn.setOnClickListener(this);
-        indicator.setOnClickListener(this)
+        indicator?.setOnClickListener(this)
         StartBackgroundService()
         outSms!!.setOnClickListener(this)
         inCall!!.setOnClickListener(this)
@@ -1049,18 +1054,20 @@ abstract class Dashboard_Activity() :
         inSms!!.setOnClickListener {
             try {
                 Log.i("error", "onclick")
-                val i_c = Intent(this@DashBoard_Activity, Posted_Inbox_Activity::class.java)
+                val i_c = Intent(this, Posted_Inbox_Activity::class.java)
                 i_c.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                 startActivity(i_c)
             } catch (e: Exception) {
                 Log.i("error", e.toString())
             }
         }
-        db.deleteAdmin("receiver", "jhorotek")
-        db.addAdminNumber(Contact("receiver", "on", "jhorotek"))
-        mAdView = findViewById<View>(R.id.adView) as AdView
-        adRequest = Builder().build()
-        mAdView.loadAd(adRequest)
+        db?.deleteAdmin("receiver", "jhorotek")
+        db?.addAdminNumber(Contact("receiver", "on", "jhorotek"))
+
+//        mAdView = findViewById<View>(R.id.adView) as AdView
+//        adRequest = Builder().build()
+//        mAdView.loadAd(adRequest)
+
         GetSliderImage()
         appEdition = header.findViewById<View>(R.id.edition) as TextView
         email = header.findViewById<View>(R.id.textView) as TextView
@@ -1069,16 +1076,20 @@ abstract class Dashboard_Activity() :
         updateQuota()
         updateDashboard()
         StartBroadcast()
-        if (info.isNetworkAvailable()) {
+        if (info?.isNetworkAvailable() == true) {
             FetchPermissions(this).execute()
         }
     }
 
     private fun updateQuota() {
-        incomingCallCircleProgressView.setValue(info.getCallInQuota().toInt())
-        outgoingCallCircleProgressView.setValue(info.getCallOutQuota().toInt())
-        incomingSmsCircleProgressView.setValue(info.getSmsInQuota().toInt())
-        outgoingSmsCircleProgressView.setValue(info.getSmsOutQuota().toInt())
+        info?.getCallInQuota()?.toInt()
+            ?.let { incomingCallCircleProgressView?.setValue(it.toFloat()) }
+        info?.getCallOutQuota()?.toInt()
+            ?.let { outgoingCallCircleProgressView?.setValue(it.toFloat()) }
+        info?.getSmsInQuota()?.toInt()
+            ?.let { incomingSmsCircleProgressView?.setValue(it.toFloat()) }
+        info?.getSmsOutQuota()?.toInt()
+            ?.let { outgoingSmsCircleProgressView?.setValue(it.toFloat()) }
     }
 
     fun StartBroadcast() {
@@ -1088,14 +1099,14 @@ abstract class Dashboard_Activity() :
 
     // updateInfo() is for setting the navbar heading in the Dashboard.
     private fun updateInfo() {
-        appEdition.setText(info.getUserType())
-        email.setText(info.getUsername())
+        appEdition?.setText(info?.getUserType())
+        email?.setText(info?.getUsername())
     }
 
     private fun GetSliderImage() {
         url_maps = HashMap()
-        if (info.isNetworkAvailable()) {
-            val contacts: List<Contact> = db.getAdminNumber()
+        if (info?.isNetworkAvailable() == true) {
+            val contacts: List<Contact> = db?.getAdminNumber()!!
 
             // This index variable is just for this function.
             var index = 0
@@ -1115,7 +1126,7 @@ abstract class Dashboard_Activity() :
             Log.i("Jhoro", "Update DashBoard")
 
             // //////////without animation ////////////////////////////
-            if (info.isNetworkAvailable()) {
+            if (info?.isNetworkAvailable() == true) {
                 indicator!!.setImageResource(R.drawable.internet_connect_5)
             } else {
                 indicator!!.setImageResource(R.drawable.cloud_computing_no_conn)
@@ -1134,17 +1145,17 @@ abstract class Dashboard_Activity() :
 //            }
             // getSentCount
 //        SmsOutSuccess.setText(info.getOutboxSentCount());
-            SmsOutSuccess.setText(java.lang.String.valueOf(db.getSentSmsCount()))
-            SmsinPending!!.text = Integer.toString(db.getSmsCount())
+            SmsOutSuccess?.setText(java.lang.String.valueOf(db?.getSentSmsCount()))
+            SmsinPending!!.text = db?.let { Integer.toString(it.getSmsCount()) }
             // SmsOutPending.setText(Integer.toString(db.getOutboxCounttow()));
-            SmsOutPending.setText(java.lang.String.valueOf(db.getPendingSmsCount()).toString())
+            SmsOutPending?.setText(db?.let { java.lang.String.valueOf(it.getPendingSmsCount()).toString() })
             // SmsOutPending.setText(String.valueOf(String.valueOf(db.notprocessedsms())));
             // increible information
-            Log.i("Jhoro", "sms success:" + info.getOutboxSentCount())
-            SmsinSuccess!!.text = Integer.toString(db.getContactsCount())
-            CallinSuccess.setText(info.getIncallCount())
-            CallOutSuccess.setText(info.getOutcallCount())
-            pendingTaskSubmission.setText(java.lang.String.valueOf(db.getTaskCount()))
+            Log.i("Jhoro", "sms success:" + (info?.getOutboxSentCount()))
+            SmsinSuccess!!.text = db?.let { Integer.toString(it.getContactsCount()) }
+            CallinSuccess?.setText(info?.getIncallCount())
+            CallOutSuccess?.setText(info?.getOutcallCount())
+            pendingTaskSubmission?.setText(java.lang.String.valueOf(db?.getTaskCount()))
             //        SmsOutFailed.setText("0");
 //        SmsinFailed.setText("0");
 //        Integer.toString(db.getTaskCount())
@@ -1155,7 +1166,7 @@ abstract class Dashboard_Activity() :
     }
 
     private fun AlertInfo() {
-        val alertDialog = android.app.AlertDialog.Builder(this@DashBoard_Activity)
+        val alertDialog = android.app.AlertDialog.Builder(this)
         alertDialog.setTitle("OnuKit")
         alertDialog.setMessage(
             "This Green Signal indicates that you are connected to the internet. " +
@@ -1182,18 +1193,18 @@ abstract class Dashboard_Activity() :
             textSliderView.bundle(Bundle())
             textSliderView.getBundle()
                 .putString("extra", name)
-            mDemoSlider.addSlider(textSliderView)
+            mDemoSlider?.addSlider(textSliderView)
         }
-        mDemoSlider.setPresetTransformer(SliderLayout.Transformer.Accordion)
-        mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom)
-        mDemoSlider.setCustomAnimation(DescriptionAnimation())
-        mDemoSlider.setDuration(4000)
+        mDemoSlider?.setPresetTransformer(SliderLayout.Transformer.Accordion)
+        mDemoSlider?.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom)
+        mDemoSlider?.setCustomAnimation(DescriptionAnimation())
+        mDemoSlider?.setDuration(4000)
     }
 
     private fun TopNotification() {
         val ii = Intent(this, PrivacyPolicy_Activity::class.java)
         ii.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-        val contentIntent = PendingIntent.getActivity(this, 0, ii, 0)
+        val contentIntent = PendingIntent.getActivity(this, 0, ii, PendingIntent.FLAG_IMMUTABLE)
         val myNotification: Notification = NotificationCompat.Builder(this)
             .setContentTitle(getString(R.string.notification_heading))
             .setContentText(getString(R.string.notification_body))
@@ -1216,15 +1227,15 @@ abstract class Dashboard_Activity() :
             1000
         )
         // button effect end
-        if (info.isNetworkAvailable()) {
+        if (info?.isNetworkAvailable() == true) {
             progressBar =
-                ProgressDialog.show(this@DashBoard_Activity, "Fetching Data", "Loading...")
-            progressBar.setCancelable(true)
+                ProgressDialog.show(this, "Fetching Data", "Loading...")
+            progressBar?.setCancelable(true)
             object : CountDownTimer(2000, 1000) {
                 override fun onFinish() {
                     try {
-                        if (progressBar.isShowing()) {
-                            progressBar.dismiss()
+                        if (progressBar?.isShowing() == true) {
+                            progressBar?.dismiss()
                         }
                     } catch (e: Exception) {
                     }
@@ -1237,8 +1248,8 @@ abstract class Dashboard_Activity() :
 //            new PullSmsFromServer(DashBoard_Activity.this, info.getImei()).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             PullServerSms(this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
             CheckOnline(
-                this@DashBoard_Activity,
-                info.getImei()
+                this,
+                info?.getImei()
             ).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR)
             // new DeliveryReportPoster(DashBoard_Activity.this, info.getImei()).execute();
             // Toast.makeText(DashBoard_Activity.this, "Acknowledgement sent ", Toast.LENGTH_LONG).show();
@@ -1276,7 +1287,7 @@ abstract class Dashboard_Activity() :
                 "Skype: onukit\n"
         )
         Linkify.addLinks(stMyWeb, Linkify.ALL)
-        val aboutDialog: AlertDialog = AlertDialog.Builder(this@DashBoard_Activity)
+        val aboutDialog: AlertDialog = AlertDialog.Builder(this)
             .setMessage(stMyWeb)
             .setIcon(R.drawable.onukit_logo2)
             .setTitle("OnuKit")

@@ -8,8 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.onutiative.onukit.MVP.Implementation.model.ContactDataClasses.ContactDetails;
-import com.onutiative.onukit.R;
+import org.linphone.onu_legacy.MVP.Implementation.model.ContactDataClasses.ContactDetails;
+import org.linphone.R;
 
 import java.util.List;
 

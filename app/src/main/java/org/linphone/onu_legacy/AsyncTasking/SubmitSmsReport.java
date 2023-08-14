@@ -6,12 +6,12 @@ import android.os.AsyncTask;
 import android.util.Base64;
 import android.util.Log;
 
-import com.onutiative.onukit.Database.Contact;
-import com.onutiative.onukit.Database.Database;
-import com.onutiative.onukit.Database.ServerSms;
-import com.onutiative.onukit.Utility.Constants;
-import com.onutiative.onukit.Utility.IntentStatus;
-import com.onutiative.onukit.Utility.SharedPrefManager;
+import org.linphone.onu_legacy.Database.Contact;
+import org.linphone.onu_legacy.Database.Database;
+import org.linphone.onu_legacy.Database.ServerSms;
+import org.linphone.onu_legacy.Utility.Constants;
+import org.linphone.onu_legacy.Utility.IntentStatus;
+import org.linphone.onu_legacy.Utility.SharedPrefManager;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;

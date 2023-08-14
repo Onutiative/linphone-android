@@ -9,9 +9,9 @@ import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.onutiative.onukit.Database.Contact;
-import com.onutiative.onukit.Database.Database;
-import com.onutiative.onukit.MVP.Implementation.model.ServerRequest.TaskConversion;
+import org.linphone.onu_legacy.Database.Contact;
+import org.linphone.onu_legacy.Database.Database;
+import org.linphone.onu_legacy.MVP.Implementation.model.ServerRequest.TaskConversion;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;

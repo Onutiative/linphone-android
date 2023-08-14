@@ -5,14 +5,14 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.ProgressBar;
 
-import com.onutiative.onukit.MVP.Implementation.TaskPackage.PresenterTaskShow;
-import com.onutiative.onukit.MVP.Implementation.model.ContactDataClasses.ContactDetails;
-import com.onutiative.onukit.MVP.Implementation.model.ContactDataClasses.ContactPullDataSet.ContactList;
-import com.onutiative.onukit.MVP.Implementation.model.ContactDataClasses.ContactPullDataSet.ContactPulledData;
-import com.onutiative.onukit.MVP.Implementation.model.ServerRequest.RetrofitUrlMapper;
-import com.onutiative.onukit.MVP.Implementation.model.TaskDataClasses.TaskPullDataSet.PullTaskRequestBody;
-import com.onutiative.onukit.MVP.Implementation.model.TaskDataClasses.TaskPullDataSet.PullTaskResponseData;
-import com.onutiative.onukit.MVP.Implementation.model.TaskDataClasses.TaskPullDataSet.TaskList;
+import org.linphone.onu_legacy.MVP.Implementation.TaskPackage.PresenterTaskShow;
+import org.linphone.onu_legacy.MVP.Implementation.model.ContactDataClasses.ContactDetails;
+import org.linphone.onu_legacy.MVP.Implementation.model.ContactDataClasses.ContactPullDataSet.ContactList;
+import org.linphone.onu_legacy.MVP.Implementation.model.ContactDataClasses.ContactPullDataSet.ContactPulledData;
+import org.linphone.onu_legacy.MVP.Implementation.model.ServerRequest.RetrofitUrlMapper;
+import org.linphone.onu_legacy.MVP.Implementation.model.TaskDataClasses.TaskPullDataSet.PullTaskRequestBody;
+import org.linphone.onu_legacy.MVP.Implementation.model.TaskDataClasses.TaskPullDataSet.PullTaskResponseData;
+import org.linphone.onu_legacy.MVP.Implementation.model.TaskDataClasses.TaskPullDataSet.TaskList;
 
 import java.io.IOException;
 import java.util.ArrayList;

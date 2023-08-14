@@ -30,11 +30,11 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NotificationCompat;
 
-import com.onutiative.onukit.Database.Contact;
-import com.onutiative.onukit.Database.Database;
-import com.onutiative.onukit.R;
-import com.onutiative.onukit.Utility.Info;
-import com.onutiative.onukit.Utility.SharedPrefManager;
+import org.linphone.onu_legacy.Database.Contact;
+import org.linphone.onu_legacy.Database.Database;
+import org.linphone.R;
+import org.linphone.onu_legacy.Utility.Info;
+import org.linphone.onu_legacy.Utility.SharedPrefManager;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;

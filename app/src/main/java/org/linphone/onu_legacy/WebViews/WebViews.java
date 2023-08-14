@@ -21,9 +21,9 @@ import android.webkit.WebViewClient;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
-import com.onutiative.onukit.Activities.DashBoard_Activity;
-import com.onutiative.onukit.R;
-import com.onutiative.onukit.Utility.Info;
+import org.linphone.onu_legacy.Activities.Activities.DashBoard_Activity;
+import org.linphone.R;
+import org.linphone.onu_legacy.Utility.Info;
 
 public class WebViews extends AppCompatActivity {
 

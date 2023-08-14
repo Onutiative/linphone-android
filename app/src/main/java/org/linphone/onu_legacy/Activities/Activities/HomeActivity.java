@@ -27,9 +27,9 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.onutiative.onukit.Database.Contact;
-import com.onutiative.onukit.Database.Database;
-import com.onutiative.onukit.R;
+import org.linphone.onu_legacy.Database.Contact;
+import org.linphone.onu_legacy.Database.Database;
+import org.linphone.R;
 import com.wafflecopter.multicontactpicker.ContactResult;
 import com.wafflecopter.multicontactpicker.MultiContactPicker;
 
@@ -480,7 +480,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private boolean checkPermission(){
-        int result = ContextCompat.checkSelfPermission(HomeActivity.this, Manifest.permission.READ_CONTACTS);
+        int result = ContextCompat.checkSelfPermission(HomeActivity.this, android.Manifest.permission.READ_CONTACTS);
 
 
         if (result == PackageManager.PERMISSION_GRANTED  ){

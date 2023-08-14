@@ -11,10 +11,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.onutiative.onukit.MVP.Implementation.model.AdminDataClasses.AdminInfo;
-import com.onutiative.onukit.MVP.Implementation.model.SMSDataClasses.InboxSMSDetails;
-import com.onutiative.onukit.Utility.Constants;
-import com.onutiative.onukit.Utility.IntentStatus;
+import org.linphone.onu_legacy.MVP.Implementation.model.AdminDataClasses.AdminInfo;
+import org.linphone.onu_legacy.MVP.Implementation.model.SMSDataClasses.InboxSMSDetails;
+import org.linphone.onu_legacy.Utility.Constants;
+import org.linphone.onu_legacy.Utility.IntentStatus;
 
 import org.json.JSONArray;
 import org.json.JSONException;

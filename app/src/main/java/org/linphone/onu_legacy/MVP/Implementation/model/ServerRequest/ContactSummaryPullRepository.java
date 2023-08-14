@@ -3,9 +3,9 @@ package org.linphone.onu_legacy.MVP.Implementation.model.ServerRequest;
 import android.content.Context;
 import android.util.Log;
 
-import com.onutiative.onukit.Database.Contact;
-import com.onutiative.onukit.Database.Database;
-import com.onutiative.onukit.MVP.Implementation.model.ContactDataClasses.ContactSummaryPullDataSet.ContactSummaryData;
+import org.linphone.onu_legacy.Database.Contact;
+import org.linphone.onu_legacy.Database.Database;
+import org.linphone.onu_legacy.MVP.Implementation.model.ContactDataClasses.ContactSummaryPullDataSet.ContactSummaryData;
 
 import java.io.IOException;
 import java.util.List;

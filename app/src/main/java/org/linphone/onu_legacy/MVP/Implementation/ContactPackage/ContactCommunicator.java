@@ -1,6 +1,6 @@
 package org.linphone.onu_legacy.MVP.Implementation.ContactPackage;
 
-import com.onutiative.onukit.MVP.Implementation.model.ContactDataClasses.ContactDetails;
+import org.linphone.onu_legacy.MVP.Implementation.model.ContactDataClasses.ContactDetails;
 
 import java.util.List;
 

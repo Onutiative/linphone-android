@@ -15,11 +15,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.onutiative.onukit.Database.Contact;
-import com.onutiative.onukit.Database.Database;
-import com.onutiative.onukit.MVP.Implementation.model.ContactDataClasses.ContactDetails;
-import com.onutiative.onukit.MVP.Implementation.model.ServerRequest.ContactPullRepository;
-import com.onutiative.onukit.R;
+import org.linphone.onu_legacy.Database.Contact;
+import org.linphone.onu_legacy.Database.Database;
+import org.linphone.onu_legacy.MVP.Implementation.model.ContactDataClasses.ContactDetails;
+import org.linphone.onu_legacy.MVP.Implementation.model.ServerRequest.ContactPullRepository;
+import org.linphone.R;
 
 import java.util.List;
 

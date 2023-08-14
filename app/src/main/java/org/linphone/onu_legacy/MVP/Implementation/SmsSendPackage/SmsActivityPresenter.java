@@ -11,10 +11,10 @@ import android.view.LayoutInflater;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.onutiative.onukit.MVP.Implementation.model.ContactDataClasses.ContactDetails;
-import com.onutiative.onukit.MVP.Implementation.model.SMSDataClasses.ScheduleSMSDetails;
-import com.onutiative.onukit.MVP.Implementation.model.ServerRequest.PushScheduledSMS;
-import com.onutiative.onukit.R;
+import org.linphone.onu_legacy.MVP.Implementation.model.ContactDataClasses.ContactDetails;
+import org.linphone.onu_legacy.MVP.Implementation.model.SMSDataClasses.ScheduleSMSDetails;
+import org.linphone.onu_legacy.MVP.Implementation.model.ServerRequest.PushScheduledSMS;
+import org.linphone.R;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

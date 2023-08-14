@@ -8,11 +8,11 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.onutiative.onukit.Database.Database;
-import com.onutiative.onukit.MVP.Implementation.model.AdminDataClasses.AdminInfo;
-import com.onutiative.onukit.MVP.Implementation.model.ContactDataClasses.ContactDetails;
-import com.onutiative.onukit.MVP.Implementation.model.SMSDataClasses.SendSMSDetails;
-import com.onutiative.onukit.Utility.SharedPrefManager;
+import org.linphone.onu_legacy.Database.Database;
+import org.linphone.onu_legacy.MVP.Implementation.model.AdminDataClasses.AdminInfo;
+import org.linphone.onu_legacy.MVP.Implementation.model.ContactDataClasses.ContactDetails;
+import org.linphone.onu_legacy.MVP.Implementation.model.SMSDataClasses.SendSMSDetails;
+import org.linphone.onu_legacy.Utility.SharedPrefManager;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;

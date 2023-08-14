@@ -9,7 +9,7 @@ def appVersionName = "0.2.2"
 def appVersionCode = 00022
 
 static def getPackageName() {
-    return "com.onutiative.onukit"
+    return "org.linphone.onu_legacy"
 }
 
 def firebaseEnabled = new File(projectDir.absolutePath +'/google-services.json').exists()
@@ -85,6 +85,7 @@ project.tasks['preBuild'].dependsOn 'linphoneSdkSource'
 android {
     compileSdkVersion 33
     buildToolsVersion '33.0.0'
+    useLibrary 'org.apache.http.legacy'
     defaultConfig {
         minSdkVersion 23
         targetSdkVersion 33
@@ -133,8 +134,8 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
-            shrinkResources true
+            minifyEnabled false
+            shrinkResources false
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 
@@ -225,6 +226,19 @@ dependencies {
     implementation 'com.daimajia.slider:library:1.1.5@aar'
     implementation 'com.github.jakob-grabner:Circle-Progress-View:v1.3'
     implementation 'com.timqi.sectorprogressview:library:2.0.1'
+    implementation 'com.squareup.okhttp3:okhttp:3.3.1'
+    implementation("com.squareup.okhttp3:logging-interceptor:3.12.1")
+    implementation 'com.karumi:dexter:4.2.0'
+    implementation 'com.github.broakenmedia:MultiContactPicker:1.7'
+    // This auth is added on this new FCM project
+    implementation 'com.google.android.gms:play-services-auth:15.0.1'
+    implementation 'com.google.android.gms:play-services-ads:15.0.1'
+    implementation 'com.wdullaer:materialdatetimepicker:3.6.3'
+    implementation('com.github.ganfra:material-spinner:2.0.0') {
+        exclude group: 'com.android.support', module: 'appcompat-v7'
+    }
+    implementation 'com.oguzdev:CircularFloatingActionMenu:1.0.2'
+    implementation 'org.greenrobot:eventbus:3.0.0'
 
     // https://github.com/material-components/material-components-android/blob/master/LICENSE Apache v2.0
     implementation 'com.google.android.material:material:1.7.0'

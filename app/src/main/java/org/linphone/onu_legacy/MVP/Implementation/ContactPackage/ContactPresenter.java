@@ -5,8 +5,8 @@ import android.content.Intent;
 
 import androidx.appcompat.app.AlertDialog;
 
-import com.onutiative.onukit.Activities.CallActivity;
-import com.onutiative.onukit.MVP.Implementation.model.ContactDataClasses.ContactDetails;
+import org.linphone.onu_legacy.Activities.Activities.CallActivity;
+import org.linphone.onu_legacy.MVP.Implementation.model.ContactDataClasses.ContactDetails;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

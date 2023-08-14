@@ -10,7 +10,7 @@ import android.preference.PreferenceManager;
 import androidx.annotation.Nullable;
 import android.util.Log;
 
-import com.onutiative.onukit.Utility.SharedPrefManager;
+import org.linphone.onu_legacy.Utility.SharedPrefManager;
 
 import java.io.File;
 import java.io.IOException;

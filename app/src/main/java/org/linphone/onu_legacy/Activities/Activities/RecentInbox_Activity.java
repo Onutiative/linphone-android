@@ -29,10 +29,10 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
-import com.onutiative.onukit.Adapters.InboxRecycleAdapter;
-import com.onutiative.onukit.Database.Contact;
-import com.onutiative.onukit.Database.Database;
-import com.onutiative.onukit.R;
+import org.linphone.onu_legacy.Adapters.InboxRecycleAdapter;
+import org.linphone.onu_legacy.Database.Contact;
+import org.linphone.onu_legacy.Database.Database;
+import org.linphone.R;
 
 public class RecentInbox_Activity extends AppCompatActivity {
 
@@ -71,11 +71,29 @@ public class RecentInbox_Activity extends AppCompatActivity {
         Toast.makeText(RecentInbox_Activity.this, "All sms is being posted", Toast.LENGTH_LONG).show();
         while (c.moveToNext()) {
             try {
+                String senderNumber = null;
+                int columnIndex = c.getColumnIndex("address");
+                if (columnIndex >= 0) {
+                    senderNumber = c.getString(columnIndex);
+                }
 
-                String senderNumber=c.getString(c.getColumnIndex("address"));
-                String smsBody=c.getString(c.getColumnIndex("body"));
-                String smid=c.getString(c.getColumnIndex("date"));
-                String sid=c.getString(c.getColumnIndex("_id"));
+                String smsBody = null;
+                columnIndex = c.getColumnIndex("body");
+                if (columnIndex >= 0) {
+                    smsBody = c.getString(columnIndex);
+                }
+
+                String smid = null;
+                columnIndex = c.getColumnIndex("date");
+                if (columnIndex >= 0) {
+                    smid = c.getString(columnIndex);
+                }
+
+                String sid = null;
+                columnIndex = c.getColumnIndex("_id");
+                if (columnIndex >= 0) {
+                    sid = c.getString(columnIndex);
+                }
 
                 Database db = new Database(RecentInbox_Activity.this);
                 db.addsms(new Contact(smsBody,senderNumber, smid));

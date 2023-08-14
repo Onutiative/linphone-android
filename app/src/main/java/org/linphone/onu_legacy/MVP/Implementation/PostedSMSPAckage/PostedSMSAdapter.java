@@ -9,9 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.onutiative.onukit.MVP.Implementation.model.ServerRequest.TaskConversion;
-import com.onutiative.onukit.MVP.Implementation.model.SMSDataClasses.InboxSMSDetails;
-import com.onutiative.onukit.R;
+import org.linphone.onu_legacy.MVP.Implementation.model.ServerRequest.TaskConversion;
+import org.linphone.onu_legacy.MVP.Implementation.model.SMSDataClasses.InboxSMSDetails;
+import org.linphone.R;
 
 import java.util.ArrayList;
 

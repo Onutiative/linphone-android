@@ -9,11 +9,11 @@ import android.os.AsyncTask;
 import android.util.Base64;
 import android.util.Log;
 
-import com.onutiative.onukit.Database.Contact;
-import com.onutiative.onukit.Database.Database;
-import com.onutiative.onukit.Database.Sms;
-import com.onutiative.onukit.SMS_Sender.MsgSender;
-import com.onutiative.onukit.Utility.Info;
+import org.linphone.onu_legacy.Database.Contact;
+import org.linphone.onu_legacy.Database.Database;
+import org.linphone.onu_legacy.Database.Sms;
+import org.linphone.onu_legacy.SMS_Sender.MsgSender;
+import org.linphone.onu_legacy.Utility.Info;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;

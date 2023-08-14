@@ -5,8 +5,8 @@ import android.os.AsyncTask;
 import android.util.Base64;
 import android.util.Log;
 
-import com.onutiative.onukit.Database.Database;
-import com.onutiative.onukit.Utility.Helper;
+import org.linphone.onu_legacy.Database.Database;
+import org.linphone.onu_legacy.Utility.Helper;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;

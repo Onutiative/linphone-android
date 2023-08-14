@@ -50,13 +50,14 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
-import com.onutiative.onukit.AsyncTasking.FetchImage;
-import com.onutiative.onukit.Database.Contact;
-import com.onutiative.onukit.Database.Database;
-import com.onutiative.onukit.R;
-import com.onutiative.onukit.Utility.SharedPrefManager;
+//import com.google.firebase.iid.FirebaseInstanceId;
+//import com.google.firebase.iid.InstanceIdResult;
+import org.linphone.R;
+import org.linphone.onu_legacy.AsyncTasking.FetchImage;
+import org.linphone.onu_legacy.Database.Contact;
+import org.linphone.onu_legacy.Database.Database;
+import org.linphone.R;
+import org.linphone.onu_legacy.Utility.SharedPrefManager;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -1284,7 +1285,7 @@ public class LoginActivity extends AppCompatActivity implements
 
     public void getRegId() {
 
-        getFCMToken();
+        // getFCMToken();
 
         regid = generatedToken;
 
@@ -1326,12 +1327,12 @@ public class LoginActivity extends AppCompatActivity implements
                 finish();
             }
         }
-        if (isNetworkAvailable()) {
-
-//            Log.e(TAG,"From Check Status");
-
-            getRegId();
-        }
+//        if (isNetworkAvailable()) {
+//
+////            Log.e(TAG,"From Check Status");
+//
+//            getRegId();
+//        }
 
         Log.d(TAG,"Check Status ended!");
 
@@ -1482,29 +1483,29 @@ public class LoginActivity extends AppCompatActivity implements
         }
     }
 
-    private void getFCMToken() {
-
-        // Get token
-        FirebaseInstanceId.getInstance().getInstanceId()
-                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                        if (!task.isSuccessful()) {
-                            Log.w(TAG, "getInstanceId failed", task.getException());
-                            return;
-                        }
-                        // Get new Instance ID token
-                        String token = task.getResult().getToken();
-
-                        generatedToken = token;
-                        // Log and toast
-                        String msg = getString(R.string.msg_token_fmt, token);
-                        Log.i(TAG, msg);
-//                        Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
-//                        setToken(msg);
-                    }
-                });
-    }
+//    private void getFCMToken() {
+//
+//        // Get token
+//        FirebaseInstanceId.getInstance().getInstanceId()
+//                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+//                        if (!task.isSuccessful()) {
+//                            Log.w(TAG, "getInstanceId failed", task.getException());
+//                            return;
+//                        }
+//                        // Get new Instance ID token
+//                        String token = task.getResult().getToken();
+//
+//                        generatedToken = token;
+//                        // Log and toast
+//                        String msg = getString(R.string.msg_token_fmt, token);
+//                        Log.i(TAG, msg);
+////                        Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
+////                        setToken(msg);
+//                    }
+//                });
+//    }
 
     public void setToken(String token) {
         generatedToken = token;

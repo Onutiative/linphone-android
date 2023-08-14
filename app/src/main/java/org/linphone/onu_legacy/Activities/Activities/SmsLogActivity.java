@@ -10,10 +10,10 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import com.onutiative.onukit.Database.Database;
-import com.onutiative.onukit.Database.ServerSms;
-import com.onutiative.onukit.R;
-import com.onutiative.onukit.Utility.SharedPrefManager;
+import org.linphone.onu_legacy.Database.Database;
+import org.linphone.onu_legacy.Database.ServerSms;
+import org.linphone.R;
+import org.linphone.onu_legacy.Utility.SharedPrefManager;
 
 import java.util.ArrayList;
 

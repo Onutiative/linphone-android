@@ -11,8 +11,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.onutiative.onukit.R;
-import com.onutiative.onukit.Utility.Info;
+import org.linphone.R;
+import org.linphone.onu_legacy.Utility.Info;
 
 public class AboutActivity extends AppCompatActivity {
 

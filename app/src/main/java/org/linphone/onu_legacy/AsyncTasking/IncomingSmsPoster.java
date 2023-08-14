@@ -6,9 +6,9 @@ import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.onutiative.onukit.Database.Contact;
-import com.onutiative.onukit.Database.Database;
-import com.onutiative.onukit.Utility.Info;
+import org.linphone.onu_legacy.Database.Contact;
+import org.linphone.onu_legacy.Database.Database;
+import org.linphone.onu_legacy.Utility.Info;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;

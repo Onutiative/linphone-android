@@ -15,8 +15,8 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.Toast;
 
-import com.onutiative.onukit.Activities.RuntimePermissionActivity;
-import com.onutiative.onukit.R;
+import org.linphone.onu_legacy.Activities.Activities.RuntimePermissionActivity;
+import org.linphone.R;
 
 public class AgreementActivity extends AppCompatActivity implements View.OnClickListener {
 

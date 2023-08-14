@@ -8,12 +8,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.onutiative.onukit.Adapters.NotificationRecycleAdapter;
-import com.onutiative.onukit.Database.Database;
-import com.onutiative.onukit.Database.Fruits;
-import com.onutiative.onukit.Database.Sms;
-import com.onutiative.onukit.R;
-import com.onutiative.onukit.Utility.Info;
+import org.linphone.onu_legacy.Adapters.NotificationRecycleAdapter;
+import org.linphone.onu_legacy.Database.Database;
+import org.linphone.onu_legacy.Database.Fruits;
+import org.linphone.onu_legacy.Database.Sms;
+import org.linphone.R;
+import org.linphone.onu_legacy.Utility.Info;
 
 import java.util.ArrayList;
 import java.util.List;

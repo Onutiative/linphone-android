@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="org.linphone.onu_legacy.Activities.Activities.HomeActivity"
+    android:id="@+id/main_layout"
+    >
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#00aef0"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@android:color/transparent"
+            app:popupTheme="@style/AppTheme.PopupOverlay">
+
+            <!--<ImageButton-->
+            <!--android:id="@+id/indicator"-->
+            <!--android:layout_width="20dp"-->
+            <!--android:layout_height="20dp"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:layout_gravity="right"-->
+            <!--android:layout_margin="10dp"-->
+            <!--android:background="@drawable/indi"-->
+            <!--android:clickable="true" />-->
+
+            <!--<ImageButton-->
+            <!--android:id="@+id/refreshbtn"-->
+            <!--android:layout_width="20dp"-->
+            <!--android:layout_height="20dp"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:layout_gravity="right"-->
+            <!--android:layout_marginRight="5dp"-->
+            <!--android:background="@drawable/refreshicon"-->
+            <!--android:clickable="true" />-->
+
+            <!--<ImageButton-->
+            <!--android:id="@+id/infoButton"-->
+            <!--android:layout_width="25dp"-->
+            <!--android:layout_height="25dp"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:layout_gravity="right"-->
+            <!--android:layout_marginRight="10dp"-->
+            <!--android:background="@drawable/light_icon_black"-->
+            <!--android:clickable="true" />-->
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+    <!--<Button-->
+
+    <!--android:paddingRight="10dp"-->
+    <!--android:paddingLeft="10dp"-->
+    <!--android:id="@+id/selectContacts"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_below="@+id/appBar"-->
+    <!--android:layout_centerInParent="true"-->
+    <!--android:layout_marginTop="20dp"-->
+    <!--android:text="Select Contacts"-->
+    <!--android:background="#00aef0"-->
+    <!--android:textColor="#FFFF"-->
+    <!--/>-->
+
+    <!--<TextView-->
+    <!--android:textSize="20sp"-->
+    <!--android:textStyle="bold"-->
+    <!--android:layout_centerInParent="true"-->
+    <!--android:layout_marginTop="20dp"-->
+    <!--android:id="@+id/selectedContacts"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_below="@id/appBar"-->
+    <!--android:text="No Contacts Selected" />-->
+
+    <!--<EditText-->
+    <!--android:id="@+id/smsEditText"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_below="@id/selectedContacts"-->
+    <!--android:layout_marginTop="20dp" />-->
+
+    <EditText
+
+        android:inputType="none"
+        android:padding="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="20dp"
+        android:hint="No Contacts Selected"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/selected_contacts"
+        android:layout_below="@id/appBar"
+        android:background="@drawable/rounds"
+        />
+
+    <ImageView
+        android:id="@+id/select_contacts"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="17dp"
+        android:src="@drawable/ic_account_box"
+        android:layout_below="@id/appBar"
+        android:layout_alignParentRight="true"
+        android:layout_width="50dp"
+        android:layout_height="50dp" />
+
+    <EditText
+        android:hint="Type Your SMS Here"
+        android:layout_width="fill_parent"
+        android:layout_height="200dp"
+        android:inputType="textMultiLine"
+        android:ems="10"
+        android:lines="8"
+        android:minLines="6"
+        android:gravity="top|left"
+        android:maxLines="10"
+        android:id="@+id/smsEditText"
+        android:background="@drawable/rounds"
+        android:layout_below="@+id/selected_contacts"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="false"
+        android:padding="10dp" />
+
+
+    <Button
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:layout_marginTop="20dp"
+        android:id="@+id/sendSMSButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/smsEditText"
+        android:layout_centerInParent="true"
+        android:text="Send SMS"
+        android:background="#00aef0"
+        android:textColor="#FFFF"
+        android:drawableLeft="@android:drawable/ic_menu_send"
+        />
+
+</RelativeLayout>

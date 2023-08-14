@@ -21,10 +21,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.onutiative.onukit.Activities.DashBoard_Activity;
-import com.onutiative.onukit.Database.Database;
-import com.onutiative.onukit.R;
-import com.onutiative.onukit.WebViews.WebViews;
+import org.linphone.onu_legacy.Activities.Activities.DashBoard_Activity;
+import org.linphone.onu_legacy.Database.Database;
+import org.linphone.R;
+import org.linphone.onu_legacy.WebViews.WebViews;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
 
 public class Posted_Inbox_Activity extends AppCompatActivity implements

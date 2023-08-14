@@ -38,12 +38,12 @@ import androidx.core.app.ActivityCompat;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
-import com.onutiative.onukit.AsyncTasking.FetchImage;
-import com.onutiative.onukit.Database.Contact;
-import com.onutiative.onukit.Database.Database;
-import com.onutiative.onukit.R;
+//import com.google.firebase.iid.FirebaseInstanceId;
+//import com.google.firebase.iid.InstanceIdResult;
+import org.linphone.onu_legacy.AsyncTasking.FetchImage;
+import org.linphone.onu_legacy.Database.Contact;
+import org.linphone.onu_legacy.Database.Database;
+import org.linphone.R;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -633,46 +633,46 @@ public class SignUp_Activity extends AppCompatActivity {
         Log.i("Jhoro", "checkStatus 2");
         if (isNetworkAvailable()) {
             Log.i("Jhoro", "checkStatus 3");
-            getRegId();
+            // getRegId();
         }
 
     }
 
-    public void getRegId() {
+//    public void getRegId() {
+//
+//        getFCMToken();
+//
+//        regid=generatedToken;
+//
+//        objectID = regid;
+//    }
 
-        getFCMToken();
-
-        regid=generatedToken;
-
-        objectID = regid;
-    }
-
-    private void getFCMToken()
-    {
-        // Get token
-        FirebaseInstanceId.getInstance().getInstanceId()
-                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
-                        if (!task.isSuccessful()) {
-                            Log.w(TAG, "getInstanceId failed", task.getException());
-                            return;
-                        }
-                        // Get new Instance ID token
-                        String token = task.getResult().getToken();
-
-                        generatedToken=token;
-
-                        // Log and toast
-                        String msg = getString(R.string.msg_token_fmt, token);
-                        Log.d(TAG, msg);
-//                        Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
-
-//                        setToken(msg);
-                    }
-                });
-
-    }
+//    private void getFCMToken()
+//    {
+//        // Get token
+//        FirebaseInstanceId.getInstance().getInstanceId()
+//                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+//                        if (!task.isSuccessful()) {
+//                            Log.w(TAG, "getInstanceId failed", task.getException());
+//                            return;
+//                        }
+//                        // Get new Instance ID token
+//                        String token = task.getResult().getToken();
+//
+//                        generatedToken=token;
+//
+//                        // Log and toast
+//                        String msg = getString(R.string.msg_token_fmt, token);
+//                        Log.d(TAG, msg);
+////                        Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
+//
+////                        setToken(msg);
+//                    }
+//                });
+//
+//    }
 
     public void setToken(String token)
     {

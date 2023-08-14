@@ -16,8 +16,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 
-import com.onutiative.onukit.R;
-import com.onutiative.onukit.Utility.SharedPrefManager;
+import org.linphone.R;
+import org.linphone.onu_legacy.Utility.SharedPrefManager;
 
 public class PermissionResultActivity extends AppCompatActivity {
 

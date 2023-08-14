@@ -6,12 +6,12 @@ import android.graphics.ColorSpace;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.onutiative.onukit.MVP.Implementation.model.ContactDataClasses.ContactDetails;
-import com.onutiative.onukit.MVP.Implementation.model.ContactDataClasses.ContactPullDataSet.ContactList;
-import com.onutiative.onukit.MVP.Implementation.model.ContactDataClasses.ContactPullDataSet.ContactPulledData;
-import com.onutiative.onukit.MVP.Implementation.model.ContactDataClasses.ContactSyncDataSet.ContactObject;
-import com.onutiative.onukit.MVP.Implementation.model.ContactDataClasses.ContactSyncDataSet.Contacts;
-import com.onutiative.onukit.MVP.Implementation.model.ServerRequest.RetrofitUrlMapper;
+import org.linphone.onu_legacy.MVP.Implementation.model.ContactDataClasses.ContactDetails;
+import org.linphone.onu_legacy.MVP.Implementation.model.ContactDataClasses.ContactPullDataSet.ContactList;
+import org.linphone.onu_legacy.MVP.Implementation.model.ContactDataClasses.ContactPullDataSet.ContactPulledData;
+import org.linphone.onu_legacy.MVP.Implementation.model.ContactDataClasses.ContactSyncDataSet.ContactObject;
+import org.linphone.onu_legacy.MVP.Implementation.model.ContactDataClasses.ContactSyncDataSet.Contacts;
+import org.linphone.onu_legacy.MVP.Implementation.model.ServerRequest.RetrofitUrlMapper;
 
 import java.io.IOException;
 import java.util.ArrayList;

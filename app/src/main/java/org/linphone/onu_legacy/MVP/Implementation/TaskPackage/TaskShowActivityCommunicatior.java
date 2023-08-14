@@ -1,6 +1,6 @@
 package org.linphone.onu_legacy.MVP.Implementation.TaskPackage;
 
-import com.onutiative.onukit.MVP.Implementation.model.TaskDataClasses.TaskPullDataSet.TaskList;
+import org.linphone.onu_legacy.MVP.Implementation.model.TaskDataClasses.TaskPullDataSet.TaskList;
 
 import java.util.List;
 

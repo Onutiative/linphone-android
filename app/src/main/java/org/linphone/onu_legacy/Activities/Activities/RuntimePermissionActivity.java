@@ -37,15 +37,12 @@ import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.karumi.dexter.listener.single.PermissionListener;
-import com.onutiative.onukit.R;
-import com.onutiative.onukit.Utility.SharedPrefManager;
+import org.linphone.R;
+import org.linphone.onu_legacy.Utility.SharedPrefManager;
 
 import java.util.List;
 
 public class RuntimePermissionActivity extends AppCompatActivity {
-
-
-
     private ViewPager viewPager;
     private LinearLayout linearLayout;
     private TextView[] dots;
