@@ -85,7 +85,7 @@ public class SignUp_Activity extends AppCompatActivity {
     public String imei;
     private Context context=this;
     public ProgressDialog progressBar;
-    //    public static String url = "http://api1.onuserver.com:8085/5v1/userActivation";
+    //    public static String url = "http://api1.onukit.com:8085/5v1/userActivation";
     public static String url = "https://api.onukit.com/6v4/userActivation";
     Animation zoom;
     private RelativeLayout relativeLayout;

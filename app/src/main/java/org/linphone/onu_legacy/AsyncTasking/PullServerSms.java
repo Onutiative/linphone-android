@@ -209,8 +209,8 @@ public class PullServerSms extends AsyncTask<Void, Void, String> {
 
 //        Log.e(TAG,"Set Up Called");
 //
-//        url="http://api.onuserver.com/6v1/pullOutSms";
-//        userName="demo@onuserver.com";
+//        url="http://api.onukit.com/6v1/pullOutSms";
+//        userName="demo@onukit.com";
 //        userPassword="welcome@2018";
 //        deviceId="860906034654787";
 
@@ -252,7 +252,7 @@ public class PullServerSms extends AsyncTask<Void, Void, String> {
 //            if (cn.getName().equals("Custom_url")) {
 //                if (!cn.getPhone_number().equals(""))
 //                    url = cn.getPhone_number() + "/pullOutSms";
-//                //http://api1.onuserver.com:8085/v3/incomingSms
+//                //http://api1.onukit.com:8085/v3/incomingSms
 //            } else if (cn.getName().equals("email"))
 //
 //            {

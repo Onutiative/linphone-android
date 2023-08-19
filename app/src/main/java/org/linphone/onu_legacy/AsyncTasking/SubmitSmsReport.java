@@ -192,7 +192,7 @@ public class SubmitSmsReport extends AsyncTask<Void, Void, String> {
     private void setupConfig() {
 
         Log.i(TAG, "Set Up Called");
-//        url="http://api.onuserver.com/6v1/outgoingReport";
+//        url="http://api.onukit.com/6v1/outgoingReport";
         userName = "Onu$erVe9";
         userPassword = "p#@$aS$";
 //        deviceId="860906034654787";

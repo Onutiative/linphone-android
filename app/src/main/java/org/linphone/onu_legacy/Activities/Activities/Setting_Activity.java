@@ -454,8 +454,8 @@ public class Setting_Activity extends AppCompatActivity {
                                     String a_number = null;
                                     Database db = new Database(Setting_Activity.this);
                                     db.deleteAdmin("Custom_url", "Onuserver");
-                                    db.addAdminNumber(new Contact("Custom_url", "http://api.onuserver.com/6v1", "Onuserver"));
-                                   // Toast.makeText(Setting_Activity.this, "your url:\nhttp://api.onuserver.com/6v1", Toast.LENGTH_LONG).show();
+                                    db.addAdminNumber(new Contact("Custom_url", "http://api.onukit.com/6v1", "Onuserver"));
+                                   // Toast.makeText(Setting_Activity.this, "your url:\nhttp://api.onukit.com/6v1", Toast.LENGTH_LONG).show();
                                     dialog.cancel();
                                 }
                             });

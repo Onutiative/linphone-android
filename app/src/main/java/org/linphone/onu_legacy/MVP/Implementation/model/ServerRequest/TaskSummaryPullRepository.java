@@ -52,6 +52,13 @@ public class TaskSummaryPullRepository {
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
         final String authToken = Credentials.basic(username, password);
+
+        // log username, password, authToken, baseURI
+        Log.d(TAG, "username: " + username);
+        Log.d(TAG, "password: " + password);
+        Log.d(TAG, "authToken: " + authToken);
+        Log.d(TAG, "baseURI: " + baseURI);
+
         // authentication and userId interceptor
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .addInterceptor(new Interceptor() {

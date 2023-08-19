@@ -38,6 +38,10 @@
     <string name="slide_6_title">Storage  Permission</string>
     <string name="slide_6_desc">Let OnuKit save the necessary data and recording files locally, also synchronize to online account by allowing this permission. </string>
 
+    <string name="slide_6a_title">Background-Sync  Permission</string>
+    <string name="slide_6a_desc">Let OnuKit sync with the server in background and receive calls consistently, even if the app is closed.</string>
+
+
     <string name="slide_7_title">Popup Permission</string>
     <string name="slide_7_desc">OnuKit gives you task management facility on the go with a popup for incoming calls obviously with your permission.</string>
 

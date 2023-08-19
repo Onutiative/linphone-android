@@ -77,7 +77,7 @@ public class OutgoingSent_Activity extends AppCompatActivity {
             public void onClick(View view) {
 //                Toast.makeText(OutgoingSent_Activity.this,"Outgoing SMS Sent",Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(OutgoingSent_Activity.this, WebViews.class);
-                i.putExtra("url","http://user.onuserver.com/6v0/login_from_app/smsOutBox");
+                i.putExtra("url","http://user.onukit.com/6v0/login_from_app/smsOutBox");
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
             }

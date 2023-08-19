@@ -94,11 +94,14 @@ import org.linphone.onu_legacy.Utility.Helper;
 import org.linphone.onu_legacy.Utility.Info;
 import org.linphone.onu_legacy.Utility.SharedPrefManager;
 import org.linphone.onu_legacy.WebViews.WebViews;
+import org.linphone.onuspecific.OnuFunctions;
+
 import com.timqi.sectorprogressview.SectorProgressView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import at.grabner.circleprogress.CircleProgressView;
 //<!--used in 6v3-->
@@ -112,9 +115,9 @@ public class DashBoard_Activity extends AppCompatActivity
      **********All PreDefined Variables*********************
      ******************************************************/
     private SliderLayout mDemoSlider;
-    //    private String url1 = "http://user.onuserver.com/6v0/downloads/slider/1.jpg";
-//    private String url2 = "http://user.onuserver.com/6v0/downloads/slider/2.jpg";
-//    private String url3 = "http://user.onuserver.com/6v0/downloads/slider/3.jpg";
+    //    private String url1 = "http://user.onukit.com/6v0/downloads/slider/1.jpg";
+//    private String url2 = "http://user.onukit.com/6v0/downloads/slider/2.jpg";
+//    private String url3 = "http://user.onukit.com/6v0/downloads/slider/3.jpg";
     private ImageView indicator;
     private Info info;
     private Database db;
@@ -135,7 +138,7 @@ public class DashBoard_Activity extends AppCompatActivity
     private Context context;
     public String imei;
     private String uname = null, upass = null, url = null, urlForEdition = null, userId = null, parentID = "0";
-    //    private String url = "http://demo.onuserver.com/api/contactManagement";
+    //    private String url = "http://demo.onukit.com/api/contactManagement";
     private static final int PERMISSION_REQUEST_CODE = 11;
 
     private String TAG = "DashBoard_Activity";
@@ -259,6 +262,10 @@ public class DashBoard_Activity extends AppCompatActivity
 
         user_email = intent.getStringExtra(LoginActivity.USEREMAIL);
         user_pass = intent.getStringExtra(LoginActivity.USERPASS);
+
+        Map<String, String> userCredentials = new OnuFunctions().getUserCredentials();
+        user_email = userCredentials.get("username");
+        user_pass = userCredentials.get("password");
 
         outgoingSmsCardView = (CardView) findViewById(R.id.outgoing_sms_card_view);
         incomingSmsCardView = (CardView) findViewById(R.id.incoming_sms_card_view);
@@ -517,7 +524,7 @@ public class DashBoard_Activity extends AppCompatActivity
         else if (id == R.id.webdashboard) {
             Intent i = new Intent(DashBoard_Activity.this, WebViews.class);
 
-            i.putExtra("url", "http://user.onuserver.com/6v0/login_from_app/dashboard");
+            i.putExtra("url", "http://user.onukit.com/6v0/login_from_app/dashboard");
             i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(i);
         } else if (id == R.id.logout) {
@@ -878,6 +885,13 @@ public class DashBoard_Activity extends AppCompatActivity
                 parentID=cn.getPhone_number();
             }
         }
+
+        if (uname == null || upass == null) {
+            Map<String, String> userCredentials = new OnuFunctions().getUserCredentials();
+            // get the username and password from the credentials
+            uname = userCredentials.get("username");
+            upass = userCredentials.get("password");
+        }
     }
 
     private boolean checkPermission() {
@@ -1189,7 +1203,7 @@ public class DashBoard_Activity extends AppCompatActivity
         Intent ii = new Intent(this, PrivacyPolicy_Activity.class);
 
         ii.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, ii, 0);
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, ii, PendingIntent.FLAG_IMMUTABLE);
         Notification myNotification = new NotificationCompat.Builder(this)
                 .setContentTitle(getString(R.string.notification_heading))
                 .setContentText(getString(R.string.notification_body))

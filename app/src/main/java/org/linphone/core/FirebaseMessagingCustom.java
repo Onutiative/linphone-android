@@ -62,6 +62,17 @@ public class FirebaseMessagingCustom extends FirebaseMessagingService {
         // thread
         new Handler(Looper.getMainLooper()).post(() -> {
             android.util.Log.i("OnuFunctions", "OnuAuthentication Logging in");
+
+            // save in shared preferences
+            try {
+                SharedPreferences sharedPreferences = getSharedPreferences("onukit_creds", MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("oid", token);
+                editor.apply();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             try {
                 new OnuFunctions().checkSavedCredentials(0);
             } catch (Exception e) {

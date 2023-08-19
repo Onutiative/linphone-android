@@ -15,6 +15,8 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.InputType;
@@ -52,11 +54,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 //import com.google.firebase.iid.FirebaseInstanceId;
 //import com.google.firebase.iid.InstanceIdResult;
+import com.google.firebase.messaging.FirebaseMessaging;
+
+import org.linphone.LinphoneApplication;
 import org.linphone.R;
 import org.linphone.onu_legacy.AsyncTasking.FetchImage;
 import org.linphone.onu_legacy.Database.Contact;
 import org.linphone.onu_legacy.Database.Database;
-import org.linphone.R;
 import org.linphone.onu_legacy.Utility.SharedPrefManager;
 
 import org.apache.http.HttpResponse;
@@ -74,7 +78,9 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.linphone.onuspecific.OnuFunctions;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -82,6 +88,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 
 public class LoginActivity extends AppCompatActivity implements
         GoogleApiClient.OnConnectionFailedListener,
@@ -108,7 +121,7 @@ public class LoginActivity extends AppCompatActivity implements
     public ProgressDialog progressBar;
     public String user_password;
 
-    //    public static String url="http://api1.onuserver.com:8085/5v1/userActivation";
+    //    public static String url="http://api1.onukit.com:8085/5v1/userActivation";
     public static String url = "https://api.onukit.com/6v4/userActivation";
     public static String urlForLogin = "https://api.onukit.com/6v4/login";
     //public static String urlForLogin = "https://api.onukit.com/6v4/testLogin";
@@ -149,7 +162,7 @@ public class LoginActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        getSupportActionBar().hide();
+        // getSupportActionBar().hide();
         view = (View) findViewById(R.id.main_layout);
 
         context = LoginActivity.this;
@@ -253,11 +266,11 @@ public class LoginActivity extends AppCompatActivity implements
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
-        SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
-        signInButton.setSize(SignInButton.SIZE_STANDARD);
-        signInButton.setScopes(gso.getScopeArray());
+//        SignInButton signInButton = (SignInButton) findViewById(R.id.sign_in_button);
+//        signInButton.setSize(SignInButton.SIZE_STANDARD);
+        // signInButton.setScopes(gso.getScopeArray());
 
-        setGooglePlusButtonText(signInButton, "SignIn With Google");
+        // setGooglePlusButtonText(signInButton, "SignIn With Google");
 
         // [END customize_button]
 
@@ -372,8 +385,9 @@ public class LoginActivity extends AppCompatActivity implements
                             Log.i(TAG, "email: "+ user_email);
                             Log.i(TAG,"pass: "+user_password);
                             checkstatus();
+                            Log.i(TAG,"oid: "+objectID);
                             try{
-                                if (!objectID.equals("null")) {
+                                if (!objectID.equals(null) && !objectID.equals("null")) {
                                     checkstatus();
                                     new ActivationInfoLogin(getApplicationContext()).execute();
                                     // Toast.makeText(getApplication(), objectID, Toast.LENGTH_LONG).show();
@@ -703,6 +717,7 @@ public class LoginActivity extends AppCompatActivity implements
         Context context;
         ProgressDialog dialog;
         Activity activity;
+        String result = null;
 
         @Override
         protected void onPreExecute() {
@@ -713,11 +728,19 @@ public class LoginActivity extends AppCompatActivity implements
         public ActivationInfo(Context context) {
             this.context = context;
         }
+        public void setResult(String res) {
+            this.result = res;
+        }
+
+        public String getResult() {
+            return this.result;
+        }
 
         @Override
         protected void onPostExecute(String result) {
-
-            if (result != null) {
+            result = getResult();
+            setResult(null);
+            if (result != null && !result.equals("")) {
                 Database db = new Database(context);
                 JSONObject json = null;
                 try {
@@ -779,7 +802,11 @@ public class LoginActivity extends AppCompatActivity implements
                         db.addAdminNumber(new Contact("user_detail", user_number, user_email));
                         Log.i(TAG,"User ID: "+json.getString("user_id"));
                         db.addAdminNumber(new Contact("user_id", json.getString("user_id"), "jhorotek"));
-                        db.addAdminNumber(new Contact("id", json.getString("id"), "jhorotek"));
+                        try {
+                            db.addAdminNumber(new Contact("id", json.getString("id"), "jhorotek"));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         db.addAdminNumber(new Contact("Custom_url", "https://api.onukit.com/6v4", "Onuserver"));
                         db.addAdminNumber(new Contact("contact_url", "https://api.onukit.com/contact/0v1/", "Onuserver"));
 
@@ -803,6 +830,37 @@ public class LoginActivity extends AppCompatActivity implements
             }
         }
 
+        public void networkStuff(){
+            Request request = new OnuFunctions.UserActivation(user_email, user_password, user_number, objectID).performActivation();
+            OkHttpClient client = new OkHttpClient();
+
+            client.newCall(request).enqueue(new Callback() {
+                @Override
+                public void onResponse(@NonNull okhttp3.Call call, @NonNull okhttp3.Response response) throws IOException {
+                    // Handle success
+                    Log.d("OnuFunctions", "onResponse - Status : " + response.code());
+                    Log.d("OnuFunctions", "onResponse - Status : " + response.body().string());
+
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            // check when client is done, then set waitForServerAnswer's value to false
+                            findViewById(R.id.wait_layout_onuactivation).setVisibility(View.GONE);
+                        }
+                    });
+                    ResponseBody requestBody = (ResponseBody) response.body();
+                    // get string from body
+                    setResult(requestBody.string());
+                }
+
+                @Override
+                public void onFailure(okhttp3.Call call, IOException e) {
+                    // Handle failure
+                    Log.d("OnuFunctions", "onFailure - Failed to login user: " + e);
+                }
+
+            });
+        }
 
         @Override
         protected String doInBackground(Void... params) //HTTP
@@ -813,79 +871,21 @@ public class LoginActivity extends AppCompatActivity implements
                 int statusCode = 0;
                 String username = "Onu$erVe9";
                 String password = "p#@$aS$";
+//                String res = "";
                 Log.v("Jhoro", "background");
-                HttpParams httpParams = new BasicHttpParams();
-                HttpConnectionParams.setConnectionTimeout(httpParams, TIMEOUT_MILLISEC);
-                HttpConnectionParams.setSoTimeout(httpParams, TIMEOUT_MILLISEC);
-                HttpParams p = new BasicHttpParams();
-                DefaultHttpClient httpclient = new DefaultHttpClient(p);
+
+                networkStuff();
+
+                while (getResult() == null) {
+                    // wait for server answer
+                    Log.d("OnuFunctions", "Waiting for server answer...");
+                    // wait 1 second
+                    Thread.sleep(1000);
+                }
+
+                return getResult();
 
 
-                //String url = "https://www.mydomainic.com/api/bkash-central/demo/add/via-sms/";
-                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
-                nameValuePairs.add(new BasicNameValuePair("demo", "demo"));
-                DefaultHttpClient httpClient = new DefaultHttpClient();
-                String paramsString = URLEncodedUtils.format(nameValuePairs,
-                        "UTF-8");
-                HttpPost httppost = new HttpPost(url);
-                Log.i(TAG,"User activation URL: "+url);
-                ResponseHandler<String> responseHandler = new BasicResponseHandler();
-                httppost.setHeader("Content-type", "application/json");
-
-                //---------------------Code for Basic Authentication-----------------------
-                String credentials = username + ":" + password;
-                String credBase64 = Base64.encodeToString(credentials.getBytes(), Base64.DEFAULT).replace("\n", "");
-                httppost.setHeader("Authorization", "Basic " + credBase64);
-                //----------------------------------------------------------------------
-                //old jSonCode--------------------
-//                String entity = "{\"mobile\":\""+rcvdnum+"\",\"sms\":\""+rcvdsms+"\",\"transaction_id\" :\""+uniq+"\",\"receive_time\":\""+rcvtime+"\"}";
-//                httppost.setEntity(new StringEntity(entity ,"UTF-8"));
-                //----------------------------------
-
-
-                //Log.e(TAG,user_email+" "+user_pass+" "+user_number+" "+imei+" "+objectID+" "+User_data+" "+Version+" "+brand+" "+model);
-
-                JSONObject jsonParam = new JSONObject();
-                jsonParam.accumulate("email", user_email);
-                jsonParam.accumulate("password", user_pass);
-                jsonParam.accumulate("mobile", user_number);
-                jsonParam.accumulate("device_id", imei);
-                jsonParam.accumulate("oid", objectID);
-                jsonParam.accumulate("accountCreateFlag", "1");
-                jsonParam.accumulate("thirdPartyUserData", User_data);
-                jsonParam.accumulate("version", Version);
-                jsonParam.accumulate("brand", brand);
-                jsonParam.accumulate("model", model);
-
-                // 5. set json to StringEntity
-                //URLEncoder.encode(jsonParam.toString(),"UTF-8")
-                StringEntity myStringEntity = new StringEntity(jsonParam.toString(), "UTF-8");
-                Log.v("Jhoro", "Activation jSon:" + jsonParam.toString());
-                httppost.setEntity(myStringEntity);
-
-                //--------------execution of httppost
-                HttpResponse response = httpclient.execute(httppost);
-                Log.v("Jhoro", "Activation: 2");
-                String res = EntityUtils.toString(response.getEntity());
-                Log.v("Jhoro", "Activation: 3" + res);
-                JSONObject json = new JSONObject(res);
-                Log.v("Jhoro", "Activation: 4");
-                Log.v("Jhoro", json.toString());
-                status = json.getString("status");//getting from  jSon body
-                String activation = json.getString("isActive");
-                statusCode = response.getStatusLine().getStatusCode();
-                Log.v("Jhoro", "Activation: " + statusCode);
-                // if(status.equals(success))
-                if (statusCode >= 200 && statusCode <= 299) {
-                    if (!status.equals("4000")) {
-                        if (status.equals("4200")) {
-                            Toast.makeText(getApplication(), "Duplicat Email", Toast.LENGTH_LONG).show();
-                        }
-                        return null;
-                    }
-                    return res;
-                } else
-                    return null;
             } catch (Exception ex) {
 
                 Log.v("Jhoro", " Exception: " + ex);
@@ -916,6 +916,7 @@ public class LoginActivity extends AppCompatActivity implements
         Context context;
         ProgressDialog dialog;
         Activity activity;
+        String result = null;
 
         @Override
         protected void onPreExecute() {
@@ -926,10 +927,89 @@ public class LoginActivity extends AppCompatActivity implements
         public ActivationInfoLogin(Context context) {
             this.context = context;
         }
+
+        public void setResult(String res) {
+            this.result = res;
+        }
+
+        public String getResult() {
+            return this.result;
+        }
+
+        public void networkStuff(){
+            Request request = new OnuFunctions.UserLogin(user_email, user_password, objectID).performLogin();
+            OkHttpClient client = new OkHttpClient();
+
+            SharedPreferences sharedPreferences = LinphoneApplication.coreContext.getContext().getSharedPreferences("onukit_creds", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+
+            client.newCall(request).enqueue(new Callback() {
+
+                @Override
+                public void onFailure(okhttp3.Call call, IOException e) {
+                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+                        @Override
+                        public void run() {
+                            // check when client is done, then set waitForServerAnswer's value to false
+                            findViewById(R.id.wait_layout_onulogin).setVisibility(View.GONE);
+                        }
+                    });
+                    Log.d("OnuFunctions", "onFailure - Failed to login user: " + e);
+                }
+
+                @Override
+                public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                    editor.putString("username", null);
+                    editor.putString("password", null);
+                    editor.apply();
+
+//                    new Handler(Looper.getMainLooper()).post(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            // check when client is done, then set waitForServerAnswer's value to false
+//                            findViewById(R.id.wait_layout_onulogin).setVisibility(View.GONE);
+//                        }
+//                    });
+
+                    ResponseBody requestBody = response.body();
+
+                    // log status code
+                    Log.d("OnuFunctions", "Response code: " + response.code());
+
+                    // check status code
+                    if (response.code() != 200) {
+                        // Show a toast message
+                        Log.d("OnuFunctions", "response.code != 200 | Failed to login user");
+                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(LinphoneApplication.coreContext.getContext(), "Server error! " + response.code(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+
+                    // Handle response
+                    if (!response.isSuccessful()) {
+                        // The request failed
+                        Log.d("OnuFunctions", "response.isSuccessful == false | Failed to activate user");
+                        new Handler(Looper.getMainLooper()).post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(LinphoneApplication.coreContext.getContext(), "Request Error! Try Again!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+
+                    setResult(requestBody != null ? requestBody.string() : "");
+                }
+            });
+
+        }
+
         @Override
         protected void onPostExecute(String result) {
             Log.i(TAG,"Login Response JSON: "+result);
-            if (result != null) {
+            if (result != null && !result.equals("")) {
                 Database db = new Database(context);
                 JSONObject json = null;
                 try {
@@ -984,7 +1064,11 @@ public class LoginActivity extends AppCompatActivity implements
                             Log.i(TAG,"User ID: "+json.getString("user_id"));
                             db.addAdminNumber(new Contact("user_id", json.getString("user_id"), "jhorotek"));
                             db.addAdminNumber(new Contact("parent_id", json.getString("parentId"), "jhorotek"));
-                            db.addAdminNumber(new Contact("id", json.getString("id"), "jhorotek"));
+                            try {
+                                db.addAdminNumber(new Contact("id", json.getString("id"), "jhorotek"));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                             db.addAdminNumber(new Contact("Custom_url", "https://api.onukit.com/6v4", "Onuserver"));
                             db.addAdminNumber(new Contact("contact_url", "https://api.onukit.com/contact/0v1/", "Onuserver"));
                             //db.addAdminNumber(new Contact("Custom_url", "http://172.16.136.80/api4", "Onuserver"));
@@ -1033,75 +1117,14 @@ public class LoginActivity extends AppCompatActivity implements
                 String password = user_password;
                 Log.i(TAG, "User Name: "+username+"; PAssword: "+password);
 
-                HttpParams httpParams = new BasicHttpParams();
-                HttpConnectionParams.setConnectionTimeout(httpParams, TIMEOUT_MILLISEC);
-                HttpConnectionParams.setSoTimeout(httpParams, TIMEOUT_MILLISEC);
-                HttpParams p = new BasicHttpParams();
-                DefaultHttpClient httpclient = new DefaultHttpClient(p);
+                networkStuff();
 
-                //String url = "https://www.mydomainic.com/api/bkash-central/demo/add/via-sms/";
-                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(10);
-                nameValuePairs.add(new BasicNameValuePair("demo", "demo"));
-                DefaultHttpClient httpClient = new DefaultHttpClient();
-                String paramsString = URLEncodedUtils.format(nameValuePairs,
-                        "UTF-8");
-                HttpPost httppost = new HttpPost(urlForLogin);
-                Log.i(TAG, "Login url: "+urlForLogin);
-                ResponseHandler<String> responseHandler = new BasicResponseHandler();
-                httppost.setHeader("Content-type", "application/json");
+                while (getResult() == null) {
+                    Log.i(TAG, "Waiting for result");
+                    Thread.sleep(1000);
+                }
 
-                //---------------------Code for Basic Authentication-----------------------
-                String credentials = username + ":" + password;
-                String credBase64 = Base64.encodeToString(credentials.getBytes(), Base64.DEFAULT).replace("\n", "");
-                httppost.setHeader("Authorization", "Basic " + credBase64);
-                //----------------------------------------------------------------------
-                //old jSonCode--------------------
-//                String entity = "{\"mobile\":\""+rcvdnum+"\",\"sms\":\""+rcvdsms+"\",\"transaction_id\" :\""+uniq+"\",\"receive_time\":\""+rcvtime+"\"}";
-//                httppost.setEntity(new StringEntity(entity ,"UTF-8"));
-                //----------------------------------
-
-                //Log.i(TAG,user_email+" "+user_password+" "+user_mobile+" "+imei+" "+objectID+" "+Version+" "+brand+" "+model);
-
-                JSONObject jsonParam = new JSONObject();
-                jsonParam.accumulate("email", user_email);
-                jsonParam.accumulate("password", user_password);
-                jsonParam.accumulate("mobile", user_mobile);
-                jsonParam.accumulate("device_id", imei);
-                jsonParam.accumulate("oid", objectID);
-                jsonParam.accumulate("accountCreateFlag", "0");
-                jsonParam.accumulate("thirdPartyUserData", "null");
-                jsonParam.accumulate("version", Version);
-                jsonParam.accumulate("brand", brand);
-                jsonParam.accumulate("model", model);
-
-                Log.i(TAG,"Login Request JSON: "+jsonParam.toString());
-
-                // 5. set json to StringEntity
-                //URLEncoder.encode(jsonParam.toString(),"UTF-8")
-                StringEntity myStringEntity = new StringEntity(jsonParam.toString(), "UTF-8");
-                Log.i(TAG, "Activation jSon:" + jsonParam.toString());
-                httppost.setEntity(myStringEntity);
-
-                //--------------execution of httppost
-                HttpResponse response = httpclient.execute(httppost);
-                Log.i(TAG, "Activation: 2");
-                String res = EntityUtils.toString(response.getEntity());
-                Log.i(TAG, "Activation: 3" + res);
-                JSONObject json = new JSONObject(res);
-                Log.i(TAG, "Activation: 4");
-                Log.i(TAG, json.toString());
-                status = json.getString("status");
-                String LogInActivity = json.getString("isActive");
-                statusCode = response.getStatusLine().getStatusCode();
-                Log.i(TAG, "Activation: " + statusCode);
-                Log.i(TAG, "Satus Code: " + status);
-
-                // if(status.equals(success))
-                if (statusCode >= 200 && statusCode <= 299) {
-                    Log.d("My Response: ", res);
-                    return res;
-                } else
-                    return res;
+                return getResult();
             } catch (Exception ex) {
                 Log.i(TAG, " Exception :" + ex);
                 return null;
@@ -1285,11 +1308,17 @@ public class LoginActivity extends AppCompatActivity implements
 
     public void getRegId() {
 
-        // getFCMToken();
+        getFCMToken();
 
         regid = generatedToken;
-
         objectID = regid;
+
+        // load oid from shared preference
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("onukit_creds", 0);
+        String oid = pref.getString("oid", null);
+        if (oid != null) {
+            objectID = oid;
+        }
 
     }
 
@@ -1320,19 +1349,19 @@ public class LoginActivity extends AppCompatActivity implements
                 i.putExtra(USERPASS, user_password);
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                if (progressBar.isShowing()) {
+                if (progressBar != null && progressBar.isShowing()) {
                     progressBar.dismiss();
                 }
                 startActivity(i);
                 finish();
             }
         }
-//        if (isNetworkAvailable()) {
-//
-////            Log.e(TAG,"From Check Status");
-//
-//            getRegId();
-//        }
+        if (isNetworkAvailable()) {
+
+//            Log.e(TAG,"From Check Status");
+
+            getRegId();
+        }
 
         Log.d(TAG,"Check Status ended!");
 
@@ -1483,9 +1512,35 @@ public class LoginActivity extends AppCompatActivity implements
         }
     }
 
-//    private void getFCMToken() {
-//
-//        // Get token
+    private void getFCMToken() {
+
+        // Get token
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(@NonNull Task<String> task) {
+                if (!task.isSuccessful()) {
+                    Log.w("Firebase", "Fetching FCM registration token failed", task.getException());
+                    return;
+                }
+                // Do something with the token if successful
+                String token = task.getResult();
+
+                // save to shared preferences
+                SharedPreferences sharedPreferences = getSharedPreferences("onukit_creds", MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("oid", token);
+                editor.apply();
+
+                Log.d("Firebase", token);
+                setToken(token);
+            }
+        });
+
+
+
+
+
+
 //        FirebaseInstanceId.getInstance().getInstanceId()
 //                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
 //                    @Override
@@ -1505,7 +1560,7 @@ public class LoginActivity extends AppCompatActivity implements
 ////                        setToken(msg);
 //                    }
 //                });
-//    }
+    }
 
     public void setToken(String token) {
         generatedToken = token;

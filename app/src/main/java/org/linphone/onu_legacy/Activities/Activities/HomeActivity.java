@@ -462,7 +462,7 @@ public class HomeActivity extends AppCompatActivity {
             {
                 if(!cn.getPhone_number().equals(""))
                     url = cn.getPhone_number()+"/outgoingApi";
-                //http://api1.onuserver.com:8085/v3/incomingSms
+                //http://api1.onukit.com:8085/v3/incomingSms
             }
 
             else if (cn.getName().equals("email")  )

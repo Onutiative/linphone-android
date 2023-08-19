@@ -52,23 +52,21 @@ class OnuAuthentication : AppCompatActivity() {
 
         // check if the user is already logged in
         val userCredentials = OnuFunctions().getUserCredentials()
-        if (userCredentials != null) {
-            // get the username and password from the credentials
-            val username = userCredentials["username"]
-            val password = userCredentials["password"]
+        // get the username and password from the credentials
+        val username = userCredentials["username"]
+        val password = userCredentials["password"]
 
-            Log.i("OnuFunctions", "OnuAuthentication username: $username")
-            Log.i("OnuFunctions", "OnuAuthentication password: $password")
-            // print username and password type
-            Log.i("OnuFunctions", "OnuAuthentication username type: ${username?.javaClass?.canonicalName}")
-            Log.i("OnuFunctions", "OnuAuthentication password type: ${password?.javaClass?.canonicalName}")
-            // check if the credentials are not null
+        Log.i("OnuFunctions", "OnuAuthentication username: $username")
+        Log.i("OnuFunctions", "OnuAuthentication password: $password")
+        // print username and password type
+        Log.i("OnuFunctions", "OnuAuthentication username type: ${username?.javaClass?.canonicalName}")
+        Log.i("OnuFunctions", "OnuAuthentication password type: ${password?.javaClass?.canonicalName}")
+        // check if the credentials are not null
 
-            if (username != "0" && password != "0") {
-                // login the user
-                Log.i("OnuFunctions", "OnuAuthentication Logging in")
-                login(username!!, password!!)
-            }
+        if (username != "0" && password != "0") {
+            // login the user
+            Log.i("OnuFunctions", "OnuAuthentication Logging in")
+            login(username!!, password!!)
         }
     }
 

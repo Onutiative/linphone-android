@@ -140,7 +140,7 @@ public class Posted_Inbox_Activity extends AppCompatActivity implements
 
             case R.id.goOnline:
                 Intent i = new Intent(Posted_Inbox_Activity.this, WebViews.class);
-                i.putExtra("url","http://user.onuserver.com/6v0/massage/inbox");
+                i.putExtra("url","http://user.onukit.com/6v0/massage/inbox");
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
                 break;

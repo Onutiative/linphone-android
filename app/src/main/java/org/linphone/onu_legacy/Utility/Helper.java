@@ -66,7 +66,7 @@ public class Helper {
             {
                 if(!cn.getPhone_number().equals(""))
                      base_url= cn.getPhone_number();
-                //http://api1.onuserver.com:8085/v3/incomingSms
+                //http://api1.onukit.com:8085/v3/incomingSms
             }
             else if (cn.getName().equals("email")  )
             {

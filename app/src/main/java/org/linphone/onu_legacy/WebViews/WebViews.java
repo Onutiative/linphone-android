@@ -153,7 +153,7 @@ public class WebViews extends AppCompatActivity {
 //
 //        @Override
 //        public void onReceivedHttpAuthRequest(WebView view, HttpAuthHandler handler, String host, String realm) {
-//            handler.proceed("promotion@onuserver.com","welcome@2018");
+//            handler.proceed("promotion@onukit.com","welcome@2018");
 //        }
 //    }
 

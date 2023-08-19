@@ -106,9 +106,9 @@ class Dashboard_Activity_bak() :
      */
     private var mDemoSlider: SliderLayout? = null
 
-    //    private String url1 = "http://user.onuserver.com/6v0/downloads/slider/1.jpg";
-    //    private String url2 = "http://user.onuserver.com/6v0/downloads/slider/2.jpg";
-    //    private String url3 = "http://user.onuserver.com/6v0/downloads/slider/3.jpg";
+    //    private String url1 = "http://user.onukit.com/6v0/downloads/slider/1.jpg";
+    //    private String url2 = "http://user.onukit.com/6v0/downloads/slider/2.jpg";
+    //    private String url3 = "http://user.onukit.com/6v0/downloads/slider/3.jpg";
     private var indicator: ImageView? = null
     private var info: Info? = null
     private var db: Database? = null
@@ -535,7 +535,7 @@ class Dashboard_Activity_bak() :
             startActivity(i)
         } else if (id == R.id.webdashboard) {
             val i = Intent(this, WebViews::class.java)
-            i.putExtra("url", "http://user.onuserver.com/6v0/login_from_app/dashboard")
+            i.putExtra("url", "http://user.onukit.com/6v0/login_from_app/dashboard")
             i.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             startActivity(i)
         } else if (id == R.id.logout) {
@@ -1331,7 +1331,7 @@ class Dashboard_Activity_bak() :
     }
 
     companion object {
-        //    private String url = "http://demo.onuserver.com/api/contactManagement";
+        //    private String url = "http://demo.onukit.com/api/contactManagement";
         private val PERMISSION_REQUEST_CODE = 11
         fun updateExternalStorageState(): Int {
             val state = Environment.getExternalStorageState()

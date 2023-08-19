@@ -169,7 +169,7 @@ public class SaveNewTask extends AsyncTask<Void, Void, String> {
                 if (!cn.getPhone_number().equals(""))
                     url = cn.getPhone_number() + "/inAppPopUP";
                 Log.i(TAG,"On make: "+url);
-                //http://api1.onuserver.com:8085/v3/incomingSms
+                //http://api1.onukit.com:8085/v3/incomingSms
             } else if (cn.getName().equals("email"))
 
             {

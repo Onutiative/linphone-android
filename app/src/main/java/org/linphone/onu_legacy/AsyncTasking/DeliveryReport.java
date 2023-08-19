@@ -173,7 +173,7 @@ public class DeliveryReport extends AsyncTask<Void, Void, String>  {
             {
                 if(!cn.getPhone_number().equals(""))
                     url = cn.getPhone_number()+"/pullOutSms";
-                //http://api1.onuserver.com:8085/v3/incomingSms
+                //http://api1.onukit.com:8085/v3/incomingSms
             }
 
         }

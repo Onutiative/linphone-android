@@ -34,7 +34,7 @@ public class PullServerContact extends AsyncTask<Void, Void, String> {
     private Context context;
     //now this URL used for test
     //next we will set this as dynamic
-    private final String BASE_URL ="http://api.onuserver.com/6v1.1";
+    private final String BASE_URL ="http://api.onukit.com/6v1.1";
     private String url="",userName,userPassword,deviceId, responseResult;
     private int TIMEOUT_MILLISEC = 5000, statusCode;
     private Database sqLiteDB;

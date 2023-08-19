@@ -347,7 +347,7 @@ public class FloatingViewService extends Service {
             if (cn.getName().equals("Custom_url")) {
                 if (!cn.getPhone_number().equals(""))
                     url = cn.getPhone_number() + "/getSummary";
-                //http://api1.onuserver.com:8085/v3/incomingSms
+                //http://api1.onukit.com:8085/v3/incomingSms
             } else if (cn.getName().equals("email"))
 
             {

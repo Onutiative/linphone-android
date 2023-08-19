@@ -146,10 +146,10 @@ public class CallLog_Activity extends AppCompatActivity implements
                 Intent i = new Intent(CallLog_Activity.this, WebViews.class);
                 if (type.equals("in")) {
 //                    Toast.makeText(CallLog_Activity.this,"Call log incoming",Toast.LENGTH_SHORT).show();
-                    i.putExtra("url", "http://user.onuserver.com/6v0/login_from_app/incomingCalls");
+                    i.putExtra("url", "http://user.onukit.com/6v0/login_from_app/incomingCalls");
                 } else {
 //                    Toast.makeText(CallLog_Activity.this,"Call log outgoing",Toast.LENGTH_SHORT).show();
-                    i.putExtra("url", "http://user.onuserver.com/6v0/login_from_app/outgoingCalls");
+                    i.putExtra("url", "http://user.onukit.com/6v0/login_from_app/outgoingCalls");
                 }
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);

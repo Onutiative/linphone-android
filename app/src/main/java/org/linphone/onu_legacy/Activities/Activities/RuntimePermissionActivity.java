@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.provider.Settings;
 import android.text.Html;
 import android.util.Log;
@@ -20,6 +21,9 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -56,6 +60,83 @@ public class RuntimePermissionActivity extends AppCompatActivity {
     private int current;
     private int requestPermissionscall_count=0;
 
+
+    private void showSettingDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("Notification Permission")
+                .setMessage("Notification permission is required. Please allow notification permission from settings.")
+                .setPositiveButton("Ok", (dialog, which) -> {
+                    Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                    intent.setData(Uri.fromParts("package", getPackageName(), null));
+                    startActivity(intent);
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
+
+    private void showNotificationPermissionRationale() {
+        new AlertDialog.Builder(this)
+                .setTitle("Alert")
+                .setMessage("Notification permission is required to show notifications.")
+                .setPositiveButton("Ok", (dialog, which) -> {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
+
+    private ActivityResultLauncher<String> notificationPermissionLauncher = registerForActivityResult(
+            new ActivityResultContracts.RequestPermission(),
+            new ActivityResultCallback<Boolean>() {
+                @Override
+                public void onActivityResult(Boolean isGranted) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
+                            showNotificationPermissionRationale();
+                        } else {
+                            showSettingDialog();
+                        }
+                    }
+                }
+            }
+    );
+
+    private void showBatteryOptimizationDialog() {
+        Log.d(TAG, "showBatteryOptimizationDialog: ");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            String packageName = getPackageName();
+            PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+            if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("Battery Optimization")
+                        .setMessage("Battery optimization is needed to receive calls consistently. Please tap Allow when prompted.")
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Launch the battery optimization settings
+                                Intent intent = new Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS);
+                                intent.setData(Uri.parse("package:" + packageName));
+                                startActivity(intent);
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // User clicked "Cancel," do nothing or handle as required
+                                dialog.dismiss();
+                            }
+                        })
+                        .setCancelable(false)
+                        .show();
+            }
+        }
+        viewPager.setCurrentItem(current);
+    }
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +163,7 @@ public class RuntimePermissionActivity extends AppCompatActivity {
                 R.layout.welcome_slide4,
                 R.layout.welcome_slide5,
                 R.layout.welcome_slide6,
+                R.layout.welcome_slide6_a,
                 R.layout.welcome_slide7
         };
 
@@ -99,6 +181,7 @@ public class RuntimePermissionActivity extends AppCompatActivity {
         if (slideNo>0){
             switch (slideNo){
                 case 1:{
+                    notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS);
                     int callPermissionResult= ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE);
                     if (callPermissionResult==0){
                         permissionResult("Call",true);
@@ -146,6 +229,11 @@ public class RuntimePermissionActivity extends AppCompatActivity {
                 }
 
                 case 6: {
+                    showBatteryOptimizationDialog();
+                    break;
+                }
+
+                case 7: {
                     boolean popupPermissionResult;
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                         popupPermissionResult = Settings.canDrawOverlays(context);
@@ -175,6 +263,8 @@ public class RuntimePermissionActivity extends AppCompatActivity {
                     from=intent.getStringExtra("from");
 
                     Log.i(TAG,"Come From: "+from);
+                    Log.i(TAG, "Current: " + current);
+
                     if (current == 1) {
                         viewPager.setCurrentItem(current);
                     } else if (current == 2) {
@@ -233,6 +323,9 @@ public class RuntimePermissionActivity extends AppCompatActivity {
                             Log.i(TAG,"Through Normal");
                         }
                     } else if (current == 7) {
+                        showBatteryOptimizationDialog();
+                        // viewPager.setCurrentItem(current);
+                    } else if (current == 8) {
                         boolean popupPermissionResult;
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                             popupPermissionResult = Settings.canDrawOverlays(context);
@@ -282,6 +375,8 @@ public class RuntimePermissionActivity extends AppCompatActivity {
                 requestRecordAudioPermission();
             } else if (position == 6) {
                 requestReadWriteStoragePermission();
+            } else if (position == 7) {
+                showBatteryOptimizationDialog();
             } else {
                 requestDrawOverAllAppsPermission();
             }

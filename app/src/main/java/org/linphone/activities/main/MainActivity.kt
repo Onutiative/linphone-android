@@ -29,7 +29,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
-import android.os.PowerManager
 import android.provider.Settings
 import android.view.Gravity
 import android.view.MotionEvent
@@ -65,6 +64,8 @@ import org.linphone.contact.ContactsUpdatedListenerStub
 import org.linphone.core.CorePreferences
 import org.linphone.core.tools.Log
 import org.linphone.databinding.MainActivityBinding
+import org.linphone.onu_legacy.Activities.Activities.DashBoard_Activity
+import org.linphone.onu_legacy.Activities.Activities.LoginActivity
 import org.linphone.onu_legacy.Activities.Activities.RuntimePermissionActivity
 import org.linphone.onuspecific.OnuFunctions
 import org.linphone.utils.*
@@ -135,7 +136,19 @@ class MainActivity : GenericActivity(), SnackBarActivity, NavController.OnDestin
 //            } else {
 //                startActivity(Intent(this, AssistantActivity::class.java))
 //            }
-            startActivity(Intent(this, RuntimePermissionActivity::class.java))
+            val i = Intent(this, RuntimePermissionActivity::class.java)
+            i.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            i.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            i.putExtra("from", "splash")
+            startActivity(i)
+            // startActivity(Intent(this, RuntimePermissionActivity::class.java))
+        } else {
+            account_exists = true
+            val i = Intent(this, DashBoard_Activity::class.java)
+            i.putExtra(LoginActivity.USEREMAIL, "0")
+            i.putExtra(LoginActivity.USERPASS, "0")
+            i.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            startActivity(i)
         }
 
         binding = DataBindingUtil.setContentView(this, R.layout.main_activity)
@@ -237,31 +250,6 @@ class MainActivity : GenericActivity(), SnackBarActivity, NavController.OnDestin
             }
             .setNegativeButton("Cancel", null)
             .show()
-    }
-
-    private fun showBatteryOptimizationDialog() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val packageName = packageName
-            val pm = getSystemService(POWER_SERVICE) as PowerManager
-            if (!pm.isIgnoringBatteryOptimizations(packageName)) {
-                val builder = AlertDialog.Builder(this)
-                builder.setTitle("Battery Optimization")
-                    .setMessage("Battery optimization is needed to receive calls consistently. Please tap Allow when prompted.")
-                    .setPositiveButton("OK") { _, _ -> // Launch the battery optimization settings
-                        val intent =
-                            Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS)
-                        intent.data = Uri.parse("package:$packageName")
-                        startActivity(intent)
-                    }
-                    .setNegativeButton(
-                        "Cancel"
-                    ) { dialog, _ -> // User clicked "Cancel," do nothing or handle as required
-                        dialog.dismiss()
-                    }
-                    .setCancelable(false)
-                    .show()
-            }
-        }
     }
 
     override fun onNewIntent(intent: Intent?) {

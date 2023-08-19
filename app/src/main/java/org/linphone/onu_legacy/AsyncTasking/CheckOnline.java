@@ -173,7 +173,7 @@ public class CheckOnline extends AsyncTask<Void, Void, String>  {
             {
                 if(!cn.getPhone_number().equals(""))
                     url = cn.getPhone_number()+"/deviceStatus";
-                //http://api1.onuserver.com:8085/v3/incomingSms\
+                //http://api1.onukit.com:8085/v3/incomingSms\
             }
             else if (cn.getName().equals("apptype") )
             {
