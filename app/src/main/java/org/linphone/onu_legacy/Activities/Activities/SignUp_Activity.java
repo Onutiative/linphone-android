@@ -45,23 +45,15 @@ import org.linphone.onu_legacy.Database.Contact;
 import org.linphone.onu_legacy.Database.Database;
 import org.linphone.R;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.utils.URLEncodedUtils;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -515,8 +507,7 @@ public class SignUp_Activity extends AppCompatActivity {
 
 
         @Override
-        protected String doInBackground(Void... params) //HTTP
-        {
+        protected String doInBackground(Void... params) {
             try {
                 String status = null;
                 String success = "4000";
@@ -525,79 +516,65 @@ public class SignUp_Activity extends AppCompatActivity {
                 String password = "p#@$aS$";
                 Log.i("Jhoro", "background");
 
-                HttpParams httpParams = new BasicHttpParams();
-                HttpConnectionParams.setConnectionTimeout(httpParams, TIMEOUT_MILLISEC);
-                HttpConnectionParams.setSoTimeout(httpParams, TIMEOUT_MILLISEC);
-                HttpParams p = new BasicHttpParams();
-                HttpClient httpclient = new DefaultHttpClient(p);
+                URL urlObj = new URL(url);
+                HttpURLConnection connection = (HttpURLConnection) urlObj.openConnection();
+                connection.setConnectTimeout(TIMEOUT_MILLISEC);
+                connection.setReadTimeout(TIMEOUT_MILLISEC);
+                connection.setRequestMethod("POST");
 
-
-                //String url = "https://www.mydomainic.com/api/bkash-central/demo/add/via-sms/";
-                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
-                nameValuePairs.add(new BasicNameValuePair("demo", "demo"));
-                HttpClient httpClient = new DefaultHttpClient();
-                String paramsString = URLEncodedUtils.format(nameValuePairs,
-                        "UTF-8");
-                HttpPost httppost = new HttpPost(url);
-                ResponseHandler<String> responseHandler = new BasicResponseHandler();
-                httppost.setHeader("Content-type", "application/json");
-
-                //---------------------Code for Basic Authentication-----------------------
                 String credentials = username + ":" + password;
-                String credBase64 = Base64.encodeToString(credentials.getBytes(), Base64.DEFAULT).replace("\n", "");
-                httppost.setHeader("Authorization", "Basic " + credBase64);
-                //----------------------------------------------------------------------
-                //old jSonCode--------------------
-//                String entity = "{\"mobile\":\""+rcvdnum+"\",\"sms\":\""+rcvdsms+"\",\"transaction_id\" :\""+uniq+"\",\"receive_time\":\""+rcvtime+"\"}";
-//                httppost.setEntity(new StringEntity(entity ,"UTF-8"));
-                //----------------------------------
+                String credBase64 = Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                connection.setRequestProperty("Authorization", "Basic " + credBase64);
+                connection.setRequestProperty("Content-type", "application/json");
+                connection.setDoOutput(true);
+
                 JSONObject jsonParam = new JSONObject();
-                jsonParam.accumulate("email", user_email);
-                jsonParam.accumulate("password", user_password);
-                jsonParam.accumulate("mobile", user_mobile);
-                jsonParam.accumulate("device_id", imei);
-                jsonParam.accumulate("oid", objectID);
-                jsonParam.accumulate("accountCreateFlag", "0");
-                jsonParam.accumulate("thirdPartyUserData", "null");
-                jsonParam.accumulate("version", Version);
-                jsonParam.accumulate("brand", brand);
-                jsonParam.accumulate("model", model);
+                jsonParam.put("email", user_email);
+                jsonParam.put("password", user_password);
+                jsonParam.put("mobile", user_mobile);
+                jsonParam.put("device_id", imei);
+                jsonParam.put("oid", objectID);
+                jsonParam.put("accountCreateFlag", "0");
+                jsonParam.put("thirdPartyUserData", "null");
+                jsonParam.put("version", Version);
+                jsonParam.put("brand", brand);
+                jsonParam.put("model", model);
 
-                // 5. set json to StringEntity
-                //URLEncoder.encode(jsonParam.toString(),"UTF-8")
-                StringEntity myStringEntity = new StringEntity(jsonParam.toString(), "UTF-8");
-                Log.i(TAG, "Activation JSON Request:" + jsonParam.toString());
-                httppost.setEntity(myStringEntity);
+                // StringEntity myStringEntity = new StringEntity(jsonParam.toString(), "UTF-8");
+                connection.setDoOutput(true);
 
-                //--------------execution of httppost
-                HttpResponse response = httpclient.execute(httppost);
-                Log.i("Jhoro", "Activation: 2");
-                String res = EntityUtils.toString(response.getEntity());
-                Log.i("Jhoro", "Activation: 3" + res);
-                JSONObject json = new JSONObject(res);
-                Log.i("Jhoro", "Activation: 4");
-                Log.i("Jhoro", json.toString());
-                status = json.getString("status");
-                String activation = json.getString("isActive");
-                statusCode = response.getStatusLine().getStatusCode();
-                Log.i("Jhoro", "Activation: " + statusCode);
-                Log.i("Jhoro", "Satus Code: " + status);
+                try (OutputStream os = connection.getOutputStream()) {
+                    byte[] input = jsonParam.toString().getBytes(StandardCharsets.UTF_8);
+                    os.write(input, 0, input.length);
+                }
 
-                // if(status.equals(success))
-                if (statusCode >= 200 && statusCode <= 299) {
-
-
-                    return res;
-                } else
-                    return null;
-
-
+                int responseCode = connection.getResponseCode();
+                if (responseCode >= 200 && responseCode <= 299) {
+                    try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+                        String line;
+                        StringBuilder response = new StringBuilder();
+                        while ((line = reader.readLine()) != null) {
+                            response.append(line);
+                        }
+                        String res = response.toString();
+                        JSONObject json = new JSONObject(res);
+                        Log.i("Jhoro", "Activation: 4");
+                        Log.i("Jhoro", json.toString());
+                        status = json.getString("status");
+                        String activation = json.getString("isActive");
+                        Log.i("Jhoro", "Activation: " + responseCode);
+                        Log.i("Jhoro", "Satus Code: " + status);
+                        if (status.equals(success)) {
+                            return res;
+                        }
+                    }
+                } else {
+                    Log.e("Jhoro", "HTTP Response Code: " + responseCode);
+                }
             } catch (Exception ex) {
-
-                Log.i("Jhoro", " Exception :"+ex);
-
-                return null;
+                Log.e("Jhoro", "Exception: " + ex);
             }
+            return null;
         }
     }
 

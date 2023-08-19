@@ -2,6 +2,7 @@
 package org.linphone.onu_legacy.Utility;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
@@ -51,9 +52,15 @@ public class Info {
     public String getImei() {
         TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
 
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+        try{
+            if (ActivityCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+                // ask for permission
+                ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.READ_PHONE_STATE}, 1);
+            }
+            return tm.getDeviceId().toString();
+        } catch (Exception e) {
+            return "0";
         }
-        return tm.getDeviceId().toString();
     }
 
     public String getCheckOutgoing() {

@@ -63,29 +63,24 @@ import org.linphone.onu_legacy.Database.Contact;
 import org.linphone.onu_legacy.Database.Database;
 import org.linphone.onu_legacy.Utility.SharedPrefManager;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.utils.URLEncodedUtils;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.linphone.onuspecific.OnuFunctions;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 
@@ -1156,7 +1151,7 @@ public class LoginActivity extends AppCompatActivity implements
                             user_email_frgt = input.getText().toString();
                             dialog.cancel();
                             //checkstatus();
-                            new ForgetPassAPi(getApplicationContext()).execute();
+                            new ForgetPassAPi(getApplicationContext(), user_email_frgt).execute();
 
                             Toast.makeText(context, "Action Taken Successfully", Toast.LENGTH_LONG).show();
                         } else {
@@ -1178,117 +1173,90 @@ public class LoginActivity extends AppCompatActivity implements
     }
 
     public class ForgetPassAPi extends AsyncTask<Void, Void, String> {
-        int TIMEOUT_MILLISEC = 5000;
-        Context context;
-        ProgressDialog dialog;
-        Activity activity;
+        private static final int TIMEOUT_MILLISEC = 5000;
+        private Context context;
+        private String user_email_frgt;
+        private String TAG = "ForgetPassAPi";
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            //dialog = ProgressDialog.show(context, "Wait", "Please wait");
-        }
-
-        public ForgetPassAPi(Context context) {
+        public ForgetPassAPi(Context context, String user_email_frgt) {
             this.context = context;
-        }
-        @Override
-        protected void onPostExecute(String result) {
-
-            if (result != null) {
-                if (result.equals("4000")) {
-                    Toast.makeText(getApplication(), "Check your email pls .", Toast.LENGTH_LONG).show();
-                }
-            }
-            //else {
-            //Toast.makeText(getApplication(), "Could not connect.", Toast.LENGTH_LONG).show();
-            //}
+            this.user_email_frgt = user_email_frgt;
         }
 
         @Override
-        protected String doInBackground(Void... params) //HTTP
-        {
+        protected String doInBackground(Void... params) {
             try {
-                String status = null;
-                String reason = "4000";
-                int statusCode = 0;
                 String username = "Onu$erVe9";
                 String password = "p#@$aS$";
                 Log.i(TAG, "background");
 
-                HttpParams httpParams = new BasicHttpParams();
-                HttpConnectionParams.setConnectionTimeout(httpParams, TIMEOUT_MILLISEC);
-                HttpConnectionParams.setSoTimeout(httpParams, TIMEOUT_MILLISEC);
-                HttpParams p = new BasicHttpParams();
-                DefaultHttpClient httpclient = new DefaultHttpClient(p);
+                URL urlObj = new URL("http://api.onukit.com/6v4/passForget");
+                HttpURLConnection connection = (HttpURLConnection) urlObj.openConnection();
 
-                //String url = "https://www.mydomainic.com/api/bkash-central/demo/add/via-sms/";
-                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
-                nameValuePairs.add(new BasicNameValuePair("demo", "demo"));
-                DefaultHttpClient httpClient = new DefaultHttpClient();
-                String paramsString = URLEncodedUtils.format(nameValuePairs,
-                        "UTF-8");
-                HttpPost httppost = new HttpPost("http://api.onukit.com/6v4/passForget");
-                ResponseHandler<String> responseHandler = new BasicResponseHandler();
-                httppost.setHeader("Content-type", "application/json");
+                connection.setConnectTimeout(TIMEOUT_MILLISEC);
+                connection.setReadTimeout(TIMEOUT_MILLISEC);
+                connection.setRequestMethod("POST");
+                connection.setRequestProperty("Content-Type", "application/json");
+                connection.setRequestProperty("Authorization", "Basic " + getBase64Credentials(username, password));
+                connection.setDoOutput(true);
 
-                //---------------------Code for Basic Authentication-----------------------
-                String credentials = username + ":" + password;
-                String credBase64 = Base64.encodeToString(credentials.getBytes(), Base64.DEFAULT).replace("\n", "");
-                httppost.setHeader("Authorization", "Basic " + credBase64);
-                //----------------------------------------------------------------------
-                //old jSonCode--------------------
-//                String entity = "{\"mobile\":\""+rcvdnum+"\",\"sms\":\""+rcvdsms+"\",\"transaction_id\" :\""+uniq+"\",\"receive_time\":\""+rcvtime+"\"}";
-//                httppost.setEntity(new StringEntity(entity ,"UTF-8"));
-                //----------------------------------
                 JSONObject jsonParam = new JSONObject();
-               /* "trnxID":"51446541426",
-                        "email":"buzzinfo@gmail.com",
-                        "time":"2016-02-17 12:36:13"*/
-
                 jsonParam.accumulate("email", user_email_frgt);
                 jsonParam.accumulate("trnxID", getDate("yysssyysMMD"));
                 jsonParam.accumulate("time", getDate("yyyy-MM-dd hh:mm:ss"));
 
+                try (OutputStream os = connection.getOutputStream()) {
+                    byte[] input = jsonParam.toString().getBytes("utf-8");
+                    os.write(input, 0, input.length);
+                }
 
-                // 5. set json to StringEntity
-                //URLEncoder.encode(jsonParam.toString(),"UTF-8")
-                StringEntity myStringEntity = new StringEntity(jsonParam.toString(), "UTF-8");
-                Log.i(TAG, "Activation jSon:" + jsonParam.toString());
-                httppost.setEntity(myStringEntity);
+                int responseCode = connection.getResponseCode();
+                if (responseCode >= 200 && responseCode <= 299) {
+                    try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+                        StringBuilder response = new StringBuilder();
+                        String line;
+                        while ((line = reader.readLine()) != null) {
+                            response.append(line);
+                        }
 
-                //--------------execution of httppost
-                HttpResponse response = httpclient.execute(httppost);
-                Log.i(TAG, "Activation: 2");
-                String res = EntityUtils.toString(response.getEntity());
-                Log.i(TAG, "Activation: 3" + res);
-                JSONObject json = new JSONObject(res);
-                Log.i(TAG, "Activation: 4");
-                Log.i(TAG, json.toString());
-                status = json.getString("status");
-                reason = json.getString("reason");
-                //String LogInActivity = json.getString("isActive");
-                statusCode = response.getStatusLine().getStatusCode();
-                Log.i(TAG, "Activation: " + statusCode);
-                Log.i(TAG, "Satus Code: " + status);
-
-                // if(status.equals(success))
-                if (statusCode >= 200 && statusCode <= 299) {
-
-
-                    return status;
-                } else
+                        JSONObject json = new JSONObject(response.toString());
+                        String status = json.getString("status");
+                        return status;
+                    }
+                } else {
+                    Log.e(TAG, "HTTP Response Code: " + responseCode);
                     return null;
-
-
+                }
             } catch (Exception ex) {
-
                 Log.i(TAG, " Exception :" + ex);
-
                 return null;
             }
         }
+
+        private String getDate(String format) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat(format, Locale.US);
+            return dateFormat.format(new Date());
+        }
+
+        private String getBase64Credentials(String username, String password) {
+            String credentials = username + ":" + password;
+            return Base64.encodeToString(credentials.getBytes(), Base64.DEFAULT);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            if (result != null) {
+                if (result.equals("4000")) {
+                    Toast.makeText(context, "Check your email pls .", Toast.LENGTH_LONG).show();
+                }
+            }
+            // else {
+            // Toast.makeText(getApplication(), "Could not connect.", Toast.LENGTH_LONG).show();
+            // }
+        }
     }
+
 
 
     private void IshowProgressDialog() {

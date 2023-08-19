@@ -33,18 +33,13 @@ import org.linphone.onu_legacy.Database.Contact;
 import org.linphone.onu_legacy.Database.Database;
 import org.linphone.R;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -319,43 +314,37 @@ public class SmsToAll_Activity extends AppCompatActivity {
             }
         }
         @Override
-        protected String doInBackground(Void... params) //HTTP
-        {
-            try{
-
-                String status=null;
-                String success="4000";
-                int statusCode =0;
-                String username =uname;
-                String password =upass;
+        protected String doInBackground(Void... params) {
+            try {
+                String status = null;
+                String success = "4000";
+                int statusCode = 0;
+                String username = uname;
+                String password = upass;
                 Log.e("Username: ", uname);
                 Log.e("password: ", upass);
                 //username ="Onu$erVe9";
                 //password ="p#@$aS$";
-                Log.i("CList","1 url:"+url);
+                Log.i("CList", "1 url:" + url);
 
-                HttpParams httpParams = new BasicHttpParams();
-                HttpConnectionParams.setConnectionTimeout(httpParams, TIMEOUT_MILLISEC);
-                HttpConnectionParams.setSoTimeout(httpParams, TIMEOUT_MILLISEC);
-                HttpParams p = new BasicHttpParams();
-                HttpClient httpclient = new DefaultHttpClient(p);
-                Log.i("CList","2");
-                HttpPost httppost = new HttpPost(url);
-                Log.i("CList","3");
-                httppost.setHeader("Content-type", "application/json");
-                //---------------------Code for Basic Authentication-----------------------
+                URL urlObj = new URL(url);
+                HttpURLConnection connection = (HttpURLConnection) urlObj.openConnection();
+                connection.setConnectTimeout(TIMEOUT_MILLISEC);
+                connection.setReadTimeout(TIMEOUT_MILLISEC);
+                connection.setRequestMethod("POST");
+
                 String credentials = username + ":" + password;
-                String credBase64 = Base64.encodeToString(credentials.getBytes(), Base64.DEFAULT).replace("\n", "");
-                httppost.setHeader("Authorization", "Basic " + credBase64);
-                Log.i("CList","4");
-                //------------------------------------------
+                String credBase64 = Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                connection.setRequestProperty("Authorization", "Basic " + credBase64);
+                connection.setRequestProperty("Content-type", "application/json");
+                connection.setDoOutput(true);
+
                 JSONArray smsess = new JSONArray();
                 ContentResolver cr = getContentResolver();
                 Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI,
                         null, null, null, null);
                 if (cur.getCount() > 0) {
-                    while (cur.moveToNext())
-                    {
+                    while (cur.moveToNext()) {
                         String id = null;
                         int columnIndex = cur.getColumnIndex(ContactsContract.Contacts._ID);
                         if (columnIndex >= 0) {
@@ -374,62 +363,58 @@ public class SmsToAll_Activity extends AppCompatActivity {
                             hasPhone = cur.getString(columnIndex);
                         }
 
-                        if (hasPhone.equalsIgnoreCase("1"))
-                        {
+                        if (hasPhone != null && hasPhone.equalsIgnoreCase("1")) {
                             Cursor pCur = cr.query(
                                     ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
                                     null,
-                                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID +" = ?",
+                                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
                                     new String[]{id}, null);
-                            while (pCur.moveToNext())
-                            {
+                            while (pCur.moveToNext()) {
 
                                 String phoneNo = null;
                                 columnIndex = pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER);
                                 if (columnIndex >= 0) {
                                     phoneNo = pCur.getString(columnIndex);
                                 }
-                                if(phoneNo.length() > 10)
-                                {
+                                if (phoneNo != null && phoneNo.length() > 10) {
                                     JSONObject jsonParam = new JSONObject();
-                                    jsonParam.accumulate("sent_time", getDate("yyyy-MM-dd hh:mm:ss"));
-                                    jsonParam.accumulate("sms_text", smstobesent);
-                                    jsonParam.accumulate("mobile", phoneNo);
-                                    jsonParam.accumulate("smsId", getDate("yyyyMMddhhmmss"));
+                                    jsonParam.put("sent_time", getDate("yyyy-MM-dd hh:mm:ss"));
+                                    jsonParam.put("sms_text", smstobesent);
+                                    jsonParam.put("mobile", phoneNo);
+                                    jsonParam.put("smsId", getDate("yyyyMMddhhmmss"));
                                     Log.i("CList", "Name:" + name + " Phone No: " + phoneNo);
                                     smsess.put(jsonParam);
                                 }
-                                Log.i("CList","5");
+                                Log.i("CList", "5");
                             }
                             pCur.close();
                         }
                     }
-                    Log.i("CList","All:"+ smsess.toString());
+                    Log.i("CList", "All:" + smsess.toString());
                 }
-                //-----------------------------------------------------------------
-                StringEntity myStringEntity = new StringEntity( smsess.toString(),"UTF-8");
-                httppost.setEntity(myStringEntity);
-                //--------------execution of httppost
-                HttpResponse response = httpclient.execute(httppost);
-                String res= EntityUtils.toString(response.getEntity());
-                Log.i("CList","response:"+res);
-                statusCode = response.getStatusLine().getStatusCode();
-                // if(status.equals(success))
-                if(statusCode>=200 && statusCode<=299)
-                {
-                    Toast.makeText(context,"Sending . . .",Toast.LENGTH_SHORT).show();
-                    return null;
-                }
-                else
-                    return null;
 
-            }catch(Exception e)
-            {
-                Log.i("CList","exception:"+e);
+                // StringEntity myStringEntity = new StringEntity(smsess.toString(), "UTF-8");
+                connection.setDoOutput(true);
+
+                try (OutputStream os = connection.getOutputStream()) {
+                    byte[] input = smsess.toString().getBytes(StandardCharsets.UTF_8);
+                    os.write(input, 0, input.length);
+                }
+
+                int responseCode = connection.getResponseCode();
+                if (responseCode >= 200 && responseCode <= 299) {
+                    Log.i("CList", "response code:" + responseCode);
+                    Toast.makeText(context, "Sending . . .", Toast.LENGTH_SHORT).show();
+                } else {
+                    Log.e("CList", "HTTP Response Code: " + responseCode);
+                }
+            } catch (Exception e) {
+                Log.i("CList", "exception:" + e);
             }
 
             return null;
         }
+
     }
 
     private void UpdateCount(int numbercounts)

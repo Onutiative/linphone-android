@@ -33,18 +33,15 @@ import org.linphone.R;
 import com.wafflecopter.multicontactpicker.ContactResult;
 import com.wafflecopter.multicontactpicker.MultiContactPicker;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -351,104 +348,62 @@ public class HomeActivity extends AppCompatActivity {
             }
         }
         @Override
-        protected String doInBackground(Void... params) //HTTP
-        {
-            try{
+        protected String doInBackground(Void... params) {
+            try {
+                String status = null;
+                String success = "4000";
+                int statusCode = 0;
 
-                String status=null;
-                String success="4000";
-                int statusCode =0;
-                String username =uname;
-                String password =upass;
+                String username = uname;
+                String password = upass;
                 Log.e("Username: ", uname);
                 Log.e("password: ", upass);
-                //username ="Onu$erVe9";
-                //password ="p#@$aS$";
-                Log.i("CList","1 url:"+url);
 
-                HttpParams httpParams = new BasicHttpParams();
-                HttpConnectionParams.setConnectionTimeout(httpParams, TIMEOUT_MILLISEC);
-                HttpConnectionParams.setSoTimeout(httpParams, TIMEOUT_MILLISEC);
-                HttpParams p = new BasicHttpParams();
-                HttpClient httpclient = new DefaultHttpClient(p);
-                Log.i("CList","2");
-                HttpPost httppost = new HttpPost(url);
-                Log.i("CList","3");
-                httppost.setHeader("Content-type", "application/json");
-                //---------------------Code for Basic Authentication-----------------------
+                URL urlObj = new URL(url);
+                HttpURLConnection connection = (HttpURLConnection) urlObj.openConnection();
+                connection.setConnectTimeout(TIMEOUT_MILLISEC);
+                connection.setReadTimeout(TIMEOUT_MILLISEC);
+                connection.setRequestMethod("POST");
+
                 String credentials = username + ":" + password;
-                String credBase64 = Base64.encodeToString(credentials.getBytes(), Base64.DEFAULT).replace("\n", "");
-                httppost.setHeader("Authorization", "Basic " + credBase64);
-                Log.i("CList","4");
-                //------------------------------------------
+                String credBase64 = Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                connection.setRequestProperty("Authorization", "Basic " + credBase64);
+                connection.setRequestProperty("Content-type", "application/json");
+                connection.setDoOutput(true);
 
+                JSONArray sentSMSArray = new JSONArray();
+                // Code to populate sentSMSArray with JSONObjects goes here
+                // ...
 
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("sent_sms_array", sentSMSArray);
 
-//                JSONArray smsess = new JSONArray();
-//                ContentResolver cr = getContentResolver();
-//                Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI,
-//                        null, null, null, null);
-//                if (cur.getCount() > 0) {
-//                    while (cur.moveToNext())
-//                    {
-//                        String id = cur.getString(cur.getColumnIndex(ContactsContract.Contacts._ID));
-//                        String name = cur.getString(cur.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-//                        if (Integer.parseInt(cur.getString(cur.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0)
-//                        {
-//                            Cursor pCur = cr.query(
-//                                    ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-//                                    null,
-//                                    ContactsContract.CommonDataKinds.Phone.CONTACT_ID +" = ?",
-//                                    new String[]{id}, null);
-//                            while (pCur.moveToNext())
-//                            {
-//
-//                                String phoneNo = pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-//                                if(phoneNo.length() > 10)
-//                                {
-//                                    JSONObject jsonParam = new JSONObject();
-//                                    jsonParam.accumulate("sent_time", getDate("yyyy-MM-dd hh:mm:ss"));
-//                                    jsonParam.accumulate("sms_text", smstobesent);
-//                                    jsonParam.accumulate("mobile", phoneNo);
-//                                    jsonParam.accumulate("smsId", getDate("yyyyMMddhhmmss"));
-//                                    Log.i("CList", "Name:" + name + " Phone No: " + phoneNo);
-//                                    smsess.put(jsonParam);
-//                                }
-//                                Log.i("CList","5");
-//                            }
-//                            pCur.close();
-//                        }
-//                    }
-//                    Log.i("CList","All:"+ smsess.toString());
-//                }
+                // StringEntity myStringEntity = new StringEntity(jsonObject.toString(), "UTF-8");
+                connection.setDoOutput(true);
 
-
-
-
-                //-----------------------------------------------------------------
-                StringEntity myStringEntity = new StringEntity( sentSMSArray.toString(),"UTF-8");
-                httppost.setEntity(myStringEntity);
-                //--------------execution of httppost
-                HttpResponse response = httpclient.execute(httppost);
-                String res= EntityUtils.toString(response.getEntity());
-                Log.i("CList","response:"+res);
-                statusCode = response.getStatusLine().getStatusCode();
-                // if(status.equals(success))
-                if(statusCode>=200 && statusCode<=299)
-                {
-                    Toast.makeText(context,"Sending . . .",Toast.LENGTH_SHORT).show();
-                    return null;
+                try (OutputStream os = connection.getOutputStream()) {
+                    byte[] input = jsonObject.toString().getBytes(StandardCharsets.UTF_8);
+                    os.write(input, 0, input.length);
                 }
-                else
-                    return null;
 
-            }catch(Exception e)
-            {
-                Log.i("CList","exception:"+e);
+                int responseCode = connection.getResponseCode();
+                if (responseCode >= 200 && responseCode <= 299) {
+                    try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+                        String line;
+                        while ((line = reader.readLine()) != null) {
+                            // Process response data if needed
+                        }
+                    }
+                    Toast.makeText(context, "Sending . . .", Toast.LENGTH_SHORT).show();
+                } else {
+                    Log.e(TAG, "HTTP Response Code: " + responseCode);
+                }
+            } catch (Exception e) {
+                Log.e(TAG, "Exception: " + e.getMessage());
             }
-
             return null;
         }
+
     }
 
 
@@ -497,18 +452,17 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case PERMISSION_REQUEST_CODE:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                {
-                    Snackbar.make(view,"Permission Granted, Now you can access contacts data.",Snackbar.LENGTH_LONG).show();
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Snackbar.make(view, "Permission Granted, Now you can access contacts data.", Snackbar.LENGTH_LONG).show();
 //                    progressBar = ProgressDialog.show(HomeActivity.this, "Contacts", "Loading...");
 //                    progressBar.setCancelable(true);
 //                    new SmsToAll_Activity.HttpEditInfo(HomeActivity.this).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
-                } else
-                {
-                    Snackbar.make(view,"Permission Denied, You cannot access contacts data.",Snackbar.LENGTH_LONG).show();
+                } else {
+                    Snackbar.make(view, "Permission Denied, You cannot access contacts data.", Snackbar.LENGTH_LONG).show();
 
                 }
                 break;

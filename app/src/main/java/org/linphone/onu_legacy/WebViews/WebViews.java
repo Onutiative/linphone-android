@@ -25,6 +25,8 @@ import org.linphone.onu_legacy.Activities.Activities.DashBoard_Activity;
 import org.linphone.R;
 import org.linphone.onu_legacy.Utility.Info;
 
+import java.util.Objects;
+
 public class WebViews extends AppCompatActivity {
 
     private WebView web;
@@ -41,7 +43,7 @@ public class WebViews extends AppCompatActivity {
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_views);
-        getSupportActionBar().hide();
+        Objects.requireNonNull(getSupportActionBar()).hide();
         url = getIntent().getStringExtra("url");
         //  alertDialog = new AlertDialog.Builder(this.create());
         progressBar = ProgressDialog.show(this, "OnuKit web", "Loading...");
@@ -59,10 +61,6 @@ public class WebViews extends AppCompatActivity {
         {
          //   Toast.makeText(this,getResources().getString(R.string.no_internet),Toast.LENGTH_LONG).show();
 
-
-
-
-
             Intent i=new Intent(WebViews.this,DashBoard_Activity.class);
             i.putExtra("noInternet","NoInternetConnection");
             i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -79,7 +77,6 @@ public class WebViews extends AppCompatActivity {
                     });
 
             snackbar.show();
-
         }
         ImageButton btn= (ImageButton) findViewById(R.id.homebtn);
         btn.setOnClickListener(new View.OnClickListener()
@@ -133,20 +130,9 @@ public class WebViews extends AppCompatActivity {
                 if (progressBar.isShowing()) {
                     progressBar.dismiss(); }
             }
-
-
-
-
-
         });
 
-
-
-
-
 //        web.setWebViewClient(new MyWebViewClient());
-
-
     }
 
 //    private class MyWebViewClient extends WebViewClient{
@@ -156,8 +142,6 @@ public class WebViews extends AppCompatActivity {
 //            handler.proceed("promotion@onukit.com","welcome@2018");
 //        }
 //    }
-
-
 
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
@@ -182,7 +166,6 @@ public class WebViews extends AppCompatActivity {
                     }
                     return true;
             }
-
         }
         return super.onKeyDown(keyCode, event);
     }

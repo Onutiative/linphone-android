@@ -158,6 +158,7 @@
 
         <activity android:name=".activities.WelcomeScreen" />
         <activity android:name=".activities.OnuAuthentication" />
+        <activity android:name=".onu_legacy.WebViews.WebViews" />
 
         <activity android:name=".activities.voip.CallActivity"
             android:launchMode="singleTask"

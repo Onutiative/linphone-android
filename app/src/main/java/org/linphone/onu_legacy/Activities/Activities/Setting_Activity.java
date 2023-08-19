@@ -36,22 +36,14 @@ import org.linphone.R;
 import org.linphone.onu_legacy.Utility.Info;
 import org.linphone.onu_legacy.Utility.SharedPrefManager;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.utils.URLEncodedUtils;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -240,7 +232,7 @@ public class Setting_Activity extends AppCompatActivity {
 
 
                     ii.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    PendingIntent contentIntent = PendingIntent.getActivity(Setting_Activity.this, 0, ii, 0);
+                    PendingIntent contentIntent = PendingIntent.getActivity(Setting_Activity.this, 0, ii, PendingIntent.FLAG_IMMUTABLE);
                     Notification myNotification = new NotificationCompat.Builder(Setting_Activity.this)
                             .setContentTitle(getString(R.string.notification_heading))
                             .setContentText(getString(R.string.notification_body))
@@ -746,60 +738,58 @@ public class Setting_Activity extends AppCompatActivity {
                 String username = info.getUsername();
                 String password = info.getPassword();
 
-
                 Log.i("JhoroDeactive", "call_background");
-                HttpParams httpParams = new BasicHttpParams();
-                HttpConnectionParams.setConnectionTimeout(httpParams, TIMEOUT_MILLISEC);
-                HttpConnectionParams.setSoTimeout(httpParams, TIMEOUT_MILLISEC);
-                HttpParams p = new BasicHttpParams();
-                HttpClient httpclient = new DefaultHttpClient(p);
 
-                //String url = "https://www.mydomainic.com/api/bkash-central/demo/add/via-sms/";
-                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
-                nameValuePairs.add(new BasicNameValuePair("demo", "demo"));
-                HttpClient httpClient = new DefaultHttpClient();
-                String paramsString = URLEncodedUtils.format(nameValuePairs,
-                        "UTF-8");
-                HttpPost httppost = new HttpPost(info.getUrl() + "/deactiveDevice");
-                ResponseHandler<String> responseHandler = new BasicResponseHandler();
-                httppost.setHeader("Content-type", "application/json");
+                URL urlObj = new URL(info.getUrl() + "/deactiveDevice");
+                HttpURLConnection connection = (HttpURLConnection) urlObj.openConnection();
+                connection.setConnectTimeout(TIMEOUT_MILLISEC);
+                connection.setReadTimeout(TIMEOUT_MILLISEC);
+                connection.setRequestMethod("POST");
 
-                //---------------------Code for Basic Authentication-----------------------
                 String credentials = username + ":" + password;
-                String credBase64 = Base64.encodeToString(credentials.getBytes(), Base64.DEFAULT).replace("\n", "");
-                httppost.setHeader("Authorization", "Basic " + credBase64);
-                //----------------------------------------------------------------------
+                String credBase64 = Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                connection.setRequestProperty("Authorization", "Basic " + credBase64);
+                connection.setRequestProperty("Content-type", "application/json");
+                connection.setDoOutput(true);
 
                 JSONObject jsonParam = new JSONObject();
-                jsonParam.accumulate("trnxID", info.getDate("kkyyyyMMddkkmmss"));
-                jsonParam.accumulate("deviceID", info.getImei());
-                jsonParam.accumulate("trnxTime", info.getDate("yyyy-MM-dd kk:mm:ss"));
+                jsonParam.put("trnxID", info.getDate("kkyyyyMMddkkmmss"));
+                jsonParam.put("deviceID", info.getImei());
+                jsonParam.put("trnxTime", info.getDate("yyyy-MM-dd kk:mm:ss"));
 
+                // StringEntity myStringEntity = new StringEntity(jsonParam.toString(), "UTF-8");
+                connection.setDoOutput(true);
 
-                StringEntity myStringEntity = new StringEntity(jsonParam.toString(), "UTF-8");
-                Log.i("JhoroDeactive", "call_my jSon: " + jsonParam.toString());
-                httppost.setEntity(myStringEntity);
-                HttpResponse response = httpclient.execute(httppost);
-                String res = EntityUtils.toString(response.getEntity());
-                Log.i("JhoroDeactive", "now" + res);
-                JSONObject json = new JSONObject(res);
-                Log.i("JhoroDeactive", json.toString());
-                status = json.getString("status");  //getting from  jSon body
-                statusCode = response.getStatusLine().getStatusCode();
-                Log.i("JhoroDeactive", "Call_my Status: " + statusCode);
-                if (statusCode >= 200 && statusCode <= 299) {
-                    Log.i("JhoroDeactive", "Statu: ");
-                    if (status.equals("4000"))
-                        return json.getString("reason");
-                } else
-                    return null;
+                try (OutputStream os = connection.getOutputStream()) {
+                    byte[] input = jsonParam.toString().getBytes(StandardCharsets.UTF_8);
+                    os.write(input, 0, input.length);
+                }
+
+                int responseCode = connection.getResponseCode();
+                if (responseCode >= 200 && responseCode <= 299) {
+                    try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+                        String line;
+                        StringBuilder response = new StringBuilder();
+                        while ((line = reader.readLine()) != null) {
+                            response.append(line);
+                        }
+                        String res = response.toString();
+                        JSONObject json = new JSONObject(res);
+                        Log.i("JhoroDeactive", json.toString());
+                        status = json.getString("status");
+                        Log.i("JhoroDeactive", "Call_my Status: " + responseCode);
+                        if (status.equals("4000")) {
+                            return json.getString("reason");
+                        }
+                    }
+                } else {
+                    Log.e("JhoroDeactive", "HTTP Response Code: " + responseCode);
+                }
             } catch (Exception ex) {
-                Log.i("JhoroDeactive", " Exception: " + ex);
-                return null;
+                Log.e("JhoroDeactive", "Exception: " + ex);
             }
             return null;
         }
-
     }
 
 

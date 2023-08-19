@@ -13,20 +13,14 @@ import android.util.Log;
 import org.linphone.onu_legacy.Database.Contact;
 import org.linphone.onu_legacy.Database.Database;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.protocol.HTTP;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -86,80 +80,75 @@ public class CheckOnline extends AsyncTask<Void, Void, String>  {
     }
     @Override
     protected String doInBackground(Void... params) {
-
         Log.i("JhoroACK", "CheckOnline_doinbackground");
-            String username ="Onu$erVe9";
-            String password ="p#@$aS$";
+        String username = "Onu$erVe9";
+        String password = "p#@$aS$";
         Log.i("JhoroACK", "doinback");
+
         try {
             Database dd = new Database(context);
             Log.i("JhoroACK", "CheckOnline");
-            HttpParams httpParams = new BasicHttpParams();
-            HttpConnectionParams.setConnectionTimeout(httpParams,TIMEOUT_MILLISEC);
-            HttpConnectionParams.setSoTimeout(httpParams, TIMEOUT_MILLISEC);
-            HttpParams p = new BasicHttpParams();
-            HttpClient httpclient = new DefaultHttpClient(p);
 
-            Log.e(TAG,"From Check Online "+url);
+            URL urlObj = new URL(url);
+            HttpURLConnection connection = (HttpURLConnection) urlObj.openConnection();
+            connection.setConnectTimeout(TIMEOUT_MILLISEC);
+            connection.setReadTimeout(TIMEOUT_MILLISEC);
+            connection.setRequestMethod("POST");
 
-            HttpPost httppost = new HttpPost(url);
             String credentials = username + ":" + password;
-            String credBase64 = Base64.encodeToString(credentials.getBytes(), Base64.DEFAULT).replace("\n", "");
-            httppost.setHeader("Authorization", "Basic " + credBase64);
-
-
-            ResponseHandler<String> responseHandler = new BasicResponseHandler();
-            httppost.setHeader("Content-type", "application/json");
+            String credBase64 = Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+            connection.setRequestProperty("Authorization", "Basic " + credBase64);
+            connection.setRequestProperty("Content-type", "application/json");
+            connection.setDoOutput(true);
 
             JSONObject jsonParam = new JSONObject();
-
             jsonParam.accumulate("apptype", user_type);
             jsonParam.accumulate("total_sent", TotalSent);
             jsonParam.accumulate("total_posted", TotalPost);
             jsonParam.accumulate("time", getDate("yyyy-MM-dd kk:mm:ss"));
             jsonParam.accumulate("device_id", imei);
-            //{"command":"give sms","msg":"hello testing","id":"not set","number":"01718355460","imei":"6418758"}
-            Log.i("JhoroACK", "Status jSon: " + jsonParam.toString());
-            String entity = jsonParam.toString();
-            Log.i("JhoroACK", "Data"+entity);
-            httppost.setEntity(new StringEntity(entity, HTTP.UTF_8));
-            HttpResponse response = httpclient.execute(httppost);
-            String res=EntityUtils.toString(response.getEntity());
-            JSONObject json =new JSONObject(res);
-            Log.i("JhoroACK", json.toString());
-            String status=json.getString("status");
 
-            Log.e(TAG,"From Check Online JSON Object"+json);
-
-            dd.deleteAdmin("smsOutQuota", "jhorotek");
-            dd.deleteAdmin("smsInQuota", "jhorotek");
-            dd.deleteAdmin("callInQuota", "jhorotek");
-            dd.deleteAdmin("callOutQuota", "jhorotek");
-            dd.addAdminNumber(new Contact("smsOutQuota",json.getString("sms_out"),"jhorotek"));
-            dd.addAdminNumber(new Contact("smsInQuota",json.getString("sms_in"),"jhorotek"));
-            dd.addAdminNumber(new Contact("callInQuota",json.getString("call_in"),"jhorotek"));
-            dd.addAdminNumber(new Contact("callOutQuota",json.getString("call_out"),"jhorotek"));
-
-            //getting from  jSon body
-            int statusCode = response.getStatusLine().getStatusCode();
-            Log.i("JhoroACK", "Status my Status: " + statusCode+"\n"+jsonParam);
-            // if(status.equals(success))
-            if(statusCode>=200 && statusCode<=299)
-            {
-
-                Log.i("JhoroACK", "Statu: ");
-
-                return status;
+            try (OutputStream os = connection.getOutputStream()) {
+                byte[] input = jsonParam.toString().getBytes(StandardCharsets.UTF_8);
+                os.write(input, 0, input.length);
             }
-            else
-                return null;
 
-        } catch (Exception ex)
-        {
-            Log.i("JhoroACK", "exeption:"+ex);
+            int responseCode = connection.getResponseCode();
+            if (responseCode >= 200 && responseCode <= 299) {
+                try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+                    StringBuilder response = new StringBuilder();
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        response.append(line);
+                    }
+
+                    JSONObject jsonResponse = new JSONObject(response.toString());
+                    String status = jsonResponse.getString("status");
+
+                    Log.e(TAG, "From Check Online JSON Object: " + jsonResponse);
+
+                    dd.deleteAdmin("smsOutQuota", "jhorotek");
+                    dd.deleteAdmin("smsInQuota", "jhorotek");
+                    dd.deleteAdmin("callInQuota", "jhorotek");
+                    dd.deleteAdmin("callOutQuota", "jhorotek");
+                    dd.addAdminNumber(new Contact("smsOutQuota", jsonResponse.getString("sms_out"), "jhorotek"));
+                    dd.addAdminNumber(new Contact("smsInQuota", jsonResponse.getString("sms_in"), "jhorotek"));
+                    dd.addAdminNumber(new Contact("callInQuota", jsonResponse.getString("call_in"), "jhorotek"));
+                    dd.addAdminNumber(new Contact("callOutQuota", jsonResponse.getString("call_out"), "jhorotek"));
+
+                    Log.i("JhoroACK", "Status my Status: " + responseCode + "\n" + jsonParam);
+                    return status;
+                }
+            } else {
+                Log.e(TAG, "HTTP Response Code: " + responseCode);
+                return null;
+            }
+        } catch (Exception ex) {
+            Log.i("JhoroACK", "Exception: " + ex);
             return null;
         }
     }
+
 
 
     public void set_app_status()

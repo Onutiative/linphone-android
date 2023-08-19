@@ -12,19 +12,17 @@ import org.linphone.onu_legacy.Database.Database;
 import org.linphone.onu_legacy.Database.ServerSms;
 import org.linphone.onu_legacy.SMS_Sender.SmsSender;
 import org.linphone.onu_legacy.Utility.SharedPrefManager;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.util.EntityUtils;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -161,47 +159,59 @@ public class PullServerSms extends AsyncTask<Void, Void, String> {
 
     @Override
     protected String doInBackground(Void... voids) {
-
-        Log.i(TAG,"Background called");
+        Log.i(TAG, "Background called");
 
         try {
-            HttpParams httpParams = new BasicHttpParams();
-            HttpConnectionParams.setConnectionTimeout(httpParams, TIMEOUT_MILLISEC);
-            HttpConnectionParams.setSoTimeout(httpParams, TIMEOUT_MILLISEC);
-            HttpParams p = new BasicHttpParams();
-            HttpClient httpclient = new DefaultHttpClient(p);
-            HttpPost httppost = new HttpPost(url);
-            httppost.setHeader("Content-type", "application/json");
-            //---------------------Code for Basic Authentication-----------------------
+            URL urlObj = new URL(url);
+            HttpURLConnection connection = (HttpURLConnection) urlObj.openConnection();
+            connection.setConnectTimeout(TIMEOUT_MILLISEC);
+            connection.setReadTimeout(TIMEOUT_MILLISEC);
+            connection.setRequestMethod("POST");
+
             String credentials = userName + ":" + userPassword;
-            String credBase64 = Base64.encodeToString(credentials.getBytes(), Base64.DEFAULT).replace("\n", "");
-            httppost.setHeader("Authorization", "Basic " + credBase64);
+            String credBase64 = Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+            connection.setRequestProperty("Authorization", "Basic " + credBase64);
+            connection.setRequestProperty("Content-type", "application/json");
+            connection.setDoOutput(true);
 
             JSONObject jsonObject = new JSONObject();
             jsonObject.accumulate("command", "give sms");
             jsonObject.accumulate("device_id", deviceId);
             jsonObject.accumulate("pullcount", "20");
-            StringEntity myStringEntity = new StringEntity(jsonObject.toString(), "UTF-8");
-            httppost.setEntity(myStringEntity);
-            //--------------execution of httppost
-            HttpResponse response = httpclient.execute(httppost);
-            String res = EntityUtils.toString(response.getEntity());
-            Log.i(TAG, "response: " + res);
-            responseResult = res;
-            statusCode = response.getStatusLine().getStatusCode();
 
-            Log.i(TAG,"Response");
-
-            if (statusCode >= 200 && statusCode <= 299) {
-                //Toast.makeText(context, "Data safely reached!", Toast.LENGTH_LONG).show();
+            try (OutputStream os = connection.getOutputStream()) {
+                byte[] input = jsonObject.toString().getBytes(StandardCharsets.UTF_8);
+                os.write(input, 0, input.length);
             }
-        }catch(Exception ex)
-        {
+
+            int responseCode = connection.getResponseCode();
+            String res = "";
+            if (responseCode >= 200 && responseCode <= 299) {
+                try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        res += line;
+                    }
+                }
+                Log.i(TAG, "response: " + res);
+                responseResult = res;
+                statusCode = responseCode;
+
+                Log.i(TAG, "Response");
+
+                // Here you can perform any further processing with the response data
+                // and handle status codes as needed.
+
+            } else {
+                Log.e(TAG, "HTTP Response Code: " + responseCode);
+            }
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
 
         return null;
     }
+
 
 
     private void setUp()

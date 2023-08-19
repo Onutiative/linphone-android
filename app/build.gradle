@@ -226,8 +226,8 @@ dependencies {
     implementation 'com.daimajia.slider:library:1.1.5@aar'
     implementation 'com.github.jakob-grabner:Circle-Progress-View:v1.3'
     implementation 'com.timqi.sectorprogressview:library:2.0.1'
-    implementation 'com.squareup.okhttp3:okhttp:4.10.0'
-    implementation("com.squareup.okhttp3:logging-interceptor:3.12.1")
+    implementation 'com.squareup.okhttp3:okhttp:4.9.2'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.2'
     implementation 'com.karumi:dexter:4.2.0'
     implementation 'com.github.broakenmedia:MultiContactPicker:1.7'
     // This auth is added on this new FCM project

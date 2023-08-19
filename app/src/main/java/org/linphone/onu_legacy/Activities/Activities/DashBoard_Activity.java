@@ -439,7 +439,6 @@ public class DashBoard_Activity extends AppCompatActivity
     }
 
     public void syncContact() {
-
             Log.i(TAG,"Contact permission granted");
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(DashBoard_Activity.this);
             alertDialog.setTitle("OnuKit");

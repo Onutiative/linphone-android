@@ -20,19 +20,14 @@ import org.linphone.onu_legacy.Database.Database;
 import org.linphone.onu_legacy.Database.Task;
 import org.linphone.onu_legacy.MVP.Implementation.TaskPackage.TaskShowActivity;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -233,66 +228,53 @@ public class TaskConversion extends Service {
         }
 
         @Override
-        protected String doInBackground(Void... params) //HTTP
-        {
+        protected String doInBackground(Void... params) {
             try {
                 String status = null;
                 String success = "4000";
                 int statusCode = 0;
                 String username = uname;
                 String password = upass;
-                Log.i(TAG,"Username: "+ uname);
-                Log.i(TAG,"password: "+ upass);
+                Log.i(TAG, "Username: " + uname);
+                Log.i(TAG, "password: " + upass);
                 //username ="Onu$erVe9";
                 //password ="p#@$aS$";
                 Log.i("CList", "1 url:" + url);
 
-                HttpParams httpParams = new BasicHttpParams();
-                HttpConnectionParams.setConnectionTimeout(httpParams, TIMEOUT_MILLISEC);
-                HttpConnectionParams.setSoTimeout(httpParams, TIMEOUT_MILLISEC);
-                HttpParams p = new BasicHttpParams();
-                HttpClient httpclient = new DefaultHttpClient(p);
-                Log.i("CList", "2");
-                HttpPost httppost = new HttpPost(url);
-                Log.i("CList", "3");
-                httppost.setHeader("Content-type", "application/json");
-                //---------------------Code for Basic Authentication-----------------------
+                URL urlObj = new URL(url);
+                HttpURLConnection connection = (HttpURLConnection) urlObj.openConnection();
+                connection.setConnectTimeout(TIMEOUT_MILLISEC);
+                connection.setReadTimeout(TIMEOUT_MILLISEC);
+                connection.setRequestMethod("POST");
+
                 String credentials = username + ":" + password;
-                String credBase64 = Base64.encodeToString(credentials.getBytes(), Base64.DEFAULT).replace("\n", "");
-                httppost.setHeader("Authorization", "Basic " + credBase64);
-                Log.i("CList", "4");
-                //------------------------------------------
+                String credBase64 = Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                connection.setRequestProperty("Authorization", "Basic " + credBase64);
+                connection.setRequestProperty("Content-type", "application/json");
+                connection.setDoOutput(true);
+
                 JSONArray jsonArray = new JSONArray();
-
-
                 JSONObject jsonObject = new JSONObject();
 
-                jsonObject.accumulate("device_id", deviceID);
-                jsonObject.accumulate("caller_msisdn", phoneNo.substring(1));
+                jsonObject.put("device_id", deviceID);
+                jsonObject.put("caller_msisdn", phoneNo.substring(1));
                 jsonArray.put(jsonObject);
-                Log.i(TAG,jsonObject.toString());
+                Log.i(TAG, jsonObject.toString());
 
-                //-----------------------------------------------------------------
-                StringEntity myStringEntity = new StringEntity(jsonArray.toString(), "UTF-8");
-                httppost.setEntity(myStringEntity);
-                //--------------execution of httppost
-                HttpResponse response = httpclient.execute(httppost);
-                String res = EntityUtils.toString(response.getEntity());
-                Log.i(TAG, "response: " + res);
-                responseResult=res;
+                // StringEntity myStringEntity = new StringEntity(jsonArray.toString(), "UTF-8");
 
-//                JSONObject responseObject=new JSONObject(res);
-//                summaryList=responseObject.getJSONArray("summary").getJSONObject(0).toString();
+                try (OutputStream os = connection.getOutputStream()) {
+                    byte[] input = jsonArray.toString().getBytes(StandardCharsets.UTF_8);
+                    os.write(input, 0, input.length);
+                }
 
-//                summaryList=responseObject.getString("summary");
-                //   Toast.makeText(context,res,Toast.LENGTH_LONG).show();
-                statusCode = response.getStatusLine().getStatusCode();
-                // if(status.equals(success))
-                if (statusCode >= 200 && statusCode <= 299) {
+                int responseCode = connection.getResponseCode();
+                if (responseCode >= 200 && responseCode <= 299) {
+                    Log.i(TAG, "response code:" + responseCode);
                     Toast.makeText(context, "Sending . . .", Toast.LENGTH_SHORT).show();
-                    return null;
-                } else
-                    return null;
+                } else {
+                    Log.e(TAG, "HTTP Response Code: " + responseCode);
+                }
 
             } catch (Exception e) {
                 Log.i(TAG, "Request Exception:" + e);

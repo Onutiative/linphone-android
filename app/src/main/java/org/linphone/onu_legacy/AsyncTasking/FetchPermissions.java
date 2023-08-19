@@ -11,22 +11,14 @@ import org.linphone.onu_legacy.Database.Contact;
 import org.linphone.onu_legacy.Database.Database;
 import org.linphone.onu_legacy.Utility.Info;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.utils.URLEncodedUtils;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,110 +65,88 @@ public class FetchPermissions extends AsyncTask<Void, Void, String> {
 
 
     @Override
-    protected String doInBackground(Void... params) //HTTP
-    {
+    protected String doInBackground(Void... params) {
         try {
             Log.i("Jhoro", "smsposter-3");
-            String status=null;
-            String success="4000";
-            int statusCode =0;
-            String username =info.getUsername();
-            String password =info.getPassword();
+            String status = null;
+            String success = "4000";
+            int statusCode = 0;
+            String username = info.getUsername();
+            String password = info.getPassword();
 
-            Log.i("Jhoro", "smsposter-3.1:"+username);
-            Log.i("Jhoro", "smsposter-4:"+password);
+            Log.i("Jhoro", "smsposter-3.1:" + username);
+            Log.i("Jhoro", "smsposter-4:" + password);
 
-            HttpParams httpParams = new BasicHttpParams();
-            HttpConnectionParams.setConnectionTimeout(httpParams, TIMEOUT_MILLISEC);
-            HttpConnectionParams.setSoTimeout(httpParams, TIMEOUT_MILLISEC);
-            HttpParams p = new BasicHttpParams();
-            HttpClient httpclient = new DefaultHttpClient(p);
+            URL urlObj = new URL(url);
+            HttpURLConnection connection = (HttpURLConnection) urlObj.openConnection();
+            connection.setConnectTimeout(TIMEOUT_MILLISEC);
+            connection.setReadTimeout(TIMEOUT_MILLISEC);
+            connection.setRequestMethod("POST");
 
-
-            //String url = "https://www.mydomainic.com/api/bkash-central/demo/add/via-sms/";
-            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
-            nameValuePairs.add(new BasicNameValuePair("demo","demo"));
-            HttpClient httpClient = new DefaultHttpClient();
-            String paramsString = URLEncodedUtils.format(nameValuePairs, "UTF-8");
-            HttpPost httppost = new HttpPost(url);
-            ResponseHandler<String> responseHandler = new BasicResponseHandler();
-            httppost.setHeader("Content-type", "application/json");
-
-            Log.i("Jhoro", "smsposter-5");
-            //---------------------Code for Basic Authentication-----------------------
             String credentials = username + ":" + password;
-            String credBase64 = Base64.encodeToString(credentials.getBytes(), Base64.DEFAULT).replace("\n", "");
-            httppost.setHeader("Authorization", "Basic " + credBase64);
-            //----------------------------------------------------------------------
-            //old jSonCode--------------------
-            // String entity = "{\"mobile\":\""+rcvdnum+"\",\"sms\":\""+rcvdsms+"\",\"transaction_id\" :\""+uniq+"\",\"receive_time\":\""+rcvtime+"\"}";
-            // httppost.setEntity(new StringEntity(entity ,"UTF-8"));
-            //----------------------------------
+            String credBase64 = Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+            connection.setRequestProperty("Authorization", "Basic " + credBase64);
+            connection.setRequestProperty("Content-type", "application/json");
+            connection.setDoOutput(true);
+
             JSONObject jsonParam = new JSONObject();
-
             jsonParam.accumulate("trnxID", info.getDate("ddMMyyyyhhmmss"));
-            jsonParam.accumulate("trnxTime", info.getDate("dd-MM-yyyy  hh:mm:ss") );
+            jsonParam.accumulate("trnxTime", info.getDate("dd-MM-yyyy  hh:mm:ss"));
 
-            //URLEncoder.encode(jsonParam.toString(),"UTF-8")
-            StringEntity myStringEntity = new StringEntity( jsonParam.toString(),"UTF-8");
+            // StringEntity myStringEntity = new StringEntity(jsonParam.toString(), "UTF-8");
 
-            Log.i("Jhoro", "my jSon: " + jsonParam.toString());
+            Log.i("Jhoro", "my jSon: " + jsonParam);
 
-            httppost.setEntity(myStringEntity);
-            Log.i("Jhoro", "smsposter-7");
-            //--------------execution of httppost
-            HttpResponse response = httpclient.execute(httppost);
-
-            String res= EntityUtils.toString(response.getEntity());
-            Log.i("Jhoro", "response:"+res);
-            JSONObject json =new JSONObject(res);
-            Log.i("Jhoro", "smsposter-8:");
-              //getting from  jSon body
-            statusCode = response.getStatusLine().getStatusCode();
-
-        //    Log.d(TAG,json.toString());
-
-
-            // if(status.equals(success))
-            if(statusCode>=200 && statusCode<=299)
-            {
-
-                Log.d(TAG,json.toString());
-
-
-                Log.i("Jhoro", "smsposter-9");
-                Database db=new Database(context);
-                db.deleteAdmin("smsIn", "jhorotek");
-                db.deleteAdmin("smsOut", "jhorotek");
-                db.deleteAdmin("callIn", "jhorotek");
-                db.deleteAdmin("callOut", "jhorotek");
-                db.deleteAdmin("recorder", "jhorotek");
-                db.addAdminNumber(new Contact("smsIn",json.getString("sms_in"), "jhorotek"));
-                db.addAdminNumber(new Contact("smsOut",json.getString("sms_out"), "jhorotek"));
-                db.addAdminNumber(new Contact("callIn",json.getString("call_in"), "jhorotek"));
-                db.addAdminNumber(new Contact("callOut",json.getString("call_out"), "jhorotek"));
-                db.addAdminNumber(new Contact("recorder",json.getString("record"), "jhorotek"));
-
-                Log.e("Fetch Permission","My status is "+status);
-
-
-                return status;
-
-
-
-
-
-
-
-
-
+            try (OutputStream os = connection.getOutputStream()) {
+                byte[] input = jsonParam.toString().getBytes(StandardCharsets.UTF_8);
+                os.write(input, 0, input.length);
             }
-            else
+
+            Log.i("Jhoro", "smsposter-7");
+            // --------------execution of httppost
+            int responseCode = connection.getResponseCode();
+            if (responseCode >= 200 && responseCode <= 299) {
+                try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+                    StringBuilder response = new StringBuilder();
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        response.append(line);
+                    }
+
+                    JSONObject json = new JSONObject(response.toString());
+                    Log.i("Jhoro", "response:" + json.toString());
+                    // getting from jSon body
+                    statusCode = responseCode;
+
+                    if (statusCode >= 200 && statusCode <= 299) {
+                        Log.d(TAG, json.toString());
+
+                        Log.i("Jhoro", "smsposter-9");
+                        Database db = new Database(context);
+                        db.deleteAdmin("smsIn", "jhorotek");
+                        db.deleteAdmin("smsOut", "jhorotek");
+                        db.deleteAdmin("callIn", "jhorotek");
+                        db.deleteAdmin("callOut", "jhorotek");
+                        db.deleteAdmin("recorder", "jhorotek");
+                        db.addAdminNumber(new Contact("smsIn", json.getString("sms_in"), "jhorotek"));
+                        db.addAdminNumber(new Contact("smsOut", json.getString("sms_out"), "jhorotek"));
+                        db.addAdminNumber(new Contact("callIn", json.getString("call_in"), "jhorotek"));
+                        db.addAdminNumber(new Contact("callOut", json.getString("call_out"), "jhorotek"));
+                        db.addAdminNumber(new Contact("recorder", json.getString("record"), "jhorotek"));
+
+                        Log.e("Fetch Permission", "My status is " + status);
+
+                        return status;
+                    } else {
+                        return null;
+                    }
+                }
+            } else {
+                Log.e(TAG, "HTTP Response Code: " + responseCode);
                 return null;
+            }
         } catch (Exception ex) {
-            Log.i("Jhoro", "smsposter-10 (Exception)"+ex);
-            //tosting(ex.toString());
-            //Toast.makeText(context,"(Exception)"+ex, Toast.LENGTH_SHORT).show();
+            Log.i("Jhoro", "smsposter-10 (Exception)" + ex);
             return null;
         }
     }
