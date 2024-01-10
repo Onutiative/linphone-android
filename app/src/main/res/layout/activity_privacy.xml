@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="org.linphone.onu_legacy.Activities.Activities.PrivacyPolicy_Activity"
+    android:id="@+id/linis"
+    android:background="#f5f9fb">
+
+    <LinearLayout
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#f5f9fb">
+
+        <ImageView
+            android:paddingRight="5dp"
+            android:paddingLeft="5dp"
+            android:paddingTop="0dp"
+            android:paddingBottom="0dp"
+            android:layout_width="200dp"
+            android:layout_height="80dp"
+            android:id="@+id/OnuServerImage"
+            android:src="@drawable/onukit_logo" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="3dp"
+                android:paddingRight="3dp">
+
+                <Space
+                    android:layout_width="20px"
+                    android:layout_height="20px"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/privacy_name"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+
+                android:text="User Privacy"
+
+                android:gravity="center"
+                android:layout_gravity="left"
+                android:textSize="22sp"
+
+ />
+
+                <TextView
+                    android:id="@+id/details"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:padding="6dp"
+                    android:text="@string/privacy_policy_list"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/black"
+                    android:textSize="20sp"
+                    android:textStyle="normal" />
+
+            </LinearLayout>
+
+            <Space
+                android:layout_width="20px"
+                android:layout_height="60px"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+    </ScrollView>
+
+
+    <LinearLayout
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_height="wrap_content"
+        tools:weightSum="2"
+        android:layout_marginBottom="10dp">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reject"
+            android:id="@+id/reject"
+            android:layout_weight="1"
+
+            android:background="#1a99d5"
+            android:textColor="#FFFFFF" />
+
+        <Space
+            android:layout_width="20px"
+            android:layout_height="30dp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Accept"
+            android:id="@+id/accept"
+            android:layout_weight="1"
+            android:background="#1a99d5"
+            android:textColor="#FFFFFF" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

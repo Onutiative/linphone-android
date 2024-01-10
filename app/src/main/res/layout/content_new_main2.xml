@@ -1,0 +1,992 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:CircleProgressView="http://schemas.android.com/apk/res-auto"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/content_new_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="org.linphone.onu_legacy.Activities.Activities.DashBoard_Activity"
+    tools:showIn="@layout/app_bar_new_main">
+<!--    android:background="#f5f9fb"-->
+
+    <com.daimajia.slider.library.SliderLayout
+        android:id="@+id/slider"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <!--
+     app:layout_constraintRight_toRightOf="@+id/imageView7"
+     app:layout_constraintLeft_toLeftOf="@+id/imageView7"
+     app:layout_constraintBottom_toBottomOf="@+id/imageView7"
+     -->
+
+    <ScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/instruction"
+        android:layout_below="@+id/slider">
+        <LinearLayout
+            android:id="@+id/linear_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <!--Task work -->
+            <androidx.cardview.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/task_card_view"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/card_height"
+                android:layout_below="@+id/slider"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="10dp"
+                app:cardElevation="4dp"
+                card_view:cardCornerRadius="4dp">
+
+<!--                card_view:cardBackgroundColor="@android:color/white"-->
+
+                <LinearLayout
+                    android:id="@+id/task_linear_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight=".25"
+                        android:gravity="center"
+                        android:orientation="vertical">
+                        <ImageView
+                            android:id="@+id/taskImg"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            app:srcCompat="@drawable/ic_task_list" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight=".25"
+                        android:gravity="center"
+                        android:orientation="vertical">
+                        <at.grabner.circleprogress.CircleProgressView
+                            android:id="@+id/taskProgressView"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            CircleProgressView:cpv_autoTextSize="true"
+                            CircleProgressView:cpv_barColor="#394b61"
+                            CircleProgressView:cpv_barWidth="4dp"
+                            CircleProgressView:cpv_innerContourSize="0dp"
+                            CircleProgressView:cpv_maxValue="100"
+                            CircleProgressView:cpv_outerContourSize="0dp"
+                            CircleProgressView:cpv_rimColor="#E3E3E3"
+                            CircleProgressView:cpv_rimWidth="4dp"
+                            CircleProgressView:cpv_showUnit="true"
+                            CircleProgressView:cpv_spinColor="#394b61"
+                            CircleProgressView:cpv_textScale="1"
+                            CircleProgressView:cpv_unit="%"
+                            CircleProgressView:cpv_unitColor="#000000"
+                            CircleProgressView:cpv_unitPosition="right_top"
+                            CircleProgressView:cpv_unitScale="1"
+                            CircleProgressView:cpv_value="10" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".25"
+                        android:gravity="center"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/totalTask"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:layout_weight=".5"
+                            android:gravity="center|bottom"
+                            android:text="0"
+                            android:textColor="#394b61"
+                            android:textSize="20dp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:id="@+id/total_task_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_marginTop="-5dp"
+                            android:layout_weight=".5"
+                            android:gravity="center|top"
+                            android:text="Task"
+                            android:textColor="#848b93"
+                            android:textSize="13dp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:id="@+id/pendingTaskClick"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".25"
+                        android:gravity="center"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/pendingTask"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:layout_weight=".5"
+                            android:gravity="center|bottom"
+                            android:text="0"
+                            android:textColor="#394b61"
+                            android:textSize="20dp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:id="@+id/pending_task_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_marginTop="-5dp"
+                            android:layout_weight=".5"
+                            android:gravity="center|top"
+                            android:text="Pending"
+                            android:textColor="#848b93"
+                            android:textSize="13dp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_marginRight="15dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="vertical">
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:src="@drawable/dot_vertical" />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+            <!--Task work -->
+
+            <androidx.cardview.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/outgoing_sms_card_view"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/card_height"
+                android:layout_below="@+id/slider"
+                android:layout_marginBottom="12dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="15dp"
+                app:cardElevation="4dp"
+                card_view:cardCornerRadius="4dp">
+
+<!--                card_view:cardBackgroundColor="@android:color/white"-->
+
+                <LinearLayout
+                    android:id="@+id/outgoing_sms_linear_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight=".25"
+                        android:gravity="center"
+                        android:orientation="vertical">
+                        <ImageView
+                            android:id="@+id/outgoingsms"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            app:srcCompat="@drawable/outgoing_sms_dash" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight=".25"
+                        android:gravity="center"
+                        android:orientation="vertical">
+                        <at.grabner.circleprogress.CircleProgressView
+                            android:id="@+id/outgoingSmsCircleProgressView"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            CircleProgressView:cpv_autoTextSize="true"
+                            CircleProgressView:cpv_barColor="#394b61"
+                            CircleProgressView:cpv_barWidth="4dp"
+                            CircleProgressView:cpv_innerContourSize="0dp"
+                            CircleProgressView:cpv_maxValue="100"
+                            CircleProgressView:cpv_outerContourSize="0dp"
+                            CircleProgressView:cpv_rimColor="#E3E3E3"
+                            CircleProgressView:cpv_rimWidth="4dp"
+                            CircleProgressView:cpv_showUnit="true"
+                            CircleProgressView:cpv_spinColor="#394b61"
+                            CircleProgressView:cpv_textScale="1"
+                            CircleProgressView:cpv_unit="%"
+                            CircleProgressView:cpv_unitColor="#000000"
+                            CircleProgressView:cpv_unitPosition="right_top"
+                            CircleProgressView:cpv_unitScale="1"
+                            CircleProgressView:cpv_value="20" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".25"
+                        android:gravity="center"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/successOutsms"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:layout_weight=".5"
+                            android:gravity="center|bottom"
+                            android:text="0"
+                            android:textColor="#394b61"
+                            android:textSize="20dp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:id="@+id/outgoing_sms_success_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_marginTop="-5dp"
+                            android:layout_weight=".5"
+                            android:gravity="center|top"
+                            android:text="Successful"
+                            android:textColor="#848b93"
+                            android:textSize="13dp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".25"
+                        android:gravity="center"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/pendingOutSms"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:layout_weight=".5"
+                            android:gravity="center|bottom"
+                            android:text="0"
+                            android:textColor="#394b61"
+                            android:textSize="20dp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:id="@+id/outgoing_sms_pending_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_marginTop="-5dp"
+                            android:layout_weight=".5"
+                            android:gravity="center|top"
+                            android:text="Pending"
+                            android:textColor="#848b93"
+                            android:textSize="13dp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_marginRight="15dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="vertical">
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:src="@drawable/dot_vertical" />
+
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/incoming_sms_card_view"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/card_height"
+                android:layout_below="@+id/incoming_sms_card_view"
+                android:layout_gravity="center"
+                android:layout_marginBottom="12dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                app:cardElevation="4dp"
+                card_view:cardCornerRadius="4dp">
+                <LinearLayout
+                    android:id="@+id/incoming_sms_linear_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight=".25"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/incomingsms"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:layout_weight=".25"
+                            app:srcCompat="@drawable/incoming_sms_dash"
+                            />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight=".25"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <at.grabner.circleprogress.CircleProgressView
+                            android:id="@+id/incomingSmsCircleProgressView"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            CircleProgressView:cpv_autoTextSize="true"
+                            CircleProgressView:cpv_barColor="#394b61"
+                            CircleProgressView:cpv_barWidth="4dp"
+                            CircleProgressView:cpv_innerContourSize="0dp"
+                            CircleProgressView:cpv_maxValue="100"
+                            CircleProgressView:cpv_outerContourSize="0dp"
+                            CircleProgressView:cpv_rimColor="#E3E3E3"
+                            CircleProgressView:cpv_rimWidth="4dp"
+                            CircleProgressView:cpv_showUnit="true"
+                            CircleProgressView:cpv_spinColor="#394b61"
+                            CircleProgressView:cpv_textScale="1"
+                            CircleProgressView:cpv_unit="%"
+                            CircleProgressView:cpv_unitColor="#000000"
+                            CircleProgressView:cpv_unitPosition="right_top"
+                            CircleProgressView:cpv_unitScale="1"
+                            CircleProgressView:cpv_value="10" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".25"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+
+                            android:id="@+id/successInSms"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:layout_weight=".5"
+                            android:gravity="center|bottom"
+                            android:text="0"
+                            android:textColor="#394b61"
+                            android:textSize="20dp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_marginTop="-5dp"
+                            android:layout_weight=".5"
+                            android:gravity="center|top"
+                            android:text="Successful"
+                            android:textColor="#848b93"
+                            android:textSize="13dp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".25"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/pendingInSms"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:layout_weight=".5"
+                            android:gravity="center|bottom"
+                            android:text="0"
+                            android:textColor="#394b61"
+                            android:textSize="20dp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_marginTop="-5dp"
+                            android:layout_weight=".5"
+                            android:gravity="center|top"
+                            android:text="Pending"
+                            android:textColor="#848b93"
+                            android:textSize="13dp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_marginRight="15dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:src="@drawable/dot_vertical"
+                            />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/outgoing_call_card_view"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/card_height"
+                android:layout_below="@+id/outgoing_call_card_view"
+                android:layout_gravity="center"
+                android:layout_marginBottom="12dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                app:cardElevation="4dp"
+                card_view:cardCornerRadius="4dp">
+
+
+                <LinearLayout
+                    android:id="@+id/outgoing_call_linear_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight=".25"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/outgoingcall"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:layout_weight=".25"
+                            app:srcCompat="@drawable/outgoing_call_dash" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight=".25"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <at.grabner.circleprogress.CircleProgressView
+                            android:id="@+id/outgoingCallCircleProgressView"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            CircleProgressView:cpv_autoTextSize="true"
+                            CircleProgressView:cpv_barColor="#394b61"
+                            CircleProgressView:cpv_barWidth="4dp"
+                            CircleProgressView:cpv_innerContourSize="0dp"
+                            CircleProgressView:cpv_maxValue="100"
+                            CircleProgressView:cpv_outerContourSize="0dp"
+                            CircleProgressView:cpv_rimColor="#E3E3E3"
+                            CircleProgressView:cpv_rimWidth="4dp"
+                            CircleProgressView:cpv_showUnit="true"
+                            CircleProgressView:cpv_spinColor="#394b61"
+                            CircleProgressView:cpv_textScale="1"
+                            CircleProgressView:cpv_unit="%"
+                            CircleProgressView:cpv_unitColor="#000000"
+                            CircleProgressView:cpv_unitPosition="right_top"
+                            CircleProgressView:cpv_unitScale="1"
+                            CircleProgressView:cpv_value="10" />
+
+                    </LinearLayout>
+                    <LinearLayout
+
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".25"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/successOutCall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:layout_weight=".5"
+                            android:gravity="center|bottom"
+                            android:text="0"
+                            android:textSize="20dp"
+                            android:textColor="#394b61"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_marginTop="-5dp"
+                            android:layout_weight=".5"
+                            android:gravity="center|top"
+                            android:text="Successful"
+                            android:textColor="#848b93"
+                            android:textSize="13dp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                    <!--<TextView-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:layout_weight=".25"-->
+                    <!--android:text="text1"-->
+                    <!--/>-->
+
+                    <LinearLayout
+
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".25"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/pendingOutCall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="40dp"
+                            android:layout_weight=".5"
+                            android:gravity="center|bottom"
+                            android:text="0"
+                            android:textColor="#394b61"
+                            android:textSize="18dp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_marginTop="-5dp"
+                            android:layout_weight=".5"
+                            android:gravity="center|top"
+                            android:text="Pending"
+                            android:textColor="#848b93"
+                            android:textSize="13dp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_marginRight="15dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:src="@drawable/dot_vertical"
+                            />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/incoming_call_card_view"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/card_height"
+                android:layout_below="@+id/incoming_call_card_view"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                app:cardElevation="4dp"
+                card_view:cardCornerRadius="4dp">
+
+
+                <LinearLayout
+                    android:id="@+id/incoming_call_linear_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight=".25"
+                        android:gravity="center"
+                        android:orientation="vertical">
+                        <ImageView
+                            android:id="@+id/incomingcall"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:layout_weight=".25"
+                            app:srcCompat="@drawable/incoming_call_dash" />
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight=".25"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <at.grabner.circleprogress.CircleProgressView
+                            android:id="@+id/incomingCallCircleProgressView"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            CircleProgressView:cpv_autoTextSize="true"
+                            CircleProgressView:cpv_barColor="#394b61"
+                            CircleProgressView:cpv_barWidth="4dp"
+                            CircleProgressView:cpv_innerContourSize="0dp"
+                            CircleProgressView:cpv_maxValue="100"
+                            CircleProgressView:cpv_outerContourSize="0dp"
+                            CircleProgressView:cpv_rimColor="#E3E3E3"
+                            CircleProgressView:cpv_rimWidth="4dp"
+                            CircleProgressView:cpv_showUnit="true"
+                            CircleProgressView:cpv_spinColor="#394b61"
+                            CircleProgressView:cpv_textScale="1"
+                            CircleProgressView:cpv_unit="%"
+                            CircleProgressView:cpv_unitColor="#000000"
+                            CircleProgressView:cpv_unitPosition="right_top"
+                            CircleProgressView:cpv_unitScale="1"
+                            CircleProgressView:cpv_value="10" />
+
+                    </LinearLayout>
+                    <LinearLayout
+
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".25"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+
+                            android:id="@+id/successInCall"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_weight=".5"
+                            android:gravity="center|bottom"
+                            android:text="0"
+                            android:textColor="#394b61"
+                            android:textSize="20dp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_marginTop="-5dp"
+                            android:layout_weight=".5"
+                            android:gravity="center|top"
+                            android:text="Successful"
+                            android:textColor="#848b93"
+                            android:textSize="13dp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".25"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/pendingTaskSubmission"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_weight=".5"
+                            android:gravity="center|bottom"
+                            android:text="0"
+                            android:textColor="#394b61"
+                            android:textSize="18dp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_marginTop="-5dp"
+                            android:layout_weight=".5"
+                            android:gravity="center|top"
+                            android:text="Pending"
+                            android:textColor="#848b93"
+                            android:textSize="13dp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_marginRight="15dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:src="@drawable/dot_vertical"
+                            />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/contact_card_view"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/card_height"
+                android:layout_below="@+id/incoming_call_card_view"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                app:cardElevation="4dp"
+                card_view:cardCornerRadius="4dp">
+
+
+                <LinearLayout
+                    android:id="@+id/contact_linear_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight=".25"
+                        android:gravity="center"
+                        android:orientation="vertical">
+                        <ImageView
+                            android:id="@+id/serverContactIC"
+                            android:layout_width="35dp"
+                            android:layout_height="35dp"
+                            android:layout_weight=".25"
+                            app:srcCompat="@drawable/ic_contacts_gray" />
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight=".25"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <at.grabner.circleprogress.CircleProgressView
+                            android:id="@+id/contactCircleProgressView"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            CircleProgressView:cpv_autoTextSize="true"
+                            CircleProgressView:cpv_barColor="#394b61"
+                            CircleProgressView:cpv_barWidth="4dp"
+                            CircleProgressView:cpv_innerContourSize="0dp"
+                            CircleProgressView:cpv_maxValue="100"
+                            CircleProgressView:cpv_outerContourSize="0dp"
+                            CircleProgressView:cpv_rimColor="#E3E3E3"
+                            CircleProgressView:cpv_rimWidth="4dp"
+                            CircleProgressView:cpv_showUnit="true"
+                            CircleProgressView:cpv_spinColor="#394b61"
+                            CircleProgressView:cpv_textScale="1"
+                            CircleProgressView:cpv_unit="%"
+                            CircleProgressView:cpv_unitColor="#000000"
+                            CircleProgressView:cpv_unitPosition="right_top"
+                            CircleProgressView:cpv_unitScale="1"
+                            CircleProgressView:cpv_value="10" />
+
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".25"
+                        android:gravity="center"
+                        android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/totalContact"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_weight=".5"
+                            android:gravity="center|bottom"
+                            android:text="0"
+                            android:textColor="#394b61"
+                            android:textSize="20dp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_marginTop="-5dp"
+                            android:layout_weight=".5"
+                            android:gravity="center|top"
+                            android:text="Contacts"
+                            android:textColor="#848b93"
+                            android:textSize="13dp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+                    <LinearLayout
+
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".25"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/clientContacts"
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_weight=".5"
+                            android:gravity="center|bottom"
+                            android:text="0"
+                            android:textColor="#394b61"
+                            android:textSize="18dp"
+                            android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:layout_marginTop="-5dp"
+                            android:layout_weight=".5"
+                            android:gravity="center|top"
+                            android:text="Client"
+                            android:textColor="#848b93"
+                            android:textSize="13dp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_marginRight="15dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="30dp"
+                            android:src="@drawable/dot_vertical" />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/instruction"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:paddingBottom="5dp"
+        android:orientation="vertical">
+        <TextView
+            android:textSize="12sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="For complete usage, please login: " />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_gravity="center"
+                android:layout_marginRight="10dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/laptop_icon" />
+            <TextView
+                android:layout_gravity="center"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="https://user.onukit.com"
+                />
+        </LinearLayout>
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/scroll_view"
+        android:layout_marginBottom="2dp"
+        android:layout_marginTop="2dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+<!--        <com.google.android.gms.ads.AdView-->
+
+<!--            android:id="@+id/adView"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_alignParentBottom="false"-->
+<!--            android:layout_centerHorizontal="false"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:foregroundGravity="center"-->
+<!--            ads:adSize="BANNER"-->
+<!--            ads:adUnitId="ca-app-pub-7584109766733745/6299559711"></com.google.android.gms.ads.AdView>-->
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

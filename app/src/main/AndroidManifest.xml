@@ -5,17 +5,22 @@
         android:name="android.hardware.telephony"
         android:required="false" />
 
+    <uses-permission android:name="android.permission.ANSWER_PHONE_CALLS" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!-- To be able to display contacts list & match calling/called numbers -->
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <!-- For in-app contact edition -->
     <uses-permission android:name="android.permission.READ_PHONE_NUMBERS" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.READ_PRIVILEGED_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_SMS" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
     <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
     <!-- Helps filling phone number and country code in assistant -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
 
     <!-- Needed for auto start at boot and to ensure the service won't be killed by OS while in call -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
@@ -64,6 +69,13 @@
     (https://developer.android.com/guide/components/foreground-services) -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 
+
+    <!-- Needed for Android 14
+    https://developer.android.com/about/versions/14/behavior-changes-14#fgs-types -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CAMERA" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_PHONE_CALL" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
     <uses-permission android:name="android.permission.GET_PACKAGE_INFO" />
 
     <application
@@ -85,7 +97,7 @@
             android:resource="@xml/automotive_app_desc"/>
 
         <activity
-            android:name=".activities.SplashScreen_Activity"
+            android:name=".onu_legacy.Activities.Activities.SplashScreen_Activity"
             android:label="@string/app_name"
             android:noHistory="true"
             android:screenOrientation="portrait"
@@ -108,6 +120,65 @@
 
 <!--                <category android:name="android.intent.category.LAUNCHER" />-->
 <!--            </intent-filter>-->
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.DIAL" />
+                <action android:name="android.intent.action.CALL" />
+                <action android:name="android.intent.action.CALL_BUTTON" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="tel" />
+                <data android:scheme="sip" />
+                <data android:scheme="sips" />
+<!--                <data android:scheme="linphone" />-->
+<!--                <data android:scheme="sip-linphone" />-->
+                <data android:scheme="onukit" />
+<!--                <data android:scheme="linphone-config" />-->
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".onu_legacy.Activities.Activities.RuntimePermissionActivity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:exported="true">
+
+        </activity>
+
+        <activity
+            android:name=".onu_legacy.Activities.Activities.PermissionResultActivity"
+            android:label="@string/app_name"
+            android:noHistory="true"
+            android:screenOrientation="portrait"
+            android:exported="true">
+
+        </activity>
+
+        <activity
+            android:name=".onu_legacy.Activities.Activities.LoginActivity"
+            android:label="@string/app_name"
+            android:noHistory="true"
+            android:screenOrientation="portrait"
+            android:exported="true">
+
+        </activity>
+
+        <activity
+            android:name=".onu_legacy.Activities.Activities.SignUp_Activity"
+            android:label="@string/app_name"
+            android:noHistory="true"
+            android:screenOrientation="portrait"
+            android:exported="true">
+
+        </activity>
+
+        <activity
+            android:name=".onu_legacy.Activities.Activities.DashBoard_Activity"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:exported="true">
+
         </activity>
 
         <activity android:name=".activities.assistant.AssistantActivity"
@@ -115,6 +186,26 @@
 
         <activity android:name=".activities.WelcomeScreen" />
         <activity android:name=".activities.OnuAuthentication" />
+        <activity android:name=".onu_legacy.WebViews.WebViews" />
+        <activity android:name=".onu_legacy.Activities.Activities.AboutActivity" />
+        <activity android:name=".onu_legacy.Activities.Activities.CallActivity" />
+        <activity android:name=".onu_legacy.Activities.Activities.HomeActivity" />
+        <activity android:name=".onu_legacy.Activities.Activities.LoginSelection_Activity" />
+        <activity android:name=".onu_legacy.Activities.Activities.NotificationList_Activity" />
+        <activity android:name=".onu_legacy.Activities.Activities.PopupTaskActivity" />
+        <activity android:name=".onu_legacy.Activities.Activities.PrivacyPolicy_Activity" />
+        <activity android:name=".onu_legacy.Activities.Activities.RecentInbox_Activity" />
+        <activity android:name=".onu_legacy.Activities.Activities.Setting_Activity" />
+        <activity android:name=".onu_legacy.Activities.Activities.SmsLogActivity" />
+        <activity android:name=".onu_legacy.Activities.Activities.SmsToAll_Activity" />
+        <activity android:name=".onu_legacy.Activities.CallLog_Activity" />
+        <activity android:name=".onu_legacy.Activities.OutgoingSent_Activity" />
+        <activity android:name=".onu_legacy.Activities.PopupCallListActivity" />
+        <activity android:name=".onu_legacy.MVP.Implementation.TaskPackage.TaskShowActivity" />
+        <activity android:name=".onu_legacy.MVP.Implementation.ContactPackage.ContactActivity" />
+        <activity android:name=".onu_legacy.MVP.Implementation.SmsSendPackage.SmsActivity" />
+        <activity android:name=".onu_legacy.MVP.Implementation.PostedSMSPAckage.Posted_Inbox_Activity" />
+
 
         <activity android:name=".activities.voip.CallActivity"
             android:launchMode="singleTask"
@@ -145,6 +236,35 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
+        <service
+            android:name=".onu_legacy.Services.MyJobService"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".onu_legacy.Services.MyService"
+            android:exported="true"
+            android:permission="android.permission.SEND_RESPOND_VIA_MESSAGE">
+            <intent-filter>
+                <action android:name="android.intent.action.RESPOND_VIA_MESSAGE" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:scheme="sms" />
+                <data android:scheme="smsto" />
+                <data android:scheme="mms" />
+                <data android:scheme="mmsto" />
+            </intent-filter>
+        </service>
+
+        <service
+            android:name=".onu_legacy.Services.BackgroundService"
+            android:enabled="true" />
 
         <service
             android:name=".contact.DummySyncService"
@@ -180,6 +300,11 @@
             </intent-filter>
         </service>
 
+        <service
+            android:name=".onu_legacy.Services.FloatingViewService"
+            android:enabled="true"
+            android:exported="false" />
+
         <!-- Receivers -->
 
         <receiver android:name=".core.CorePushReceiver"
@@ -202,7 +327,71 @@
             </intent-filter>
         </receiver>
 
+<!--        <receiver android:name=".onu_legacy.Receivers.CallReceiver"-->
+<!--            android:exported="true">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.PHONE_STATE" />-->
+<!--                <action android:name="android.intent.action.NEW_OUTGOING_CALL" />-->
+<!--            </intent-filter>-->
+<!--        </receiver>-->
+
+        <receiver
+            android:name=".onu_legacy.Receivers.SmsReceiver"
+            android:permission="android.permission.BROADCAST_SMS"
+            android:exported="true">
+            <intent-filter android:priority="1000">
+                <action android:name="android.provider.Telephony.SMS_RECEIVED" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".onu_legacy.Receivers.newreceiver"
+            android:permission="android.permission.BROADCAST_SMS"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.SMS_DELIVER" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".onu_legacy.Receivers.NetworkChangeReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".onu_legacy.Services.BackgroundTaskBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:label="RestartServiceWhenStopped">
+            <intent-filter>
+                <action android:name="uk.ac.shef.oak.ActivityRecognition.RestartSensor" />
+            </intent-filter>
+        </receiver>
+
+        <receiver android:name=".onu_legacy.Receivers.BootupReceiver"
+            android:exported="true">
+            <intent-filter android:priority="1000">
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+
+        <receiver
+            android:name=".onu_legacy.Receivers.MmsReceiver"
+            android:permission="android.permission.BROADCAST_WAP_PUSH"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.provider.Telephony.WAP_PUSH_DELIVER" />
+
+                <data android:mimeType="application/vnd.wap.mms-message" />
+            </intent-filter>
+        </receiver>
+
         <!-- Providers -->
+
 
         <provider
             android:name="androidx.core.content.FileProvider"

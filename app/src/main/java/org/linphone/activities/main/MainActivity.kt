@@ -29,7 +29,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
-import android.os.PowerManager
 import android.provider.Settings
 import android.view.Gravity
 import android.view.MotionEvent
@@ -58,6 +57,7 @@ import org.linphone.LinphoneApplication.Companion.coreContext
 import org.linphone.LinphoneApplication.Companion.corePreferences
 import org.linphone.R
 import org.linphone.activities.*
+import org.linphone.activities.assistant.AssistantActivity
 import org.linphone.activities.main.viewmodels.CallOverlayViewModel
 import org.linphone.activities.main.viewmodels.SharedMainViewModel
 import org.linphone.compatibility.Compatibility
@@ -65,6 +65,9 @@ import org.linphone.contact.ContactsUpdatedListenerStub
 import org.linphone.core.CorePreferences
 import org.linphone.core.tools.Log
 import org.linphone.databinding.MainActivityBinding
+import org.linphone.onu_legacy.Activities.Activities.DashBoard_Activity
+import org.linphone.onu_legacy.Activities.Activities.LoginActivity
+import org.linphone.onu_legacy.Activities.Activities.SplashScreen_Activity
 import org.linphone.onuspecific.OnuFunctions
 import org.linphone.utils.*
 
@@ -133,15 +136,33 @@ class MainActivity : GenericActivity(), SnackBarActivity, NavController.OnDestin
 //        val intent = Intent(this, SplashScreen_Activity::class.java)
 //        startActivity(intent)
 
-        if (coreContext.core.accountList.isEmpty()) {
-            account_exists = false
+        // get intent values
+        val intent = intent
+        val action = intent.getStringExtra(SplashScreen_Activity.ACTIVITY_CLUE)
+
+        Log.i("[Main Activity] Intent action: $action")
+
+        // if intent from android:scheme is "onukit"
+
+        if (intent.data != null) {
+            Log.i("[Main Activity] Intent action: ${intent.data}")
+        } else if (action == DashBoard_Activity.OPEN_DIALER) {
+            if (coreContext.core.accountList.isEmpty()) {
+                account_exists = false
 //            if (corePreferences.firstStart) {
 //                // startActivity(Intent(this, AssistantActivity::class.java))
 //                startActivity(Intent(this, WelcomeScreen::class.java))
 //            } else {
 //                startActivity(Intent(this, AssistantActivity::class.java))
 //            }
-            startActivity(Intent(this, WelcomeScreen::class.java))
+                startActivity(Intent(this, AssistantActivity::class.java))
+            }
+        } else {
+            val i = Intent(this, DashBoard_Activity::class.java)
+            i.putExtra(LoginActivity.USEREMAIL, "0")
+            i.putExtra(LoginActivity.USERPASS, "0")
+            i.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            startActivity(i)
         }
 
         binding = DataBindingUtil.setContentView(this, R.layout.main_activity)
@@ -154,12 +175,16 @@ class MainActivity : GenericActivity(), SnackBarActivity, NavController.OnDestin
         binding.callOverlayViewModel = callOverlayViewModel
 
         notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+
+        // showBatteryOptimizationDialog()
+
         showBatteryOptimizationDialog()
         Log.i("[OnuFunctions] dontKillMyApp_Ran: " + OnuFunctions.dontKillMyApp(this).checkIfDontKillMyAppRan())
 //        if (!OnuFunctions.dontKillMyApp(this).checkIfDontKillMyAppRan()) {
 //            OnuFunctions.dontKillMyApp(this).run()
 //            OnuFunctions.dontKillMyApp(this).setDontKillMyAppRan()
 //        }
+
 
         sharedViewModel.toggleDrawerEvent.observe(
             this
@@ -248,31 +273,6 @@ class MainActivity : GenericActivity(), SnackBarActivity, NavController.OnDestin
             }
             .setNegativeButton("Cancel", null)
             .show()
-    }
-
-    private fun showBatteryOptimizationDialog() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            val packageName = packageName
-            val pm = getSystemService(POWER_SERVICE) as PowerManager
-            if (!pm.isIgnoringBatteryOptimizations(packageName)) {
-                val builder = AlertDialog.Builder(this)
-                builder.setTitle("Battery Optimization")
-                    .setMessage("Battery optimization is needed to receive calls consistently. Please tap Allow when prompted.")
-                    .setPositiveButton("OK") { _, _ -> // Launch the battery optimization settings
-                        val intent =
-                            Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS)
-                        intent.data = Uri.parse("package:$packageName")
-                        startActivity(intent)
-                    }
-                    .setNegativeButton(
-                        "Cancel"
-                    ) { dialog, _ -> // User clicked "Cancel," do nothing or handle as required
-                        dialog.dismiss()
-                    }
-                    .setCancelable(false)
-                    .show()
-            }
-        }
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -484,6 +484,11 @@ class MainActivity : GenericActivity(), SnackBarActivity, NavController.OnDestin
                 Log.i("[Main Activity] Removing linphone: prefix")
                 addressToCall = addressToCall.substring("linphone:".length)
             }
+//            addressToCall.startsWith("onukit:") -> {
+//                came_from_onukit = true
+//                Log.i("[Main Activity] Removing onukit: prefix")
+//                addressToCall = addressToCall.substring("onukit:".length)
+//            }
             addressToCall.startsWith("sip-linphone:") -> {
                 Log.i("[Main Activity] Removing linphone: sip-linphone")
                 addressToCall = addressToCall.substring("sip-linphone:".length)
@@ -498,6 +503,12 @@ class MainActivity : GenericActivity(), SnackBarActivity, NavController.OnDestin
         Log.i("[Main Activity] Starting dialer with pre-filled URI $addressToCall")
         val args = Bundle()
         args.putString("URI", addressToCall)
+
+        // send number without pre-filled URI as user will may not recognize the pre-filled URI
+        if (stringUri.startsWith("onukit:")) {
+            args.putString("URI", stringUri.substring("onukit://".length))
+        }
+
         navigateToDialer(args)
     }
 

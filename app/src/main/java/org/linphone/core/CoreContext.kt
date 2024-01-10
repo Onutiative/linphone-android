@@ -23,6 +23,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.PixelFormat
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.security.keystore.KeyGenParameterSpec
@@ -32,8 +33,14 @@ import android.util.Base64
 import android.util.Pair
 import android.view.*
 import android.webkit.MimeTypeMap
+import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.*
 import androidx.loader.app.LoaderManager
+import androidx.work.Constraints
+import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import java.io.File
 import java.math.BigInteger
@@ -41,6 +48,9 @@ import java.nio.charset.StandardCharsets
 import java.security.KeyStore
 import java.security.MessageDigest
 import java.text.Collator
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.*
 import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
@@ -49,6 +59,8 @@ import javax.crypto.spec.GCMParameterSpec
 import kotlin.math.abs
 import kotlinx.coroutines.*
 import org.linphone.BuildConfig
+import org.linphone.LinphoneApplication
+import org.linphone.LinphoneApplication.Companion.coreContext
 import org.linphone.LinphoneApplication.Companion.corePreferences
 import org.linphone.R
 import org.linphone.compatibility.Compatibility
@@ -59,6 +71,10 @@ import org.linphone.contact.getContactForPhoneNumberOrAddress
 import org.linphone.core.tools.Log
 import org.linphone.mediastream.Version
 import org.linphone.notifications.NotificationsManager
+import org.linphone.onu_legacy.Services.FloatingViewService
+import org.linphone.onu_legacy.Services.MyJobService
+import org.linphone.onu_legacy.Utility.SharedPrefManager
+import org.linphone.onuspecific.OnuFunctions
 import org.linphone.telecom.TelecomHelper
 import org.linphone.utils.*
 import org.linphone.utils.Event
@@ -152,6 +168,7 @@ class CoreContext(
             // show notification
         }
 
+        @RequiresApi(Build.VERSION_CODES.O)
         override fun onCallStateChanged(
             core: Core,
             call: Call,
@@ -159,6 +176,15 @@ class CoreContext(
             message: String
         ) {
             Log.i("[Context] Call state changed [$state]")
+//            Handler(Looper.getMainLooper()).post {
+//                val callerId = call.remoteAddress.asStringUriOnly().split("@")[0].split(":")[1]
+//                Toast.makeText(
+//                    context,
+//                    "CoreContext Call state changed [$state] | call id: $callerId",
+//                    Toast.LENGTH_SHORT
+//                ).show()
+//            }
+
             if (state == Call.State.IncomingReceived || state == Call.State.IncomingEarlyMedia) {
                 if (declineCallDueToGsmActiveCall()) {
                     call.decline(Reason.Busy)
@@ -186,6 +212,46 @@ class CoreContext(
                         )
                     }
                 }
+
+//                Thread {
+
+                try {
+                    var callerId =
+                        call.remoteAddress.asStringUriOnly().split("@")[0].split(":")[1]
+
+                    // show a toast running on UI thread
+                    Handler(Looper.getMainLooper()).post {
+                        Toast.makeText(
+                            context,
+                            call.remoteAddress.asStringUriOnly(),
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+
+                    var sharedPrefManager = SharedPrefManager(coreContext.context)
+                    sharedPrefManager.popupClickStatus = true
+                    sharedPrefManager.incomingPhoneNumber = callerId
+                    initializeFloatingView(coreContext.context)
+
+                    val callDataSender = OnuFunctions.CallDataSender(
+                        callerId,
+                        DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(
+                            Instant.ofEpochMilli(call.callLog.startDate * 1000L)
+                                .atZone(ZoneId.systemDefault())
+                        ),
+                        DateTimeFormatter.ofPattern("yyyyMMddHHmmssSS").format(
+                            Instant.ofEpochMilli(call.callLog.startDate * 1000L)
+                                .atZone(ZoneId.systemDefault())
+                        ),
+                        call.dir.toString() ?: "incoming",
+                        LinphoneApplication.coreContext.context
+                    )
+                    callDataSender.send()
+                    Log.i("[OnuFunctions] Incoming Call data sent")
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+//                }.start()
             } else if (state == Call.State.OutgoingProgress) {
                 val conferenceInfo = core.findConferenceInformationFromUri(call.remoteAddress)
                 // Do not show outgoing call view for conference calls, wait for connected state
@@ -196,6 +262,46 @@ class CoreContext(
                 if (core.callsNb == 1 && corePreferences.routeAudioToBluetoothIfAvailable) {
                     AudioRouteUtils.routeAudioToBluetooth(call)
                 }
+
+//                Thread {
+                try {
+                    var callerId =
+                        call.remoteAddress.asStringUriOnly().split("@")[0].split(":")[1]
+                    // show a toast running on UI thread
+                    Handler(Looper.getMainLooper()).post {
+                        Toast.makeText(
+                            context,
+                            call.remoteAddress.asStringUriOnly(),
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
+
+                    var sharedPrefManager = SharedPrefManager(coreContext.context)
+                    sharedPrefManager.popupClickStatus = true
+                    sharedPrefManager.incomingPhoneNumber = callerId
+                    initializeFloatingView(coreContext.context)
+
+                    val callDataSender = OnuFunctions.CallDataSender(
+                        callerId,
+                        DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(
+                            Instant.ofEpochMilli(call.callLog.startDate * 1000L).atZone(
+                                ZoneId.systemDefault()
+                            )
+                        ),
+                        DateTimeFormatter.ofPattern("yyyyMMddHHmmssSS").format(
+                            Instant.ofEpochMilli(call.callLog.startDate * 1000L).atZone(
+                                ZoneId.systemDefault()
+                            )
+                        ),
+                        call?.dir.toString() ?: "outgoing",
+                        LinphoneApplication.coreContext.context
+                    )
+                    callDataSender.send()
+                    Log.i("[OnuFunctions] Outgoing Call data sent")
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
+//                }.start()
             } else if (state == Call.State.Connected) {
                 onCallStarted()
             } else if (state == Call.State.StreamsRunning) {
@@ -240,6 +346,54 @@ class CoreContext(
                     Log.i("[Context] Call has been declined")
                     val toastMessage = context.getString(R.string.call_error_declined)
                     callErrorMessageResourceId.value = Event(toastMessage)
+                }
+
+                try {
+                    val params = coreContext.core.createCallParams(call)
+                    Log.i("[Telecom Connection Service] [OnuFunctions] recording path ${params?.recordFile}  ${call.core.recordFile}")
+                    // rename the file extension from .mkv to .amr
+                    var recordingFilePath = params?.recordFile?.replace(".mkv", ".amr")
+                        ?.let { File(it).absolutePath }
+                    Log.i("[Telecom Connection Service] [OnuFunctions] recording path $recordingFilePath")
+                    params?.recordFile?.let {
+                        File(it).renameTo(File(recordingFilePath)).toString()
+                    }
+                    Log.i("[Telecom Connection Service] [OnuFunctions] recording path $recordingFilePath")
+
+                    // get the call start time from call object
+                    val callStartTime = call.callLog.startDate
+
+                    // check if recording file exists
+                    if (!File(recordingFilePath).exists()) {
+                        Log.e("[OnuFunctions] Recording file does not exist")
+                    } else {
+                        val trxId = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSS").format(
+                            Instant.ofEpochMilli(call.callLog.startDate * 1000L)
+                                .atZone(ZoneId.systemDefault())
+                        )
+                        val file = File(recordingFilePath)
+                        val callType = call.callLog.dir.toString()
+                        val callRecordService = OnuFunctions.CallRecordSender()
+                        Log.i("[OnuFunctions] Call record request: $trxId, $file, $callType")
+
+                        Thread {
+                            try {
+                                val response = callRecordService.send(
+                                    trxId,
+                                    file,
+                                    callType,
+                                )
+                                println(response)
+                                Log.i("[OnuFunctions] Call record response: $response")
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                                Log.i("[OnuFunctions] Call record error: $e")
+                            }
+                        }.start()
+                    }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    Log.i("[OnuFunctions] Call record error: $e")
                 }
             }
 
@@ -978,6 +1132,33 @@ class CoreContext(
         // This flag is required to start an Activity from a Service context
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
         context.startActivity(intent)
+    }
+
+    private fun initializeFloatingView(context: Context) {
+        Log.i("[CoreContext] initializeFloatingView()")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Log.i("[CoreContext] WorkManager.getInstance(context).enqueue(myWorkRequest)")
+
+            // show a toast on runonuithread
+            Handler(Looper.getMainLooper()).post {
+                Toast.makeText(context, "WorkManager.getInstance(context).enqueue(myWorkRequest)", Toast.LENGTH_SHORT).show()
+            }
+
+            val constraints = Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.NOT_REQUIRED)
+                .build()
+            val myWorkRequest = OneTimeWorkRequest.Builder(MyJobService::class.java)
+                .setConstraints(constraints)
+                .build()
+            WorkManager.getInstance(context).enqueue(myWorkRequest)
+        } else {
+            Log.i("[CoreContext] context.startService(Intent(context, FloatingViewService::class.java))")
+            // show a toast on runonuithread
+            Handler(Looper.getMainLooper()).post {
+                Toast.makeText(context, "FloatingViewService::class.java", Toast.LENGTH_SHORT).show()
+            }
+            context.startService(Intent(context, FloatingViewService::class.java))
+        }
     }
 
     /* VFS */

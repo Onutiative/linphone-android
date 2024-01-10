@@ -25,19 +25,28 @@ import com.judemanutd.autostarter.AutoStartPermissionHelper
 import java.io.File
 import java.nio.charset.StandardCharsets
 import java.text.SimpleDateFormat
-import java.util.*
-import okhttp3.*
+import java.util.ArrayList
+import java.util.Date
+import java.util.Locale
+import okhttp3.Call
+import okhttp3.Credentials
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import okio.IOException
 import org.json.JSONObject
 import org.linphone.LinphoneApplication
+import org.linphone.LinphoneApplication.Companion.coreContext
 import org.linphone.activities.main.MainActivity
 import org.linphone.activities.main.recordings.data.RecordingData
+import org.linphone.core.Call.Dir
 import org.linphone.utils.FileUtils
 
-open class OnuFunctions {
+open class OnuFunctions() {
     private fun String.toBase64(): String {
         return String(
             android.util.Base64.encode(this.toByteArray(), android.util.Base64.DEFAULT),
@@ -52,8 +61,10 @@ open class OnuFunctions {
         )
     }
 
-    fun getUserCredentials(): Map<String, String?> {
-        val sharedPreferences = LinphoneApplication.coreContext.context.getSharedPreferences("onukit_creds", Context.MODE_PRIVATE)
+    fun getUserCredentials(
+        context: Context = LinphoneApplication.coreContext.context
+    ): Map<String, String?> {
+        val sharedPreferences = context.getSharedPreferences("onukit_creds", Context.MODE_PRIVATE)
         var username = sharedPreferences.getString("username", null)
         var password = sharedPreferences.getString("password", null)
 
@@ -76,43 +87,45 @@ open class OnuFunctions {
         return mapOf("username" to username, "password" to password)
     }
 
-    class GetSavedCredentials {
+    class GetSavedCredentials(
+        private val context: Context = LinphoneApplication.coreContext.context
+    ) {
         fun get(): Map<String, String?> {
-            val gg = OnuFunctions().getUserCredentials()
+            val gg = OnuFunctions().getUserCredentials(context)
             var username = gg["username"]
             var password = gg["password"]
             return mapOf("username" to username, "password" to password)
         }
 
         fun getUserName(): String? {
-            Log.i("OnuFunctions", "getUserName: " + OnuFunctions().getUserCredentials()["username"])
-            return OnuFunctions().getUserCredentials()["username"]
+            Log.i("OnuFunctions", "getUserName: " + OnuFunctions().getUserCredentials(context)["username"])
+            return OnuFunctions().getUserCredentials(context)["username"]
         }
 
         fun getPassword(): String? {
-            return OnuFunctions().getUserCredentials()["password"]
+            return OnuFunctions().getUserCredentials(context)["password"]
         }
     }
 
-    public fun getPhoneNumber(): String? {
-        val subscriptionManager = LinphoneApplication.coreContext.context.getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE) as SubscriptionManager
+    public fun getPhoneNumber(context: Context = LinphoneApplication.coreContext.context): String {
+        val subscriptionManager = context.getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE) as SubscriptionManager
         // return phoneNumber if it is not null. Otherwise, return "0"
         try {
             if (ActivityCompat.checkSelfPermission(
-                    LinphoneApplication.coreContext.context,
+                    context,
                     Manifest.permission.READ_PHONE_NUMBERS
                 ) != PackageManager.PERMISSION_GRANTED
             ) {
                 //  call  ActivityCompat to request the missing permissions
                 ActivityCompat.requestPermissions(
-                    LinphoneApplication.coreContext.context as MainActivity,
+                    context as MainActivity,
                     arrayOf(Manifest.permission.READ_PHONE_NUMBERS),
                     1
                 )
 
                 // check if the permission is granted
                 if (ActivityCompat.checkSelfPermission(
-                        LinphoneApplication.coreContext.context,
+                        context,
                         Manifest.permission.READ_PHONE_NUMBERS
                     ) != PackageManager.PERMISSION_GRANTED
                 ) {
@@ -124,7 +137,7 @@ open class OnuFunctions {
                         subscriptionManager.getPhoneNumber(0) ?: "0"
                     } else {
                         try {
-                            val telephonyManager = LinphoneApplication.coreContext.context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+                            val telephonyManager = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
                             telephonyManager.line1Number ?: "0"
                         } catch (e: Exception) {
                             Log.d("OnuFunctions", "Error: ${e.message}")
@@ -136,7 +149,7 @@ open class OnuFunctions {
         } catch (e: Exception) {
             Log.d("OnuFunctions", "Error: ${e.message}")
             return try {
-                val telephonyManager = LinphoneApplication.coreContext.context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+                val telephonyManager = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
                 telephonyManager.line1Number ?: "0"
             } catch (e: Exception) {
                 Log.d("OnuFunctions", "Error: ${e.message}")
@@ -150,14 +163,15 @@ open class OnuFunctions {
         private val username: String?,
         private val password: String?,
         private val mobile_number: String? = "0",
-        private val fcmToken: String? = "null"
+        private val fcmToken: String? = "null",
+        private val context: Context = LinphoneApplication.coreContext.context
     ) {
         fun performActivation(): Request {
 
             val json = JSONObject()
             json.put(
                 "device_id",
-                Settings.Secure.getString(LinphoneApplication.coreContext.context.contentResolver, Settings.Secure.ANDROID_ID)
+                Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
             )
             json.put("accountCreateFlag", "0")
             json.put("version", android.os.Build.VERSION.RELEASE)
@@ -167,7 +181,7 @@ open class OnuFunctions {
             json.put("password", password)
             json.put("thirdPartyUserData", "null")
             json.put("oid", fcmToken)
-            json.put("mobile", OnuFunctions().getPhoneNumber())
+            json.put("mobile", OnuFunctions().getPhoneNumber(context))
 
             // check mobile number
             if (mobile_number != "0") {
@@ -175,7 +189,7 @@ open class OnuFunctions {
             }
 
             // print the number
-            Log.d("OnuFunctions", "Number: ${OnuFunctions().getPhoneNumber()}")
+            Log.d("OnuFunctions", "Number: ${OnuFunctions().getPhoneNumber(context)}")
 
             // print the json
             // Log.d("OnuFunctions", "UserActivation JSON: $json")
@@ -199,14 +213,15 @@ open class OnuFunctions {
     class UserLogin(
         private val username: String?,
         private val password: String?,
-        private val fcmToken: String? = "null"
+        private val fcmToken: String? = "null",
+        private val context: Context = LinphoneApplication.coreContext.context
     ) {
         fun performLogin(): Request {
 
             val json = JSONObject()
             json.put(
                 "device_id",
-                Settings.Secure.getString(LinphoneApplication.coreContext.context.contentResolver, Settings.Secure.ANDROID_ID)
+                Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
             )
             json.put("accountCreateFlag", "0")
             json.put("version", android.os.Build.VERSION.RELEASE)
@@ -232,18 +247,18 @@ open class OnuFunctions {
 //            latch.await()
 
             json.put("oid", fcmToken)
-            json.put("mobile", OnuFunctions().getPhoneNumber())
+            json.put("mobile", OnuFunctions().getPhoneNumber(context))
 
             // print the number
-            Log.d("OnuFunctions", "Number: ${OnuFunctions().getPhoneNumber()}")
+            Log.d("OnuFunctions", "Number: ${OnuFunctions().getPhoneNumber(context)}")
 
             // check if phone number is empty
-            if (OnuFunctions().getPhoneNumber() == "") {
+            if (OnuFunctions().getPhoneNumber(context) == "") {
                 json.put("mobile", "null")
             }
 
             // log the full json body
-            Log.d("OnuFunctions", "UserLogin JSON: $json")
+            // Log.d("OnuFunctions", "UserLogin JSON: $json")
 
             // print the json
             // Log.d("OnuFunctions", "UserActivation JSON: $json")
@@ -262,12 +277,15 @@ open class OnuFunctions {
         }
     }
 
-    fun checkSavedCredentials(kill_app: Int) {
+    fun checkSavedCredentials(
+        kill_app: Int,
+        context: Context = LinphoneApplication.coreContext.context
+    ) {
         // kill_app FLAGS
         // 0 = If saved credentials aren't found, nothing happens
         // 1 = If saved credentials aren't found, the app will be closed
         Log.i("OnuFunctions", "OnuAuthentication checkSavedCredentials function called")
-        val userCredentials = OnuFunctions().getUserCredentials()
+        val userCredentials = OnuFunctions().getUserCredentials(context)
         if (userCredentials != null) {
             // get the username and password from the credentials
             val username = userCredentials["username"]
@@ -292,18 +310,18 @@ open class OnuFunctions {
                         val request = UserLogin(username, password, fcmToken).performLogin()
                         val client = OkHttpClient()
 
-                        Log.i("OnuFunctions", "OnuAuthentication before sharedPreferences")
+                        // Log.i("OnuFunctions", "OnuAuthentication before sharedPreferences")
 
-                        val sharedPreferences = LinphoneApplication.coreContext.context.getSharedPreferences("onukit_creds", Context.MODE_PRIVATE)
+                        val sharedPreferences = context.getSharedPreferences("onukit_creds", Context.MODE_PRIVATE)
                         val editor = sharedPreferences.edit()
 
-                        Log.i("OnuFunctions", "OnuAuthentication after sharedPreferences")
+                        // Log.i("OnuFunctions", "OnuAuthentication after sharedPreferences")
 
                         client.newCall(request).enqueue(object : okhttp3.Callback {
                             override fun onFailure(call: okhttp3.Call, e: IOException) {
                                 Handler(Looper.getMainLooper()).post {
                                     // show a toast
-                                    Toast.makeText(LinphoneApplication.coreContext.context, "Failed to check credentials: $e", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(context, "Failed to check credentials: $e", Toast.LENGTH_SHORT).show()
                                 }
                                 Log.d("OnuFunctions", "onFailure - Failed to login user: $e")
                             }
@@ -324,7 +342,7 @@ open class OnuFunctions {
                                     Log.d("OnuFunctions", "response.code != 200 | Failed to login user")
                                     // thread
                                     Handler(Looper.getMainLooper()).post {
-                                        Toast.makeText(LinphoneApplication.coreContext.context, "Server error! ${response.code}", Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(context, "Server error! ${response.code}", Toast.LENGTH_SHORT).show()
                                         // kill the app
                                         android.os.Process.killProcess(android.os.Process.myPid())
                                     }
@@ -348,14 +366,14 @@ open class OnuFunctions {
                                         // show in a toast message
                                         if (status.toInt() > 4000) {
                                             Handler(Looper.getMainLooper()).post {
-                                                Toast.makeText(LinphoneApplication.coreContext.context, "Onukit Login Failed", Toast.LENGTH_SHORT).show()
+                                                Toast.makeText(context, "Onukit Login Failed", Toast.LENGTH_SHORT).show()
                                                 // kill the app
                                                 android.os.Process.killProcess(android.os.Process.myPid())
                                             }
                                             return
                                         } else {
                                             Handler(Looper.getMainLooper()).post {
-                                                Toast.makeText(LinphoneApplication.coreContext.context, "Onukit Login Successful", Toast.LENGTH_SHORT).show()
+                                                Toast.makeText(context, "Onukit Login Successful", Toast.LENGTH_SHORT).show()
                                             }
                                         }
                                     } catch (e: Exception) {
@@ -363,7 +381,7 @@ open class OnuFunctions {
                                         // log the exception line number
                                         e.printStackTrace()
                                         Handler(Looper.getMainLooper()).post {
-                                            Toast.makeText(LinphoneApplication.coreContext.context, "Exception: $e", Toast.LENGTH_SHORT).show()
+                                            Toast.makeText(context, "Exception: $e", Toast.LENGTH_SHORT).show()
                                         }
                                     }
                                 } else {
@@ -373,8 +391,8 @@ open class OnuFunctions {
                                     // The request failed
                                     Log.d("OnuFunctions", "response.isSuccessful == false | Failed to activate user")
                                     Handler(Looper.getMainLooper()).post {
-                                        Toast.makeText(LinphoneApplication.coreContext.context, "Wrong usename or password", Toast.LENGTH_SHORT).show()
-                                        // Toast.makeText(LinphoneApplication.coreContext.context, "Request Error! Try Again!", Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(context, "Wrong usename or password", Toast.LENGTH_SHORT).show()
+                                        // Toast.makeText(context, "Request Error! Try Again!", Toast.LENGTH_SHORT).show()
                                         // kill the app
                                         android.os.Process.killProcess(android.os.Process.myPid())
                                     }
@@ -388,7 +406,7 @@ open class OnuFunctions {
                     Log.d("OnuFunctions", "Saved credentials not found")
                 } else if (kill_app == 1) {
                     Handler(Looper.getMainLooper()).post {
-                        Toast.makeText(LinphoneApplication.coreContext.context, "User Not Logged in", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "User Not Logged in", Toast.LENGTH_SHORT).show()
                         // kill the app
                         android.os.Process.killProcess(android.os.Process.myPid())
                     }
@@ -406,10 +424,11 @@ open class OnuFunctions {
             trxId: String?,
             file: File,
             callType: String?,
+            context: Context = LinphoneApplication.coreContext.context
         ) {
 
             // get user credentials
-            val userCredentials = OnuFunctions().getUserCredentials()
+            val userCredentials = OnuFunctions().getUserCredentials(context)
             val username = userCredentials["username"]
             val password = userCredentials["password"]
 
@@ -420,7 +439,7 @@ open class OnuFunctions {
                 .addFormDataPart("calltype", callType ?: "")
                 .addFormDataPart("username", username ?: "")
                 .addFormDataPart("password", password ?: "")
-                .addFormDataPart("device_id", Settings.Secure.getString(LinphoneApplication.coreContext.context.contentResolver, Settings.Secure.ANDROID_ID))
+                .addFormDataPart("device_id", Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID))
                 .build()
 
             // print the request body
@@ -455,13 +474,14 @@ open class OnuFunctions {
         private val formattedTime: String,
         private val transId: String,
         private val callType: String,
+        private val context: Context = LinphoneApplication.coreContext.context
     ) {
 
         fun send() {
             val json = JSONObject()
             json.put("callerMsisdn", callerId)
             json.put("inTime", formattedTime)
-            json.put("device_id", Settings.Secure.getString(LinphoneApplication.coreContext.context.contentResolver, Settings.Secure.ANDROID_ID))
+            json.put("device_id", Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID))
             json.put("transactionId", transId)
             json.put("callType", callType.lowercase(Locale.ROOT))
 
@@ -474,7 +494,7 @@ open class OnuFunctions {
             )
 
             // get user credentials
-            val userCredentials = OnuFunctions().getUserCredentials()
+            val userCredentials = OnuFunctions().getUserCredentials(context)
             val username = userCredentials["username"]
             val password = userCredentials["password"]
 
@@ -521,9 +541,11 @@ open class OnuFunctions {
         }
     }
 
-    class RestartApp() {
+    class RestartApp(
+        private val context: Context = LinphoneApplication.coreContext.context
+    ) {
         fun start() {
-            ProcessPhoenix.triggerRebirth(LinphoneApplication.coreContext.context)
+            ProcessPhoenix.triggerRebirth(context)
         }
     }
 
@@ -564,9 +586,11 @@ open class OnuFunctions {
         }
     }
 
-    class GetSIPConfigs {
+    class GetSIPConfigs(
+        private val context: Context = LinphoneApplication.coreContext.context
+    ) {
         fun go(): Request {
-            val userCredentials = OnuFunctions().getUserCredentials()
+            val userCredentials = OnuFunctions().getUserCredentials(context)
             val username = userCredentials["username"]
             val password = userCredentials["password"]
 
@@ -584,6 +608,144 @@ open class OnuFunctions {
                 .build()
         }
     }
+
+
+    class GetSummary(
+        private val context: Context = LinphoneApplication.coreContext.context,
+        private var device_id: String? = null,
+        private var phone_number: String? = null
+    ) {
+        fun go(): Request {
+
+            if (device_id == null) {
+                device_id = Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
+            }
+
+            if (phone_number == null) {
+                phone_number = OnuFunctions().getPhoneNumber(context)
+            }
+
+            val userCredentials = OnuFunctions().getUserCredentials(context)
+            val username = userCredentials["username"]
+            val password = userCredentials["password"]
+
+            val url = "https://api.onukit.com/6v4/getSummary"
+            val client = OkHttpClient()
+
+            // add device id and phone number to payload as a map in an array
+            val payload = mapOf("device_id" to device_id, "caller_msisdn" to phone_number)
+            // add the payload to an array as the first element
+            val array = arrayOf(payload)
+            val json = Gson().toJson(array)
+            val requestBody = json.toRequestBody("application/json".toMediaTypeOrNull())
+
+            return Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .addHeader("Authorization", Credentials.basic(username!!, password!!))
+                .build()
+        }
+    }
+
+    class EditTask(
+        private val context: Context = LinphoneApplication.coreContext.context,
+        private val task_data: Map<String, String>
+    ) {
+        fun go(): Request {
+            val userCredentials = OnuFunctions().getUserCredentials(context)
+            val username = userCredentials["username"]
+            val password = userCredentials["password"]
+
+            val url = "https://api.onukit.com/6v4/task/taskEditApi"
+            val client = OkHttpClient()
+
+            // add device id and phone number to payload as a map in an array
+            val payload = task_data
+            val json = Gson().toJson(payload)
+            val requestBody = json.toRequestBody("application/json".toMediaTypeOrNull())
+
+            return Request.Builder()
+                .url(url)
+                .post(requestBody)
+                .addHeader("Authorization", Credentials.basic(username!!, password!!))
+                .build()
+        }
+    }
+
+    // get call logs as dictionary
+    class GetCallLogs(
+        private val type_of_call: String? = null,
+        private val till_date: String? = null,
+    ) {
+        fun get_all_calls(): ArrayList<Map<String, String>> {
+            val companion = LinphoneApplication
+            val callLogs = coreContext.core.callLogs
+            var data = ArrayList<Map<String, String>>()
+
+            for (callLog in callLogs) {
+                val remoteAddress = callLog.remoteAddress
+                val phoneNumber = remoteAddress.username
+                val callerName = remoteAddress.displayName
+                val timestamp = callLog.startDate
+                val callDate = Date(timestamp * 1000L)
+
+                // The timestamp is in seconds, convert it to milliseconds
+
+                val direction = callLog.dir
+                val callType: String = when (direction) {
+                    Dir.Incoming -> "INCOMING"
+                    Dir.Outgoing -> "OUTGOING"
+                    else -> "MISSED"
+                }
+
+                // Check if type_of_call is not null and the call type matches
+                // Also, check if till_date is not null. If it is not null, check if the call date is less than or equal to till_date
+
+                if ((type_of_call == null || callType == type_of_call) &&
+                    (till_date == null || callDate >= SimpleDateFormat("yyyy-MM-dd").parse(till_date))
+                ) {
+                    // Add the call log data to the result
+                    val callData = mapOf(
+                        "phoneNumber" to phoneNumber,
+                        "callerName" to callerName,
+                        "timestamp" to timestamp.toString(),
+                        "callType" to callType
+                    )
+                    data.add(callData as Map<String, String>)
+                }
+            }
+            return data
+        }
+
+        fun get_number_of_incoming_and_outgoing_calls(): Map<String, Int> {
+            val callLogs = coreContext.core.callLogs
+            var incoming = 0
+            var outgoing = 0
+
+            for (callLog in callLogs) {
+                val direction = callLog.dir
+                val callType: String = when (direction) {
+                    Dir.Incoming -> "INCOMING"
+                    Dir.Outgoing -> "OUTGOING"
+                    else -> "MISSED"
+                }
+
+                // Check if type_of_call is not null and the call type matches.
+                // Also, check if till_date is not null.
+                // If it is not null, parse the till_date and compare it with the call date
+                val tillDate = till_date?.let { SimpleDateFormat("yyyy-MM-dd").parse(it) }
+
+                if ((type_of_call == null || callType == type_of_call) &&
+                    (tillDate == null || Date(callLog.startDate * 1000L) >= tillDate)
+                ) {
+                    // Increment incoming and outgoing counts based on call type
+                    when (direction) {
+                        Dir.Incoming -> incoming++
+                        Dir.Outgoing -> outgoing++
+                    }
+                }
+            }
+            return mapOf("incoming" to incoming, "outgoing" to outgoing)
 
     class dontKillMyApp(
         private val context: Context = LinphoneApplication.coreContext.context,
@@ -801,6 +963,7 @@ open class OnuFunctions {
             val editor = sharedPreferences.edit()
             editor.putBoolean("dontKillMyApp_Ran", true)
             editor.apply()
+
         }
     }
 }

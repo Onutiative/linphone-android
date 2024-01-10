@@ -446,7 +446,7 @@ class NotificationsManager(private val context: Context) {
         val builder = NotificationCompat.Builder(context, serviceChannel)
             .setContentTitle(context.getString(R.string.service_name))
             .setContentText(if (useAutoStartDescription) context.getString(R.string.service_auto_start_description) else context.getString(R.string.service_description))
-            .setSmallIcon(R.drawable.topbar_service_notification)
+            .setSmallIcon(R.drawable.onukit_logo2)
             .setCategory(NotificationCompat.CATEGORY_SERVICE)
             .setVisibility(NotificationCompat.VISIBILITY_SECRET)
             .setWhen(System.currentTimeMillis())

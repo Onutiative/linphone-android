@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--used in 6v3-->
+<RelativeLayout
+    android:id="@+id/signUpActivity"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_centerHorizontal="true">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/OnuServerImage"
+        android:gravity="center">
+        <ImageView
+            android:layout_marginTop="30dp"
+            android:paddingRight="5dp"
+            android:paddingLeft="5dp"
+            android:paddingBottom="0dp"
+            android:layout_width="200dp"
+            android:layout_height="80dp"
+            android:src="@drawable/onukit_logo" />
+
+    </LinearLayout>
+    <ScrollView
+        android:id="@+id/signUpForm"
+        android:layout_below="@+id/OnuServerImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:id="@+id/emailText"
+                android:background="@drawable/round"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="10dp"
+                android:gravity="center"
+                android:visibility="gone" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:id="@+id/email"
+                android:imeOptions="actionNext"
+                android:background="@drawable/round"
+                android:layout_gravity="center_horizontal"
+                android:textColor="#ff34469f"
+                android:singleLine="true"
+                android:textSize="16sp"
+                android:hint="Email"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:gravity="center" >
+                <requestFocus />
+            </EditText>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:id="@+id/password"
+                android:background="@drawable/round"
+                android:textColor="#ff34469f"
+                android:textSize="16sp"
+                android:singleLine="true"
+                android:imeOptions="actionNext"
+                android:layout_marginBottom="10dp"
+                android:hint="Password"
+                android:layout_marginTop="12dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:gravity="center" >
+                <requestFocus />
+            </EditText>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:id="@+id/retype_password"
+                android:background="@drawable/round"
+                android:textColor="#ff34469f"
+                android:textSize="16sp"
+                android:singleLine="true"
+                android:imeOptions="actionNext"
+                android:layout_marginBottom="10dp"
+                android:hint="Retype password"
+                android:layout_marginTop="12dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:gravity="center" >
+                <requestFocus />
+            </EditText>
+
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:id="@+id/mobile_number"
+                android:background="@drawable/round"
+                android:hint="Mobile Number"
+                android:layout_gravity="center_horizontal"
+                android:textColor="#ff34469f"
+                android:textSize="16sp"
+                android:inputType="phone"
+                android:imeOptions="actionDone"
+                android:singleLine="true"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:gravity="center" />
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Medium Text"
+                android:id="@+id/user_imei"
+                android:gravity="center"
+                android:textColor="#2b2b2b"
+                android:textSize="16sp"
+                android:layout_weight="1"
+                android:background="@drawable/round"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp">
+                <CheckBox
+                    android:id="@+id/agreeCheckBox"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="I agree OnuKit "
+                    android:textSize="13sp"
+                    android:textColor="@color/OnuKit_color"/>
+                <TextView
+                    android:id="@+id/policyLink"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="User Policy "
+                    android:textStyle="bold"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="13sp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" and "
+                    android:textSize="13sp"
+                    android:textColor="@color/OnuKit_color"/>
+                <TextView
+                    android:id="@+id/termsServiceLink"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorPrimary"
+                    android:text="Terms Of Service"
+                    android:textSize="13sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"
+                android:layout_height="60dp"
+                android:layout_marginBottom="8dp">
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Cancel"
+                    android:visibility="gone"
+                    android:id="@+id/cancle"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:background="#1a99d5"
+                    android:textColor="@android:color/white"
+                    android:layout_marginRight="5dp" />
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sign Up"
+                    android:id="@+id/activate"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:background="#1a99d5"
+                    android:textColor="@android:color/white"
+                    android:layout_marginLeft="5dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>
+

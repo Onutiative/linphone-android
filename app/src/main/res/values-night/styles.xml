@@ -4,7 +4,7 @@
     <style name="BaseAppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Disable animations between activities -->
         <item name="android:windowAnimationStyle">@null</item>
-        <item name="android:windowBackground">@color/transparent_color</item>
+        <item name="android:windowBackground">@color/header_background_color</item>
 
         <!-- Android theme override -->
         <item name="colorAccent">@color/primary_color</item>
@@ -65,4 +65,21 @@
     </style>
 
     <style name="AppTheme" parent="BaseAppTheme" />
+
+    <!-- from legacy app -->
+    <style name="DrawerHamburgerStyle" parent="@style/Widget.AppCompat.DrawerArrowToggle">
+        <item name="spinBars">true</item>
+        <item name="color">#394b61</item>
+    </style>
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="drawerArrowStyle">@style/DrawerHamburgerStyle</item>
+    </style>
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Dark" />
+    <style name="ActionBar.nameText" parent="TextAppearance.AppCompat.Widget.ActionBar.Title"/>
+
+    <style name="HeaderBar">
+        <item name="android:background">@color/OnuKit_color</item>
+    </style>
+
 </resources>

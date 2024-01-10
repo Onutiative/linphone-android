@@ -6,7 +6,8 @@ plugins {
 }
 
 def appVersionName = "6.4"
-def appVersionCode = 113
+def appVersionCode = 114
+
 
 static def getPackageName() {
     return "com.onutiative.onukit"
@@ -67,6 +68,24 @@ configurations {
     customImplementation.extendsFrom implementation
 }
 
+
+// <!-- In case password is saved in Android Studio -->
+//afterEvaluate {
+//    if (project.hasProperty("android.injected.signing.store.file")) {
+//        println "key store path: ${project.property("android.injected.signing.store.file")}"
+//    }
+//    if (project.hasProperty("android.injected.signing.store.password")) {
+//        println "key store password: ${project.property("android.injected.signing.store.password")}"
+//    }
+//    if (project.hasProperty("android.injected.signing.key.alias")) {
+//        println "key alias: ${project.property("android.injected.signing.key.alias")}"
+//    }
+//    if (project.hasProperty("android.injected.signing.key.password")) {
+//        println "key password: ${project.property("android.injected.signing.key.password")}"
+//    }
+//}
+
+
 task linphoneSdkSource() {
     doLast {
         configurations.customImplementation.getIncoming().each {
@@ -101,6 +120,7 @@ project.tasks['preBuild'].dependsOn 'linphoneSdkSource'
 android {
     compileSdkVersion 33
     buildToolsVersion '33.0.0'
+    useLibrary 'org.apache.http.legacy'
     defaultConfig {
         minSdkVersion 23
         targetSdkVersion 33
@@ -149,8 +169,8 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
-            shrinkResources true
+            minifyEnabled false
+            shrinkResources false
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 
@@ -236,6 +256,29 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation "androidx.gridlayout:gridlayout:1.0.0"
     implementation 'androidx.recyclerview:recyclerview:1.3.0-rc01'
+
+    // from legacy onukit app
+    implementation 'com.daimajia.slider:library:1.1.5@aar'
+    implementation 'com.github.jakob-grabner:Circle-Progress-View:v1.3'
+    implementation 'com.timqi.sectorprogressview:library:2.0.1'
+    implementation 'com.squareup.okhttp3:okhttp:4.9.2'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.2'
+    implementation 'com.karumi:dexter:4.2.0'
+    implementation 'com.github.broakenmedia:MultiContactPicker:1.7'
+    implementation 'com.squareup.picasso:picasso:2.3.2'
+    implementation 'com.nineoldandroids:library:2.4.0'
+    implementation 'com.firebase:firebase-jobdispatcher:0.8.5' // Use the appropriate version
+    implementation 'androidx.work:work-runtime-ktx:2.7.1'
+
+    // This auth is added on this new FCM project
+    implementation 'com.google.android.gms:play-services-auth:15.0.1'
+    implementation 'com.google.android.gms:play-services-ads:15.0.1'
+    implementation 'com.wdullaer:materialdatetimepicker:3.6.3'
+    implementation('com.github.ganfra:material-spinner:2.0.0') {
+        exclude group: 'com.android.support', module: 'appcompat-v7'
+    }
+    implementation 'com.oguzdev:CircularFloatingActionMenu:1.0.2'
+    implementation 'org.greenrobot:eventbus:3.0.0'
 
     // https://github.com/material-components/material-components-android/blob/master/LICENSE Apache v2.0
     implementation 'com.google.android.material:material:1.7.0'

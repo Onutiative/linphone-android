@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/dashboard"
+            android:icon="@drawable/ic_smartphone_dashboard"
+            android:title="app dashboard" />
+
+        <item
+            android:id="@+id/webdashboard"
+            android:icon="@drawable/ic_four_squares_with_frame_shape"
+            android:title="web dashboard" />
+        <item
+            android:id="@+id/setting"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="settings" />
+        <item
+            android:id="@+id/recentsms"
+            android:icon="@drawable/ic_sms"
+            android:title="sms inbox" />
+        <item
+            android:id="@+id/contactDwr"
+            android:icon="@drawable/ic_contacts_gray"
+            android:title="contact" />
+        <item
+            android:id="@+id/smstoall"
+            android:icon="@drawable/ic_sms_to_all"
+            android:title="sent SMS" />
+
+        <item
+            android:id="@+id/syncData"
+            android:icon="@drawable/ic_sync_black_24dp"
+            android:title="sync contacts" />
+
+        <item
+            android:id="@+id/setSIP"
+            android:icon="@drawable/sip_call_3_24"
+            android:title="SIP Setup" />
+
+    </group>
+
+
+    <item android:title="Other">
+        <menu>
+            <item
+                android:id="@+id/about"
+                android:icon="@drawable/ic_smartphone"
+                android:title="about" />
+            <item
+                android:id="@+id/logout"
+                android:icon="@drawable/ic_power_settings_new_black_24dp"
+                android:title="logout" />
+        </menu>
+    </item>
+
+
+
+</menu>
