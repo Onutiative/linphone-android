@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:710819726531:android:ab7c9a0b0aab0c36",
         "android_client_info": {
-          "package_name": "org.linphone.onu_legacy"
+          "package_name": "com.onutiative.onukit"
         }
       },
       "oauth_client": [
@@ -39,7 +39,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:710819726531:android:ab7c9a0b0aab0c36",
         "android_client_info": {
-          "package_name": "org.linphone.onu_legacy.debug"
+          "package_name": "com.onutiative.onukit.debug"
         }
       },
       "oauth_client": [

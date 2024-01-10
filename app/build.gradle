@@ -5,11 +5,11 @@ plugins {
     id 'org.jlleitschuh.gradle.ktlint'
 }
 
-def appVersionName = "0.2.2"
-def appVersionCode = 00022
+def appVersionName = "0.2.3"
+def appVersionCode = 00023
 
 static def getPackageName() {
-    return "org.linphone.onu_legacy"
+    return "com.onutiative.onukit"
 }
 
 def firebaseEnabled = new File(projectDir.absolutePath +'/google-services.json').exists()
@@ -274,6 +274,11 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.google.code.gson:gson:2.10.1'
+
+    // for avoiding app autokill by various android vendors
+    implementation 'com.github.judemanutd:autostarter:1.1.0'
+    implementation 'io.github.wulkanowy:AppKillerManager:3.0.0'
+    implementation 'io.github.wanghonglin:crom-app-whitelist:0.1.2'
 
     // Only enable leak canary prior to release
     //debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.4'
