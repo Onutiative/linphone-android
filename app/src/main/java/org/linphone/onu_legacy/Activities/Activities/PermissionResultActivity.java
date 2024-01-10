@@ -3,6 +3,7 @@ package org.linphone.onu_legacy.Activities.Activities;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -71,15 +72,10 @@ public class PermissionResultActivity extends AppCompatActivity {
         callPermissionResult = ContextCompat.checkSelfPermission(context, Manifest.permission.CALL_PHONE);
         smsPermissionResult = ContextCompat.checkSelfPermission(context, Manifest.permission.SEND_SMS);
         contactPermissionResult = ContextCompat.checkSelfPermission(context, Manifest.permission.READ_CONTACTS);
-        storagePermissionResult = ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        // storagePermissionResult = ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE);
+        storagePermissionResult = 0;
         microphonePermissionResult = ContextCompat.checkSelfPermission(context, Manifest.permission.RECORD_AUDIO);
 
-        Map<String, String> userCredentials = new OnuFunctions().getUserCredentials();
-        // get the username and password from the credentials
-        String username = userCredentials.get("username");
-        String password = userCredentials.get("password");
-        // log username and password
-        Log.d(TAG, "Username: " + username + " Password: " + password);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             popupPermissionResult = Settings.canDrawOverlays(context);
@@ -120,11 +116,14 @@ public class PermissionResultActivity extends AppCompatActivity {
         }
 
 
-        if (username != "0" && password != "0") {
-            {
-                finishButton.setText("Go To DASHBOARD");
-            }
+        if(!sharedPrefManager.getPermissionSlideStatus())
+        {
+            finishButton.setText("Go To DASHBOARD");
         }
+
+        Log.d(TAG, "Call Permission Result " + callPermissionResult + " SMS Permission Result " + smsPermissionResult +
+                " Contact Permission Result " + contactPermissionResult + " Storage Permission Result " + storagePermissionResult +
+                " Microphone Permission Result " + microphonePermissionResult + " Popup Permission Result " + popupPermissionResult);
 
             finishButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -134,9 +133,10 @@ public class PermissionResultActivity extends AppCompatActivity {
                             " Contact Permission Result " + contactPermissionResult + " Storage Permission Result " + storagePermissionResult +
                             " Microphone Permission Result " + microphonePermissionResult + " Popup Permission Result " + popupPermissionResult);
 
-                    if (username == "0" && password == "0") {
-                        //First time after installing.
-                        sharedPrefManager.setPermissionSlideStatus(false);
+                    if(sharedPrefManager.getPermissionSlideStatus()) {
+                        // First time after installing.
+                        Log.d("PermissionSlideStatus", "First time after installing");
+                        // sharedPrefManager.setPermissionSlideStatus(false);
                         Intent intent = new Intent(context, LoginActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

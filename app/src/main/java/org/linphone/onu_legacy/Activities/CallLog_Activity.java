@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -17,6 +18,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
 
+import org.linphone.LinphoneApplication;
+import org.linphone.core.Address;
+import org.linphone.core.Call;
+import org.linphone.core.CallLog;
 import org.linphone.onu_legacy.Activities.Activities.DashBoard_Activity;
 import org.linphone.onu_legacy.Adapters.CallLogAdapter;
 import org.linphone.onu_legacy.Database.Contact;
@@ -26,7 +31,9 @@ import org.linphone.R;
 import org.linphone.onu_legacy.WebViews.WebViews;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public class CallLog_Activity extends AppCompatActivity implements
         View.OnClickListener{
@@ -36,12 +43,20 @@ public class CallLog_Activity extends AppCompatActivity implements
     private TextView toptext;
     private Button webButton;
     private ImageView sentSmsToHome;
+    private String TAG = "CallLog_Activity";
+
+    LinphoneApplication.Companion companion = LinphoneApplication.Companion;
+    CallLog[] callLogs = companion.getCoreContext().getCore().getCallLogs();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_call_log_show);
-        getSupportActionBar().hide();
+        try {
+            Objects.requireNonNull(getSupportActionBar()).hide();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
         InitCallLog();
     }
 
@@ -126,15 +141,38 @@ public class CallLog_Activity extends AppCompatActivity implements
         alertDialog.show();
     }
 
-    public ArrayList<Fruit> getCallData(){
+    public ArrayList<Fruit> getCallData() {
 
-        ArrayList<Fruit> data=new ArrayList<>();
-        Database db = new Database(this);
-        List<Contact> contacts = db.getAll_calls(type);
-        for (Contact cn : contacts)
-        {
-            Fruit f=new Fruit(cn.getPhone_number(),cn.getName(),cn.getTime());
-            data.add(f);
+        ArrayList<Fruit> data = new ArrayList<>();
+
+        for (CallLog callLog : callLogs) {
+            {
+                Address remoteAddress = callLog.getRemoteAddress();
+                String phoneNumber = remoteAddress.getUsername();
+                String callerName = remoteAddress.getDisplayName(); // Get the caller's name
+
+                long timestamp = callLog.getStartDate();
+                Date callDate = new Date(timestamp * 1000L); // The timestamp is in seconds, convert it to milliseconds
+
+                Call.Dir direction = callLog.getDir();
+                // Log.d(TAG, "getCallData: " + direction);
+                String callType;
+                if (direction == Call.Dir.Incoming) {
+                    callType = "INCOMING";
+                } else if (direction == Call.Dir.Outgoing) {
+                    callType = "OUTGOING";
+                } else {
+                    callType = "MISSED";
+                }
+
+                if(callType.equals("OUTGOING")) {
+                    Fruit f = new Fruit(phoneNumber, callerName, callDate.toString(), callType);
+                    // Log.i(TAG, "Phone no: " + phoneNumber);
+                    //Toast.makeText(this,cn.getPhone_number(),Toast.LENGTH_LONG).show();
+                    data.add(f);
+                }
+            }
+
         }
         return data;
     }
@@ -146,10 +184,10 @@ public class CallLog_Activity extends AppCompatActivity implements
                 Intent i = new Intent(CallLog_Activity.this, WebViews.class);
                 if (type.equals("in")) {
 //                    Toast.makeText(CallLog_Activity.this,"Call log incoming",Toast.LENGTH_SHORT).show();
-                    i.putExtra("url", "http://user.onukit.com/6v0/login_from_app/incomingCalls");
+                    i.putExtra("url", "https://user.onukit.com/6v0/login_from_app/incomingCalls");
                 } else {
 //                    Toast.makeText(CallLog_Activity.this,"Call log outgoing",Toast.LENGTH_SHORT).show();
-                    i.putExtra("url", "http://user.onukit.com/6v0/login_from_app/outgoingCalls");
+                    i.putExtra("url", "https://user.onukit.com/6v0/login_from_app/outgoingCalls");
                 }
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);

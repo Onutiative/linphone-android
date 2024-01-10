@@ -21,6 +21,7 @@ package org.linphone.telecom
 
 import android.annotation.TargetApi
 import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -28,7 +29,10 @@ import android.provider.Settings
 import android.telecom.*
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import java.io.File
+import androidx.work.Constraints
+import androidx.work.NetworkType
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -42,7 +46,12 @@ import org.linphone.LinphoneApplication.Companion.ensureCoreExists
 import org.linphone.`interface`.callpopupinterface
 import org.linphone.core.*
 import org.linphone.core.Call
+import org.linphone.core.Core
+import org.linphone.core.CoreListenerStub
 import org.linphone.core.tools.Log
+import org.linphone.onu_legacy.Services.FloatingViewService
+import org.linphone.onu_legacy.Services.MyJobService
+import org.linphone.onu_legacy.Utility.SharedPrefManager
 import org.linphone.onuspecific.OnuFunctions
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -112,6 +121,21 @@ class TelecomConnectionService : ConnectionService() {
         return super.onUnbind(intent)
     }
 
+    private fun initializeFloatingView(context: Context) {
+        Log.i("[Telecom Connection Service] initializeFloatingView()")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val constraints = Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.NOT_REQUIRED)
+                .build()
+            val myWorkRequest = OneTimeWorkRequest.Builder(MyJobService::class.java)
+                .setConstraints(constraints)
+                .build()
+            WorkManager.getInstance(context).enqueue(myWorkRequest)
+        } else {
+            context.startService(Intent(context, FloatingViewService::class.java))
+        }
+    }
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateOutgoingConnection(
         connectionManagerPhoneAccount: PhoneAccountHandle?,
@@ -177,15 +201,32 @@ class TelecomConnectionService : ConnectionService() {
                 val callerId = providedHandle.schemeSpecificPart.split("@")[0]
                 Log.i("[Telecom Connection Service] Phone Number is $callerId")
 
-                Thread {
-                    val callDataSender = OnuFunctions.CallDataSender(
-                        callerId,
-                        DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(Instant.ofEpochMilli(call.callLog.startDate * 1000L).atZone(ZoneId.systemDefault())),
-                        DateTimeFormatter.ofPattern("yyyyMMddHHmmssSS").format(Instant.ofEpochMilli(call.callLog.startDate * 1000L).atZone(ZoneId.systemDefault())),
-                        call?.dir.toString() ?: "outgoing",
-                    )
-                    callDataSender.send()
-                }.start()
+//                Thread {
+//                    val callDataSender = OnuFunctions.CallDataSender(
+//                        callerId,
+//                        DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(Instant.ofEpochMilli(call.callLog.startDate * 1000L).atZone(ZoneId.systemDefault())),
+//                        DateTimeFormatter.ofPattern("yyyyMMddHHmmssSS").format(Instant.ofEpochMilli(call.callLog.startDate * 1000L).atZone(ZoneId.systemDefault())),
+//                        call?.dir.toString() ?: "outgoing",
+//                        coreContext.context
+//                    )
+//                    callDataSender.send()
+//                }.start()
+
+                // runOnUiThread
+//                Handler(Looper.getMainLooper()).post {
+//                    // show a toast
+//                    Toast.makeText(coreContext.context, "TelecomConnectionService Initializing floating view", Toast.LENGTH_LONG).show()
+//                }
+                android.util.Log.i("OnuFunctions", "Initializing floating view")
+                // val callerId = providedHandle?.schemeSpecificPart?.split("@")?.get(0)
+                var sharedPrefManager = SharedPrefManager(coreContext.context)
+                sharedPrefManager.incomingPhoneNumber = callerId
+                initializeFloatingView(coreContext.context)
+                android.util.Log.i("OnuFunctions", "Initializing floating view done")
+//                Handler(Looper.getMainLooper()).post {
+//                    // show a toast
+//                    Toast.makeText(coreContext.context, "TelecomConnectionService Initializing floating view done", Toast.LENGTH_LONG).show()
+//                }
 
                 when (callState) {
                     Call.State.OutgoingEarlyMedia, Call.State.OutgoingInit, Call.State.OutgoingProgress, Call.State.OutgoingRinging -> connection.setDialing()
@@ -297,15 +338,32 @@ class TelecomConnectionService : ConnectionService() {
 //                    }
 //                })
 
-                Thread {
-                    val callDataSender = OnuFunctions.CallDataSender(
-                        callerId,
-                        DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(Instant.ofEpochMilli(call.callLog.startDate * 1000L).atZone(ZoneId.systemDefault())),
-                        DateTimeFormatter.ofPattern("yyyyMMddHHmmssSS").format(Instant.ofEpochMilli(call.callLog.startDate * 1000L).atZone(ZoneId.systemDefault())),
-                        call.dir.toString() ?: "incoming",
-                    )
-                    callDataSender.send()
-                }.start()
+//                Thread {
+//                    val callDataSender = OnuFunctions.CallDataSender(
+//                        callerId,
+//                        DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(Instant.ofEpochMilli(call.callLog.startDate * 1000L).atZone(ZoneId.systemDefault())),
+//                        DateTimeFormatter.ofPattern("yyyyMMddHHmmssSS").format(Instant.ofEpochMilli(call.callLog.startDate * 1000L).atZone(ZoneId.systemDefault())),
+//                        call.dir.toString() ?: "incoming",
+//                        coreContext.context
+//                    )
+//                    callDataSender.send()
+//                }.start()
+
+                // runOnUiThread
+//                Handler(Looper.getMainLooper()).post {
+//                    // show a toast
+//                    Toast.makeText(coreContext.context, "TelecomConnectionService Initializing floating view", Toast.LENGTH_LONG).show()
+//                }
+                android.util.Log.i("OnuFunctions", "Initializing floating view")
+                // val callerId = providedHandle?.schemeSpecificPart?.split("@")?.get(0)
+                var sharedPrefManager = SharedPrefManager(coreContext.context)
+                sharedPrefManager.incomingPhoneNumber = callerId
+                initializeFloatingView(coreContext.context)
+                android.util.Log.i("OnuFunctions", "Initializing floating view done")
+//                Handler(Looper.getMainLooper()).post {
+//                    // show a toast
+//                    Toast.makeText(coreContext.context, "TelecomConnectionService Initializing floating view done", Toast.LENGTH_LONG).show()
+//                }
 
                 when (callState) {
                     Call.State.IncomingEarlyMedia, Call.State.IncomingReceived -> connection.setRinging()
@@ -359,52 +417,51 @@ class TelecomConnectionService : ConnectionService() {
             return
         }
 
-        val params = coreContext.core.createCallParams(call)
-        // params?.recordFile = LinphoneUtils.getRecordingFilePathForAddress(call.remoteAddress) ?: ""
-        Log.i("[Telecom Connection Service] [OnuFunctions] recording path ${params?.recordFile}  ${call.core.recordFile}")
-        // rename the file extension from .mkv to .amr
-        var recordingFilePath = File(params?.recordFile?.replace(".mkv", ".amr")).absolutePath
-        Log.i("[Telecom Connection Service] [OnuFunctions] recording path $recordingFilePath")
-        File(params?.recordFile).renameTo(File(recordingFilePath)).toString()
-        Log.i("[Telecom Connection Service] [OnuFunctions] recording path $recordingFilePath")
-
-        // get the call start time from call object
-        val callStartTime = call.callLog.startDate
-        Log.i("[Telecom Connection Service] [OnuFunctions] callStartTime $callStartTime")
-
-        // replace `/storage/emulated/0/` with `/sdcard/` in recordingFilePath
-        // recordingFilePath = recordingFilePath.replace("/storage/emulated/0/", "/sdcard/")
-
-        Log.i("[Telecom Connection Service] [OnuFunctions] recordingFilePath $recordingFilePath")
-        Log.i("[OnuFunctions] Recording file recordingFilePath $recordingFilePath")
-
-        // check if recording file exists
-        if (!File(recordingFilePath).exists()) {
-            Log.e("[OnuFunctions] Recording file does not exist")
-        } else {
-
-            // get the trxId from recordingFile name in like `2023-02-01 23:19:28` to `20230201231928` format
-            val trxId = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSS").format(Instant.ofEpochMilli(call.callLog.startDate * 1000L).atZone(ZoneId.systemDefault()))
-            val file = File(recordingFilePath)
-            val callType = call.callLog.dir.toString()
-            val callRecordService = OnuFunctions.CallRecordSender()
-            Log.i("[OnuFunctions] Call record request: $trxId, $file, $callType")
-
-            Thread {
-                try {
-                    val response = callRecordService.send(
-                        trxId,
-                        file,
-                        callType,
-                    )
-                    println(response)
-                    Log.i("[OnuFunctions] Call record response: $response")
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                    Log.i("[OnuFunctions] Call record error: $e")
-                }
-            }.start()
-        }
+//        val params = coreContext.core.createCallParams(call)
+//        Log.i("[Telecom Connection Service] [OnuFunctions] recording path ${params?.recordFile}  ${call.core.recordFile}")
+//        // rename the file extension from .mkv to .amr
+//        var recordingFilePath = File(params?.recordFile?.replace(".mkv", ".amr")).absolutePath
+//        Log.i("[Telecom Connection Service] [OnuFunctions] recording path $recordingFilePath")
+//        File(params?.recordFile).renameTo(File(recordingFilePath)).toString()
+//        Log.i("[Telecom Connection Service] [OnuFunctions] recording path $recordingFilePath")
+//
+//        // get the call start time from call object
+//        val callStartTime = call.callLog.startDate
+//        Log.i("[Telecom Connection Service] [OnuFunctions] callStartTime $callStartTime")
+//
+//        // replace `/storage/emulated/0/` with `/sdcard/` in recordingFilePath
+//        // recordingFilePath = recordingFilePath.replace("/storage/emulated/0/", "/sdcard/")
+//
+//        Log.i("[Telecom Connection Service] [OnuFunctions] recordingFilePath $recordingFilePath")
+//        Log.i("[OnuFunctions] Recording file recordingFilePath $recordingFilePath")
+//
+//        // check if recording file exists
+//        if (!File(recordingFilePath).exists()) {
+//            Log.e("[OnuFunctions] Recording file does not exist")
+//        } else {
+//
+//            // get the trxId from recordingFile name in like `2023-02-01 23:19:28` to `20230201231928` format
+//            val trxId = DateTimeFormatter.ofPattern("yyyyMMddHHmmssSS").format(Instant.ofEpochMilli(call.callLog.startDate * 1000L).atZone(ZoneId.systemDefault()))
+//            val file = File(recordingFilePath)
+//            val callType = call.callLog.dir.toString()
+//            val callRecordService = OnuFunctions.CallRecordSender()
+//            Log.i("[OnuFunctions] Call record request: $trxId, $file, $callType")
+//
+//            Thread {
+//                try {
+//                    val response = callRecordService.send(
+//                        trxId,
+//                        file,
+//                        callType,
+//                    )
+//                    println(response)
+//                    Log.i("[OnuFunctions] Call record response: $response")
+//                } catch (e: Exception) {
+//                    e.printStackTrace()
+//                    Log.i("[OnuFunctions] Call record error: $e")
+//                }
+//            }.start()
+//        }
 
         TelecomHelper.get().connections.remove(connection)
         val reason = call.reason

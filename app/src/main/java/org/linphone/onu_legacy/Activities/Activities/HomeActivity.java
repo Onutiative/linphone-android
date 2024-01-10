@@ -45,6 +45,7 @@ import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Objects;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -81,8 +82,12 @@ public class HomeActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        try {
+            Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
 
         selectContacts = (ImageView) findViewById(R.id.select_contacts);
         selectedContacts = (EditText) findViewById(R.id.selected_contacts);
@@ -356,8 +361,8 @@ public class HomeActivity extends AppCompatActivity {
 
                 String username = uname;
                 String password = upass;
-                Log.e("Username: ", uname);
-                Log.e("password: ", upass);
+//                Log.e("Username: ", uname);
+//                Log.e("password: ", upass);
 
                 URL urlObj = new URL(url);
                 HttpURLConnection connection = (HttpURLConnection) urlObj.openConnection();

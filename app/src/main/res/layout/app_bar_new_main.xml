@@ -18,9 +18,10 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@android:color/white"
             app:popupTheme="@style/AppTheme.PopupOverlay"
             app:titleTextAppearance="@style/ActionBar.nameText">
+
+<!--            android:background="@android:color/white"-->
 
             <androidx.cardview.widget.CardView
                 android:layout_width="wrap_content"
@@ -62,6 +63,15 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <include layout="@layout/content_new_main2" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/sip_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:src="@drawable/sip_call_icon_24"
+        android:contentDescription="@string/access_sip_interface"
+        android:layout_margin="16dp" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

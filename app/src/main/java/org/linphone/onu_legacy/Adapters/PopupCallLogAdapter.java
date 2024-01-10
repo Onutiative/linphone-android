@@ -113,12 +113,12 @@ public class PopupCallLogAdapter extends RecyclerView.Adapter<PopupCallLogAdapte
             timeStamp=lines.getText().toString();
             if(isNetworkAvailable()) {
                 taskConversion=new TaskConversion(context);
-                taskConversion.taskMaking(phoneNo,"",timeStamp,"","incoming");
+                taskConversion.taskMaking(phoneNo,"",timeStamp,"","incoming", null);
             } else {
                 Toast.makeText(context,"No Internet Connection!",Toast.LENGTH_LONG).show();
-               summaryList="[]";
-               employeeList="[]";
-               callerName="";
+                summaryList="[]";
+                employeeList="[]";
+                callerName="";
 
 
                 Intent taskIntent = new Intent(context, PopupTaskActivity.class);

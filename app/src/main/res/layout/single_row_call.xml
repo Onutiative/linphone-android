@@ -24,7 +24,6 @@
         android:layout_height="wrap_content"
         xmlns:app="http://schemas.android.com/tools"
         app:cardElevation="6dp"
-        card_view:cardBackgroundColor="@android:color/white"
         card_view:cardCornerRadius="5dp">
 
         <RelativeLayout

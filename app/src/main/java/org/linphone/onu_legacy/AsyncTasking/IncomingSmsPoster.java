@@ -10,23 +10,12 @@ import org.linphone.onu_legacy.Database.Contact;
 import org.linphone.onu_legacy.Database.Database;
 import org.linphone.onu_legacy.Utility.Info;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.utils.URLEncodedUtils;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.DataOutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -152,46 +141,31 @@ public class IncomingSmsPoster extends AsyncTask<Void, Void, String> {
     }
 
     @Override
-    protected String doInBackground(Void... params){
-
-         try {
+    protected String doInBackground(Void... params) {
+        try {
             Log.i(TAG, "smsposter-3");
             String status = null;
             String success = "4000";
             int statusCode = 0;
             String username = uname;
             String password = upass;
-            //username ="Onu$erVe9";
-            //password ="p#@$aS$";
             Log.i(TAG, "smsposter-4:" + url);
             Log.i(TAG, "backgrounds " + uname + " " + upass);
-            HttpParams httpParams = new BasicHttpParams();
-            HttpConnectionParams.setConnectionTimeout(httpParams, TIMEOUT_MILLISEC);
-            HttpConnectionParams.setSoTimeout(httpParams, TIMEOUT_MILLISEC);
-            HttpParams p = new BasicHttpParams();
-            HttpClient httpclient = new DefaultHttpClient(p);
 
+            HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+            connection.setRequestMethod("POST");
+            connection.setConnectTimeout(TIMEOUT_MILLISEC);
+            connection.setReadTimeout(TIMEOUT_MILLISEC);
 
-            //String url = "https://www.mydomainic.com/api/bkash-central/demo/add/via-sms/";
-            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
-            nameValuePairs.add(new BasicNameValuePair("demo", "demo"));
-            HttpClient httpClient = new DefaultHttpClient();
-            String paramsString = URLEncodedUtils.format(nameValuePairs, "UTF-8");
-            HttpPost httppost = new HttpPost(url);
-            ResponseHandler<String> responseHandler = new BasicResponseHandler();
-            httppost.setHeader("Content-type", "application/json");
-
-            Log.i(TAG, "smsposter-5");
-            //---------------------Code for Basic Authentication-----------------------
+            // Add Basic Authentication header
             String credentials = username + ":" + password;
             String credBase64 = Base64.encodeToString(credentials.getBytes(), Base64.DEFAULT).replace("\n", "");
-            httppost.setHeader("Authorization", "Basic " + credBase64);
-            //----------------------------------------------------------------------
-            //old jSonCode--------------------
-            // String entity = "{\"mobile\":\""+rcvdnum+"\",\"sms\":\""+rcvdsms+"\",\"transaction_id\" :\""+uniq+"\",\"receive_time\":\""+rcvtime+"\"}";
-            // httppost.setEntity(new StringEntity(entity ,"UTF-8"));
-            //----------------------------------
-             JSONArray post_param=new JSONArray();
+            connection.setRequestProperty("Authorization", "Basic " + credBase64);
+            connection.setRequestProperty("Content-type", "application/json");
+
+            Log.i(TAG, "smsposter-5");
+
+            JSONArray post_param = new JSONArray();
             JSONObject jsonParam = new JSONObject();
 
             jsonParam.accumulate("sms", rcvdsms);
@@ -202,41 +176,31 @@ public class IncomingSmsPoster extends AsyncTask<Void, Void, String> {
             jsonParam.accumulate("location", location);
             jsonParam.accumulate("parent_id", parentID);
 
-             post_param.put(jsonParam);
+            post_param.put(jsonParam);
             Log.i(TAG, "smsposter-6");
-            //URLEncoder.encode(jsonParam.toString(),"UTF-8")
-            StringEntity myStringEntity = new StringEntity(post_param.toString(), "UTF-8");
 
             Log.i(TAG, "my jSon: " + post_param.toString());
 
-            httppost.setEntity(myStringEntity);
+            connection.setDoOutput(true);
+
             Log.i(TAG, "smsposter-7");
-            //--------------execution of httppost
-            HttpResponse response = httpclient.execute(httppost);
 
-            String res = EntityUtils.toString(response.getEntity());
-            Log.i(TAG, "Response:" + res);
-            JSONObject json = new JSONObject(res);
-            Log.i(TAG, "smsposter-8:");
-            status = json.getString("status");  //getting from  jSon body
-            statusCode = response.getStatusLine().getStatusCode();
+            int responseCode = connection.getResponseCode();
+            String responseMessage = connection.getResponseMessage();
+            Log.i(TAG, "Response Code: " + responseCode);
+            Log.i(TAG, "Response Message: " + responseMessage);
 
-            // if(status.equals(success))
-            if (statusCode >= 200 && statusCode <= 299) {
+            if (responseCode >= 200 && responseCode <= 299) {
                 Log.i(TAG, "smsposter-9");
                 Database db = new Database(context);
                 db.deletesms(rcvdsms, uniq);
                 return status;
-            } else
+            } else {
                 return null;
+            }
         } catch (Exception ex) {
             Log.i(TAG, "smsposter-10 (Exception)" + ex);
-            //tosting(ex.toString());
-            //Toast.makeText(context,"(Exception)"+ex, Toast.LENGTH_SHORT).show();
             return null;
         }
-
-
-
     }
 }

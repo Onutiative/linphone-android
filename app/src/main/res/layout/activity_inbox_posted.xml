@@ -6,7 +6,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".onu_legacy.MVP.Implementation.PostedSMSPAckage.Posted_Inbox_Activity"
-    android:background="#f5f9fb"
     android:orientation="vertical">
 
     <!--<LinearLayout-->
@@ -73,7 +72,6 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Inbox SMS"
                 android:id="@+id/taskTitleName"
-                android:textColor="#ffffffff"
                 android:gravity="center"
                 android:paddingLeft="8dp"
                 android:elevation="10dp" />

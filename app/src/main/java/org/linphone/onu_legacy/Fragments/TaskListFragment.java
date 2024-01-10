@@ -143,6 +143,10 @@ public class TaskListFragment extends Fragment {
             Log.i(TAG,"Exception: "+e.toString());
         }
 
+        if(from==null)
+        {
+            from="";
+        }
         if (!from.equals("newTask")){
             if(callerName.equals(""))
             {

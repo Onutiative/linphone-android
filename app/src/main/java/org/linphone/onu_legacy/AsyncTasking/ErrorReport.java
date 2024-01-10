@@ -12,20 +12,15 @@ import android.util.Log;
 import org.linphone.onu_legacy.Database.Contact;
 import org.linphone.onu_legacy.Database.Database;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.protocol.HTTP;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -93,50 +88,35 @@ public class ErrorReport extends AsyncTask<Void, Void, String>  {
     }
     @Override
     protected String doInBackground(Void... params) {
-
-
         Database db = new Database(context);
         Log.v("Jhoro", "Sendout_checknotify");
         List<Contact> contacts = db.getAdminNumber();
-        for (Contact cn : contacts)
-        {
-            //Toast.makeText(this,cn.getName(),Toast.LENGTH_SHORT).show();
-            if (cn.getName().equals("email")  )
-
-            {
-                uname=cn.getPhone_number();
-            }
-            else if (cn.getName().equals("password")  )
-
-            {
-                upass=cn.getPhone_number();
-
+        for (Contact cn : contacts) {
+            if (cn.getName().equals("email")) {
+                uname = cn.getPhone_number();
+            } else if (cn.getName().equals("password")) {
+                upass = cn.getPhone_number();
             }
         }
 
-        //Database db = new Database(context);
         String username = uname;
         String password = upass;
         Log.v("Jhoro", "Error_doinbak_doinback");
         try {
             Log.v("Jhoro", "Error_doinbak_SendOut");
-            HttpParams httpParams = new BasicHttpParams();
-            HttpConnectionParams.setConnectionTimeout(httpParams, TIMEOUT_MILLISEC);
-            HttpConnectionParams.setSoTimeout(httpParams, TIMEOUT_MILLISEC);
-            HttpParams p = new BasicHttpParams();
-            HttpClient httpclient = new DefaultHttpClient(p);
 
+            HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+            connection.setRequestMethod("POST");
+            connection.setConnectTimeout(TIMEOUT_MILLISEC);
+            connection.setReadTimeout(TIMEOUT_MILLISEC);
 
-            HttpPost httppost = new HttpPost(url);
+            // Add Basic Authentication header
             String credentials = username + ":" + password;
             String credBase64 = Base64.encodeToString(credentials.getBytes(), Base64.DEFAULT).replace("\n", "");
-            httppost.setHeader("Authorization", "Basic " + credBase64);
-            ResponseHandler<String> responseHandler = new BasicResponseHandler();
-            httppost.setHeader("Content-type", "application/json");
-            JSONObject jsonParam = new JSONObject();
-            //{"command":"set status","sms_id":"441","device_id":"357080054613915","status":"sent",
-            // "delivery_time":"2016-03-04 06:48:49","details":"server_response"}
+            connection.setRequestProperty("Authorization", "Basic " + credBase64);
+            connection.setRequestProperty("Content-type", "application/json");
 
+            JSONObject jsonParam = new JSONObject();
             jsonParam.accumulate("command", command);
             jsonParam.accumulate("delivery_status", "Failed");
             jsonParam.accumulate("delivery_response", errorType);
@@ -146,22 +126,43 @@ public class ErrorReport extends AsyncTask<Void, Void, String>  {
 
             String entity = jsonParam.toString();
             Log.v("Jhoro", "Error_doinbak_Data" + entity);
-            httppost.setEntity(new StringEntity(entity, HTTP.UTF_8));
-            Log.v("Jhoro", "_P16_");
-            HttpResponse response = httpclient.execute(httppost);
-            Log.v("Jhoro", "_P17_");
-            String response_data = EntityUtils.toString(response.getEntity());
-            Log.v("Jhoro", " Error Response:" + response_data);
-            return response_data;
 
+            connection.setDoOutput(true);
+            DataOutputStream os = new DataOutputStream(connection.getOutputStream());
+            os.writeBytes(entity);
+            os.flush();
+            os.close();
+
+            int statusCode = connection.getResponseCode();
+            String response_data = null;
+
+            if (statusCode >= 200 && statusCode <= 299) {
+                // Successful response
+                InputStream inputStream = connection.getInputStream();
+                response_data = convertStreamToString(inputStream);
+                inputStream.close();
+                Log.v("Jhoro", " Error Response:" + response_data);
+                return response_data;
+            } else {
+                // Handle unsuccessful response
+                Log.e("Jhoro", "HTTP Request Failed with status code: " + statusCode);
+            }
         } catch (Exception ex) {
-            Log.v("Jhoro", "exeption");
-            return null;
+            Log.v("Jhoro", "exception");
         }
-
-
-
+        return null;
     }
+
+    private String convertStreamToString(InputStream inputStream) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+        StringBuilder result = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            result.append(line);
+        }
+        return result.toString();
+    }
+
 
     public void set_app_url()
     {

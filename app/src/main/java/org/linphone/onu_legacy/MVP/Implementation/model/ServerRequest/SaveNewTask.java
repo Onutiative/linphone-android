@@ -4,7 +4,10 @@ package org.linphone.onu_legacy.MVP.Implementation.model.ServerRequest;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
@@ -12,21 +15,19 @@ import android.widget.Toast;
 import org.linphone.onu_legacy.Database.Contact;
 import org.linphone.onu_legacy.Database.Database;
 import org.linphone.onu_legacy.MVP.Implementation.model.ServerRequest.TaskConversion;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.zip.GZIPInputStream;
 
 public class SaveNewTask extends AsyncTask<Void, Void, String> {
 
@@ -63,18 +64,28 @@ public class SaveNewTask extends AsyncTask<Void, Void, String> {
     protected void onPreExecute() {
         super.onPreExecute();
         //dialog = ProgressDialog.show(context, "Wait", "Please wait");
-
-        progressBar = ProgressDialog.show(context, "Message", "Data Loading...");
-        progressBar.setCancelable(true);
+        try {
+            progressBar = ProgressDialog.show(context, "Message", "Data Loading...");
+            progressBar.setCancelable(true);
+        }catch (Exception e){
+            Log.i(TAG,"Exception: "+e.getMessage());
+        }
     }
 
     @Override
     protected void onPostExecute(String result) {
         Log.i(TAG,"onPostExecute is executed");
 
-        if (progressBar.isShowing()) {
-            progressBar.dismiss();
+        try {
+            if (progressBar.isShowing()) {
+                progressBar.dismiss();
+            }
+        }catch (Exception e){
+            Log.i(TAG,"Exception: "+e.getMessage());
         }
+
+        Log.i(TAG,"Response: "+responseResult==null?"null":responseResult);
+
         if (responseResult != null) {
             try {
                 JSONObject responseObject = new JSONObject(responseResult);
@@ -96,7 +107,7 @@ public class SaveNewTask extends AsyncTask<Void, Void, String> {
                         Log.i(TAG,"Task saved from service");
                     }else {
                         taskConversion=new TaskConversion(context);
-                        taskConversion.taskMaking(phone,"",time,"",from);
+                        taskConversion.taskMaking(phone,"",time,"",from, null);
                     }
                 }
             } catch (JSONException e) {
@@ -107,56 +118,118 @@ public class SaveNewTask extends AsyncTask<Void, Void, String> {
     }
 
     @Override
-    protected String doInBackground(Void... params) //HTTP
-    {
+    protected String doInBackground(Void... params) {
         try {
-
             String status = null;
             String success = "4000";
             int statusCode = 0;
             String username = uname;
             String password = upass;
-            Log.e("Username: ", uname);
-            Log.e("password: ", upass);
-            //username ="Onu$erVe9";
-            //password ="p#@$aS$";
-            Log.i("CList", "1 url:" + url);
 
-            HttpParams httpParams = new BasicHttpParams();
-            HttpConnectionParams.setConnectionTimeout(httpParams, TIMEOUT_MILLISEC);
-            HttpConnectionParams.setSoTimeout(httpParams, TIMEOUT_MILLISEC);
-            HttpParams p = new BasicHttpParams();
-            HttpClient httpclient = new DefaultHttpClient(p);
-            Log.i("CList", "2");
-            HttpPost httppost = new HttpPost(url);
-            Log.i("CList", "3");
-            httppost.setHeader("Content-type", "application/json");
-            //---------------------Code for Basic Authentication-----------------------
+            URL urlObject = new URL(url);
+            HttpURLConnection connection = (HttpURLConnection) urlObject.openConnection();
+
+            // Set connection properties
+            connection.setConnectTimeout(TIMEOUT_MILLISEC);
+            connection.setReadTimeout(TIMEOUT_MILLISEC);
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Content-Type", "application/json");
+
+            // Add Basic Authentication header
             String credentials = username + ":" + password;
             String credBase64 = Base64.encodeToString(credentials.getBytes(), Base64.DEFAULT).replace("\n", "");
-            httppost.setHeader("Authorization", "Basic " + credBase64);
-            Log.i("CList", "4");
-            Log.i(TAG,"JSON: "+jsonArray.toString());//off by bdn
+            connection.setRequestProperty("Authorization", "Basic " + credBase64);
 
-            StringEntity myStringEntity = new StringEntity(jsonArray.toString(), "UTF-8");
-            httppost.setEntity(myStringEntity);
-            //--------------execution of httppost
-            HttpResponse response = httpclient.execute(httppost);
-            String res = EntityUtils.toString(response.getEntity());
-            Log.i(TAG, "response: " + res);//off by bdn
-            responseResult = res;
-            statusCode = response.getStatusLine().getStatusCode();
-            // if(status.equals(success))
+            // Enable input/output streams for the request
+            connection.setDoInput(true);
+            connection.setDoOutput(true);
+
+            // Send JSON data in the request body
+            OutputStream os = connection.getOutputStream();
+            os.write(jsonArray.toString().getBytes(StandardCharsets.UTF_8));
+            os.close();
+
+            // Get the response code
+            statusCode = connection.getResponseCode();
+
             if (statusCode >= 200 && statusCode <= 299) {
-                Toast.makeText(context, "Sending . . .", Toast.LENGTH_SHORT).show();
-                return null;
-            } else
-                return null;
+                // Get response input stream
+                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                StringBuilder response = new StringBuilder();
+                String line;
 
+                // Read the response line by line
+                while ((line = reader.readLine()) != null) {
+                    response.append(line);
+                }
+
+                reader.close();
+
+                // update the responseResult global variable
+                responseResult = response.toString();
+
+                // Parse the JSON response
+                JSONObject responseObject = new JSONObject(response.toString());
+
+                int response_status = responseObject.getInt("status");
+                String response_reason = responseObject.getString("reason");
+
+                String toast_message;
+                if (response_status == 4000) {
+                    toast_message = "Task Saved Successfully. " + response_reason;
+                } else {
+                    toast_message = "Task Not Saved. " + response_reason;
+                }
+
+                // Show toast on the UI thread
+                Log.i(TAG, "HTTP Request Succeeded with status code: " + statusCode);
+                Handler mainHandler = new Handler(Looper.getMainLooper());
+                mainHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        // return to Dashboard if if (response_status == 4000)
+                        if (response_status == 4000 && !from.equals("service")) {
+                            Toast.makeText(context, toast_message, Toast.LENGTH_LONG).show();
+                            // sleep for 1.5 seconds
+                            try {
+                                Thread.sleep(1500);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            Intent intent = new Intent(context, org.linphone.onu_legacy.Activities.Activities.DashBoard_Activity.class);
+                            // add flags to clear the activity stack
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            context.startActivity(intent);
+                        }
+                    }
+                });
+            } else {
+                // Handle unsuccessful response
+                String toast_message = "HTTP Request Failed with status code: " + statusCode;
+                Log.e(TAG, toast_message + statusCode);
+                Handler mainHandler = new Handler(Looper.getMainLooper());
+                mainHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        if(!from.equals("service")) {
+                            Toast.makeText(context, toast_message, Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
+            }
         } catch (Exception e) {
-            Log.i("CList", "exception:" + e);
+            Log.e(TAG, "Exception: " + e);
+            // Show toast on the UI thread
+            Handler mainHandler = new Handler(Looper.getMainLooper());
+            mainHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    if(!from.equals("service")) {
+                        Toast.makeText(context, "Failed | Exception: " + e, Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
         }
-
         return null;
     }
 

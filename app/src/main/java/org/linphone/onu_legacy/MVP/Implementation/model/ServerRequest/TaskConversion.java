@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.os.IBinder;
 import androidx.annotation.Nullable;
 import android.util.Base64;
@@ -24,6 +25,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -47,6 +51,7 @@ public class TaskConversion extends Service {
     private Context context;
     private String TAG="TaskConversion";
     private String taskID;
+    private String userId;
     private JSONArray taskArray;
     private int arrayIndex=0;
 
@@ -57,7 +62,7 @@ public class TaskConversion extends Service {
 
     //convert sms to task section start
 // time format yyyy-MM-dd HH:mm:ss as string
-    public void taskMaking(String number,String textMessage, String time,String ID, String from){
+    public void taskMaking(String number,String textMessage, String time,String ID, String from, String userId){
         this.timeStamp=time;
         this.message=textMessage;
         this.comeFrom=from;
@@ -86,13 +91,16 @@ public class TaskConversion extends Service {
                 taskIntent.putExtra("message",message);
                 taskIntent.putExtra("from",comeFrom);
                 taskIntent.putExtra("taskID",taskID);
+                taskIntent.putExtra("userId", userId);
                 taskIntent.putExtra("arrayIndex",arrayIndex);
                 Log.i(TAG,"Number empty and on newTask");
                 if (comeFrom.equals("newTask") || comeFrom.equals("reassignTaskListSave")){
+                    Log.i(TAG,"(comeFrom.equals(\"newTask\") || comeFrom.equals(\"reassignTaskListSave\"))");
                     Intent intent=new Intent(context, TaskShowActivity.class);
                     intent.putExtra("from","All");
                     context.startActivity(intent);
                 }else{
+                    Log.i(TAG,"PopupTaskActivity.class");
                     context.startActivity(taskIntent);
                 }
             }else {
@@ -180,6 +188,7 @@ public class TaskConversion extends Service {
         @Override
         protected void onPostExecute(String result) {
             Log.i(TAG," Post Execution called");
+            // Log.i(TAG,"Post execute result: "+result);
             if(responseResult!=null)
             {
                 Log.i(TAG,"Post execute "+responseResult.toString());
@@ -191,6 +200,7 @@ public class TaskConversion extends Service {
                     callerName=responseObject.getString("caller_name").toString();
                     employeeList=responseObject.getJSONArray("employee").toString();
                     //timeStamp=getDate();
+                    Log.i(TAG,"comeFrom: "+comeFrom);
                     if (!comeFrom.equals("newTask")){
                         Intent taskIntent = new Intent(context, PopupTaskActivity.class);
                         taskIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -213,15 +223,14 @@ public class TaskConversion extends Service {
                         if (comeFrom.equals("reassign")&& phoneNo.isEmpty()){
                             Intent intent=new Intent(context, TaskShowActivity.class);
                             context.startActivity(intent);
-                        }else {
+                        } else {
                             context.startActivity(taskIntent);
                         }
-                    }else {
+                    } else {
                         Intent intent=new Intent(context, TaskShowActivity.class);
                         context.startActivity(intent);
                     }
-                }catch(JSONException e)
-                {
+                } catch(JSONException e) {
                     Log.i(TAG,"Exception: "+e.toString());
                 }
             }
@@ -235,8 +244,8 @@ public class TaskConversion extends Service {
                 int statusCode = 0;
                 String username = uname;
                 String password = upass;
-                Log.i(TAG, "Username: " + uname);
-                Log.i(TAG, "password: " + upass);
+//                Log.i(TAG, "Username: " + uname);
+//                Log.i(TAG, "password: " + upass);
                 //username ="Onu$erVe9";
                 //password ="p#@$aS$";
                 Log.i("CList", "1 url:" + url);
@@ -271,7 +280,36 @@ public class TaskConversion extends Service {
                 int responseCode = connection.getResponseCode();
                 if (responseCode >= 200 && responseCode <= 299) {
                     Log.i(TAG, "response code:" + responseCode);
-                    Toast.makeText(context, "Sending . . .", Toast.LENGTH_SHORT).show();
+                    // show toast run on ui thread
+                    Handler handler = new Handler(context.getMainLooper());
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            // Toast.makeText(context, "Sending . . .", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                    // get string response
+                    // Get the input stream from the connection
+                    InputStream inputStream = connection.getInputStream();
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+                    StringBuilder responseStringBuilder = new StringBuilder();
+                    String line;
+
+                    while ((line = reader.readLine()) != null) {
+                        responseStringBuilder.append(line);
+                    }
+
+                    // Close the input stream and connection
+                    reader.close();
+                    inputStream.close();
+                    connection.disconnect();
+
+                    // Convert the response to a string
+                    responseResult = responseStringBuilder.toString();
+                    return responseStringBuilder.toString();
+
+
                 } else {
                     Log.e(TAG, "HTTP Response Code: " + responseCode);
                 }

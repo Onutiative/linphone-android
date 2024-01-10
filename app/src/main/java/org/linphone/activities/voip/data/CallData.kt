@@ -68,7 +68,19 @@ open class CallData(val call: Call) : GenericContactData(call.remoteAddress) {
             if (call != this@CallData.call) return
             Log.i("[Call] State changed: $state")
 
+//            Handler(Looper.getMainLooper()).post {
+//                val callerId = call.remoteAddress.asStringUriOnly().split("@")[0].split(":")[1]
+//                Toast.makeText(coreContext.context, "CallData Call state changed: $state | call id: $callerId", Toast.LENGTH_SHORT).show()
+//            }
+
             update()
+
+            // if call state is Incoming, run a network request
+            if (state == Call.State.IncomingReceived) {
+                val callerId = call.remoteAddress.asStringUriOnly().split("@")[0].split(":")[1]
+
+                // run network request
+            }
 
             if (call.state == Call.State.UpdatedByRemote) {
                 val remoteVideo = call.remoteParams?.isVideoEnabled ?: false

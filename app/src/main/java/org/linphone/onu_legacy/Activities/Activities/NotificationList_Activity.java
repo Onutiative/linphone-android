@@ -17,6 +17,7 @@ import org.linphone.onu_legacy.Utility.Info;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class NotificationList_Activity extends AppCompatActivity {
 
@@ -26,7 +27,11 @@ public class NotificationList_Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification_list);
-        getSupportActionBar().hide();
+        try {
+            Objects.requireNonNull(getSupportActionBar()).hide();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
         info=new Info(this);
         ArrayList<Fruits> ff= mm();
         RecyclerView rvContacts = (RecyclerView) findViewById(R.id.rrrr);

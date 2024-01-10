@@ -20,7 +20,7 @@
     <style name="BaseAppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Disable animations between activities -->
         <item name="android:windowAnimationStyle">@null</item>
-        <item name="android:windowBackground">@color/transparent_color</item>
+        <item name="android:windowBackground">@color/white_color</item>
 
         <!-- Android theme override -->
         <item name="android:scrollbarThumbVertical">@color/light_grey_color</item>

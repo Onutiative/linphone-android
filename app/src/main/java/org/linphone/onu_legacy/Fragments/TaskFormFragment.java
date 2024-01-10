@@ -9,6 +9,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.ContactsContract;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,11 +24,17 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
-
+import org.linphone.LinphoneApplication.Companion;
 import com.google.gson.Gson;
+
+import org.linphone.LinphoneApplication;
+import org.linphone.core.Address;
+import org.linphone.core.Call;
+import org.linphone.core.CallLog;
+import org.linphone.onu_legacy.Activities.Activities.DashBoard_Activity;
 import org.linphone.onu_legacy.Activities.PopupCallListActivity;
 import org.linphone.onu_legacy.MVP.Implementation.model.ServerRequest.SaveNewTask;
 import org.linphone.onu_legacy.Database.Contact;
@@ -36,6 +43,7 @@ import org.linphone.onu_legacy.Database.Task;
 import org.linphone.onu_legacy.Database.Database;
 import org.linphone.R;
 import org.linphone.onu_legacy.Utility.Helper;
+import org.linphone.onu_legacy.Utility.Info;
 import org.linphone.onu_legacy.Utility.NewMessageEvent;
 import org.linphone.onu_legacy.Utility.SharedPrefManager;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
@@ -47,14 +55,22 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.linphone.onuspecific.OnuFunctions;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import fr.ganfra.materialspinner.MaterialSpinner;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -75,14 +91,19 @@ public class TaskFormFragment extends Fragment implements DatePickerDialog.OnDat
     private String mParam2;
     private OnFragmentInteractionListener mListener;
     private static final String[] CALL_TYPE = {"Complain", "Customer Support", "Query", "Others"};
-    private static final String[] STATUS_TYPE = {"N/A", "Pending", "Solved"};
+    private static final String[] STATUS_TYPE = {"N/A", "Pending", "Solved", "Archived"};
     private String[] assignee_email;
     private ArrayAdapter<String> callTypeAdapter, statusTypeAdapter, assigneeEmailAdapter;
-    private MaterialSpinner callTypeSpinner, statusTypeSpinner;
+    // private MaterialSpinner callTypeSpinner, statusTypeSpinner;
+//    private MaterialSpinner statusTypeSpinner;
+//    private MaterialSpinner assigneeEmailSpinner;
+    private Spinner callTypeSpinner, statusTypeSpinner, assigneeEmailSpinner;
+
+    private Handler handler = new Handler();
     private String phoneNo, timeStamp;
     private TextView textViewPhoneNo, textViewTimeStamp;
     private EditText editTextAssigneeEmail, editTextDatePicker, editTextTimePicker, editTextCallerName, editTextCallSummary, editTextOtherAssignee;
-    private MaterialSpinner assigneeEmailSpinner;
+
     private String assigneeEmailString;
     private JSONArray assigneeEmailArray;
     private ArrayList<String> assigneeEmailList = new ArrayList<>();
@@ -96,7 +117,7 @@ public class TaskFormFragment extends Fragment implements DatePickerDialog.OnDat
     private String callerName;
 
 
-    private String callerNameData, callPurposeData, taskStatusData, callSummaryData,
+    private String taskId, userId, callerNameData, callPurposeData, taskStatusData, callSummaryData,
             callerMsisdnData, deviceIdData, callTypeData, callerIdData,
             callTimeData, employeeEmailData, estimatedTimeData;
 
@@ -156,13 +177,13 @@ public class TaskFormFragment extends Fragment implements DatePickerDialog.OnDat
         callTypeSpinner = view.findViewById(R.id.call_purpose_spinner);
         statusTypeSpinner = view.findViewById(R.id.task_status_spinner);
 
-        textViewPhoneNo = (TextView) view.findViewById(R.id.phoneNo);
+        textViewPhoneNo = (EditText) view.findViewById(R.id.phoneNo);
         textViewTimeStamp = (TextView) view.findViewById(R.id.timeStamp);
 
         editTextDatePicker = (EditText) view.findViewById(R.id.date_picker);
         editTextTimePicker = (EditText) view.findViewById(R.id.time_picker);
 
-        assigneeEmailSpinner = (MaterialSpinner) view.findViewById(R.id.assignee_email);
+        assigneeEmailSpinner = (Spinner) view.findViewById(R.id.assignee_email);
 
         editTextCallerName = (EditText) view.findViewById(R.id.caller_name);
         editTextCallSummary = (EditText) view.findViewById(R.id.call_summary);
@@ -173,9 +194,6 @@ public class TaskFormFragment extends Fragment implements DatePickerDialog.OnDat
 
         saveTaskButton = (Button) view.findViewById(R.id.save_button);
         cancelButton = (Button) view.findViewById(R.id.cancel_button);
-
-
-
 
         return view;
     }
@@ -196,10 +214,16 @@ public class TaskFormFragment extends Fragment implements DatePickerDialog.OnDat
             String taskString=sharedPrefManager.getTask();
             Gson gson = new Gson();
             task=gson.fromJson(taskString,Task.class);
+
         if(task!=null)
-        Log.i(TAG,task.getCallSummary());
+            Log.i(TAG,task.getCallSummary());
+
         datePickerData="";
         timePickerData="";
+
+        if(from == null) {
+            from = "";
+        }
 
         try {
             from=getActivity().getIntent().getStringExtra("from");
@@ -246,46 +270,199 @@ public class TaskFormFragment extends Fragment implements DatePickerDialog.OnDat
         callTypeAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, CALL_TYPE);
         callTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         callTypeSpinner.setAdapter(callTypeAdapter);
-        callTypeSpinner.setPaddingSafe(0, 0, 0, 0);
+        // callTypeSpinner.setPaddingSafe(0, 0, 0, 0);
 
         statusTypeAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, STATUS_TYPE);
         statusTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         statusTypeSpinner.setAdapter(statusTypeAdapter);
-        statusTypeSpinner.setPaddingSafe(0, 0, 0, 0);
+        // statusTypeSpinner.setPaddingSafe(0, 0, 0, 0);
 
         phoneNo = getActivity().getIntent().getStringExtra("phoneNo");
         timeStamp = getActivity().getIntent().getStringExtra("timeStamp");
         callerName=getActivity().getIntent().getStringExtra("callerName");
         message = getActivity().getIntent().getStringExtra("message");
+        taskId = getActivity().getIntent().getStringExtra("taskID");
+        userId = getActivity().getIntent().getStringExtra("userId");
         helper=new Helper(getContext());
+
+        // print the name of the activity from which the intent is coming
+        Log.d(TAG, "Activity From: " + getActivity().getLocalClassName());
+
+//        // Log all raw data from the intent
+//        Bundle bundle = getActivity().getIntent().getExtras();
+//        if (bundle != null) {
+//            for (String key : bundle.keySet()) {
+//                Object value = bundle.get(key);
+//                // if value isn't null, print it
+//                if (value != null){
+//                    Log.d(TAG, String.format("%s %s (%s)", key,
+//                            value.toString(), value.getClass().getName()));
+//                }
+//            }
+//        }
+
+
 // && !phoneNo.isEmpty() && !callerName.isEmpty()
-    if (!from.equals("newTask")){
-        assigneeEmailString = getActivity().getIntent().getStringExtra("employee");
+        if(from == null) {
+            from = "";
+        }
+    // if (!from.equals("newTask")){
+
         try {
+            assigneeEmailString = getActivity().getIntent().getStringExtra("employee");
             assigneeEmailArray = new JSONArray(assigneeEmailString);
             for (int i = 0; i < assigneeEmailArray.length(); ++i) {
                 JSONObject assigneeObject = assigneeEmailArray.getJSONObject(i);
                 String assigneeEmail = assigneeObject.getString("email");
                 assigneeEmailList.add(assigneeEmail);
             }
-        } catch (JSONException ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
-
-        editTextCallerName.setText(callerName.toString());
-    }else {
-        timeStamp=helper.getTime();
-    }
-
 
         assignee_email = new String[assigneeEmailList.size() + 1];
         assignee_email = assigneeEmailList.toArray(assignee_email);
         assignee_email[assigneeEmailList.size()] = "Others";
+        // if "Self" is in assignee_email, move it to the start of the array
+        for(int i = 0; i < assignee_email.length; i++) {
+            if(assignee_email[i].equals("Self")) {
+                String temp = assignee_email[0];
+                assignee_email[0] = assignee_email[i];
+                assignee_email[i] = temp;
+                break;
+            }
+        }
 
         assigneeEmailAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, assignee_email);
         assigneeEmailAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         assigneeEmailSpinner.setAdapter(assigneeEmailAdapter);
-        assigneeEmailSpinner.setPaddingSafe(0, 0, 0, 0);
+        // assigneeEmailSpinner.setPaddingSafe(0, 0, 0, 0);
+
+        // convert assigneeEmailArray to string
+        if(assigneeEmailArray != null) {
+            Log.d(TAG, "Assignee Email Array: " + assigneeEmailArray.toString());
+        } else {
+            Log.d(TAG, "Assignee Email Array: null");
+        }
+        if(assigneeEmailList != null) {
+            Log.d(TAG, "Assignee Email List: " + assigneeEmailList.toString());
+        } else {
+            Log.d(TAG, "Assignee Email List: null");
+        }
+
+        // Assuming Companion is an object inside LinphoneApplication class
+        LinphoneApplication.Companion companion = LinphoneApplication.Companion;
+        CallLog[] callLogs = companion.getCoreContext().getCore().getCallLogs();
+        // Log.d(TAG, "Call Logs: " + Arrays.toString(callLogs));
+        // iterate over call logs
+        for (CallLog callLog : callLogs) {
+            Address remoteAddress = callLog.getRemoteAddress();
+            String phoneNumber = remoteAddress.getUsername();
+            String callerName = remoteAddress.getDisplayName(); // Get the caller's name
+
+            long timestamp = callLog.getStartDate();
+            Date callDate = new Date(timestamp * 1000L); // The timestamp is in seconds, convert it to milliseconds
+
+            Call.Dir direction = callLog.getDir();
+            String callType;
+            if (direction == Call.Dir.Incoming) {
+                callType = "INCOMING";
+            } else if (direction == Call.Dir.Outgoing) {
+                callType = "OUTGOING";
+            } else {
+                callType = "MISSED";
+            }
+
+            Log.i("CallLog", "Caller Name: " + callerName + " Phone Number: " + phoneNumber + " Call Type: " + callType + " Call Date: " + callDate);
+        }
+
+        // check if assigneeEmailArray is empty
+         if(assigneeEmailArray == null || assigneeEmailArray.length() == 0) {
+            // fetch assignee emails from  http://api.onukit.com/6v2/getSummary post request with basic auth
+            Request req = new OnuFunctions.GetSummary().go();
+            OkHttpClient client = new OkHttpClient();
+
+            client.newCall(req).enqueue(new okhttp3.Callback() {
+                @Override
+                public void onFailure(okhttp3.Call call, IOException e) {
+                    Log.d(TAG, "onFailure: " + e.getMessage());
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(context, "Failed to fetch assignee emails!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+
+                @Override
+                public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                    String res = response.body().string();
+                    Log.d(TAG, "onResponse: " + res);
+                    try {
+                        JSONObject jsonObject = new JSONObject(res);
+                        String status = jsonObject.getString("status");
+                        if (status.equals("4000")) {
+                            assigneeEmailString = jsonObject.getString("employee");
+                            assigneeEmailArray = new JSONArray(assigneeEmailString);
+                            for (int i = 0; i < assigneeEmailArray.length(); ++i) {
+                                JSONObject assigneeObject = assigneeEmailArray.getJSONObject(i);
+                                String assigneeEmail = assigneeObject.getString("email");
+                                Log.d(TAG, "onResponse: " + assigneeEmail);
+                                assigneeEmailList.add(assigneeEmail);
+                            }
+
+                            assignee_email = new String[assigneeEmailList.size() + 1];
+                            assignee_email = assigneeEmailList.toArray(assignee_email);
+                            assignee_email[assigneeEmailList.size()] = "Others";
+
+                            // if "Self" is in assignee_email, move it to the start of the array
+                            for(int i = 0; i < assignee_email.length; i++) {
+                                if(assignee_email[i].equals("Self")) {
+                                    String temp = assignee_email[0];
+                                    assignee_email[0] = assignee_email[i];
+                                    assignee_email[i] = temp;
+                                    break;
+                                }
+                            }
+
+                            // update UI from background thread
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    assigneeEmailAdapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, assignee_email);
+                                    assigneeEmailAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                                    assigneeEmailSpinner.setAdapter(assigneeEmailAdapter);
+                                    // assigneeEmailSpinner.setPaddingSafe(0, 0, 0, 0);
+
+                                }
+                            });
+
+                        } else {
+                            handler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(context, "Failed to fetch assignee emails!", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    } catch (JSONException e) {
+                        Log.d(TAG, "onResponse: " + e.getMessage());
+                        e.printStackTrace();
+                    }
+                }
+            });
+         }
+
+
+        try {
+            editTextCallerName.setText(callerName.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    // }else {
+        timeStamp=helper.getTime();
+    // }
+
 
         //get all intent data
 
@@ -293,7 +470,7 @@ public class TaskFormFragment extends Fragment implements DatePickerDialog.OnDat
             if (!isNetworkAvailable()){
                 editTextCallSummary.setText(message);
             }
-            if (phoneNo.isEmpty()){
+            if (phoneNo==null || phoneNo.isEmpty()){
                 Log.i(TAG,"Empty phone no.");
                 editTextCallSummary.setText(message);
             }
@@ -301,12 +478,27 @@ public class TaskFormFragment extends Fragment implements DatePickerDialog.OnDat
             arrayIndex=getActivity().getIntent().getIntExtra("arrayIndex",0);
             String from=getActivity().getIntent().getStringExtra("from");
             Log.i(TAG,"Array Index: "+arrayIndex);
+            // log task list
+            for (int i = 0; i < taskList.size(); i++) {
+                if(i == arrayIndex){
+                    Log.d(TAG, "Task List: " + taskList.get(i).getCallSummary() + " <---");
+                    // print all task data
+                    Log.d(TAG, "Task Data: " + taskList.get(i).getTaskStatus() + " <---");
+                    Log.d(TAG, "Task Data: " + taskList.get(i).getCallPurpose() + " <---");
+                    Log.d(TAG, "Task Data: " + taskList.get(i).getAsigneeEmail() + " <---");
+                    Log.d(TAG, "Task Data: " + taskList.get(i).getEstimatedDate() + " <---");
+                    Log.d(TAG, "Task Data: " + taskList.get(i).getEstimatedTIme() + " <---");
+                } else {
+                    Log.d(TAG, "Task List: " + taskList.get(i).getCallSummary());
+                }
+            }
+
             if (from.equals("reassign")){
                 task=taskList.get(arrayIndex);
                 if(task!=null && isNetworkAvailable()) {
                     Log.d(TAG, task.getCallSummary());
-                    callTypeSpinner.setSelection(callTypeAdapter.getPosition(task.getCallPurpose())+1);
-                    statusTypeSpinner.setSelection(statusTypeAdapter.getPosition(task.getTaskStatus())+1);
+                    callTypeSpinner.setSelection(callTypeAdapter.getPosition(task.getCallPurpose()));
+                    statusTypeSpinner.setSelection(statusTypeAdapter.getPosition(task.getTaskStatus()));
                     editTextCallSummary.setText(task.getCallSummary());
                     editTextDatePicker.setText(task.getEstimatedDate());
                     editTextTimePicker.setText(task.getEstimatedTIme());
@@ -336,7 +528,13 @@ public class TaskFormFragment extends Fragment implements DatePickerDialog.OnDat
         Log.i(TAG,"Intent time:"+timeStamp);
         Log.i(TAG,"Intent CallerName"+callerName);
 
-        textViewPhoneNo.setText("Mobile No: " + phoneNo);
+        textViewPhoneNo.setText(phoneNo);
+
+        if(phoneNo != null){
+            // make textViewPhoneNo uneditable
+            textViewPhoneNo.setFocusable(false);
+        }
+
         textViewTimeStamp.setText("("+timeStamp+")");
 
         editTextDatePicker.setOnClickListener(new View.OnClickListener() {
@@ -387,6 +585,11 @@ public class TaskFormFragment extends Fragment implements DatePickerDialog.OnDat
             }
         });
 
+        // if from==reassignTaskList, then change saveTaskButton text
+        if(from.equals("reassignTaskList")){
+            saveTaskButton.setText("Edit");
+        }
+
         saveTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -405,19 +608,28 @@ public class TaskFormFragment extends Fragment implements DatePickerDialog.OnDat
                         employeeEmailData = assigneeEmailSpinner.getSelectedItem().toString();
                     }
                 }
-                if (from.equals("newTask") || phoneNo.isEmpty()){
+
+                if(from == null) {
+                    from = "";
+                }
+
+                // if (from.equals("newTask") || phoneNo.isEmpty()){
+                if (phoneNo==null || phoneNo.isEmpty()){
                     //callerNameData="";
-                    callerMsisdnData="";
-                }else {
-                    callerMsisdnData = phoneNo.substring(1);
-
-
+                    callerMsisdnData = textViewPhoneNo.getText().toString();
+                } else {
+                    callerMsisdnData = phoneNo;
                 }
                 callSummaryData = editTextCallSummary.getText().toString();
                 deviceIdData = deviceID;
                 callTypeData = "incoming";
                 callerIdData = getDate("ymmkkss");
-                callTimeData = timeStamp;
+
+                if(timeStamp==null || timeStamp.isEmpty())
+                    timeStamp=helper.getTime();
+                callTimeData=timeStamp;
+
+
                 Log.i(TAG,"Calling time: "+callTimeData);
                 estimatedTimeData = datePickerData + " " + timePickerData;
                 Log.i(TAG, "On Save Button: "+callerNameData + " " + callPurposeData + " " + taskStatusData + " " + callSummaryData + " " +
@@ -468,38 +680,111 @@ public class TaskFormFragment extends Fragment implements DatePickerDialog.OnDat
                          //Task savedTaskItm=new Task(callTimeData,callPurposeData,taskStatusData,callSummaryData,employeeEmailData,datePickerData,timePickerData);
 
                         if (isNetworkAvailable()) {
+                            // show from in a toast
+                            Toast.makeText(context, "Task Edit Request Sent! " + from, Toast.LENGTH_SHORT).show();
+                            if(from.equals("reassignTaskList")){
+                                // create task data map
+                                Map<String, String> taskData = new HashMap<String, String>();
+                                taskData.put("id", taskId);
+                                taskData.put("user_id", userId);
+                                taskData.put("caller_name", callerNameData);
+                                taskData.put("call_reason", callPurposeData);
+                                taskData.put("summery_status", taskStatusData);
+                                taskData.put("call_summery", callSummaryData);
+                                taskData.put("mobile_no", callerMsisdnData);
 
-                            db.addNewTask(new NewTask(callerNameData, callPurposeData, taskStatusData, callSummaryData,
-                                    callerMsisdnData, deviceIdData, callTypeData, callerIdData,
-                                    callTimeData, employeeEmailData, estimatedTimeData));
+                                // log task data map
+                                for (Map.Entry<String, String> entry : taskData.entrySet()) {
+                                    String key = entry.getKey();
+                                    String value = entry.getValue();
+                                    Log.d(TAG, "Task Data: " + key + " " + value);
+                                }
 
-                            Log.i(TAG,"Save check Come From: "+from);
-                            if (phoneNo==null){
-                                phoneNo="";
+                                Request req = new OnuFunctions.EditTask(context, taskData).go();
+
+                                // send task data okhttp request
+                                OkHttpClient client = new OkHttpClient();
+                                client.newCall(req).enqueue(new okhttp3.Callback() {
+                                    @Override
+                                    public void onFailure(okhttp3.Call call, IOException e) {
+                                        Log.d(TAG, "onFailure: " + e.getMessage());
+                                    }
+
+                                    @Override
+                                    public void onResponse(okhttp3.Call call, okhttp3.Response response) throws IOException {
+                                        String res = response.body().string();
+                                        Log.d(TAG, "onResponse: " + res);
+                                        try {
+                                            JSONObject jsonObject = new JSONObject(res);
+                                            String status = jsonObject.getString("status");
+                                            if (status.equals("4000")) {
+                                                handler.post(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        Toast.makeText(context, "Task Edited Successfully!", Toast.LENGTH_SHORT).show();
+                                                        Intent intent = new Intent(context, DashBoard_Activity.class);
+                                                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                                        viewPager.setCurrentItem(0);
+                                                        context.startActivity(intent);
+                                                    }
+                                                });
+                                            } else {
+                                                handler.post(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        Toast.makeText(context, "Task Edit Failed!", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });
+                                            }
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                            handler.post(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    Toast.makeText(context, "Task Edit Failed!", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                        }
+                                    }
+                                });
+                            } else {
+                                db.addNewTask(new NewTask(callerNameData, callPurposeData, taskStatusData, callSummaryData,
+                                        callerMsisdnData, deviceIdData, callTypeData, callerIdData,
+                                        callTimeData, employeeEmailData, estimatedTimeData));
+
+                                Log.i(TAG,"Save check Come From: "+from);
+                                if (phoneNo==null){
+                                    phoneNo="";
+                                }
+                                if (from.equals("reassignTaskList")){
+                                    from="reassignTaskListSave";
+                                }else if (from.equals("inbox")){
+                                    from="inboxSave";
+                                }
+
+                                new SaveNewTask(getActivity(), getTaskArray(),phoneNo,timeStamp,from).execute();
+                                Toast.makeText(getActivity(), "Data is sending... ", Toast.LENGTH_LONG).show();
+                                //passDateLiListener.sendTaskObject(savedTaskItm);
                             }
-                            if (from.equals("reassignTaskList")){
-                                from="reassignTaskListSave";
-                            }else if (from.equals("inbox")){
-                                from="inboxSave";
-                            }
 
-                            new SaveNewTask(getActivity(), getTaskArray(),phoneNo,timeStamp,from).execute();
-                            Toast.makeText(getActivity(), "Data is sending... ", Toast.LENGTH_LONG).show();
-                            //passDateLiListener.sendTaskObject(savedTaskItm);
+
                         } else if (!isNetworkAvailable()) {
+                            if(from.equals("reassignTaskList")){
+                                // show toast message to enable network
+                                Toast.makeText(context, "No Internet Connection! Please enable internet connection to edit task. ", Toast.LENGTH_LONG).show();
+                            } else {
+                                db.addNewTask(new NewTask(callerNameData, callPurposeData, taskStatusData, callSummaryData,
+                                        callerMsisdnData, deviceIdData, callTypeData, callerIdData,
+                                        callTimeData, employeeEmailData, estimatedTimeData));
 
-                            db.addNewTask(new NewTask(callerNameData, callPurposeData, taskStatusData, callSummaryData,
-                                    callerMsisdnData, deviceIdData, callTypeData, callerIdData,
-                                    callTimeData, employeeEmailData, estimatedTimeData));
+                                Toast.makeText(getActivity(), "No Internet Connection! Task is saved locally. ", Toast.LENGTH_LONG).show();
 
-                            Toast.makeText(getActivity(), "No Internet Connection! Task is saved locally. ", Toast.LENGTH_LONG).show();
-
-                            Intent intent = new Intent(context, PopupCallListActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            //passDateLiListener.sendTaskObject(savedTaskItm);
-                            //viewPager.setCurrentItem(0);
-                            //context.startActivity(intent);
-
+                                Intent intent = new Intent(context, PopupCallListActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                //passDateLiListener.sendTaskObject(savedTaskItm);
+                                //viewPager.setCurrentItem(0);
+                                //context.startActivity(intent);
+                            }
                         }
 
                      }
@@ -618,6 +903,27 @@ public class TaskFormFragment extends Fragment implements DatePickerDialog.OnDat
 
         cur.close();
         return emlRecs;
+    }
+
+    private void updateGlobalVariableFromThread() {
+        Thread backgroundThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                // Simulate some work on the background thread
+                // val request = OnuFunctions.GetSummary(context, deviceID, );
+
+                // Update the global variable using a Handler
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        // globalVariable = 42; // Update the global variable
+                        // You can also update your UI here if needed
+                    }
+                });
+            }
+        });
+
+        backgroundThread.start();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

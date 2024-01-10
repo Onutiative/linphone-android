@@ -59,14 +59,14 @@ public class RecordJobService {
                 sampleDir.mkdirs();
                 Log.i(TAG,"Directory Created!");
             }
-
-            try {
-                audioFile = File.createTempFile(callID+"abc", ".mp3", sampleDir);
-                Log.i(TAG,"Up File Path:"+audioFile.getAbsolutePath());
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+// Audio record
+//            try {
+//                audioFile = File.createTempFile(callID+"abc", ".mp3", sampleDir);
+//                Log.i(TAG,"Up File Path:"+audioFile.getAbsolutePath());
+//
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
 
 //        fileLocation=Environment.getExternalStorageDirectory().getAbsolutePath();
             //extra block ended.

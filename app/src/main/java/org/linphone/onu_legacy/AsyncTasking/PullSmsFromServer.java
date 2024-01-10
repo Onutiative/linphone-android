@@ -15,21 +15,16 @@ import org.linphone.onu_legacy.Database.Sms;
 import org.linphone.onu_legacy.SMS_Sender.MsgSender;
 import org.linphone.onu_legacy.Utility.Info;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.protocol.HTTP;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -140,63 +135,78 @@ public class PullSmsFromServer extends AsyncTask<Void, Void, String>  {
 
     @Override
     protected String doInBackground(Void... params) {
-        Log.i("JhoroSendOut", "sendOut_doinbak"+outbox_notify);
-            Database db=new Database(context);
+        Log.i("JhoroSendOut", "sendOut_doinbak" + outbox_notify);
+        Database db = new Database(context);
         Log.i("JhoroSendOut", "sendOut_doinbackground");
         String username = uname;
         String password = upass;
         Log.i("JhoroSendOut", "doinback");
+
         try {
-            if(db.getOutboxCounttow() <70) {
+            if (db.getOutboxCounttow() < 70) {
                 Log.i("JhoroSendOut", "PullSmsFromServer");
-                HttpParams httpParams = new BasicHttpParams();
-                HttpConnectionParams.setConnectionTimeout(httpParams, TIMEOUT_MILLISEC);
-                HttpConnectionParams.setSoTimeout(httpParams, TIMEOUT_MILLISEC);
-                HttpParams p = new BasicHttpParams();
-                HttpClient httpclient = new DefaultHttpClient(p);
 
-                // HttpPost httppost = new HttpPost(url);
-                // HttpGet httpget=new HttpGet(url);
+                HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+                connection.setRequestMethod("POST");
+                connection.setConnectTimeout(TIMEOUT_MILLISEC);
+                connection.setReadTimeout(TIMEOUT_MILLISEC);
 
-                HttpPost httppost = new HttpPost(url);
-
+                // Add Basic Authentication header
                 String credentials = username + ":" + password;
                 String credBase64 = Base64.encodeToString(credentials.getBytes(), Base64.DEFAULT).replace("\n", "");
-                httppost.setHeader("Authorization", "Basic " + credBase64);
-
-
-                ResponseHandler<String> responseHandler = new BasicResponseHandler();
-                httppost.setHeader("Content-type", "application/json");
+                connection.setRequestProperty("Authorization", "Basic " + credBase64);
+                connection.setRequestProperty("Content-type", "application/json");
 
                 JSONObject jsonParam = new JSONObject();
                 jsonParam.accumulate("command", command);
                 jsonParam.accumulate("msg", set_msg);
                 jsonParam.accumulate("id", set_id);
                 jsonParam.accumulate("number", set_number);
-                jsonParam.accumulate("pullcount",info.getPullCount() );
+                jsonParam.accumulate("pullcount", info.getPullCount());
                 jsonParam.accumulate("device_id", imei);
-                //{"command":"give sms","msg":"hello testing","id":"not set","number":"01718355460","imei":"6418758"}
 
                 String entity = jsonParam.toString();
                 Log.i("JhoroSendOut", "Data" + entity);
-                httppost.setEntity(new StringEntity(entity, HTTP.UTF_8));
-                HttpResponse response = httpclient.execute(httppost);
 
-                String response_data = EntityUtils.toString(response.getEntity());
-                Log.i("JhoroSendOut", "Response:" + response_data);
-                return response_data;
-            }
-            else
-            {
+                connection.setDoOutput(true);
+                DataOutputStream os = new DataOutputStream(connection.getOutputStream());
+                os.writeBytes(entity);
+                os.flush();
+                os.close();
+
+                int statusCode = connection.getResponseCode();
+                String response_data = null;
+
+                if (statusCode >= 200 && statusCode <= 299) {
+                    // Successful response
+                    InputStream inputStream = connection.getInputStream();
+                    response_data = convertStreamToString(inputStream);
+                    inputStream.close();
+                    Log.i("JhoroSendOut", "Response:" + response_data);
+                    return response_data;
+                } else {
+                    // Handle unsuccessful response
+                    Log.e("JhoroSendOut", "HTTP Request Failed with status code: " + statusCode);
+                }
+            } else {
                 return null;
             }
-
-        } catch (Exception ex)
-        {
-            Log.i("JhoroSendOut", "exeption:"+ex);
-            return null;
+        } catch (Exception ex) {
+            Log.i("JhoroSendOut", "exception:" + ex);
         }
+        return null;
     }
+
+    private String convertStreamToString(InputStream inputStream) throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+        StringBuilder result = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            result.append(line);
+        }
+        return result.toString();
+    }
+
 
     public void check_notify()
     {

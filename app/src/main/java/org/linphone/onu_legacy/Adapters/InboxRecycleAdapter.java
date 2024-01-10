@@ -128,7 +128,7 @@ public class InboxRecycleAdapter extends RecyclerView.Adapter <InboxRecycleAdapt
                         public void onClick(DialogInterface dialog, int which) {
                             taskConversion=new TaskConversion(context);
                             Log.i(TAG,"clicked");
-                            taskConversion.taskMaking(index.getText().toString(),surah.getText().toString(),getDate(timestamp),"","inbox");
+                            taskConversion.taskMaking(index.getText().toString(),surah.getText().toString(),getDate(timestamp),"","inbox", null);
                             dialog.dismiss();
                             return;
                         }

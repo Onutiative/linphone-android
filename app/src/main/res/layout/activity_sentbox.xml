@@ -6,8 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.OutgoingSent_Activity"
-    android:background="#f5f9fb">
+    tools:context=".onu_legacy.Activities.OutgoingSent_Activity">
 
 
     <!--<LinearLayout-->
@@ -92,8 +91,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rrrr"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#f5f9fb"/>
+        android:layout_height="wrap_content" />
 
 
 </LinearLayout>

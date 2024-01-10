@@ -3,11 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".Fragments.TaskListFragment"
-    android:background="#f5f9fb">
+    android:orientation="vertical">
+
+    <!-- tools:context=".onu_legacy.Fragments.TaskListFragment" -->
+
   <LinearLayout
-      android:background="#f5f9fb"
       android:id="@+id/extra_layout"
       android:layout_margin="20dp"
       android:visibility="gone"
@@ -29,7 +29,6 @@
         android:id="@+id/task_list_recycler_view"
         android:layout_width="match_parent"
         android:layout_margin="5dp"
-        android:layout_height="match_parent"
-        android:background="#f5f9fb"/>
+        android:layout_height="match_parent" />
 
 </LinearLayout>

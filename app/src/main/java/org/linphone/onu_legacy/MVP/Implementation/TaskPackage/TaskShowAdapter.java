@@ -48,7 +48,7 @@ public class TaskShowAdapter extends RecyclerView.Adapter<TaskShowAdapter.Holder
             @Override
             public void onClick(View v) {
                 Log.i(TAG,"Task id: "+taskLists.get(i).getId());
-                taskConversion.taskMaking(taskLists.get(i).getMobileNo(),taskLists.get(i).getCallSummery(),taskLists.get(i).getCallTime(),taskLists.get(i).getId(),"reassignTaskList");
+                taskConversion.taskMaking(taskLists.get(i).getMobileNo(),taskLists.get(i).getCallSummery(),taskLists.get(i).getCallTime(),taskLists.get(i).getId(),"reassignTaskList", null);
             }
         });
     }

@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -38,8 +39,10 @@ import androidx.core.app.ActivityCompat;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.messaging.FirebaseMessaging;
 //import com.google.firebase.iid.FirebaseInstanceId;
 //import com.google.firebase.iid.InstanceIdResult;
+import org.linphone.activities.main.MainActivity;
 import org.linphone.onu_legacy.AsyncTasking.FetchImage;
 import org.linphone.onu_legacy.Database.Contact;
 import org.linphone.onu_legacy.Database.Database;
@@ -56,6 +59,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 public class SignUp_Activity extends AppCompatActivity {
@@ -93,7 +97,11 @@ public class SignUp_Activity extends AppCompatActivity {
         setContentView(R.layout.activity_activation);
         view=findViewById(android.R.id.content);
         iAgreeCheckbox = findViewById(R.id.agreeCheckBox);
-        getSupportActionBar().hide();
+        try {
+            Objects.requireNonNull(getSupportActionBar()).hide();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
 
         Bundle extras = getIntent().getExtras();
         //user_email="";
@@ -602,6 +610,7 @@ public class SignUp_Activity extends AppCompatActivity {
                     progressBar.dismiss();
                 }
                 Intent i = new Intent(SignUp_Activity.this, DashBoard_Activity.class);
+                // Intent i = new Intent(SignUp_Activity.this, MainActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(i);
             }
@@ -610,50 +619,48 @@ public class SignUp_Activity extends AppCompatActivity {
         Log.i("Jhoro", "checkStatus 2");
         if (isNetworkAvailable()) {
             Log.i("Jhoro", "checkStatus 3");
-            // getRegId();
+            getRegId();
         }
 
     }
 
-//    public void getRegId() {
-//
-//        getFCMToken();
-//
-//        regid=generatedToken;
-//
-//        objectID = regid;
-//    }
+    public void getRegId() {
 
-//    private void getFCMToken()
-//    {
-//        // Get token
-//        FirebaseInstanceId.getInstance().getInstanceId()
-//                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
-//                        if (!task.isSuccessful()) {
-//                            Log.w(TAG, "getInstanceId failed", task.getException());
-//                            return;
-//                        }
-//                        // Get new Instance ID token
-//                        String token = task.getResult().getToken();
-//
-//                        generatedToken=token;
-//
-//                        // Log and toast
-//                        String msg = getString(R.string.msg_token_fmt, token);
-//                        Log.d(TAG, msg);
-////                        Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
-//
-////                        setToken(msg);
-//                    }
-//                });
-//
-//    }
+        getFCMToken();
 
-    public void setToken(String token)
-    {
-        generatedToken=token;
+        regid=generatedToken;
+
+        objectID = regid;
+    }
+
+    private void getFCMToken() {
+
+        // Get token
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(@NonNull Task<String> task) {
+                if (!task.isSuccessful()) {
+                    Log.w("Firebase", "Fetching FCM registration token failed", task.getException());
+                    return;
+                }
+                // Do something with the token if successful
+                String token = task.getResult();
+
+                // save to shared preferences
+                SharedPreferences sharedPreferences = getSharedPreferences("onukit_creds", MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("oid", token);
+                editor.apply();
+
+                Log.d("Firebase", token);
+                setToken(token);
+            }
+        });
+    }
+
+    public void setToken(String token) {
+        generatedToken = token;
+
     }
 
 }

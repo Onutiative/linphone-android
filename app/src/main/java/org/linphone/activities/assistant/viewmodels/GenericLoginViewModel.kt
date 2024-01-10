@@ -300,7 +300,7 @@ class GenericLoginViewModel(private val accountCreator: AccountCreator) : ViewMo
 
     fun loadSIPConfigFromServer() {
         waitForServerAnswer.value = true
-        var getSIPConfigs = OnuFunctions.GetSIPConfigs()
+        var getSIPConfigs = OnuFunctions.GetSIPConfigs(coreContext.context)
         var request = getSIPConfigs.go()
         val client = OkHttpClient()
 

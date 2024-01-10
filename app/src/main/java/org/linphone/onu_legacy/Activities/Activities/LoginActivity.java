@@ -58,6 +58,7 @@ import com.google.firebase.messaging.FirebaseMessaging;
 
 import org.linphone.LinphoneApplication;
 import org.linphone.R;
+import org.linphone.activities.main.MainActivity;
 import org.linphone.onu_legacy.AsyncTasking.FetchImage;
 import org.linphone.onu_legacy.Database.Contact;
 import org.linphone.onu_legacy.Database.Database;
@@ -82,6 +83,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Random;
 
 import okhttp3.Call;
@@ -100,6 +102,7 @@ public class LoginActivity extends AppCompatActivity implements
     }
 
     private static final String TAG = "LoginActivity";
+    public static final String OPEN_DASHBOARD = "open_dashboard";
     private static final int RC_SIGN_IN = 9001;
     public String id = "2";
     public String user_email, user_pass, user_number, User_data, imei;
@@ -137,6 +140,7 @@ public class LoginActivity extends AppCompatActivity implements
     int setType;
     public static final String USEREMAIL = "email";
     public static final String USERPASS = "pass";
+
     private LinearLayout linearLayout;
     private String generatedToken = null;
     private static final int request_code = 11;
@@ -146,6 +150,8 @@ public class LoginActivity extends AppCompatActivity implements
     private String prefName = "onuPref";
     private SharedPreferences.Editor prefEditor;
     SharedPreferences sharedPref;
+    SharedPreferences sharedPref_onu_creds;
+    SharedPreferences.Editor prefEditor_onu_creds;
     private SharedPrefManager sharedPrefManager;
     private static final int GET_ACCOUNTS_PERMISSION = 100;
     private static final int READ_EXTERNAL_STORAGE_PERMISSION = 200;
@@ -157,7 +163,12 @@ public class LoginActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        // getSupportActionBar().hide();
+        try {
+            Objects.requireNonNull(getSupportActionBar()).hide();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+
         view = (View) findViewById(R.id.main_layout);
 
         context = LoginActivity.this;
@@ -275,8 +286,10 @@ public class LoginActivity extends AppCompatActivity implements
         Log.d(TAG, "Check point 1");
 
         sharedPref = getSharedPreferences(prefName, MODE_PRIVATE);
-
         prefEditor = (SharedPreferences.Editor) getSharedPreferences(prefName, MODE_PRIVATE).edit();
+
+        sharedPref_onu_creds = getSharedPreferences("onukit_creds", MODE_PRIVATE);
+        prefEditor_onu_creds = (SharedPreferences.Editor) getSharedPreferences("onukit_creds", MODE_PRIVATE).edit();
 
         final TelephonyManager tm = (TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE);
 
@@ -629,6 +642,7 @@ public class LoginActivity extends AppCompatActivity implements
                     e.printStackTrace();
                     Log.e("Jhoro", e.toString());
                 }
+                // return null;
             }
         };
 
@@ -826,7 +840,7 @@ public class LoginActivity extends AppCompatActivity implements
         }
 
         public void networkStuff(){
-            Request request = new OnuFunctions.UserActivation(user_email, user_password, user_number, objectID).performActivation();
+            Request request = new OnuFunctions.UserActivation(user_email, user_password, user_number, objectID, context=getApplicationContext()).performActivation();
             OkHttpClient client = new OkHttpClient();
 
             client.newCall(request).enqueue(new Callback() {
@@ -841,6 +855,7 @@ public class LoginActivity extends AppCompatActivity implements
                         public void run() {
                             // check when client is done, then set waitForServerAnswer's value to false
                             findViewById(R.id.wait_layout_onuactivation).setVisibility(View.GONE);
+                            // return null;
                         }
                     });
                     ResponseBody requestBody = (ResponseBody) response.body();
@@ -932,11 +947,9 @@ public class LoginActivity extends AppCompatActivity implements
         }
 
         public void networkStuff(){
-            Request request = new OnuFunctions.UserLogin(user_email, user_password, objectID).performLogin();
+            Request request = new OnuFunctions.UserLogin(user_email, user_password, objectID, context=getApplicationContext()).performLogin();
             OkHttpClient client = new OkHttpClient();
-
-            SharedPreferences sharedPreferences = LinphoneApplication.coreContext.getContext().getSharedPreferences("onukit_creds", Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
+            Log.i(TAG,"Login Request... ");
 
             client.newCall(request).enqueue(new Callback() {
 
@@ -947,6 +960,7 @@ public class LoginActivity extends AppCompatActivity implements
                         public void run() {
                             // check when client is done, then set waitForServerAnswer's value to false
                             findViewById(R.id.wait_layout_onulogin).setVisibility(View.GONE);
+                            // return null;
                         }
                     });
                     Log.d("OnuFunctions", "onFailure - Failed to login user: " + e);
@@ -954,9 +968,9 @@ public class LoginActivity extends AppCompatActivity implements
 
                 @Override
                 public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
-                    editor.putString("username", null);
-                    editor.putString("password", null);
-                    editor.apply();
+                    prefEditor_onu_creds.putString("username", null);
+                    prefEditor_onu_creds.putString("password", null);
+                    prefEditor_onu_creds.apply();
 
 //                    new Handler(Looper.getMainLooper()).post(new Runnable() {
 //                        @Override
@@ -978,7 +992,8 @@ public class LoginActivity extends AppCompatActivity implements
                         new Handler(Looper.getMainLooper()).post(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(LinphoneApplication.coreContext.getContext(), "Server error! " + response.code(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "Server error! " + response.code(), Toast.LENGTH_SHORT).show();
+                                // return null;
                             }
                         });
                     }
@@ -990,7 +1005,8 @@ public class LoginActivity extends AppCompatActivity implements
                         new Handler(Looper.getMainLooper()).post(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(LinphoneApplication.coreContext.getContext(), "Request Error! Try Again!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(), "Request Error! Try Again!", Toast.LENGTH_SHORT).show();
+                                // return null;
                             }
                         });
                     }
@@ -1026,6 +1042,10 @@ public class LoginActivity extends AppCompatActivity implements
                                 progressBar.dismiss();
                             }
                         } else if (number_validation.equals("true")) {
+                            prefEditor_onu_creds.putString("username", Base64.encodeToString(user_email.getBytes(), Base64.DEFAULT));
+                            prefEditor_onu_creds.putString("password", Base64.encodeToString(user_password.getBytes(), Base64.DEFAULT));
+                            prefEditor_onu_creds.apply();
+
                             db.deleteAllAdmin();
                             db.addAdminNumber(new Contact("did", imei, "jhorotek"));
                             db.addAdminNumber(new Contact("pullcount", "20", "jhorotek"));
@@ -1112,7 +1132,12 @@ public class LoginActivity extends AppCompatActivity implements
                 String password = user_password;
                 Log.i(TAG, "User Name: "+username+"; PAssword: "+password);
 
-                networkStuff();
+                try {
+                    networkStuff();
+                } catch (Exception e) {
+                    Log.i(TAG, "ActivationInfoLogin networkStuff Exception :" + e);
+                    e.printStackTrace();
+                }
 
                 while (getResult() == null) {
                     Log.i(TAG, "Waiting for result");
@@ -1121,7 +1146,7 @@ public class LoginActivity extends AppCompatActivity implements
 
                 return getResult();
             } catch (Exception ex) {
-                Log.i(TAG, " Exception :" + ex);
+                Log.i(TAG, "ActivationInfoLogin Exception :" + ex);
                 return null;
             }
         }
@@ -1228,7 +1253,7 @@ public class LoginActivity extends AppCompatActivity implements
                     return null;
                 }
             } catch (Exception ex) {
-                Log.i(TAG, " Exception :" + ex);
+                Log.i(TAG, "ForgetPassAPi Exception :" + ex);
                 return null;
             }
         }
@@ -1312,9 +1337,11 @@ public class LoginActivity extends AppCompatActivity implements
         List<Contact> contacts = db.getAdminNumber();
         for (Contact cn : contacts) {
             if (cn.getName().equals("isActive") && cn.getPhone_number().equals("true")) {
-                Intent i = new Intent(LoginActivity.this, DashBoard_Activity.class);
+                Intent i = new Intent(LoginActivity.this, MainActivity.class);
                 i.putExtra(USEREMAIL, user_email);
                 i.putExtra(USERPASS, user_password);
+                i.putExtra(SplashScreen_Activity.ACTIVITY_CLUE, OPEN_DASHBOARD);
+                // Intent i = new Intent(LoginActivity.this, MainActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 if (progressBar != null && progressBar.isShowing()) {
@@ -1419,6 +1446,7 @@ public class LoginActivity extends AppCompatActivity implements
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
             case PERMISSION_REQUEST_CODE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -1434,7 +1462,7 @@ public class LoginActivity extends AppCompatActivity implements
                         return;
                     }
                     //imei = tm.getDeviceId();
-                    imei=Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+                    imei = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
                     Snackbar.make(view, "Permission Granted, Now you can access all features.", Snackbar.LENGTH_LONG).show();
 
                 } else {

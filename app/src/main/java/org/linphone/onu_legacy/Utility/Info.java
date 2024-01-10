@@ -8,10 +8,13 @@ import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import androidx.core.app.ActivityCompat;
+
+import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.Toast;
 
+import org.linphone.LinphoneApplication;
 import org.linphone.onu_legacy.Database.Contact;
 import org.linphone.onu_legacy.Database.Database;
 
@@ -57,7 +60,15 @@ public class Info {
                 // ask for permission
                 ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.READ_PHONE_STATE}, 1);
             }
-            return tm.getDeviceId().toString();
+            try {
+                return tm.getDeviceId().toString();
+            } catch (Exception e) {
+                try {
+                    return Settings.Secure.getString(LinphoneApplication.coreContext.getContext().getContentResolver(), Settings.Secure.ANDROID_ID);
+                } catch (Exception e1) {
+                    return "0";
+                }
+            }
         } catch (Exception e) {
             return "0";
         }
@@ -70,7 +81,7 @@ public class Info {
         for (Contact cn : contacts) {
            if (cn.getName().equals("checkOut"))
             {
-                Log.i("JhoroMain", "checkOut ________________"+cn.getPhone_number());
+                // Log.i("JhoroMain", "checkOut ________________"+cn.getPhone_number());
                 chekout=cn.getPhone_number();
             }
         }

@@ -120,7 +120,7 @@ public class PostedRecycleAdapter extends RecyclerView.Adapter<PostedRecycleAdap
                 public void onClick(DialogInterface dialog, int which) {
                     taskConversion=new TaskConversion(context);
                     Log.i(TAG,"clicked");
-                    taskConversion.taskMaking(contact.getText().toString(),smsBody.getText().toString(),date.getText().toString(),"","inbox");
+                    taskConversion.taskMaking(contact.getText().toString(),smsBody.getText().toString(),date.getText().toString(),"","inbox", null);
                     dialog.dismiss();
                     return;
                 }

@@ -34,6 +34,8 @@ import org.linphone.onu_legacy.Database.Contact;
 import org.linphone.onu_legacy.Database.Database;
 import org.linphone.R;
 
+import java.util.Objects;
+
 public class RecentInbox_Activity extends AppCompatActivity {
 
 
@@ -54,7 +56,11 @@ public class RecentInbox_Activity extends AppCompatActivity {
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recent_inbox);
-        getSupportActionBar().hide();
+        try {
+            Objects.requireNonNull(getSupportActionBar()).hide();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
 
         sharedPreferences=getSharedPreferences(prefName,MODE_PRIVATE);
         editor = sharedPreferences.edit();

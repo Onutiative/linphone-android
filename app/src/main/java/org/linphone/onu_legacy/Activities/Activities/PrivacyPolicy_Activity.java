@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 
 public class PrivacyPolicy_Activity extends AppCompatActivity {
@@ -55,7 +56,11 @@ public class PrivacyPolicy_Activity extends AppCompatActivity {
         zoom = AnimationUtils.loadAnimation(getApplicationContext(),
                 R.anim.fadin);
         info =new Info(this);
-        getSupportActionBar().hide();
+        try {
+            Objects.requireNonNull(getSupportActionBar()).hide();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
         //typeface2 = Typeface.createFromAsset(this.getAssets(),"fonts/nasalization.ttf");
         view=(View) findViewById(R.id.linis);
         context=PrivacyPolicy_Activity.this;

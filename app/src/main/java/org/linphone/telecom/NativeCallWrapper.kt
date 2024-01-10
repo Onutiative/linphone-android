@@ -51,6 +51,10 @@ class NativeCallWrapper(var callId: String) : Connection() {
 
     override fun onStateChanged(state: Int) {
         Log.i("[Connection] Telecom state changed [${intStateToString(state)}] for call with id: $callId")
+        // show toast
+//        Handler(Looper.getMainLooper()).post {
+//            Toast.makeTextToast.makeText(coreContext.context, "NativeCallWrapper state changed [${intStateToString(state)}] | call id: $callId", Toast.LENGTH_SHORT).show()
+//        }
         super.onStateChanged(state)
     }
 

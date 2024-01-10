@@ -46,7 +46,7 @@ public class PopupTaskActivity extends AppCompatActivity implements DatePickerDi
 
 
     private static final String[] CALL_TYPE = {"Complain", "Customer Support", "Query", "Others"};
-    private static final String[] STATUS_TYPE = {"N/A", "Pending", "Solved"};
+    private static final String[] STATUS_TYPE = {"N/A", "Pending", "Solved", "Archived"};
 
 
     private ArrayAdapter<String> callTypeAdapter, statusTypeAdapter;
@@ -72,7 +72,11 @@ public class PopupTaskActivity extends AppCompatActivity implements DatePickerDi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_popup_task);
 
-        //getSupportActionBar().hide();
+        //try {
+        //            Objects.requireNonNull(getSupportActionBar()).hide();
+        //        } catch (Exception e){
+        //            e.printStackTrace();
+        //        }
 
 //        this.getSupportActionBar().setDisplayOptions(Toolbar.);
 //
@@ -103,6 +107,19 @@ public class PopupTaskActivity extends AppCompatActivity implements DatePickerDi
 
         Intent intent = getIntent();
 
+        // Log all raw data from the intent
+//        Bundle bundle = intent.getExtras();
+//        if (bundle != null) {
+//            for (String key : bundle.keySet()) {
+//                Object value = bundle.get(key);
+//                // if value isn't null, print it
+//                if (value != null){
+//                    Log.d(TAG, String.format("%s %s (%s)", key,
+//                            value.toString(), value.getClass().getName()));
+//                }
+//            }
+//        }
+
         try {
             String from = intent.getStringExtra("from");
             //Log.i(TAG,"From: "+ from);
@@ -110,29 +127,35 @@ public class PopupTaskActivity extends AppCompatActivity implements DatePickerDi
             {
                 phoneNo = intent.getStringExtra("phoneNo");
                 callerName=intent.getStringExtra("callerName");
-                //Log.i(TAG,"From new task");
-                if (from.equals("inbox")) {
-                    callIcon.setVisibility(View.GONE);
-                    viewPager.setCurrentItem(1);
-                }else if (from.equals("reassign")){
-                    callIcon.setVisibility(View.GONE);
-                    String taskID=intent.getStringExtra("taskID");
-                    Log.i(TAG,"From reassign and for: "+taskID);
-                    viewPager.setCurrentItem(1);
-                }else if (from.equals("contact")){
-                    callIcon.setVisibility(View.GONE);
-                    viewPager.setCurrentItem(1);
-                }else if (from.equals("newTask")){
-                    callIcon.setVisibility(View.GONE);
-                    viewPager.setCurrentItem(1);
-                }else if (from.equals("reassignTaskList")){
-                    callIcon.setVisibility(View.GONE);
-                    viewPager.setCurrentItem(1);
-                }else if (from.equals("inboxSave")){
-                    callIcon.setVisibility(View.GONE);
-                    viewPager.setCurrentItem(0);
-                }else {
-                    viewPager.setCurrentItem(0);
+                // Log.i(TAG,"From new task");
+
+                if(from == null) {
+                    from = "";
+                }
+
+                Log.i(TAG,"From: "+ from);
+
+                switch (from) {
+                    case "inbox":
+                    case "newTask":
+                    case "reassignTaskList":
+                    case "contact":
+                        callIcon.setVisibility(View.GONE);
+                        viewPager.setCurrentItem(1);
+                        break;
+                    case "reassign":
+                        callIcon.setVisibility(View.GONE);
+                        String taskID = intent.getStringExtra("taskID");
+                        Log.i(TAG, "From reassign and for: " + taskID);
+                        viewPager.setCurrentItem(1);
+                        break;
+                    case "inboxSave":
+                        callIcon.setVisibility(View.GONE);
+                        viewPager.setCurrentItem(0);
+                        break;
+                    default:
+                        viewPager.setCurrentItem(0);
+                        break;
                 }
             }
 //            else {

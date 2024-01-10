@@ -83,7 +83,11 @@ public class Setting_Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
-//        getSupportActionBar().hide();
+//        try {
+//            Objects.requireNonNull(getSupportActionBar()).hide();
+//        } catch (Exception e){
+//            e.printStackTrace();
+//        }
 
 //        Check = (ImageView) findViewById(R.id.checkBox);
 //        reportCheck = (ImageView) findViewById(R.id.reportcheck);

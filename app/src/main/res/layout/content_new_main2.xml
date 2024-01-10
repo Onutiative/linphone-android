@@ -10,10 +10,11 @@
     android:id="@+id/content_new_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f5f9fb"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="org.linphone.onu_legacy.Activities.DashBoardActivity"
+    tools:context="org.linphone.onu_legacy.Activities.Activities.DashBoard_Activity"
     tools:showIn="@layout/app_bar_new_main">
+<!--    android:background="#f5f9fb"-->
+
     <com.daimajia.slider.library.SliderLayout
         android:id="@+id/slider"
         android:layout_width="match_parent"
@@ -21,12 +22,15 @@
         android:layout_marginBottom="5dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView7"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintLeft_toLeftOf="@+id/imageView7"
-        app:layout_constraintRight_toRightOf="@+id/imageView7"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
+
+    <!--
+     app:layout_constraintRight_toRightOf="@+id/imageView7"
+     app:layout_constraintLeft_toLeftOf="@+id/imageView7"
+     app:layout_constraintBottom_toBottomOf="@+id/imageView7"
+     -->
 
     <ScrollView
         android:id="@+id/scroll_view"
@@ -50,8 +54,10 @@
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="10dp"
                 app:cardElevation="4dp"
-                card_view:cardBackgroundColor="@android:color/white"
                 card_view:cardCornerRadius="4dp">
+
+<!--                card_view:cardBackgroundColor="@android:color/white"-->
+
                 <LinearLayout
                     android:id="@+id/task_linear_layout"
                     android:layout_width="match_parent"
@@ -184,8 +190,10 @@
                 android:layout_marginRight="15dp"
                 android:layout_marginTop="15dp"
                 app:cardElevation="4dp"
-                card_view:cardBackgroundColor="@android:color/white"
                 card_view:cardCornerRadius="4dp">
+
+<!--                card_view:cardBackgroundColor="@android:color/white"-->
+
                 <LinearLayout
                     android:id="@+id/outgoing_sms_linear_layout"
                     android:layout_width="match_parent"
@@ -547,8 +555,8 @@
                             android:layout_weight=".5"
                             android:gravity="center|bottom"
                             android:text="0"
-                            android:textColor="#394b61"
                             android:textSize="20dp"
+                            android:textColor="#394b61"
                             android:textStyle="bold" />
 
                         <TextView
@@ -948,7 +956,7 @@
                 android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="http://user.onukit.com"
+                android:text="https://user.onukit.com"
                 />
         </LinearLayout>
     </LinearLayout>
@@ -976,6 +984,7 @@
 <!--            android:foregroundGravity="center"-->
 <!--            ads:adSize="BANNER"-->
 <!--            ads:adUnitId="ca-app-pub-7584109766733745/6299559711"></com.google.android.gms.ads.AdView>-->
+
 
     </LinearLayout>
 

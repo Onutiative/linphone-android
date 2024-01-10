@@ -1,6 +1,7 @@
 package org.linphone.onu_legacy.Database;
 
 
+import android.util.Log;
 
 /**
  * Created by jhorotek on 7/6/2015.
@@ -81,6 +82,7 @@ public class Contact {
     }
 
     public String getPhone_number() {
+        // Log.i("Contact","User's Phone Number: "+phone_number);
         return phone_number;
     }
 

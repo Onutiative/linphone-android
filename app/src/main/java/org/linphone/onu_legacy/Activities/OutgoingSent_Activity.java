@@ -30,6 +30,7 @@ import org.linphone.onu_legacy.WebViews.WebViews;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class OutgoingSent_Activity extends AppCompatActivity {
 
@@ -44,7 +45,11 @@ public class OutgoingSent_Activity extends AppCompatActivity {
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sentbox);
-        getSupportActionBar().hide();
+        try {
+            Objects.requireNonNull(getSupportActionBar()).hide();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
         Button weburl= (Button) findViewById(R.id.weburl);
         context=OutgoingSent_Activity.this;
         sentSmsToHome=findViewById(R.id.sentSmsToHome);
@@ -77,7 +82,7 @@ public class OutgoingSent_Activity extends AppCompatActivity {
             public void onClick(View view) {
 //                Toast.makeText(OutgoingSent_Activity.this,"Outgoing SMS Sent",Toast.LENGTH_SHORT).show();
                 Intent i = new Intent(OutgoingSent_Activity.this, WebViews.class);
-                i.putExtra("url","http://user.onukit.com/6v0/login_from_app/smsOutBox");
+                i.putExtra("url","https://user.onukit.com/6v0/login_from_app/smsOutBox");
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
             }

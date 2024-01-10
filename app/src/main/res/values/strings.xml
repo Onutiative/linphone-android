@@ -955,11 +955,20 @@
     <string name="loading">Loading…</string>
     <string name="signed_out">Signed out</string>
     <string name="signed_in_fmt">Signed in as: %s</string>
-    <string name="permission_failure">All permissions not granted! Some functionalists may not work.</string>
+    <string name="permission_failure">All permissions not granted! Some functionalities may not work.</string>
     <string name="permission_success">All permissions granted successfully!</string>
     <string name="dummy_text">Lorem Ipsum is simply\n        dummy text of the printing and typesetting industry.\n        Lorem Ipsum has been the industrys standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</string>
     <string name="agree_msg">it is mandatory to agree this privacy policy neither you can\\\'t use this app.</string>
     <string name="privacy_policy_list"><![CDATA[OnuKit is an app-cloud combo solution for customer supports management. So OnuKit app needs the following access permission to function properly.\\n <br />\n            <p>1. Files access permission to preserve apps log data, recorded files,\\n <br />\n            2. Microphone Access permission to record support calls and to preserve them. \\n<br />\n            3. Contact Access so that SMS to ALL functionality works,\\n <br />\n            4. Make and Manage calls to enable click to call from cloud. \\n<br />\n            5. Send and View sms to allow SMS Backup and sending sms from cloud panel.\\n<br />\n            6. Internet connectivity to communicate with it’s cloud backen. \\n<br />\n            7. Allow all over the apps permission to show the pop-up when incoming call received.\n                \\n</p>\n            To know more please visit: www.onuKit.com/privacy-policy]]></string>
+    <string name="access_sip_interface">Access SIP Interface</string>
+    <string name="mobile_no">Mobile Number</string>
+    <string name="mobile_no_hint">01xxxxxxxxx</string>
+    <string name="detailed_description">Detailed Description</string>
+    <string name="detailed_description_hint">Caller had a suggestion about X.</string>
+    <string name="task_purpose">Task Purpose</string>
+    <string name="caller_name_client_name">Caller Name/Client name</string>
+    <string name="caller_name_client_name_hint">Mr/Mrs/Ms X</string>
+    <string name="task_status">Task Status</string>
 
     <string-array name="schedule_type_arrays">
         <item>select schedule type</item>

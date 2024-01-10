@@ -14,6 +14,8 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.ybq.android.spinkit.style.ThreeBounce;
+
+import org.linphone.activities.main.MainActivity;
 import org.linphone.onu_legacy.AsyncTasking.CheckOnline;
 import org.linphone.onu_legacy.AsyncTasking.FetchImage;
 import org.linphone.onu_legacy.Database.Contact;
@@ -24,11 +26,12 @@ import org.linphone.onu_legacy.Utility.SharedPrefManager;
 import com.skyfishjy.library.RippleBackground;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class SplashScreen_Activity extends AppCompatActivity {
-
+    public static final String ACTIVITY_CLUE = "activity_clue";
     public Timer myTimer;
     public int i = 0;
     private RippleBackground rippleBackground;
@@ -43,12 +46,15 @@ public class SplashScreen_Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_splashyo);
 
-        ActionBar bar=getSupportActionBar();
-        bar.hide();
+        try {
+            Objects.requireNonNull(getSupportActionBar()).hide();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
 
         context= SplashScreen_Activity.this;
         sharedPrefManager=new SharedPrefManager(context);
@@ -95,6 +101,7 @@ public class SplashScreen_Activity extends AppCompatActivity {
             Log.d(TAG,"Loop Logging!");
 
             Log.e("Contact List", " Contact List " + cn.getName() + " " + cn.getPhone_number() + " " + cn.getTime());
+            Log.i("Contact List", " Contact List " + cn.getName() + " " + cn.getPhone_number() + " " + cn.getTime());
 
             if (cn.getName().equals("isActive") && cn.getPhone_number().equals("true")) {
                 Log.e("Contact List Special", cn.getName() + " " + cn.getPhone_number() + " " + cn.getTime());
@@ -110,7 +117,7 @@ public class SplashScreen_Activity extends AppCompatActivity {
                 Log.d(TAG,"Account is logged in.");
                 flagCheck=false;
 
-                Intent i = new Intent(SplashScreen_Activity.this, DashBoard_Activity.class);
+                Intent i = new Intent(SplashScreen_Activity.this, MainActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
@@ -118,7 +125,9 @@ public class SplashScreen_Activity extends AppCompatActivity {
             }
         }
 
-        if(sharedPrefManager.getPermissionSlideStatus()&& flagCheck)
+        Log.i("Jhoro", "SplashScreen_Activity: " + sharedPrefManager.getPermissionSlideStatus() + " | flagCheck: " + flagCheck);
+
+        if(!sharedPrefManager.getPermissionSlideStatus())
         {
             Log.d(TAG,"Runtime Permission Logging!");
 
@@ -129,7 +138,7 @@ public class SplashScreen_Activity extends AppCompatActivity {
             startActivity(i);
             finish();
         }
-        else if(!sharedPrefManager.getPermissionSlideStatus() && flagCheck)
+        else if(sharedPrefManager.getPermissionSlideStatus())
         {
 
             Log.d(TAG,"SignUpGoogle Logging!");

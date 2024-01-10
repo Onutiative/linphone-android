@@ -71,7 +71,11 @@ public class SmsToAll_Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sms_to_all);
-//        getSupportActionBar().hide();
+//        try {
+//            Objects.requireNonNull(getSupportActionBar()).hide();
+//        } catch (Exception e){
+//            e.printStackTrace();
+//        }
         view=(View) findViewById(R.id.main_layout);
         activity=this;
         context=SmsToAll_Activity.this;
@@ -321,8 +325,8 @@ public class SmsToAll_Activity extends AppCompatActivity {
                 int statusCode = 0;
                 String username = uname;
                 String password = upass;
-                Log.e("Username: ", uname);
-                Log.e("password: ", upass);
+//                Log.e("Username: ", uname);
+//                Log.e("password: ", upass);
                 //username ="Onu$erVe9";
                 //password ="p#@$aS$";
                 Log.i("CList", "1 url:" + url);

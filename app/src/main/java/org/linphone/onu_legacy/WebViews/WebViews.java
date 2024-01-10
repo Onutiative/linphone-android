@@ -43,7 +43,11 @@ public class WebViews extends AppCompatActivity {
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_web_views);
-        Objects.requireNonNull(getSupportActionBar()).hide();
+        try {
+            Objects.requireNonNull(getSupportActionBar()).hide();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         url = getIntent().getStringExtra("url");
         //  alertDialog = new AlertDialog.Builder(this.create());
         progressBar = ProgressDialog.show(this, "OnuKit web", "Loading...");

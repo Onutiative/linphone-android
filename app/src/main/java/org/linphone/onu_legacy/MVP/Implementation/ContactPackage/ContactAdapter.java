@@ -197,7 +197,7 @@ public class ContactAdapter extends RecyclerView.Adapter<ContactAdapter.Holder> 
                                     break;
                                 case R.id.task_fromContact:
                                     taskConversion=new TaskConversion(context);
-                                    taskConversion.taskMaking(contactValue.getText().toString(),"",helper.getTime(),"","contact");
+                                    taskConversion.taskMaking(contactValue.getText().toString(),"",helper.getTime(),"","contact", null);
                                     break;
                             }
                             return false;

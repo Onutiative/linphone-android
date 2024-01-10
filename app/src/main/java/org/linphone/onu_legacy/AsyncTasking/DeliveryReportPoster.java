@@ -11,21 +11,14 @@ import android.util.Log;
 import org.linphone.onu_legacy.Database.Contact;
 import org.linphone.onu_legacy.Database.Database;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.protocol.HTTP;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -76,34 +69,27 @@ public class DeliveryReportPoster extends AsyncTask<Void, Void, String>  {
     protected String doInBackground(Void... params) {
 
         Database db = new Database(context);
-        if(db.getThreadCount() >0)
-        {
+        if (db.getThreadCount() > 0) {
             Log.i("JhoroS", "ReportSend_doinbackground");
             String username = "Onu$erVe9";
             String password = "p#@$aS$";
             Log.i("Jhoro", "doinback");
             try {
                 Log.i("Jhoro", "ReportSend");
-                HttpParams httpParams = new BasicHttpParams();
-                HttpConnectionParams.setConnectionTimeout(httpParams, TIMEOUT_MILLISEC);
-                HttpConnectionParams.setSoTimeout(httpParams, TIMEOUT_MILLISEC);
-                HttpParams p = new BasicHttpParams();
-                HttpClient httpclient = new DefaultHttpClient(p);
 
-                // HttpPost httppost = new HttpPost(url);
-                // HttpGet httpget=new HttpGet(url);
+                URL url = new URL(this.url);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("POST");
+                connection.setConnectTimeout(TIMEOUT_MILLISEC);
+                connection.setReadTimeout(TIMEOUT_MILLISEC);
+                connection.setRequestProperty("Content-type", "application/json");
 
-                HttpPost httppost = new HttpPost(url);
-
+                //---------------------Code for Basic Authentication-----------------------
                 String credentials = username + ":" + password;
                 String credBase64 = Base64.encodeToString(credentials.getBytes(), Base64.DEFAULT).replace("\n", "");
-                httppost.setHeader("Authorization", "Basic " + credBase64);
-
-
-                ResponseHandler<String> responseHandler = new BasicResponseHandler();
-                httppost.setHeader("Content-type", "application/json");
+                connection.setRequestProperty("Authorization", "Basic " + credBase64);
+                //---------------------------------Body Data-------------------------------------
                 JSONArray jsonArr = new JSONArray();
-
 
                 List<Contact> contacts = db.getallthread();
                 ArrayList<String> mylist = new ArrayList<String>();
@@ -123,54 +109,53 @@ public class DeliveryReportPoster extends AsyncTask<Void, Void, String>  {
                         jsonParam.accumulate("time", cn.getPhone_number());
                     }
 
-                        if (mylist.size() < 100) {
-                            jsonArr.put(jsonParam);
-                            mylist.add(cn.getName()); // this adds an element to the list.
-                        } else {
-                            break;
-                        }
+                    if (mylist.size() < 100) {
+                        jsonArr.put(jsonParam);
+                        mylist.add(cn.getName()); // this adds an element to the list.
+                    } else {
+                        break;
+                    }
 
-
-                    Log.i("JhoroS", "listSize:"+mylist.size() );
-
-
-
+                    Log.i("JhoroS", "listSize:" + mylist.size());
                 }
 
-                //db.removeallthread();
                 Log.i("JhoroS", "Status jSon: " + jsonArr.toString());
-                String entity = jsonArr.toString();
-                Log.i("Jhoro", "Data" + entity);
-                httppost.setEntity(new StringEntity(entity, HTTP.UTF_8));
-                HttpResponse response = httpclient.execute(httppost);
-                String res = EntityUtils.toString(response.getEntity());
-                JSONObject json = new JSONObject(res);
-                Log.i("JhoroS", json.toString());
-                String status = json.getString("status");  //getting from  jSon body
-                int statusCode = response.getStatusLine().getStatusCode();
-                Log.i("JhoroS", "Status my Status: " + statusCode);
-                // if(status.equals(success))
-                if (statusCode >= 200 && statusCode <= 299) {
+                String requestBody = jsonArr.toString();
 
+                connection.setDoOutput(true);
+                DataOutputStream os = new DataOutputStream(connection.getOutputStream());
+                os.writeBytes(requestBody);
+                os.flush();
+                os.close();
+
+                int statusCode = connection.getResponseCode();
+                Log.i("JhoroS", "Status my Status: " + statusCode);
+                String responseResult = "";
+
+                if (statusCode >= 200 && statusCode <= 299) {
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        responseResult += line;
+                    }
+                    reader.close();
                     Log.i("Jhoro", "Statu: ");
-                    if (status.equals("4000")) {
-                        for(int i = 0; i < mylist.size(); i++) {
-                           db.deleteThread(mylist.get(i));
+                    if (responseResult.equals("4000")) {
+                        for (int i = 0; i < mylist.size(); i++) {
+                            db.deleteThread(mylist.get(i));
                         }
                         //db.removeallthread();
                     }
-
-                    return status;
-                } else
+                    return responseResult;
+                } else {
                     return null;
+                }
 
             } catch (Exception ex) {
-                Log.i("JhoroS", "exeption="+ex);
+                Log.i("JhoroS", "exception=" + ex);
                 return null;
             }
-        }
-        else
-        {
+        } else {
             return null;
         }
     }

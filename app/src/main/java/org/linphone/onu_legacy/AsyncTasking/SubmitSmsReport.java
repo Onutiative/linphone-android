@@ -13,18 +13,14 @@ import org.linphone.onu_legacy.Utility.Constants;
 import org.linphone.onu_legacy.Utility.IntentStatus;
 import org.linphone.onu_legacy.Utility.SharedPrefManager;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -138,56 +134,56 @@ public class SubmitSmsReport extends AsyncTask<Void, Void, String> {
     @Override
     protected String doInBackground(Void... voids) {
         try {
-            HttpParams httpParams = new BasicHttpParams();
-            HttpConnectionParams.setConnectionTimeout(httpParams, TIMEOUT_MILLISEC);
-            HttpConnectionParams.setSoTimeout(httpParams, TIMEOUT_MILLISEC);
-            HttpParams p = new BasicHttpParams();
-            HttpClient httpclient = new DefaultHttpClient(p);
-            HttpPost httppost = new HttpPost(url);
-            httppost.setHeader("Content-type", "application/json");
-            //---------------------Code for Basic Authentication-----------------------
+            URL urlObj = new URL(url);
+            HttpURLConnection connection = (HttpURLConnection) urlObj.openConnection();
+            connection.setConnectTimeout(TIMEOUT_MILLISEC);
+            connection.setReadTimeout(TIMEOUT_MILLISEC);
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Content-Type", "application/json");
+
+            // Basic Authentication
             String credentials = userName + ":" + userPassword;
             String credBase64 = Base64.encodeToString(credentials.getBytes(), Base64.DEFAULT).replace("\n", "");
-            httppost.setHeader("Authorization", "Basic " + credBase64);
+            connection.setRequestProperty("Authorization", "Basic " + credBase64);
 
+            // JSON data
             JSONArray jsonArray = new JSONArray();
-            //added by bidyut
-            if (intentStatuseList.size()>0){
-                for (IntentStatus intentStatus: intentStatuseList) {
-                    jsonArray.put(responceObject(intentStatus.getStatus(),intentStatus.getSmsID(),intentStatus.getTime()));
-                    Log.i(TAG,"Delivery report time: "+intentStatus.getTime());
-                }
-            }
-            //adding end
-
             for (ServerSms serverSms : serverSmsList) {
-                jsonArray.put(responceObject(serverSms.getSmsStatus(),serverSms.getSmsId(),serverSms.getDeliveryTime()));
-                Log.i(TAG,"Delivery report time: "+serverSms.getDeliveryTime());
+                jsonArray.put(responceObject(serverSms.getSmsStatus(), serverSms.getSmsId(), serverSms.getDeliveryTime()));
+                Log.i(TAG, "Delivery report time: " + serverSms.getDeliveryTime());
             }
+            Log.i(TAG, "Request json: " + jsonArray.toString());
 
-            Log.i(TAG,"Request json: "+ jsonArray.toString());
+            // Send JSON data
+            connection.setDoOutput(true);
+            OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
+            writer.write(jsonArray.toString());
+            writer.flush();
 
-            StringEntity myStringEntity = new StringEntity(jsonArray.toString(), "UTF-8");
-            httppost.setEntity(myStringEntity);
-            //--------------execution of httppost
-            HttpResponse response = httpclient.execute(httppost);
-            String res = EntityUtils.toString(response.getEntity());
-            Log.i(TAG, "response: " + res);
-            responseResult = res;
-            statusCode = response.getStatusLine().getStatusCode();
-
-            Log.i(TAG, "Response");
+            int statusCode = connection.getResponseCode();
+            Log.i(TAG, "Response code: " + statusCode);
 
             if (statusCode >= 200 && statusCode <= 299) {
-                //Toast.makeText(context, "Data safely reached!", Toast.LENGTH_LONG).show();
+                // Read response
+                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String line;
+                StringBuilder response = new StringBuilder();
+                while ((line = reader.readLine()) != null) {
+                    response.append(line);
+                }
+                reader.close();
+
+                responseResult = response.toString();
+                Log.i(TAG, "Response: " + responseResult);
             }
+
+            connection.disconnect();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
 
         return null;
     }
-
 
     private void setupConfig() {
 

@@ -7,25 +7,26 @@
     android:orientation="vertical"
     tools:context=".onu_legacy.Fragments.TaskFormFragment">
 
-    <LinearLayout
-        android:visibility="gone"
-        android:gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/dark_blue"
-        android:orientation="horizontal"
-        android:paddingBottom="10dp"
-        android:paddingLeft="10dp"
-        android:paddingTop="5dp">
-        <TextView
-            android:id="@+id/phoneNo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.5"
-            android:text="Mobile No- 017651836352"
-            android:textColor="#FFFFFF" />
+    <!-- tools:context=".onu_legacy.Fragments.TaskFormFragment" -->
 
-    </LinearLayout>
+<!--    <LinearLayout-->
+<!--        android:visibility="gone"-->
+<!--        android:gravity="center"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="@color/dark_blue"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:paddingBottom="10dp"-->
+<!--        android:paddingLeft="10dp"-->
+<!--        android:paddingTop="5dp">-->
+<!--        <TextView-->
+<!--            android:id="@+id/phoneNo"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_weight="0.5"-->
+<!--            android:text="Mobile No- 017651836352" />-->
+
+<!--    </LinearLayout>-->
 
     <ScrollView
         android:layout_width="match_parent"
@@ -33,23 +34,55 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="5dp">
+<!--            <TextView-->
+<!--                android:id="@+id/phoneNo"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="0dp"-->
+<!--                android:paddingBottom="10dp"-->
+<!--                android:paddingStart="10dp"-->
+<!--                android:paddingTop="5dp"-->
+<!--                android:orientation="horizontal"-->
+<!--                android:layout_weight="0.5"-->
+<!--                android:gravity="center"-->
+<!--                android:text="Mobile No- 017651836352" />-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/mobile_no"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+            <EditText
+                android:id="@+id/phoneNo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/mobile_no_hint"
+                android:paddingTop="15dp"
+                android:inputType="phone"
+                android:maxLength="50"
+                android:textColorHint="#838181"
+                android:maxLines="1"
+                android:singleLine="true" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="10dp"
                     android:orientation="horizontal">
                     <TextView
                         android:layout_gravity="center"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Task Summary"
-                        android:textSize="20sp"
+                        android:textSize="25sp"
                         android:textStyle="bold" />
                     <TextView
                         android:layout_marginLeft="10dp"
@@ -60,41 +93,63 @@
                         android:text="2018-08-09 20:23:20"/>
                 </LinearLayout>
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/caller_name_client_name"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
                 <com.google.android.material.textfield.TextInputLayout
-
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-
                     <EditText
                         android:id="@+id/caller_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Caller Name/Client name"
+                        android:textColorHint="#838181"
+                        android:hint="@string/caller_name_client_name_hint"
                         android:singleLine="true" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <fr.ganfra.materialspinner.MaterialSpinner
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/task_purpose"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+                <Spinner
+                    style="@android:style/Widget.Material.Spinner.Underlined"
                     android:id="@+id/call_purpose_spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:ms_arrowColor="#000000"
-                    app:ms_arrowSize="16dp"
-                    app:ms_floatingLabelColor="#000000"
-                    app:ms_floatingLabelText="Task Purpose"
-                    app:ms_hint="Task Purpose"
-                    app:ms_multiline="true" />
+                    android:backgroundTint="#8F8D8D"
+                    android:padding="15dp"/>
 
-                <fr.ganfra.materialspinner.MaterialSpinner
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/task_status"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+                <!-- fr.ganfra.materialspinner.MaterialSpinner -->
+                <Spinner
+                    style="@android:style/Widget.Material.Spinner.Underlined"
                     android:id="@+id/task_status_spinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:ms_arrowColor="#000000"
-                    app:ms_arrowSize="16dp"
-                    app:ms_floatingLabelColor="#000000"
-                    app:ms_floatingLabelText="Task Status"
-                    app:ms_hint="Task Status"
-                    app:ms_multiline="true" />
+                    android:padding="15dp"
+                    android:backgroundTint="#8F8D8D"
+                    />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="@string/detailed_description"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -103,7 +158,7 @@
                         android:id="@+id/call_summary"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="detail descriptions"
+                        android:hint="@string/detailed_description_hint"
                         android:minLines="3"
                         android:scrollbars="vertical" />
                 </com.google.android.material.textfield.TextInputLayout>
@@ -111,20 +166,18 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="20dp"
                     android:text="Assign To"
                     android:textSize="20sp"
                     android:textStyle="bold" />
-                <fr.ganfra.materialspinner.MaterialSpinner
+                <Spinner
+                    style="@android:style/Widget.Material.Spinner.Underlined"
                     android:id="@+id/assignee_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:ms_arrowColor="#000000"
-                    app:ms_arrowSize="16dp"
-                    app:ms_floatingLabelColor="#000000"
-                    app:ms_floatingLabelText="Asignee Email"
-                    app:ms_hint="Asignee Email"
-                    app:ms_multiline="true" />
+                    android:backgroundTint="#8F8D8D"
+                    android:padding="15dp"
+                    />
                 <AutoCompleteTextView
                     android:visibility="gone"
                     android:hint="Other Email"
@@ -132,6 +185,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="Date &amp; Time"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -139,6 +199,7 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginEnd="5dp"
                         android:layout_weight="1">
                         <EditText
                             android:id="@+id/date_picker"
@@ -150,6 +211,7 @@
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
                         android:layout_weight="1">
                         <EditText
                             android:id="@+id/time_picker"
@@ -164,6 +226,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
+                    android:layout_marginTop="20dp"
                     android:orientation="horizontal">
                     <Button
                         android:id="@+id/cancel_button"

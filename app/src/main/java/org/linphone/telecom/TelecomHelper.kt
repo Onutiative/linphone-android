@@ -59,6 +59,9 @@ class TelecomHelper private constructor(context: Context) {
             message: String
         ) {
             Log.i("[Telecom Helper] Call state changed: ${call.state}")
+//            Handler(Looper.getMainLooper()).post {
+//                Toast.makeText(coreContext.context, "TelecomHelper Call state changed: ${call.state} | call id: ${call.callLog.callId}", Toast.LENGTH_SHORT).show()
+//            }
 
             try {
                 if (call.dir == Call.Dir.Incoming && call.state == Call.State.IncomingReceived) {

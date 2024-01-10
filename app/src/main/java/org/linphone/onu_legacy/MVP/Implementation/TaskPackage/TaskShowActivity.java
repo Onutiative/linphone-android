@@ -18,6 +18,7 @@ import org.linphone.R;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class TaskShowActivity extends AppCompatActivity implements TaskShowActivityCommunicatior.TashShowView{
     private Context context;
@@ -33,8 +34,12 @@ public class TaskShowActivity extends AppCompatActivity implements TaskShowActiv
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_show);
-        getSupportActionBar().hide();
-        context=TaskShowActivity.this;
+        try {
+            Objects.requireNonNull(getSupportActionBar()).hide();
+        } catch (Exception e){
+            // e.printStackTrace();
+        }
+        context= TaskShowActivity.this;
         presenterTaskShow=new PresenterTaskShow(context);
         taskToHome=findViewById(R.id.taskToHome);
         addNewTask=findViewById(R.id.addNewTask);
@@ -43,7 +48,7 @@ public class TaskShowActivity extends AppCompatActivity implements TaskShowActiv
         taskToHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent =new Intent(TaskShowActivity.this,DashBoard_Activity.class);
+                Intent intent =new Intent(getBaseContext(),DashBoard_Activity.class);
                 startActivity(intent);
             }
         });
@@ -58,7 +63,7 @@ public class TaskShowActivity extends AppCompatActivity implements TaskShowActiv
         });
         Intent intent=getIntent();
         taskType=intent.getStringExtra("taskType");
-        taskTitleName.setText(taskType+" Task");
+        taskTitleName.setText(taskType + " Task");
         Log.i(TAG,"Task type: "+taskType);
         presenterTaskShow.startExecution(taskType);
     }

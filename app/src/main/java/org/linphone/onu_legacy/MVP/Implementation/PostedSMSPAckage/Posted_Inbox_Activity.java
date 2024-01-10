@@ -27,6 +27,8 @@ import org.linphone.R;
 import org.linphone.onu_legacy.WebViews.WebViews;
 import com.oguzdev.circularfloatingactionmenu.library.FloatingActionButton;
 
+import java.util.Objects;
+
 public class Posted_Inbox_Activity extends AppCompatActivity implements
         View.OnClickListener{
 
@@ -47,7 +49,11 @@ public class Posted_Inbox_Activity extends AppCompatActivity implements
         setContentView(R.layout.activity_inbox_posted);
         db=new Database(this);
         try{
-            getSupportActionBar().hide();
+            try {
+                Objects.requireNonNull(getSupportActionBar()).hide();
+            } catch (Exception e){
+                e.printStackTrace();
+            }
             Init();
         }catch (Exception e)
         {
@@ -140,7 +146,7 @@ public class Posted_Inbox_Activity extends AppCompatActivity implements
 
             case R.id.goOnline:
                 Intent i = new Intent(Posted_Inbox_Activity.this, WebViews.class);
-                i.putExtra("url","http://user.onukit.com/6v0/massage/inbox");
+                i.putExtra("url","https://user.onukit.com/6v0/massage/inbox");
                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(i);
                 break;

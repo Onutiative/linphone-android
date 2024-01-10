@@ -20,6 +20,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -44,6 +45,10 @@ import com.karumi.dexter.listener.single.PermissionListener;
 import org.linphone.R;
 import org.linphone.onu_legacy.Utility.SharedPrefManager;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 
 public class RuntimePermissionActivity extends AppCompatActivity {
@@ -59,7 +64,7 @@ public class RuntimePermissionActivity extends AppCompatActivity {
     private SharedPrefManager sharedPrefManager;
     private int current;
     private int requestPermissionscall_count=0;
-
+    private int PICK_FILE_REQUEST_CODE = 100;
 
     private void showSettingDialog() {
         new AlertDialog.Builder(this)
@@ -146,6 +151,29 @@ public class RuntimePermissionActivity extends AppCompatActivity {
         }
 
        setContentView(R.layout.activity_runtime_permission);
+
+        // check if PermissionSlideStatus in true in thread
+//        new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                    Thread.sleep(1000);
+//                    Log.i(TAG, "PermissionSlideStatus: " + sharedPrefManager.getPermissionSlideStatus());
+//                    if (sharedPrefManager.getPermissionSlideStatus()) {
+//                        runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                // This code will run on the main UI thread.
+//                                launchDashBoardScreen();
+//                            }
+//                        });
+//                    }
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        }).start();
+
 
 
         context = RuntimePermissionActivity.this;
@@ -312,14 +340,14 @@ public class RuntimePermissionActivity extends AppCompatActivity {
                             Log.i(TAG,"Through Normal");
                         }
                     } else if (current == 6) {
-                        int storagePermissionResult= ContextCompat.checkSelfPermission(context, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                        int storagePermissionResult= ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE);
                         Log.i(TAG,"storagePermissionResult: "+storagePermissionResult);
 
                         if (from.equals("permissionResult") && storagePermissionResult==-1){
                             rePermissionTake(6);
                             Log.i(TAG,"Through permissionResult");
                         }else{
-                            requestReadWriteStoragePermission();
+                            requestReadStoragePermission();
                             Log.i(TAG,"Through Normal");
                         }
                     } else if (current == 7) {
@@ -374,7 +402,7 @@ public class RuntimePermissionActivity extends AppCompatActivity {
             } else if (position == 5) {
                 requestRecordAudioPermission();
             } else if (position == 6) {
-                requestReadWriteStoragePermission();
+                requestReadStoragePermission();
             } else if (position == 7) {
                 showBatteryOptimizationDialog();
             } else {
@@ -429,8 +457,7 @@ public class RuntimePermissionActivity extends AppCompatActivity {
                 int PERMISSION_REQUEST_STORAGE=306;
                 Log.i(TAG,"PERMISSION CODE: "+PERMISSION_REQUEST_STORAGE);
                 ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                Manifest.permission.READ_EXTERNAL_STORAGE},
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                         PERMISSION_REQUEST_STORAGE);
                 break;
             case 7:
@@ -483,6 +510,11 @@ public class RuntimePermissionActivity extends AppCompatActivity {
 
     private void launchHomeScreen() {
         startActivity(new Intent(context, LoginActivity.class));
+        finish();
+    }
+
+    private void launchDashBoardScreen() {
+        startActivity(new Intent(context, DashBoard_Activity.class));
         finish();
     }
 
@@ -589,38 +621,44 @@ public class RuntimePermissionActivity extends AppCompatActivity {
 
     }
 
-    private void requestReadWriteStoragePermission() {
-        Log.i(TAG,"requestReadWriteStoragePermission");
-        Dexter.withActivity(this)
-                .withPermissions(
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        Manifest.permission.READ_EXTERNAL_STORAGE)
-                .withListener(new MultiplePermissionsListener() {
-                    @Override
-                    public void onPermissionsChecked(MultiplePermissionsReport report) {
-                        // check if all permissions are granted
-                        if (report.areAllPermissionsGranted()) {
-                            // do you work now
-                            showSuccessMessage("External Storage");
-                            viewPager.setCurrentItem(current);
-                        }
-
-                        // check for permanent denial of any permission
-                        if (report.isAnyPermissionPermanentlyDenied()) {
-                            // permission is denied permenantly, navigate user to app settings
-                            //showSettingsDialog();
-                            viewPager.setCurrentItem(current);
-                        }
-                    }
-                    @Override
-                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
-                        viewPager.setCurrentItem(current);
-                        token.cancelPermissionRequest();
-                    }
-                })
-                .onSameThread()
-                .check();
+    private void requestReadStoragePermission() {
+        viewPager.setCurrentItem(current);
+//        Dexter.withActivity(this)
+//                .withPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
+//                .withListener(new PermissionListener() {
+//                    @Override
+//                    public void onPermissionGranted(PermissionGrantedResponse response) {
+//                        // Permission granted, proceed with file selection
+//                        openFilePicker();
+//                    }
+//
+//                    @Override
+//                    public void onPermissionDenied(PermissionDeniedResponse response) {
+//                        // Permission denied
+//                        // Handle denial scenario, inform the user, etc.
+//                        // show a dialog informing the user that a permission has been denied
+//                        Toast.makeText(context, "Storage permission is needed to access files", Toast.LENGTH_LONG).show();
+//
+//                    }
+//
+//                    @Override
+//                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission, PermissionToken token) {
+//                        // Show rationale if needed, then continue with permission request
+//                        token.continuePermissionRequest();
+//                    }
+//                })
+//                .check();
     }
+
+    private void openFilePicker() {
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("text/plain"); // Set the desired file type here
+
+        startActivityForResult(intent, PICK_FILE_REQUEST_CODE);
+    }
+
+
 
     private void requestPhoneCallPermission() {
         Log.i(TAG,"requestPhoneCallPermission");
@@ -722,7 +760,28 @@ public class RuntimePermissionActivity extends AppCompatActivity {
             Intent intent = new Intent(context, PermissionResultActivity.class);
             startActivity(intent);
             finish();
-        } else {
+
+        } else if (requestCode == PICK_FILE_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
+            Uri fileUri = data.getData();
+
+            try {
+                InputStream inputStream = getContentResolver().openInputStream(fileUri);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+                StringBuilder content = new StringBuilder();
+
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    content.append(line).append("\n");
+                }
+
+                // Now 'content' contains the content of the selected file
+                // Display it in your UI or process it as needed
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        else {
             super.onActivityResult(requestCode, resultCode, data);
         }
     }

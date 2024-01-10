@@ -34,6 +34,7 @@ public class ContactActivity extends AppCompatActivity implements ContactCommuni
     private TextView doneTextBTN;
     private String uname = null, upass = null, url = null, urlForEdition = null,userId=null,parentID="0";
     private ContactPullRepository pullRepository;
+    private Menu menu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +95,7 @@ public class ContactActivity extends AppCompatActivity implements ContactCommuni
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        this.menu = menu;
         getMenuInflater().inflate(R.menu.search_menu,menu);
         SearchManager manager = (SearchManager) getSystemService(SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.searchItem).getActionView();
@@ -111,8 +113,10 @@ public class ContactActivity extends AppCompatActivity implements ContactCommuni
             }
             @Override
             public boolean onQueryTextChange(String newText) {
-                adapter.getFilter().filter(newText);
-                Log.i(TAG,"Query: "+newText);
+                Log.i(TAG, "Query: " + newText);
+                if (newText != null && !newText.isEmpty() && adapter != null) {
+                    adapter.getFilter().filter(newText);
+                }
                 return true;
             }
         });
@@ -126,14 +130,38 @@ public class ContactActivity extends AppCompatActivity implements ContactCommuni
 
     @Override
     public void toContactAdapter(List<ContactDetails> contactList, boolean selectionOption) {
-        if (contactList.size()>0){
+        // log contact list size
+        Log.i(TAG,"Contact list size: "+contactList.size());
+        if (contactList.size() > 0) {
             Log.i(TAG,"Inflate called");
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
             contactRecyclerView.setLayoutManager(layoutManager);
-            adapter=new ContactAdapter(this,contactList,selectionOption);
+            adapter = new ContactAdapter(this, contactList, selectionOption);
             contactRecyclerView.setAdapter(adapter);
-        }else {
-            showSnackBar("You don't have any contacts! Pleas sync your contact first.");
+
+            // Set the adapter for the SearchView
+            if (menu != null) {
+                SearchView searchView = (SearchView) menu.findItem(R.id.searchItem).getActionView();
+                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String query) {
+                        adapter.getFilter().filter(query);
+                        Log.i(TAG, "Query: " + query);
+                        return true;
+                    }
+
+                    @Override
+                    public boolean onQueryTextChange(String newText) {
+                        Log.i(TAG, "Query: " + newText);
+                        if (newText != null && !newText.isEmpty() && adapter != null) {
+                            adapter.getFilter().filter(newText);
+                        }
+                        return true;
+                    }
+                });
+            }
+        } else {
+            showSnackBar("You don't have any contacts! Please sync your contacts first.");
         }
     }
 

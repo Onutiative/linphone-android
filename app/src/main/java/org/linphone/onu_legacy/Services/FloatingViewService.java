@@ -39,15 +39,6 @@ import org.linphone.onu_legacy.Database.Database;
 import org.linphone.R;
 import org.linphone.onu_legacy.Utility.SharedPrefManager;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -55,6 +46,13 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 
 public class FloatingViewService extends Service {
@@ -424,76 +422,63 @@ public class FloatingViewService extends Service {
         }
 
         @Override
-        protected String doInBackground(Void... params) //HTTP
-        {
+        protected String doInBackground(Void... params) {
             try {
-
-                String status = null;
-                String success = "4000";
-                int statusCode = 0;
                 String username = uname;
                 String password = upass;
-                Log.e("Username: ", uname);
-                Log.e("password: ", upass);
-                //username ="Onu$erVe9";
-                //password ="p#@$aS$";
+//                Log.e("Username: ", uname);
+//                Log.e("password: ", upass);
                 Log.i("CList", "1 url:" + url);
 
-                HttpParams httpParams = new BasicHttpParams();
-                HttpConnectionParams.setConnectionTimeout(httpParams, TIMEOUT_MILLISEC);
-                HttpConnectionParams.setSoTimeout(httpParams, TIMEOUT_MILLISEC);
-                HttpParams p = new BasicHttpParams();
-                HttpClient httpclient = new DefaultHttpClient(p);
-                Log.i("CList", "2");
-                HttpPost httppost = new HttpPost(url);
-                Log.i("CList", "3");
-                httppost.setHeader("Content-type", "application/json");
-                //---------------------Code for Basic Authentication-----------------------
-                String credentials = username + ":" + password;
-                String credBase64 = Base64.encodeToString(credentials.getBytes(), Base64.DEFAULT).replace("\n", "");
-                httppost.setHeader("Authorization", "Basic " + credBase64);
-                Log.i("CList", "4");
-                //------------------------------------------
-                JSONArray jsonArray = new JSONArray();
+                OkHttpClient client = new OkHttpClient.Builder()
+                        .connectTimeout(TIMEOUT_MILLISEC, TimeUnit.MILLISECONDS)
+                        .readTimeout(TIMEOUT_MILLISEC, TimeUnit.MILLISECONDS)
+                        .build();
 
+                Log.i("CList", "2");
 
                 JSONObject jsonObject = new JSONObject();
-
                 jsonObject.accumulate("device_id", deviceID);
                 jsonObject.accumulate("caller_msisdn", phoneNo.substring(1));
 
+                JSONArray jsonArray = new JSONArray();
                 jsonArray.put(jsonObject);
 
-                Log.d(TAG,jsonObject.toString());
+                Log.d(TAG, jsonObject.toString());
 
-                //-----------------------------------------------------------------
-                StringEntity myStringEntity = new StringEntity(jsonArray.toString(), "UTF-8");
-                httppost.setEntity(myStringEntity);
-                //--------------execution of httppost
-                HttpResponse response = httpclient.execute(httppost);
-                String res = EntityUtils.toString(response.getEntity());
+                RequestBody requestBody = RequestBody.create(MediaType.parse("application/json"), jsonArray.toString());
+
+                String credentials = username + ":" + password;
+                String credBase64 = Base64.encodeToString(credentials.getBytes(), Base64.DEFAULT).replace("\n", "");
+
+                Request request = new Request.Builder()
+                        .url(url)
+                        .post(requestBody)
+                        .header("Content-type", "application/json")
+                        .header("Authorization", "Basic " + credBase64)
+                        .build();
+
+                Log.i("CList", "4");
+
+                Response response = client.newCall(request).execute();
+                String res = response.body().string();
                 Log.d(TAG, "response: " + res);
-                responseResult=res;
+                responseResult = res;
 
-//                JSONObject responseObject=new JSONObject(res);
-//                summaryList=responseObject.getJSONArray("summary").getJSONObject(0).toString();
-
-//                summaryList=responseObject.getString("summary");
-                //   Toast.makeText(context,res,Toast.LENGTH_LONG).show();
-                statusCode = response.getStatusLine().getStatusCode();
-                // if(status.equals(success))
+                int statusCode = response.code();
                 if (statusCode >= 200 && statusCode <= 299) {
                     Toast.makeText(context, "Sending . . .", Toast.LENGTH_SHORT).show();
                     return null;
-                } else
+                } else {
                     return null;
-
+                }
             } catch (Exception e) {
                 Log.i("CList", "exception:" + e);
             }
 
             return null;
         }
+
     }
 
     private String getDate(){

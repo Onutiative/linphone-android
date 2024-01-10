@@ -5,8 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".onu_legacy.Activities.Activities.RecentInbox_Activity"
-    android:background="#f5f9fb">
+    tools:context=".onu_legacy.Activities.Activities.RecentInbox_Activity">
 
     <LinearLayout
         android:orientation="horizontal"
@@ -22,7 +21,6 @@
             android:id="@+id/surahName"
             android:background="#18A9D8"
             android:layout_gravity="center"
-            android:textColor="#ffffff"
             android:gravity="center|left"
             android:paddingLeft="10dp"
             android:layout_weight="1" />
@@ -44,8 +42,7 @@
 
         android:id="@+id/rrrr"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#f5f9fb"/>
+        android:layout_height="wrap_content" />
 
 
 </LinearLayout>

@@ -74,7 +74,7 @@ public class FirebaseMessagingCustom extends FirebaseMessagingService {
             }
 
             try {
-                new OnuFunctions().checkSavedCredentials(0);
+                new OnuFunctions().checkSavedCredentials(0, getApplicationContext());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -101,6 +101,7 @@ public class FirebaseMessagingCustom extends FirebaseMessagingService {
             @Override
             public void run() {
                 onPushReceived(remoteMessage);
+                // return null;
             }
         };
         AndroidDispatcher.dispatchOnUIThread(pushRunnable);

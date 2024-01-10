@@ -132,7 +132,7 @@ public class SharedPrefManager {
 
     public boolean getPermissionSlideStatus()
     {
-        return preferences.getBoolean(KEY_PERMISSION_SLIDE,true);
+        return preferences.getBoolean(KEY_PERMISSION_SLIDE,false);
     }
 
     public void setPopupClickStatus(boolean status)

@@ -63,7 +63,10 @@ import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
+import org.linphone.LinphoneApplication;
 import org.linphone.R;
+import org.linphone.activities.assistant.AssistantActivity;
+import org.linphone.activities.main.MainActivity;
 import org.linphone.onu_legacy.Activities.CallLog_Activity;
 import org.linphone.onu_legacy.Activities.OutgoingSent_Activity;
 import org.linphone.onu_legacy.Activities.PopupCallListActivity;
@@ -76,6 +79,8 @@ import org.linphone.onu_legacy.MVP.Implementation.ContactPackage.ContactActivity
 import org.linphone.onu_legacy.MVP.Implementation.PostedSMSPAckage.Posted_Inbox_Activity;
 import org.linphone.onu_legacy.MVP.Implementation.SmsSendPackage.SmsActivity;
 import org.linphone.onu_legacy.MVP.Implementation.TaskPackage.TaskShowActivity;
+import org.linphone.onu_legacy.MVP.Implementation.model.ContactDataClasses.ContactDetails;
+import org.linphone.onu_legacy.MVP.Implementation.model.ContactDataClasses.ContactPullDataSet.ContactList;
 import org.linphone.onu_legacy.MVP.Implementation.model.ContactDataClasses.ContactSummaryPullDataSet.ContactSummaryData;
 import org.linphone.onu_legacy.MVP.Implementation.model.ContactDataClasses.ContactSummaryPullDataSet.ContactSummeryGroup;
 import org.linphone.onu_legacy.MVP.Implementation.model.ContactDataClasses.ContactSyncDataSet.Address;
@@ -95,9 +100,14 @@ import org.linphone.onu_legacy.Utility.Info;
 import org.linphone.onu_legacy.Utility.SharedPrefManager;
 import org.linphone.onu_legacy.WebViews.WebViews;
 import org.linphone.onuspecific.OnuFunctions;
+import org.linphone.onuspecific.OnuFunctions.GetCallLogs;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.timqi.sectorprogressview.SectorProgressView;
 
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -115,9 +125,9 @@ public class DashBoard_Activity extends AppCompatActivity
      **********All PreDefined Variables*********************
      ******************************************************/
     private SliderLayout mDemoSlider;
-    //    private String url1 = "http://user.onukit.com/6v0/downloads/slider/1.jpg";
-//    private String url2 = "http://user.onukit.com/6v0/downloads/slider/2.jpg";
-//    private String url3 = "http://user.onukit.com/6v0/downloads/slider/3.jpg";
+    //    private String url1 = "https://user.onukit.com/6v0/downloads/slider/1.jpg";
+//    private String url2 = "https://user.onukit.com/6v0/downloads/slider/2.jpg";
+//    private String url3 = "https://user.onukit.com/6v0/downloads/slider/3.jpg";
     private ImageView indicator;
     private Info info;
     private Database db;
@@ -132,6 +142,7 @@ public class DashBoard_Activity extends AppCompatActivity
 //    private AdRequest adRequest;
     private HashMap<String, String> url_maps;
     private ImageView refreshBtn;
+    private FloatingActionButton sipFabBtn;
     private ImageView inSms, inCall, outCall, outSms;
     public String id = "2";
     private Activity activity;
@@ -143,13 +154,14 @@ public class DashBoard_Activity extends AppCompatActivity
 
     private String TAG = "DashBoard_Activity";
     String user_email, user_pass;
-
+    public static final String OPEN_DIALER = "open_dialer";
     private String prefName = "onuPref";
     SharedPreferences.Editor prefEditor;
     SharedPreferences sharedPref;
 
     private boolean syncContact, topBarNotification;
     private DrawerLayout drawerLayout;
+    private List contactList;
 
     private SectorProgressView outgoingSmsPieChart, incomingSmsPieChart, outgoingCallPieChart, incomingCallPieChart;
 
@@ -224,6 +236,14 @@ public class DashBoard_Activity extends AppCompatActivity
 //                break;
             case R.id.indicator:
                 AlertInfo();
+                break;
+            case R.id.sip_fab:
+                Log.i(TAG, "DashBoard_Activity SIP FAB Clicked!");
+                Intent i = new Intent(DashBoard_Activity.this, MainActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                i.putExtra(SplashScreen_Activity.ACTIVITY_CLUE, OPEN_DIALER);
+                startActivity(i);
+                break;
         }
     }
 
@@ -231,6 +251,7 @@ public class DashBoard_Activity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_main);
+
         sharedPref = getSharedPreferences(prefName, MODE_PRIVATE);
 
         topBarNotification = sharedPref.getBoolean("topBarNotification", true);
@@ -263,9 +284,9 @@ public class DashBoard_Activity extends AppCompatActivity
         user_email = intent.getStringExtra(LoginActivity.USEREMAIL);
         user_pass = intent.getStringExtra(LoginActivity.USERPASS);
 
-        Map<String, String> userCredentials = new OnuFunctions().getUserCredentials();
-        user_email = userCredentials.get("username");
-        user_pass = userCredentials.get("password");
+//        Map<String, String> userCredentials = new OnuFunctions().getUserCredentials();
+//        user_email = userCredentials.get("username");
+//        user_pass = userCredentials.get("password");
 
         outgoingSmsCardView = (CardView) findViewById(R.id.outgoing_sms_card_view);
         incomingSmsCardView = (CardView) findViewById(R.id.incoming_sms_card_view);
@@ -523,7 +544,7 @@ public class DashBoard_Activity extends AppCompatActivity
         else if (id == R.id.webdashboard) {
             Intent i = new Intent(DashBoard_Activity.this, WebViews.class);
 
-            i.putExtra("url", "http://user.onukit.com/6v0/login_from_app/dashboard");
+            i.putExtra("url", "https://user.onukit.com/6v0/login_from_app/dashboard");
             i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(i);
         } else if (id == R.id.logout) {
@@ -588,7 +609,42 @@ public class DashBoard_Activity extends AppCompatActivity
             }else {
                 syncContact();
             }
+        } else if (id == R.id.setSIP) {
+            // show alert dialog if sip account is exist
+            if (LinphoneApplication.coreContext.getCore().getAccountList().length > 0) {
+                AlertDialog.Builder alertDialog = new AlertDialog.Builder(DashBoard_Activity.this);
+                alertDialog.setTitle("OnuKit");
+                alertDialog.setMessage("An account already exist. Do you want to delete it?");
+                alertDialog.setIcon(R.drawable.onukit_logo2);
+                alertDialog.setPositiveButton("YES",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // delete existing SIP account
+                                LinphoneApplication.coreContext.getCore().clearProxyConfig();
+
+                                Intent i = new Intent(DashBoard_Activity.this, AssistantActivity.class);
+                                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(i);
+                            }
+                        });
+                alertDialog.setNegativeButton("NO",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                alertDialog.show();
+
+            } else {
+                Intent i = new Intent(DashBoard_Activity.this, AssistantActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(i);
+            }
         }
+
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -684,9 +740,8 @@ public class DashBoard_Activity extends AppCompatActivity
         contactCircleProgressView.setValue(parcent);
     }
 
-
 //    @Override
-//    public void toContactActivity(List<ContactDetails> contactList,boolean selectionOption) {
+//    public void toContactActivity(List<ContactDetails> contactList, boolean selectionOption) {
 //        this.contactList=contactList;
 //        Log.i(TAG,"Contact Name: "+contactList.get(0).getContactName());
 //        Log.i(TAG,"Contact Size: "+contactList.size());
@@ -885,12 +940,12 @@ public class DashBoard_Activity extends AppCompatActivity
             }
         }
 
-        if (uname == null || upass == null) {
-            Map<String, String> userCredentials = new OnuFunctions().getUserCredentials();
-            // get the username and password from the credentials
-            uname = userCredentials.get("username");
-            upass = userCredentials.get("password");
-        }
+//        if (uname == null || upass == null) {
+//            Map<String, String> userCredentials = new OnuFunctions().getUserCredentials();
+//            // get the username and password from the credentials
+//            uname = userCredentials.get("username");
+//            upass = userCredentials.get("password");
+//        }
     }
 
     private boolean checkPermission() {
@@ -976,7 +1031,7 @@ public class DashBoard_Activity extends AppCompatActivity
 
         if(topBarNotification)
         {
-            TopNotification();
+            // TopNotification();
         }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -1003,6 +1058,7 @@ public class DashBoard_Activity extends AppCompatActivity
 
         mDemoSlider = (SliderLayout) findViewById(R.id.slider);
         refreshBtn =  toolbar.findViewById(R.id.refreshbtn);
+        sipFabBtn = findViewById(R.id.sip_fab);
 //        infoBtn = (ImageButton) findViewById(R.id.infoButton);
         indicator = toolbar.findViewById(R.id.indicator);
 
@@ -1032,11 +1088,41 @@ public class DashBoard_Activity extends AppCompatActivity
         CallOutSuccess = (TextView) findViewById(R.id.successOutCall);
         pendingTaskSubmission=findViewById(R.id.pendingTaskSubmission);
 
+        // get number of incoming and outgoing calls in a thread and update the UI
+        Thread thread = new Thread() {
+            @Override
+            public void run() {
+                // get seven days ago date
+                String sevenDaysAgo = LocalDate.now().minusDays(7).format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+                Map number_of_calls = new GetCallLogs(null, sevenDaysAgo).get_number_of_incoming_and_outgoing_calls();
+                ArrayList all_calls = new GetCallLogs(null, sevenDaysAgo).get_all_calls();
+                // log all calls
+                Log.i(TAG, "All calls: " + all_calls.toString());
+
+                // log the number of incoming and outgoing calls
+                Log.i(TAG, "Incoming: " + number_of_calls.get("incoming").toString());
+                Log.i(TAG, "Outgoing: " + number_of_calls.get("outgoing").toString());
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        CallinSuccess.setText(number_of_calls.get("incoming").toString());
+                        CallOutSuccess.setText(number_of_calls.get("outgoing").toString());
+                    }
+                });
+            }
+        };
+        thread.start();
+
+
+
+
         //
 //        clientContacts=findViewById(R.id.clientContacts);
 //        totalContact=findViewById(R.id.totalContact);
 
         refreshBtn.setOnClickListener(this);
+        sipFabBtn.setOnClickListener(this);
 //        infoBtn.setOnClickListener(this);
         indicator.setOnClickListener(this);
         StartBackgroundService();
@@ -1115,7 +1201,7 @@ public class DashBoard_Activity extends AppCompatActivity
     private void updateDashboard() {
 
         try{
-            Log.i("Jhoro", "Update DashBoard");
+            // Log.i("Jhoro", "Update DashBoard");
 
             ////////////without animation ////////////////////////////
             if (info.isNetworkAvailable()) {
@@ -1144,10 +1230,10 @@ public class DashBoard_Activity extends AppCompatActivity
             SmsOutPending.setText(String.valueOf(String.valueOf(db.getPendingSmsCount())));
             //SmsOutPending.setText(String.valueOf(String.valueOf(db.notprocessedsms())));
             //increible information
-            Log.i("Jhoro", "sms success:" + info.getOutboxSentCount());
+            // Log.i("Jhoro", "sms success:" + info.getOutboxSentCount());
             SmsinSuccess.setText(Integer.toString(db.getContactsCount()));
-            CallinSuccess.setText(info.getIncallCount());
-            CallOutSuccess.setText(info.getOutcallCount());
+            // CallinSuccess.setText(info.getIncallCount());
+            // CallOutSuccess.setText(info.getOutcallCount());
             pendingTaskSubmission.setText(String.valueOf(db.getTaskCount()));
 //        SmsOutFailed.setText("0");
 //        SmsinFailed.setText("0");
@@ -1224,6 +1310,7 @@ public class DashBoard_Activity extends AppCompatActivity
             @Override
             public void run() {
                 refreshBtn.setBackgroundColor(Color.parseColor("#A100AEF0"));
+                // return null;
             }
         }, 1000);
         //button effect end

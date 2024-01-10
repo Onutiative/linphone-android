@@ -69,8 +69,8 @@ public class CallLogPush extends AsyncTask<Void, Void, String> {
             String username = helper.getUserData().getUsername();
             String password = helper.getUserData().getPassword();
             String call_url = helper.getUserData().getBase_url() + "/callLog";
-            Log.i(TAG, "Username: " + username);
-            Log.i(TAG, "Password: " + password);
+//            Log.i(TAG, "Username: " + username);
+//            Log.i(TAG, "Password: " + password);
 
             Log.i(TAG, "trnxID: " + trID);
 

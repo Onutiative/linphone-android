@@ -6,8 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.CallLog_Activity"
-    android:background="#f5f9fb">
+    tools:context=".onu_legacy.Activities.CallLog_Activity">
 
 
     <!--<LinearLayout-->
@@ -76,7 +75,6 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Outgoing Calls"
                 android:id="@+id/taskTitleName"
-                android:textColor="#ffffffff"
                 android:gravity="center"
                 android:paddingLeft="8dp"
                 android:elevation="10dp" />
@@ -94,8 +92,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/call_log_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#f5f9fb"/>
+        android:layout_height="wrap_content" />
 
 
 </LinearLayout>

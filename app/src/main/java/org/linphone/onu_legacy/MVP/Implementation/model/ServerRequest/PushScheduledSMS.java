@@ -17,16 +17,11 @@ import org.linphone.onu_legacy.MVP.Implementation.model.SMSDataClasses.ScheduleS
 import org.linphone.onu_legacy.MVP.Implementation.model.SMSDataClasses.SendSMSDetails;
 import org.linphone.onu_legacy.Utility.SharedPrefManager;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-import org.apache.http.util.EntityUtils;
-
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -98,45 +93,52 @@ public class PushScheduledSMS extends AsyncTask<Void, Void, String> {
         Log.i(TAG, "Background called");
 
         try {
-            HttpParams httpParams = new BasicHttpParams();
-            HttpConnectionParams.setConnectionTimeout(httpParams, TIMEOUT_MILLISEC);
-            HttpConnectionParams.setSoTimeout(httpParams, TIMEOUT_MILLISEC);
-            HttpParams p = new BasicHttpParams();
-            HttpClient httpclient = new DefaultHttpClient(p);
-            HttpPost httppost = new HttpPost(url);
-            httppost.setHeader("Content-type", "application/json");
+            HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+            connection.setRequestMethod("POST");
+            connection.setConnectTimeout(TIMEOUT_MILLISEC);
+            connection.setReadTimeout(TIMEOUT_MILLISEC);
+            connection.setRequestProperty("Content-type", "application/json");
+
             //---------------------Code for Basic Authentication-----------------------
             String credentials = userName + ":" + userPassword;
             String credBase64 = Base64.encodeToString(credentials.getBytes(), Base64.DEFAULT).replace("\n", "");
-            httppost.setHeader("Authorization", "Basic " + credBase64);
+            connection.setRequestProperty("Authorization", "Basic " + credBase64);
             //---------------------------------Body Data-------------------------------------
             Gson gson = new GsonBuilder().create();
             String requestBody = gson.toJson(scheduleSMSDetails);
 
             //---------------------------------------------------------------------------
-            Log.i(TAG,"Request Body: "+requestBody);
-            StringEntity myStringEntity = new StringEntity(requestBody, "UTF-8");
-            httppost.setEntity(myStringEntity);
-            //--------------execution of httppost
-            HttpResponse response = httpclient.execute(httppost);
-            String res = EntityUtils.toString(response.getEntity());
-            Log.i(TAG, "response: " + res);
-            responseResult = res;
-            statusCode = response.getStatusLine().getStatusCode();
-            Log.i(TAG, "Response");
+            Log.i(TAG, "Request Body: " + requestBody);
+            connection.setDoOutput(true);
+            DataOutputStream os = new DataOutputStream(connection.getOutputStream());
+            os.writeBytes(requestBody);
+            os.flush();
+            os.close();
+
+            int statusCode = connection.getResponseCode();
+            Log.i(TAG, "Response Code: " + statusCode);
+            responseResult = "";
 
             if (statusCode >= 200 && statusCode <= 299) {
-
+                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    responseResult += line;
+                }
+                reader.close();
                 Log.i(TAG, "Data reached");
             } else {
-                Log.i(TAG, "Data can't reached");
+                Log.i(TAG, "Data can't be reached");
             }
+
+            connection.disconnect();
         } catch (Exception ex) {
             Log.i(TAG, "Exception: " + ex);
             ex.printStackTrace();
         }
         return null;
     }
+
 
     private void setUp() {
         List<AdminInfo> adminInfos = sqLiteDB.getAdminInformation();

@@ -35,6 +35,11 @@
             android:icon="@drawable/ic_sync_black_24dp"
             android:title="sync contacts" />
 
+        <item
+            android:id="@+id/setSIP"
+            android:icon="@drawable/sip_call_3_24"
+            android:title="SIP Setup" />
+
     </group>
 
 
