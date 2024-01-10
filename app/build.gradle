@@ -8,6 +8,7 @@ plugins {
 def appVersionName = "6.4"
 def appVersionCode = 114
 
+
 static def getPackageName() {
     return "com.onutiative.onukit"
 }
@@ -99,6 +100,22 @@ task linphoneSdkSource() {
 
 project.tasks['preBuild'].dependsOn 'getGitVersion'
 project.tasks['preBuild'].dependsOn 'linphoneSdkSource'
+
+// <!-- In case password is saved in Android Studio -->
+//afterEvaluate {
+//    if (project.hasProperty("android.injected.signing.store.file")) {
+//        println "key store path: ${project.property("android.injected.signing.store.file")}"
+//    }
+//    if (project.hasProperty("android.injected.signing.store.password")) {
+//        println "key store password: ${project.property("android.injected.signing.store.password")}"
+//    }
+//    if (project.hasProperty("android.injected.signing.key.alias")) {
+//        println "key alias: ${project.property("android.injected.signing.key.alias")}"
+//    }
+//    if (project.hasProperty("android.injected.signing.key.password")) {
+//        println "key password: ${project.property("android.injected.signing.key.password")}"
+//    }
+//}
 
 android {
     compileSdkVersion 33

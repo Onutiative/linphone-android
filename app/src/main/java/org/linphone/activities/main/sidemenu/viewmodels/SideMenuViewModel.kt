@@ -26,6 +26,7 @@ import org.linphone.LinphoneApplication.Companion.corePreferences
 import org.linphone.activities.main.settings.SettingListenerStub
 import org.linphone.activities.main.settings.viewmodels.AccountSettingsViewModel
 import org.linphone.core.*
+import org.linphone.onuspecific.OnuFunctions
 import org.linphone.utils.LinphoneUtils
 
 class SideMenuViewModel : ViewModel() {
@@ -113,6 +114,9 @@ class SideMenuViewModel : ViewModel() {
             LinphoneUtils.isRemoteConferencingAvailable()
     }
 
+    fun show_dont_kill_my_app() {
+        OnuFunctions.dontKillMyApp().run()
+    }
     fun setPictureFromPath(picturePath: String) {
         corePreferences.defaultAccountAvatarPath = picturePath
         defaultAccountAvatar.value = corePreferences.defaultAccountAvatarPath

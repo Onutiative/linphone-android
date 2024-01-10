@@ -120,7 +120,7 @@ class CorePreferences constructor(private val context: Context) {
         }
 
     var keepServiceAlive: Boolean
-        get() = config.getBool("app", "keep_service_alive", false)
+        get() = config.getBool("app", "keep_service_alive", true)
         set(value) {
             config.setBool("app", "keep_service_alive", value)
         }

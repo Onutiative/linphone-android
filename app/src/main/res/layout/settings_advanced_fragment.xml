@@ -12,6 +12,9 @@
         <variable
             name="sharedMainViewModel"
             type="org.linphone.activities.main.viewmodels.SharedMainViewModel" />
+        <variable
+            name="mainActivity"
+            type="org.linphone.activities.main.MainActivity" />
     </data>
 
     <RelativeLayout
@@ -193,6 +196,11 @@
                     linphone:listener="@{viewModel.goToAndroidSettingsListener}"
                     linphone:title="@{@string/advanced_settings_go_to_android_app_settings}" />
 
+                <include
+                    layout="@layout/settings_widget_basic"
+                    linphone:listener="@{viewModel.start_dontkillmyappListener}"
+                    linphone:title="@{@string/advanced_settings_enable_more_background_permissions}" />
+                <!--                    android:onClick="@{() -> mainActivity.show_dontKillMyApp()}"-->
             </LinearLayout>
 
         </androidx.core.widget.NestedScrollView>

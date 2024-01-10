@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.PowerManager
 import android.provider.Settings
 import android.util.Log
 import android.view.View
@@ -14,7 +15,10 @@ import android.widget.Toast
 import androidx.activity.addCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import org.linphone.LinphoneApplication
 import org.linphone.R
+import org.linphone.activities.main.MainActivity
+import org.linphone.onuspecific.OnuFunctions
 import org.linphone.utils.PermissionHelper
 
 class WelcomeScreen : AppCompatActivity() {
@@ -38,11 +42,19 @@ class WelcomeScreen : AppCompatActivity() {
 
         if (areAllPermissionsGranted()) {
             // All permissions are granted, proceed to next activity
-            val intent = Intent(this, OnuAuthentication::class.java)
-            startActivity(intent)
-            finish()
+            if (LinphoneApplication.coreContext.core.accountList.isEmpty()) {
+                val intent = Intent(this, OnuFunctions::class.java)
+                startActivity(intent)
+                finish()
+            } else {
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
         } else {
             // requestPermissionsIfRequired()
+            OnuFunctions.dontKillMyApp(this).run()
+            showBatteryOptimizationDialog()
             showCurrentLayout()
             showNextLayout()
         }
@@ -51,6 +63,31 @@ class WelcomeScreen : AppCompatActivity() {
             Log.i("OnuFunctions", "Back button pressed, killing app")
             finishAffinity()
             System.exit(0)
+        }
+    }
+
+    private fun showBatteryOptimizationDialog() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val packageName = packageName
+            val pm = getSystemService(POWER_SERVICE) as PowerManager
+            if (!pm.isIgnoringBatteryOptimizations(packageName)) {
+                val builder = AlertDialog.Builder(this)
+                builder.setTitle("Battery Optimization")
+                    .setMessage("Battery optimization is needed to receive calls consistently. Please tap Allow when prompted.")
+                    .setPositiveButton("OK") { _, _ -> // Launch the battery optimization settings
+                        val intent =
+                            Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS)
+                        intent.data = Uri.parse("package:$packageName")
+                        startActivity(intent)
+                    }
+                    .setNegativeButton(
+                        "Cancel"
+                    ) { dialog, _ -> // User clicked "Cancel," do nothing or handle as required
+                        dialog.dismiss()
+                    }
+                    .setCancelable(false)
+                    .show()
+            }
         }
     }
 
@@ -178,9 +215,15 @@ class WelcomeScreen : AppCompatActivity() {
             }
         } else {
             // All permissions are granted, proceed to next activity
-            val intent = Intent(this, OnuAuthentication::class.java)
-            startActivity(intent)
-            finish()
+            if (LinphoneApplication.coreContext.core.accountList.isEmpty()) {
+                val intent = Intent(this, OnuAuthentication::class.java)
+                startActivity(intent)
+                finish()
+            } else {
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
         }
     }
 
@@ -297,8 +340,13 @@ class WelcomeScreen : AppCompatActivity() {
                 setContentView(R.layout.welcome_slide7)
             } else if (permissions[0] == android.Manifest.permission.SYSTEM_ALERT_WINDOW || allPermissionsGranted) {
                 // start MainActivity
-                startActivity(Intent(this, OnuAuthentication::class.java))
-                finish()
+                if (LinphoneApplication.coreContext.core.accountList.isEmpty()) {
+                    startActivity(Intent(this, OnuAuthentication::class.java))
+                    finish()
+                } else {
+                    startActivity(Intent(this, MainActivity::class.java))
+                    finish()
+                }
             }
         }
     }
@@ -405,9 +453,15 @@ class WelcomeScreen : AppCompatActivity() {
                 this
             )
         ) {
-            val intent = Intent(this, OnuAuthentication::class.java)
-            startActivity(intent)
-            finish()
+            if (LinphoneApplication.coreContext.core.accountList.isEmpty()) {
+                val intent = Intent(this, OnuAuthentication::class.java)
+                startActivity(intent)
+                finish()
+            } else {
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
         } else {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 Toast.makeText(this, R.string.overlay_permission_toast, Toast.LENGTH_LONG).show()

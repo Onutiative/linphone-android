@@ -19,10 +19,13 @@
  */
 package org.linphone.activities.main.settings.viewmodels
 
+import android.content.Intent
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import org.linphone.LinphoneApplication.Companion.coreContext
 import org.linphone.LinphoneApplication.Companion.corePreferences
 import org.linphone.R
+import org.linphone.activities.WelcomeScreen
 import org.linphone.activities.main.settings.SettingListenerStub
 import org.linphone.activities.main.viewmodels.LogsUploadViewModel
 import org.linphone.core.CoreContext
@@ -161,6 +164,16 @@ class AdvancedSettingsViewModel : LogsUploadViewModel() {
             goToAndroidSettingsEvent.value = Event(true)
         }
     }
+
+    val start_dontkillmyappListener = object : SettingListenerStub() {
+        override fun onClicked() {
+            Log.i("AdvancedSettingsViewModel", "[OnuFunctions] dontKillMyApp_Ran")
+            var intent = Intent(coreContext.context, WelcomeScreen::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            coreContext.context.startActivity(intent)
+        }
+    }
+
     val goToAndroidSettingsEvent = MutableLiveData<Event<Boolean>>()
 
     init {

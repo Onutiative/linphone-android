@@ -109,6 +109,7 @@
 
     <!-- Side menu -->
     <string name="no_account_configured">No account configured</string>
+    <string name="autostart_request">Having problems with calls?</string>
     <string name="about">About</string>
     <string name="assistant">Assistant</string>
     <string name="recordings">Recordings</string>
@@ -677,6 +678,7 @@
     <string name="advanced_settings_go_to_battery_optimization_settings">Battery optimization settings</string>
     <string name="advanced_settings_go_to_power_manager_settings">Power manager settings</string>
     <string name="advanced_settings_go_to_android_app_settings">Android app settings</string>
+    <string name="advanced_settings_enable_more_background_permissions">Enable All Permissions</string>
     <string name="advanced_settings_vfs_title">Encrypt everything</string>
     <string name="advanced_settings_vfs_summary">Once enabled it can\'t be disabled!</string>
     <string name="advanced_settings_send_debug_logs_title">Send logs</string>
