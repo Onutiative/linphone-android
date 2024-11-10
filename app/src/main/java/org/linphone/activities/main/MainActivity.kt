@@ -177,14 +177,11 @@ class MainActivity : GenericActivity(), SnackBarActivity, NavController.OnDestin
         notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
 
         // showBatteryOptimizationDialog()
-
-        showBatteryOptimizationDialog()
         Log.i("[OnuFunctions] dontKillMyApp_Ran: " + OnuFunctions.dontKillMyApp(this).checkIfDontKillMyAppRan())
 //        if (!OnuFunctions.dontKillMyApp(this).checkIfDontKillMyAppRan()) {
 //            OnuFunctions.dontKillMyApp(this).run()
 //            OnuFunctions.dontKillMyApp(this).setDontKillMyAppRan()
 //        }
-
 
         sharedViewModel.toggleDrawerEvent.observe(
             this

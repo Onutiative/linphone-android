@@ -260,16 +260,24 @@ dependencies {
     // from legacy onukit app
     implementation 'com.daimajia.slider:library:1.1.5@aar'
     implementation 'com.github.jakob-grabner:Circle-Progress-View:v1.3'
-    implementation 'com.timqi.sectorprogressview:library:2.0.1'
+    implementation 'com.github.timqi:SectorProgressView:f7243c322f'
     implementation 'com.squareup.okhttp3:okhttp:4.9.2'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.2'
     implementation 'com.karumi:dexter:4.2.0'
-    implementation 'com.github.broakenmedia:MultiContactPicker:1.7'
+    // implementation 'com.github.broakenmedia:MultiContactPicker:1.7'
+    implementation('com.github.broakenmedia:MultiContactPicker:1.7') { // Note the ' (single quote) before com.github
+        exclude group: 'com.l4digital.fastscroll', module: 'fastscroll'
+        exclude group: 'com.miguelcatalan', module: 'materialsearchview'
+    }
     implementation 'com.squareup.picasso:picasso:2.3.2'
     implementation 'com.nineoldandroids:library:2.4.0'
-    implementation 'com.firebase:firebase-jobdispatcher:0.8.5' // Use the appropriate version
+    implementation('com.github.googlearchive.firebase-jobdispatcher-android:firebase-jobdispatcher:0.8.7') {
+        exclude module: 'firebase-jobdispatcher-with-gcm-dep' // This is the key fix
+    }
+    // implementation 'com.github.ZinoKader:MaterialSearchView:1.4.2'
+    // implementation 'com.l4digital.fastscroll:fastscroll:1.0.4'
     implementation 'androidx.work:work-runtime-ktx:2.7.1'
-
+    implementation 'io.github.l4digital:fastscroll:2.1.0'
     // This auth is added on this new FCM project
     implementation 'com.google.android.gms:play-services-auth:15.0.1'
     implementation 'com.google.android.gms:play-services-ads:15.0.1'

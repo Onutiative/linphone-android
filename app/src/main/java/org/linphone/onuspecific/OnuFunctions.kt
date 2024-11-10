@@ -98,7 +98,10 @@ open class OnuFunctions() {
         }
 
         fun getUserName(): String? {
-            Log.i("OnuFunctions", "getUserName: " + OnuFunctions().getUserCredentials(context)["username"])
+            Log.i(
+                "OnuFunctions",
+                "getUserName: " + OnuFunctions().getUserCredentials(context)["username"]
+            )
             return OnuFunctions().getUserCredentials(context)["username"]
         }
 
@@ -108,7 +111,8 @@ open class OnuFunctions() {
     }
 
     public fun getPhoneNumber(context: Context = LinphoneApplication.coreContext.context): String {
-        val subscriptionManager = context.getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE) as SubscriptionManager
+        val subscriptionManager =
+            context.getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE) as SubscriptionManager
         // return phoneNumber if it is not null. Otherwise, return "0"
         try {
             if (ActivityCompat.checkSelfPermission(
@@ -137,7 +141,8 @@ open class OnuFunctions() {
                         subscriptionManager.getPhoneNumber(0) ?: "0"
                     } else {
                         try {
-                            val telephonyManager = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+                            val telephonyManager =
+                                context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
                             telephonyManager.line1Number ?: "0"
                         } catch (e: Exception) {
                             Log.d("OnuFunctions", "Error: ${e.message}")
@@ -149,7 +154,8 @@ open class OnuFunctions() {
         } catch (e: Exception) {
             Log.d("OnuFunctions", "Error: ${e.message}")
             return try {
-                val telephonyManager = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+                val telephonyManager =
+                    context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
                 telephonyManager.line1Number ?: "0"
             } catch (e: Exception) {
                 Log.d("OnuFunctions", "Error: ${e.message}")
@@ -301,7 +307,11 @@ open class OnuFunctions() {
                 FirebaseMessaging.getInstance().token.addOnCompleteListener(
                     OnCompleteListener { task ->
                         if (!task.isSuccessful) {
-                            Log.w("Firebase", "Fetching FCM registration token failed", task.exception)
+                            Log.w(
+                                "Firebase",
+                                "Fetching FCM registration token failed",
+                                task.exception
+                            )
                             return@OnCompleteListener
                         }
 
@@ -312,7 +322,8 @@ open class OnuFunctions() {
 
                         // Log.i("OnuFunctions", "OnuAuthentication before sharedPreferences")
 
-                        val sharedPreferences = context.getSharedPreferences("onukit_creds", Context.MODE_PRIVATE)
+                        val sharedPreferences =
+                            context.getSharedPreferences("onukit_creds", Context.MODE_PRIVATE)
                         val editor = sharedPreferences.edit()
 
                         // Log.i("OnuFunctions", "OnuAuthentication after sharedPreferences")
@@ -321,7 +332,11 @@ open class OnuFunctions() {
                             override fun onFailure(call: okhttp3.Call, e: IOException) {
                                 Handler(Looper.getMainLooper()).post {
                                     // show a toast
-                                    Toast.makeText(context, "Failed to check credentials: $e", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(
+                                        context,
+                                        "Failed to check credentials: $e",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                 }
                                 Log.d("OnuFunctions", "onFailure - Failed to login user: $e")
                             }
@@ -339,10 +354,17 @@ open class OnuFunctions() {
                                     editor.putString("password", null)
                                     editor.apply()
                                     // Show a toast message
-                                    Log.d("OnuFunctions", "response.code != 200 | Failed to login user")
+                                    Log.d(
+                                        "OnuFunctions",
+                                        "response.code != 200 | Failed to login user"
+                                    )
                                     // thread
                                     Handler(Looper.getMainLooper()).post {
-                                        Toast.makeText(context, "Server error! ${response.code}", Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(
+                                            context,
+                                            "Server error! ${response.code}",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
                                         // kill the app
                                         android.os.Process.killProcess(android.os.Process.myPid())
                                     }
@@ -366,14 +388,22 @@ open class OnuFunctions() {
                                         // show in a toast message
                                         if (status.toInt() > 4000) {
                                             Handler(Looper.getMainLooper()).post {
-                                                Toast.makeText(context, "Onukit Login Failed", Toast.LENGTH_SHORT).show()
+                                                Toast.makeText(
+                                                    context,
+                                                    "Onukit Login Failed",
+                                                    Toast.LENGTH_SHORT
+                                                ).show()
                                                 // kill the app
                                                 android.os.Process.killProcess(android.os.Process.myPid())
                                             }
                                             return
                                         } else {
                                             Handler(Looper.getMainLooper()).post {
-                                                Toast.makeText(context, "Onukit Login Successful", Toast.LENGTH_SHORT).show()
+                                                Toast.makeText(
+                                                    context,
+                                                    "Onukit Login Successful",
+                                                    Toast.LENGTH_SHORT
+                                                ).show()
                                             }
                                         }
                                     } catch (e: Exception) {
@@ -381,7 +411,11 @@ open class OnuFunctions() {
                                         // log the exception line number
                                         e.printStackTrace()
                                         Handler(Looper.getMainLooper()).post {
-                                            Toast.makeText(context, "Exception: $e", Toast.LENGTH_SHORT).show()
+                                            Toast.makeText(
+                                                context,
+                                                "Exception: $e",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
                                         }
                                     }
                                 } else {
@@ -389,9 +423,16 @@ open class OnuFunctions() {
                                     editor.putString("password", null)
                                     editor.apply()
                                     // The request failed
-                                    Log.d("OnuFunctions", "response.isSuccessful == false | Failed to activate user")
+                                    Log.d(
+                                        "OnuFunctions",
+                                        "response.isSuccessful == false | Failed to activate user"
+                                    )
                                     Handler(Looper.getMainLooper()).post {
-                                        Toast.makeText(context, "Wrong usename or password", Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(
+                                            context,
+                                            "Wrong usename or password",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
                                         // Toast.makeText(context, "Request Error! Try Again!", Toast.LENGTH_SHORT).show()
                                         // kill the app
                                         android.os.Process.killProcess(android.os.Process.myPid())
@@ -435,11 +476,18 @@ open class OnuFunctions() {
             val requestBody = MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("trxid", trxId ?: "")
-                .addFormDataPart("uploaded_file", file.name, file.asRequestBody("audio/amr".toMediaTypeOrNull()))
+                .addFormDataPart(
+                    "uploaded_file",
+                    file.name,
+                    file.asRequestBody("audio/amr".toMediaTypeOrNull())
+                )
                 .addFormDataPart("calltype", callType ?: "")
                 .addFormDataPart("username", username ?: "")
                 .addFormDataPart("password", password ?: "")
-                .addFormDataPart("device_id", Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID))
+                .addFormDataPart(
+                    "device_id",
+                    Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
+                )
                 .build()
 
             // print the request body
@@ -481,7 +529,10 @@ open class OnuFunctions() {
             val json = JSONObject()
             json.put("callerMsisdn", callerId)
             json.put("inTime", formattedTime)
-            json.put("device_id", Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID))
+            json.put(
+                "device_id",
+                Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
+            )
             json.put("transactionId", transId)
             json.put("callType", callType.lowercase(Locale.ROOT))
 
@@ -516,7 +567,10 @@ open class OnuFunctions() {
                     // check status code
                     if (response.code != 200) {
                         // Show a toast message
-                        Log.d("OnuFunctions", "Server error! ${response.code} | Failed to send Call Data")
+                        Log.d(
+                            "OnuFunctions",
+                            "Server error! ${response.code} | Failed to send Call Data"
+                        )
                     }
 
                     // Handle response
@@ -560,7 +614,8 @@ open class OnuFunctions() {
                 Log.d("OnuFunctions", "CallRecordingCleanUp: ${file.name}")
                 if (RecordingData.RECORD_PATTERN.matcher(file.path).matches()) {
                     val fileDate = file.name.split("_")[1].split(".")[0]
-                    val fileDateTimeFormat = SimpleDateFormat("dd-MM-yyyy-HH-mm-ss", Locale.getDefault())
+                    val fileDateTimeFormat =
+                        SimpleDateFormat("dd-MM-yyyy-HH-mm-ss", Locale.getDefault())
                     val fileDateTimeDate = fileDateTimeFormat.parse(fileDate)
                     val currentDate = Date()
                     val diff = currentDate.time - fileDateTimeDate.time
@@ -568,14 +623,20 @@ open class OnuFunctions() {
 
                     // Log these variables
                     Log.d("OnuFunctions", "CallRecordingCleanUp: fileDate: $fileDate")
-                    Log.d("OnuFunctions", "CallRecordingCleanUp: fileDateTimeDate: $fileDateTimeDate")
+                    Log.d(
+                        "OnuFunctions",
+                        "CallRecordingCleanUp: fileDateTimeDate: $fileDateTimeDate"
+                    )
                     Log.d("OnuFunctions", "CallRecordingCleanUp: currentDate: $currentDate")
                     Log.d("OnuFunctions", "CallRecordingCleanUp: diff: $diff")
                     Log.d("OnuFunctions", "CallRecordingCleanUp: diffDays: $diffDays")
 
                     if (diffDays >= 1) {
                         try {
-                            Log.d("OnuFunctions", "CallRecordingCleanUp: ${file.name} is 1 day old, deleting...")
+                            Log.d(
+                                "OnuFunctions",
+                                "CallRecordingCleanUp: ${file.name} is 1 day old, deleting..."
+                            )
                             file.delete()
                         } catch (e: Exception) {
                             e.printStackTrace()
@@ -609,7 +670,6 @@ open class OnuFunctions() {
         }
     }
 
-
     class GetSummary(
         private val context: Context = LinphoneApplication.coreContext.context,
         private var device_id: String? = null,
@@ -618,7 +678,8 @@ open class OnuFunctions() {
         fun go(): Request {
 
             if (device_id == null) {
-                device_id = Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
+                device_id =
+                    Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
             }
 
             if (phone_number == null) {
@@ -746,14 +807,21 @@ open class OnuFunctions() {
                 }
             }
             return mapOf("incoming" to incoming, "outgoing" to outgoing)
-
+        }
+    }
     class dontKillMyApp(
         private val context: Context = LinphoneApplication.coreContext.context,
     ) {
         var isAutoStartPermissionAvailable = false
         fun run() {
             Log.d("OnuFunctions", "dontKillMyApp: Running...")
-            Log.d("OnuFunctions", "dontKillMyApp: ${AutoStartPermissionHelper.getInstance().isAutoStartPermissionAvailable(context, true)}")
+            Log.d(
+                "OnuFunctions",
+                "dontKillMyApp: ${
+                AutoStartPermissionHelper.getInstance()
+                    .isAutoStartPermissionAvailable(context, true)
+                }"
+            )
 //            if (AutoStartPermissionHelper.getInstance().isAutoStartPermissionAvailable(context, true) && !Build.BRAND.equals("samsung", ignoreCase = true)) {
 //                AutoStartPermissionHelper.getInstance().getAutoStartPermission(context)
 //                isAutoStartPermissionAvailable = true
@@ -858,7 +926,10 @@ open class OnuFunctions() {
 //                }
 //            }
 
-            Log.d("OnuFunctions", "AutoStartPermissionHelper: isAutoStartPermissionAvailable: $isAutoStartPermissionAvailable")
+            Log.d(
+                "OnuFunctions",
+                "AutoStartPermissionHelper: isAutoStartPermissionAvailable: $isAutoStartPermissionAvailable"
+            )
 //            if (!isAutoStartPermissionAvailable) {
 //                // show a dialog box to request user to enable auto start permission, show button for the apps battery usage and show extra button to redirect to dontkillmyapp.com
 //                val builder = AlertDialog.Builder(context)
@@ -911,19 +982,39 @@ open class OnuFunctions() {
                     create().apply {
                         setOnShowListener {
                             getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
-                                if (AutoStartPermissionHelper.getInstance().isAutoStartPermissionAvailable(context, true) && !Build.BRAND.equals("samsung", ignoreCase = true)) {
-                                    AutoStartPermissionHelper.getInstance().getAutoStartPermission(context)
+                                if (AutoStartPermissionHelper.getInstance()
+                                    .isAutoStartPermissionAvailable(
+                                            context,
+                                            true
+                                        ) && !Build.BRAND.equals(
+                                            "samsung",
+                                            ignoreCase = true
+                                        )
+                                ) {
+                                    AutoStartPermissionHelper.getInstance()
+                                        .getAutoStartPermission(context)
                                     isAutoStartPermissionAvailable = true
-                                    Log.d("OnuFunctions", "AutoStartPermissionHelper: AutoStartPermission is available")
+                                    Log.d(
+                                        "OnuFunctions",
+                                        "AutoStartPermissionHelper: AutoStartPermission is available"
+                                    )
                                 } else {
-                                    Log.d("OnuFunctions", "AutoStartPermissionHelper: AutoStartPermission is not available")
+                                    Log.d(
+                                        "OnuFunctions",
+                                        "AutoStartPermissionHelper: AutoStartPermission is not available"
+                                    )
                                     val packageName = context.packageName
-                                    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                                    val intent =
+                                        Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
                                     intent.data = Uri.parse("package:$packageName")
                                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                                     try {
                                         context.startActivity(intent)
-                                        Toast.makeText(context, "Find Allow auto launch and Allow background activity!", Toast.LENGTH_LONG).show()
+                                        Toast.makeText(
+                                            context,
+                                            "Find Allow auto launch and Allow background activity!",
+                                            Toast.LENGTH_LONG
+                                        ).show()
                                     } catch (e: ActivityNotFoundException) {
                                         e.printStackTrace()
                                         // show a dialog box to tell user to open the app info and enable Allow auto launch, Allow background activity etc
@@ -942,7 +1033,10 @@ open class OnuFunctions() {
                             }
 
                             getButton(AlertDialog.BUTTON_NEUTRAL).setOnClickListener {
-                                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://dontkillmyapp.com/"))
+                                val browserIntent = Intent(
+                                    Intent.ACTION_VIEW,
+                                    Uri.parse("https://dontkillmyapp.com/")
+                                )
                                 context.startActivity(browserIntent)
                             }
                         }
@@ -959,11 +1053,11 @@ open class OnuFunctions() {
         }
 
         fun setDontKillMyAppRan() {
-            val sharedPreferences = context.getSharedPreferences("dontKillMyApp", Context.MODE_PRIVATE)
+            val sharedPreferences =
+                context.getSharedPreferences("dontKillMyApp", Context.MODE_PRIVATE)
             val editor = sharedPreferences.edit()
             editor.putBoolean("dontKillMyApp_Ran", true)
             editor.apply()
-
         }
     }
 }
